@@ -1,0 +1,23 @@
+# Internal speaker prep, review logs, and backup decks (keep local only)
+.DS_Store
+__pycache__/
+*.pyc
+*.bak
+*-backup.pptx
+Security_Congress_2026-PPT_template.potx
+build/
+codex-review/
+ISC2-Presentation-Review-and-Improvements.docx
+ISC2-Presentation-Review-and-Improvements.md
+ISC2-Test-and-PowerPoint-Update-Plan.md
+ISC2-talk-plan.md
+improvement-plan.md
+data-refresh-2026-08.md
+cold-open-script.md
+research-execution-playbook.md
+speaker-notes.md
+qa-prep.md
+linkedin.md
+bio.txt
+ISC2-deck.pptx
+ISC2-deck-v3.pptx

@@ -1,0 +1,11 @@
+AI code review is getting better fast, and that comes with a problem most teams haven't noticed. The usual question is a snapshot: does AI write secure code today? This talk asks a harder one. Follow a single vulnerability across its whole life, from the commit that introduced it to the day it was finally caught, and ask where AI beats a human reviewer and where it loses.
+
+The boundary keeps moving. As models improve, AI now catches flaws that teams still route to humans, and it introduces new ones that human reviewers were never trained to spot. Researchers have already traced dozens of 2026 CVEs directly to AI coding tools. Yet most teams set their review process once and never measure it again.
+
+To find where that boundary sits today, we started with more than 20 confirmed CVEs, from 2018 to 2026, in a large open-source healthcare platform (100,000+ providers, 200M+ patient records), and traced each one back to the commit that introduced it. For every bug, we measured how long it survived, who or what caught it, and whether general-purpose AI models, reviewing the original diff blind, would have flagged it. To control for training-data contamination, we included a model whose cutoff predates all of these disclosures, so it could not have memorized the fixes.
+
+The results map to the OWASP Top 10 across four quadrants: what humans introduce, what AI introduces (drawn from current research and 2026 field data), what humans catch, and what AI catches. The method matters more than any single result. You leave with a Human-AI Security Review Model that sends well-defined patterns to AI and keeps context-dependent, domain-specific flaws with people, plus a rubric you can re-run as your tools change.
+Learning Objectives:
+Assess your review process against the 4-quadrant framework to see which vulnerability classes your team catches, which slip through, and where the human-AI boundary currently sits.
+Design a risk-calibrated workflow that routes each vulnerability type to the right reviewer, and know when to re-measure as your tools improve.
+Replicate the methodology on your own codebase or dependencies using the scoring rubric provided, establishing a baseline you can track over time rather than a one-time snapshot.

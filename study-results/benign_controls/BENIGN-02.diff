@@ -1,0 +1,22 @@
+diff --git a/src/Services/Cda/XmlExtended.php b/src/Services/Cda/XmlExtended.php
+index d266ce61c..0b0d7669f 100644
+--- a/src/Services/Cda/XmlExtended.php
++++ b/src/Services/Cda/XmlExtended.php
+@@ -36,7 +36,7 @@ class XmlExtended extends Xml implements ReaderInterface
+             ));
+         }
+         $this->reader = new XMLReader();
+-        $this->reader->open($filename, null, LIBXML_XINCLUDE | LIBXML_COMPACT | LIBXML_PARSEHUGE);
++        $this->reader->open($filename, null, LIBXML_COMPACT | LIBXML_PARSEHUGE);
+ 
+         $this->directory = dirname($filename);
+ 
+@@ -70,7 +70,7 @@ class XmlExtended extends Xml implements ReaderInterface
+             return [];
+         }
+         $this->reader = new XMLReader();
+-        $this->reader->XML($string, null, LIBXML_XINCLUDE | LIBXML_COMPACT | LIBXML_PARSEHUGE);
++        $this->reader->XML($string, null, LIBXML_COMPACT | LIBXML_PARSEHUGE);
+         $this->directory = null;
+         set_error_handler(
+             function ($error, $message = ''): void {

@@ -1,0 +1,2 @@
+cve_id,model_slug,run,status,decided_date,note
+CVE-2026-25146,sonnet-5,2,repaired_rerun,2026-10-15,August run 2 returned '(no output)' and was wrongly scored Missed by judge (archived in ai_runs_quarantined_aug2026/). Re-ran on pinned claude-sonnet-5 on 2026-10-15: flagged gateway_api_key in client JS as Medium ('worth a comment/rename') -> Partial (P/P/M -> Partial).

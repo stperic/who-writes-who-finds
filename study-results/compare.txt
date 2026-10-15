@@ -1,0 +1,56 @@
+=== quadrant compare — the longitudinal ruler (24 validated cases + 10 benign controls) ===
+
+CVE             sonnet-5  haiku-4-5  status
+CVE-2018-15145  C         C          valid
+CVE-2018-15152  C         M          valid
+CVE-2020-29140  C         C          valid
+CVE-2021-40352  C         M          valid
+CVE-2022-2824   C         P          valid
+CVE-2023-22973  C         C          valid
+CVE-2025-31121  M         M          valid (cross-file: Controller.class.php)
+CVE-2025-43860  C         M          valid
+CVE-2026-23627  C*        C*         valid
+CVE-2026-24487  P*        M*         valid (repaired: FhirCareTeamService.php, cross-file FhirServiceBase)
+CVE-2026-24847  C*        C*         valid
+CVE-2026-24849  C*        M*         valid (repaired: EtherFaxActions.php disposeDocument)
+CVE-2026-24890  C*        C*         valid
+CVE-2026-24898  C*        P*         valid
+CVE-2026-24908  C*        C*         valid
+CVE-2026-25146  P*        M*         valid (repaired run2: P/P/M -> P, cross-file globals.inc.php)
+CVE-2026-25476  C*        P*         valid
+CVE-2026-25746  C*        P*         valid
+CVE-2026-29187  C*        P*         valid
+CVE-2026-32238  C*        P*         valid
+CVE-2026-33321  P*        P*         valid (cross-file: mPDF HTML-to-PDF caller)
+CVE-2026-33346  C*        C*         valid
+CVE-2026-33913  C*        M*         valid
+CVE-2026-33918  C*        M*         valid
+
+cells: C=Caught P=Partial M=Missed .=not scored; * = post-cutoff disclosure (Group A)
+
+sonnet-5 (pinned claude-sonnet-5): post-cutoff caught 13/16 (plus 3 Partial, 0 Missed), older caught 7/8 (20/24 total)
+  Single-file contract (n=20): 20/20 Caught (100%)
+  Cross-file contract (n=4):   0/4 Caught (3 Partial, 1 Missed)
+  Benign controls (n=10):      0/10 false security alerts; 4/10 High missing-context warnings
+  OWASP (2021): A01 7/8 (1P), A03 10/11, A05 0/1 (1P), A07 3/3, A10 0/1 (1P)
+haiku-4-5 (pinned claude-haiku-4-5-20251001): post-cutoff caught 5/16 (plus 6 Partial, 5 Missed), older caught 3/8 (8/24 total)
+  Single-file contract (n=20): 8/20 Caught (6 Partial, 6 Missed)
+  Cross-file contract (n=4):   0/4 Caught (1 Partial, 3 Missed)
+  Benign controls (n=10):      1/10 false security alert (Medium); 1/10 Critical missing-context error
+  OWASP (2021): A01 3/8 (1P), A03 5/11 (3P), A05 0/1, A07 0/3 (2P), A10 0/1 (1P)
+
+CROSS-MODEL DIFFERENCES (14 of 24 valid cases where haiku-4-5 and sonnet-5 differ):
+  CVE-2018-15152: haiku-4-5=Missed vs sonnet-5=Caught
+  CVE-2021-40352: haiku-4-5=Missed vs sonnet-5=Caught
+  CVE-2022-2824:  haiku-4-5=Partial vs sonnet-5=Caught
+  CVE-2025-43860: haiku-4-5=Missed vs sonnet-5=Caught
+  CVE-2026-24487: haiku-4-5=Missed vs sonnet-5=Partial
+  CVE-2026-24849: haiku-4-5=Missed vs sonnet-5=Caught
+  CVE-2026-24898: haiku-4-5=Partial vs sonnet-5=Caught
+  CVE-2026-25146: haiku-4-5=Missed vs sonnet-5=Partial
+  CVE-2026-25476: haiku-4-5=Partial vs sonnet-5=Caught
+  CVE-2026-25746: haiku-4-5=Partial vs sonnet-5=Caught
+  CVE-2026-29187: haiku-4-5=Partial vs sonnet-5=Caught
+  CVE-2026-32238: haiku-4-5=Partial vs sonnet-5=Caught
+  CVE-2026-33913: haiku-4-5=Missed vs sonnet-5=Caught
+  CVE-2026-33918: haiku-4-5=Missed vs sonnet-5=Caught
