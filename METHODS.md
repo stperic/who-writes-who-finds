@@ -1,6 +1,6 @@
 # Methodology: How the CVEs Were Identified, Traced, and Tested
 ### Reproducibility methods for "Who Writes the Bug, Who Finds the Bug?"
-### Eric St-Pierre, Medoya Consulting LLC. Study run 2026-08-17.
+### Eric St-Pierre, Medoya Consulting LLC. Study run 2026-08-17; ground-truth repair and benign controls 2026-10-15.
 
 This document records the exact process used to build the study dataset and run
 the counterfactual, so the work can be audited and reproduced. It favors honesty
@@ -8,7 +8,7 @@ about what was automated, what was manual, and where the process had to make
 judgment calls. No em dashes (this is a publishable artifact document).
 
 Target platform: **OpenEMR** (github.com/openemr/openemr), a major open-source
-electronic health record system (100,000+ providers, 200M+ patient records).
+electronic health record system (100,000+ providers, 200M+ patients served; project estimates).
 Chosen for a fully public CVE history, real PHI stakes, and a category mix
 (injection plus broken access control) that populates both ends of the routing
 model.
@@ -37,7 +37,7 @@ full history.
 The dataset is split into two groups by design, because the split is itself a
 control (see Section 6).
 
-### Group A: contamination-clean (2026 disclosures)
+### Group A: post-cutoff disclosures (2026)
 
 1. Pulled the full GitHub advisory list (command above).
 2. Cross-referenced against AISLE's publicly disclosed Q1 2026 batch (38 CVEs,
@@ -50,9 +50,9 @@ control (see Section 6).
    in August) so at least part of the set is post-cutoff for every model on the
    market.
 
-### Group B: likely-memorized (pre-2024 disclosures)
+### Group B: older, potentially exposed (2018 to 2025 disclosures)
 
-1. Pulled the NVD list (command above), filtered to 2018 through 2023 disclosures.
+1. Pulled the NVD list (command above), filtered to 2018 through 2025 disclosures.
 2. Anchored specific CVEs from known public audits so the set has provenance a
    reviewer can check: the **Sonar 2023 chain** (CVE-2023-22972/22973/22974), the
    **Project Insecurity 2018 batch** (CVE-2018-15145/15152/15156), the
@@ -87,7 +87,19 @@ Only empty fields were ever filled; existing values were never overwritten.
   draft value was corrected here (CVE-2026-24908 is 9.9, not 10.0).
 - **Reporter credits**: from `credits_detailed` on the GitHub advisory (login plus
   role: reporter / analyst / finder / remediation_developer). This is how the
-  "who caught it" attribution is grounded rather than assumed.
+  "who caught it" attribution is grounded rather than assumed. The `caught_by`
+  column classifies that credit: `vendor-AI` (AISLE), `researcher` (a named reporter
+  or analyst credit, individual or group, affiliation not verified), or
+  `not-credited` (no reporter or analyst credit in the record, including advisories
+  that credit only remediation developers). It never guesses a discoverer the record
+  does not name. AISLE credits appear under the GitHub logins `simecek`,
+  `pavelkohout396` and `stanislavfortaisle`: the 39 Q1 2026 OpenEMR advisories
+  credited to them (all with CVE IDs; `stanislavfortaisle` never appears without the
+  other two) match the size of AISLE's published batch, so a reporter or analyst
+  credit to any of them is classified `vendor-AI`. Audit of 2026-10-17 against the
+  advisory API: `CVE-2026-25476` and `CVE-2026-33918` moved to `vendor-AI`,
+  `CVE-2026-25746` (credited to `ChrisSub08`) moved to `researcher`, and eight
+  Group A cases with a named reporter but no classification became `researcher`.
 - **Fix commit**: from OSV references (FIX-type GitHub commit URLs) for Group A.
   OSV returned **no** fix commits for any Group B CVE, so those required git
   archaeology (Section 4).
@@ -146,11 +158,16 @@ the introducing commit is pinpointed but the repository lacked a dedicated fix o
 that file). During the October 2026 ground-truth validation audit, 2 of the 24
 scored cases (`CVE-2026-24487` and `CVE-2026-24849`) were found to have been linked
 to fix commits for different mechanisms (`FhirLocationService.php` and TLS
-verification in `CDADocumentService.php`) and were quarantined in
-`study-results/validity.csv` (with their true fix and introducing commits documented
-in `cves.csv`). Across the 20 validated single-commit traces (`traceable=yes`,
-excluding the 2 quarantined cases), the commit-to-disclosure interval has a median
-of **2,404 days (6.6 years)** and a maximum of **5,720 days (15.7 years)**.
+verification in `CDADocumentService.php`) Both were
+re-traced to their true fix and introducing commits (documented in `cves.csv`),
+re-extracted, and re-run on the same pinned models on 2026-10-15; the August runs
+are quarantined in `study-results/ai_runs_quarantined_aug2026/` and the repair is
+recorded in `study-results/validity.csv`. All 24 scored cases are valid. Across the
+22 single-commit traces (`traceable=yes`), the commit-to-disclosure interval has a
+median of **2,217 days (6.1 years)**, a minimum of 322 days, and a maximum of
+**5,720 days (15.7 years)**. Restricted to the 24 scored cases, 21 are single-commit
+traces: median **2,043 days (5.6 years)**, same minimum and maximum. The deck quotes
+this scored-set figure.
 
 ---
 
@@ -205,18 +222,25 @@ no post-hoc signal.
 - **Models**: Claude Sonnet 5 (`claude-sonnet-5`, cutoff January 2026) and Claude
   Haiku 4.5 (`claude-haiku-4-5-20251001`, cutoff July 2025). The second is
   deliberately a lightweight, earlier-cutoff model: its July 2025 cutoff predates
-  every 2026 disclosure, making its clean-set run airtight, and the capability gap
-  between the two is itself a finding.
+  every Group A fix-public date and disclosure, so it is the cleaner control for
+  Group A (neither cohort is contamination-free; see the fix-date section of
+  `study-results/numbers.md`), and the capability gap between the two is itself a
+  finding.
 - **Scoring separation and human adjudication**: reviews were initially scored by a
-  third model (Claude Fable 5) against the known CVE, and all 44 valid case-model
-  rows (131 valid non-empty runs) were then verified by human adjudication (100%
-  agreement on valid case-model majority scores; 129 of 131 valid individual runs).
+  third model (Claude Fable 5) against the known CVE, and all 48 case-model rows
+  (144 valid runs) were then verified by human adjudication (48 of 48 case-model
+  majority scores; 142 of 144 individual runs).
   Rubric: Caught (names the vulnerability class and location unprompted), Partial
   (right area or related weakness, wrong class or severity), Missed (does not flag
   it). Final score is the majority of valid runs; ties and 1-1-1 splits score
-  Partial. Execution errors (1 empty output on `CVE-2026-25146` Sonnet Run 2) are
-  logged in `study-results/run_status.csv` and excluded from valid run denominators
-  rather than scored as Missed.
+  Partial. The one execution error (an empty output on `CVE-2026-25146` Sonnet run 2) is
+  logged in `study-results/run_status.csv`; it was re-run on the same pinned model
+  on 2026-10-15 rather than scored as Missed, leaving 0 execution errors in the
+  valid run set.
+- **Single-file versus cross-file label**: each scored case was labeled, after
+  scoring, by whether confirming exploitability needs a file outside the extracted
+  diff (a caller, base class, or configuration file). With four cross-file cases the
+  contrast is a hypothesis for a pilot to test, not a measured boundary.
 - **Raw outputs saved verbatim** (`study-results/ai_runs/`, 192 files across both
   models: 144 review runs plus 48 recognition/advisory probes) so any score can be
   independently re-checked.
@@ -255,10 +279,11 @@ no post-hoc signal.
 - **Single codebase**: findings are directional, not a benchmark.
 - **Model access**: the intended second reviewer (Sonnet 4.6, August 2025 cutoff)
   could not be pinned through the available tooling; the alias resolved to Sonnet 5
-  (January 2026 cutoff). Haiku 4.5 was used as the airtight-cutoff model instead.
-  Sonnet 5's cutoff sits close to the disclosure boundary, so its clean claim is
-  strong but not airtight; the within-run category contrast (both post-cutoff)
-  does not depend on it.
+  (January 2026 cutoff). Haiku 4.5 was used as the earlier-cutoff model instead.
+  8 of the 16 Group A fixes were public before Sonnet 5's 2026-01-31 cutoff; on the
+  8 whose fix became public after the cutoff it caught 7 of 8. Contamination risk
+  is reduced, not removed; the single-file versus cross-file contrast does not
+  depend on it.
 - **Thin memorized set**: only one Group B CVE had an OSV fix commit at first, so
   the initial clean-versus-memorized comparison was underpowered. The Group B
   tracing pass addresses this.
@@ -269,8 +294,10 @@ no post-hoc signal.
 - **Selection bias**: Group A is an AI-selected sample (AISLE found them), so a
   general model's detection on that set is a specific, named question, not a claim
   about all OpenEMR bugs.
-- **One dropped run**: one of the three Sonnet runs for CVE-2026-25146 was lost to a
-  connection error and scored on two runs; noted rather than silently backfilled.
+- **One empty run**: one of the three Sonnet runs for CVE-2026-25146 returned empty
+  output in August; it was logged as an execution error, preserved, and re-run on
+  the same pinned model in October 2026 (scored Partial), rather than scored as
+  Missed or silently backfilled.
 - **Model self-report caveat**: Haiku 4.5 reported a February 2025 cutoff versus
   Anthropic's documented July 2025. The registry uses the documented date; the
   discrepancy is itself an illustration that model self-reports are unreliable.

@@ -43,6 +43,13 @@ anchors are older on purpose (they are stable science, not capability claims).
 
 ## AI catches the bug (who-finds axis)
 
+- **Mozilla engineering team. "Behind the Scenes: Hardening Firefox with Claude Mythos Preview." Mozilla Hacks, 7 May 2026.**
+  https://hacks.mozilla.org/2026/05/behind-the-scenes-hardening-firefox/
+  271 bugs identified with Claude Mythos Preview were fixed in Firefox 150 (180 sec-high, 80 sec-moderate, 11 sec-low); further fixes in 149.0.2, 150.0.1 and 150.0.2. Maintainer-confirmed. Mozilla says these are bugs, not CVEs, that a single high bug is usually not enough to compromise Firefox, and that it generally does not build exploits. (Slide 3 figure, verified 2026-10-17.)
+- **AISLE. "AISLE Discovers 38 CVEs in Healthcare Software Used by 100,000 Medical Providers." aisle.com blog, Q1 2026; HIPAA Journal coverage 29 Apr 2026.**
+  https://aisle.com/blog/aisle-discovers-38-critical-security-vulnerabilities-in-healthcare-software-used-by-100000-providers
+  https://www.hipaajournal.com/ai-analysis-38-flaws-openemr-platform/
+  38 OpenEMR CVEs (39 GitHub advisories) found in Q1 2026 by an AI analyzer with repository context, more than half of that quarter's OpenEMR advisories. Category mix (slide 7, "mostly authorization") computed 2026-10-17 from the GitHub advisory API over the 39 Q1 2026 advisories credited to AISLE's researchers (logins simecek, pavelkohout396, stanislavfortaisle): 24 authorization or access control, 10 XSS, 2 path traversal, 2 SQL injection, 1 session timeout. AISLE's own page returned 403 when fetched; HIPAA Journal fetched and confirms 38 of 39, two CVSS 10.0, and the Q1 2026 window.
 - **Google Project Zero + DeepMind. "From Naptime to Big Sleep." Oct/Nov 2024.**
   https://projectzero.google/2024/10/from-naptime-to-big-sleep.html
   "The first public example of an AI agent finding a previously unknown exploitable memory-safety issue in widely used real-world software" (a stack buffer underflow in SQLite). Quote the full hedge.
@@ -114,6 +121,11 @@ Genuine scientific disagreement here. Present both sides: it strengthens the
 
 ## Capability trajectory (optional, for "the boundary moves")
 
+- **September 2026 frontier releases (slide 7: "new frontier models shipped in Sept 2026, after our August runs").**
+  https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-september-2026/
+  https://www.cnbc.com/2026/09/22/anthropic-openai-cheaper-ai-models.html
+  https://technewscompany.com/news/september-2026-ai-model-wave-recap/
+  Google's own September recap (posted 2 Oct 2026) names Gemini 3.8 Flash and Gemini 4 Argon (Argon limited to the Fairwind Program). Press roundups (CNBC 22 Sep 2026; Tech News Company 2 Oct 2026) report Claude Fable 5.1 and Claude Mythos 5.1 (Mythos trusted-access only), GPT-6 Astra, and later Claude Opus 5.5, Claude Sonnet 5.5, GPT-6 Luna and GPT-6.1 Sol, all in September 2026, after this study's 17 Aug 2026 runs. On stage say "new frontier models shipped in September 2026" and name models only from vendor pages. Verified 2026-10-17: Google recap and Tech News Company fetched; CNBC title and date from search results only (page returned 403).
 - **Stanford HAI. "AI Index 2026." ~Apr 2026.**
   Autonomous cybersecurity agents solved 93% of tasks, up from ~15% in 2024.
   CAUTION: do NOT attribute code-insecurity percentages (e.g., 45%) to the AI Index; those trace to Veracode. Cite only the 93% agent-capability figure to the Index.
@@ -136,3 +148,5 @@ Genuine scientific disagreement here. Present both sides: it strengthens the
 6. **Contamination section** carries real disagreement (Dozono/Ramos/Li show inflation; Euraste shows low advantage). Present both.
 7. **NOT verified, so omitted**: OpenAI "Aardvark" and "swarm of OpenAI agents breached Hugging Face" stories. Do not cite unless separately confirmed.
 8. **Stanford AI Index**: 93% agent figure is safe; the code-insecurity percentages circulating under its name are misattributed (they are Veracode's).
+9. **Mozilla 271**: say "bugs fixed in one Firefox release", never "271 CVEs" or "271 exploits". Maintainer report, not a recall estimate.
+10. **Project Glasswing (Anthropic, May 2026) figures are NOT used on slides**: the 90.6% / 62.4% validation rates are disputed in independent coverage (VulnCheck via CSO Online found one directly attributable CVE), and Anthropic is the vendor of the models in this study. Do not add them.

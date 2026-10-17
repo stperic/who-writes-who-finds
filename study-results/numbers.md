@@ -1,6 +1,6 @@
 # numbers.md: every number the deck may quote
 
-Generated 2026-10-15 by `recompute.py`. Do not edit by hand.
+Generated 2026-10-17 by `recompute.py`. Do not edit by hand.
 Initial runs: 2026-08-17. Ground-truth repair (CVE-2026-24487, CVE-2026-24849, CVE-2026-25146 run 2) and 10-diff benign control pass: 2026-10-15 on identical pinned models (`claude-sonnet-5`, `claude-haiku-4-5-20251001`).
 
 ## Case counts
@@ -76,9 +76,20 @@ Cross-file cases: `CVE-2025-31121` (`Controller.class.php` URL-to-positional-arg
 - sonnet-5: recognized {'yes': 23, 'no': 1}; claimed advisory awareness {'yes': 7, 'unclear': 3, 'no': 14}
 - haiku-4-5: recognized {'yes': 22, 'unclear': 2}; claimed advisory awareness {'no': 18, 'unclear': 4, 'yes': 2}
 
-## Commit-to-disclosure interval (inventory, traceable=yes, excluded cases removed)
+## Who reported (valid cases, from the advisory credit recorded in cves.csv)
 
-- n = 22; median 2217 days (6.1 yrs); max 5720 days (15.7 yrs); min 322 days
+caught_by: `vendor-AI` = AISLE; `researcher` = a named reporter or analyst credit (individual or group, affiliation not verified); `not-credited` = no reporter or analyst credit in the record, including advisories that credit only remediation developers. The column never guesses a discoverer the record does not name.
+
+| Reported by | Group A (recent) | Group B (older) |
+|---|---:|---:|
+| Named reporter or research group | 8 | 3 |
+| AI analyzer vendor | 8 | 0 |
+| No discoverer credited | 0 | 5 |
+
+## Commit-to-disclosure interval (traceable=yes only; partial traces carry a lower bound and are left out)
+
+- **Valid scored cases (the deck's denominator)**: n = 21; median 2043 days (5.6 yrs); max 5720 days (15.7 yrs); min 322 days
+- Full inventory, excluded cases removed: n = 22; median 2217 days (6.1 yrs); max 5720 days (15.7 yrs); min 322 days
 
 ## Aggregation notes
 

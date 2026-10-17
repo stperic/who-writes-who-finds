@@ -26,7 +26,7 @@ tools change.
 | `METHODS.md` | Full methodology: CVE identification and selection, enrichment sources, SZZ-style tracing, blinding, contamination controls, counterfactual execution, tooling, reproduction steps, limitations. |
 | `prompt.md` | The frozen review prompt (verbatim) and the blinding applied to every diff. |
 | `rubric.md` | The Caught / Partial / Missed scoring rubric, the majority-of-3 rule, and how post-cutoff vs older cohorts are reported. |
-| `scores.csv` | Per-CVE, per-model scores: 3 runs, final score, contamination flags, and complete scoring rationales (48 rows = 24 scored CVEs x 2 models; 22 valid after ground-truth audit). |
+| `scores.csv` | Per-CVE, per-model scores: 3 runs, final score, contamination flags, and complete scoring rationales (48 rows = 24 scored CVEs x 2 models; all 24 valid after the ground-truth audit and re-runs). |
 | `validity.csv` | Cases quarantined during ground-truth validation (`CVE-2026-24487`, `CVE-2026-24849`) with exact reasons and replacement commit hashes. |
 | `run_status.csv` | Execution-error log (`CVE-2026-25146` `sonnet-5` run 2 empty output), kept distinct from model misses. |
 | `fix_dates.csv` | Public commit dates of Group A fixes in OpenEMR, used to check fix availability against model training cutoffs. |
@@ -86,14 +86,14 @@ Signal findings:
      verification in `CDADocumentService.php`); both were caught in audit and
      quarantined in `validity.csv`.
   2. **Separate execution errors from misses:** 1 of 144 runs (`CVE-2026-25146`
-     Sonnet Run 2) returned empty output and was reclassified as an execution
-     error (`run_status.csv`).
+     Sonnet Run 2) returned empty output, was reclassified as an execution
+     error (`run_status.csv`), and was re-run on the same pinned model on
+     2026-10-15 (scored Partial).
   3. **Self-reported recognition is noisy:** both models recognized OpenEMR on
-     at least 20 of 22 valid cases and occasionally claimed awareness of
+     at least 22 of 24 valid cases and occasionally claimed awareness of
      advisories disclosed after their own training cutoff. Scoring credits only
-     technical detection, and human adjudication verified all 44 valid
-     case-model scores (100% agreement on valid non-empty majority scores; 129 of
-     131 individual valid runs).
+     technical detection, and human adjudication verified all 48
+     case-model scores (48 of 48 majority scores; 142 of 144 individual runs).
 
 ## Reproducing it
 
@@ -118,8 +118,8 @@ snapshot.
 
 - This is **one codebase and two models**. Treat it as a method demonstration
   with real numbers, not a universal ranking.
-- The clean-vs-memorized gap is *consistent with* contamination but not cleanly
-  separable from difficulty (the clean and memorized sets differ in vulnerability
+- The post-cutoff versus older gap is *consistent with* contamination but not cleanly
+  separable from difficulty (the two sets differ in vulnerability
   mix and diff size). See `rubric.md`.
 - Of 32 CVE candidates, 28 traced (22 with high confidence); some introducing
   commits predate the GitHub PR workflow or arrived as bulk imports, so tracing
@@ -127,7 +127,8 @@ snapshot.
   `METHODS.md`.
 - A clean-cutoff *frontier* reviewer (Sonnet 4.6 / Opus 4.6, Aug 2025 cutoff) was
   not runnable via subscription and is left for a follow-up run with API access;
-  Haiku 4.5 is the airtight-clean anchor in this round.
+  Haiku 4.5 is the earlier-cutoff anchor in this round (its cutoff predates
+  all 16 Group A fixes; neither cohort is contamination-free).
 
 ## Responsible disclosure
 
