@@ -50,7 +50,7 @@ Each quadrant of the four-quadrant framework is labeled by what this repository 
 | Quadrant | Status here | Basis |
 |---|---|---|
 | Humans introduce | Traced, not rated | Introducing commits for the 24 scored CVEs are recorded in [`study-results/cves.csv`](study-results/cves.csv) (intro dates 2005-2024). No rate of human-introduced defects is computed. |
-| AI introduces | Cited, not measured | External research only. See [`references.md`](references.md). |
+| AI introduces | Checked in OpenEMR, none found | None of the 24 scored CVEs can be AI-introduced (all introduced by May 2024). A separate trace of OpenEMR security fixes from September 2025 to October 21, 2026 found no advisory whose vulnerable code was introduced by an AI-tagged commit (see AI-Tagged Commits in OpenEMR). External research: [`references.md`](references.md). |
 | Humans catch | Not measured; human misses documented | No human catch rate: every case is a vulnerability that was merged. 11 of the 24 introducing changes went through a PR reviewed by a second maintainer (see Human Review of the Introducing Changes). The [human review packet](human-review-packet/) is a separate exercise and is not part of the reported results. |
 | AI catches | **Measured** | 24 OpenEMR CVEs, blinded introducing diffs, two pinned models, 3 runs per diff (see Headline Findings). |
 
@@ -77,6 +77,27 @@ For each scored CVE we looked up the GitHub pull request behind the introducing 
 This is not a matched human-versus-AI comparison. The cases were selected because they became CVEs, so every one is a human miss by construction, and the bugs reviewers did stop are not visible. Reviewers saw the whole PR at merge time. The models saw a blinded single-file diff years later, with possible prior exposure to the public fix.
 
 Open item: for CVE-2026-25476, PR #4435's file list does not include the vulnerable file (`library/auth.inc.php`), so that commit-to-PR link is under review.
+
+## AI-Tagged Commits in OpenEMR
+
+OpenEMR's CONTRIBUTING.md asks contributors to mark AI involvement with `Assisted-By:` or `Generated-By:` commit trailers. Commits made through Claude Code and the Copilot coding agent also carry `Co-authored-by:` trailers. This makes AI-introduced code traceable.
+
+- **AI-tagged commits:** 490 on `master` (all branches: 1,263, counting cherry-picks). Almost all date from November 2025 onward.
+- **Method:** for 132 security-fix commits from September 2025 to October 21, 2026 (79 on `master`, 53 on release branches), we blamed every line each fix changed or sat next to, in the commit before the fix (SZZ, the same method as the main study). We then checked whether the blamed commit carried an AI trailer, and inspected each hit by hand.
+- **Result: no advisory traced to vulnerable code introduced by an AI-tagged commit.** 15 fixes on `master` touched lines last written by AI-tagged commits. The 4 matching release-branch fixes are backports of the same changes.
+  - **11 mechanical:** large AI-assisted refactors (for example `$GLOBALS` to `OEGlobalsBag`, `$_SESSION` to a session object) rewrote existing lines without changing their logic.
+  - **1 unrelated change:** a Copilot commit changed error handling in a function whose vulnerability predates it.
+  - **1 fix on a fix:** an AI-co-authored security fix (GHSA-xg3m-9pfq-c8r6) was adjusted the same day. The vulnerable OneTimeAuth code was written by humans in 2023.
+  - **2 carried forward:** an AI-co-authored change rewrote the vulnerable code and kept the flaw.
+
+| Advisory | AI-tagged change | What happened |
+|---|---|---|
+| [GHSA-9rj4-fxmj-c4r7](https://github.com/openemr/openemr/security/advisories/GHSA-9rj4-fxmj-c4r7) (high, fixed in 8.3.0): broken access control in `controller.php` | PR #11163, March 2026, `Co-authored-by: Claude` | Rewrote controller routing and kept the missing permission check for six sub-controllers. The advisory's proof of concept confirms the old route was exploitable in 8.0.x, before this change. |
+| [GHSA-m6q6-5j87-3cmp](https://github.com/openemr/openemr/security/advisories/GHSA-m6q6-5j87-3cmp) (high, fixed in 8.3.0): path traversal in `sl_eob_process.php` | February 2026, `Co-authored-by: Claude` | Rewrote the vulnerable file-path line without sanitizing `eraname`, which was already unsanitized. |
+
+In both cases the AI-assisted change was a chance to catch an existing flaw, and the flaw survived. Neither advisory has a CVE ID.
+
+Limits: fixes were found through advisory links and OpenEMR's "Merge commit from fork" security merges, so a fix merged any other way may be missed. Commits without trailers can still be AI-written. Blame attributes a line to its last change, which is why mechanical rewrites show up and were inspected by hand. Data and scripts: [`study-results/ai_trailer_trace/`](study-results/ai_trailer_trace/) (`findings.csv` holds the classification). The scripts expect a local OpenEMR clone.
 
 ## Inventory and Scope
 

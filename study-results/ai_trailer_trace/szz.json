@@ -1,0 +1,1363 @@
+{
+ "fc5de974c325af0fd40d4c0f3c2a79410f6e08a3": {
+  "date": "2026-09-12",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "src/Common/Auth/OneTimeAuth.php",
+   "src/Common/Auth/OpenIDConnect/Entities/ScopeEntity.php",
+   "src/Common/Auth/OpenIDConnect/Repositories/ScopeRepository.php",
+   "src/RestControllers/AuthorizationController.php"
+  ],
+  "blamed_total": 62,
+  "ai_hits": {
+   "817c5c8b5ed2919e7c9c4d9b76b8bbea8d78988a": {
+    "lines": 3,
+    "kind": [
+     "deleted"
+    ],
+    "date": "2026-09-12",
+    "author": "Stephen Nielson",
+    "subject": "Merge commit from fork",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "* fix(oauth): prevent dynamic client using colon-form scope from auto enabling\n\n* fix(oauth): check registered permissions in ScopeEntity::containsScope\n\nSecond part of GHSA-6xh3-fmm5-jjp4; also resolves GHSA-6cmr-r2rh-755m.\n\ncontainsScope() returned true whenever the requested scope carried legacy\nv1Read/v1Write without checking whether the registered scope granted it,\nso a read-only registration"
+ },
+ "68f9bfbf259a3b40ecb62c092848e3dc40bc4dcd": {
+  "date": "2026-09-12",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "portal/patient/fwk/libs/verysimple/Phreeze/Criteria.php",
+   "portal/patient/libs/Controller/AppBasePortalController.php",
+   "portal/patient/libs/Controller/OnsiteActivityViewController.php",
+   "portal/patient/libs/Controller/OnsiteDocumentController.php"
+  ],
+  "blamed_total": 30,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "The patient-portal query APIs copied request parameters onto the Phreeze\ncriteria object by name and rendered the bitwise comparators (_BitwiseAnd,\n_BitwiseOr) into an unquoted SQL context, letting request input alter the\ngenerated WHERE clause.\n\n- Criteria builder: emit bitwise operands as integer literals (bitwise\n  operations are integer-only) instead of the quote-context string escaper,\n  whic"
+ },
+ "540334297571a4972b21c00f3b470f1618233d31": {
+  "date": "2026-09-12",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "controllers/C_Document.class.php"
+  ],
+  "blamed_total": 49,
+  "ai_hits": {
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 2,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   },
+   "cce6e7139a25b6508f992ba727dc2fba5872019d": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2025-12-22",
+    "author": "Copilot",
+    "subject": "refactor: remove deprecated mode, prepend, append parameters from xl() (#9960)",
+    "trailers": [
+     "Co-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>"
+    ]
+   },
+   "398d1ccc03c250ed1d4483f462d840c2c2324e6b": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-02-09",
+    "author": "Eric Stern",
+    "subject": "fix(sql): wrap scalar values in arrays for SQL function params (#10664)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.5 <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "* fix(documents): enforce access control on document write actions\n\nThe document read path (retrieve_action/view_action) verifies both the\ncategory ACL and that the document belongs to the requested patient, but the\nwrite actions performed their mutations without any equivalent check. An\nauthenticated user could therefore modify a document outside the patient\ncontext they were working in, includin"
+ },
+ "817c5c8b5ed2919e7c9c4d9b76b8bbea8d78988a": {
+  "date": "2026-09-12",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "library/globals.inc.php",
+   "portal/index.php",
+   "src/Common/Auth/OneTimeAuth.php"
+  ],
+  "blamed_total": 18,
+  "ai_hits": {
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "* fix: enforce one-time token policy and harden PIN check in portal auth\n\nEnforce the enforce_onetime_use and max_access_count policy flags that\nOneTimeAuth already stores on each portal one-time token but never\nchecked on consumption, and add a hard cap on attempts for PIN-protected\ntokens. decodePortalOneTime() now refuses a token whose configured usage\nlimit has been reached, before incrementin"
+ },
+ "156bb97916d75fcb9a5ceb1f4033df15621017f4": {
+  "date": "2026-09-12",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "library/ESign/Router.php"
+  ],
+  "blamed_total": 9,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "The ESign router built a require_once path and controller class name\ndirectly from the raw `module` request parameter (only ucfirst() was\napplied), so a crafted value could traverse outside the ESign directory\nand include an arbitrary Controller.php. Resolve `module` through a\nclosed allowlist of the two known modules (form, encounter) via a new\npure, unit-testable Router::resolveModule() helper, "
+ },
+ "069c4a7f52fec035463a1a1d48beb7c415d1d8ed": {
+  "date": "2026-08-16",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/modules/custom_modules/oe-module-faxsms/src/Controller/EtherFaxActions.php",
+   "interface/modules/custom_modules/oe-module-faxsms/src/Controller/RCFaxClient.php",
+   "interface/modules/custom_modules/oe-module-faxsms/src/Controller/SignalWireClient.php"
+  ],
+  "blamed_total": 339,
+  "ai_hits": {
+   "be636987b7634570df51cb240c393ca295a4c124": {
+    "lines": 2,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-09",
+    "author": "Michael A. Smith",
+    "subject": "refactor: replace $GLOBALS access with OEGlobalsBag across the codebase (#11017)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>"
+    ]
+   },
+   "d4091cc07ceccc52010e2872d90991ca01908921": {
+    "lines": 5,
+    "kind": [
+     "deleted"
+    ],
+    "date": "2026-08-15",
+    "author": "Copilot",
+    "subject": "fix(faxsms): use JSON_THROW_ON_ERROR in RCFaxClient::disposeDocument() (#11399)",
+    "trailers": [
+     "Co-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "Consolidate disposeDocument() for every fax vendor client (EtherFax,\nRingCentral, SignalWire) into a shared FaxDocumentDisposalTrait that\nauthorises the caller against patients/docs, confines the request-supplied\nfile_path to the module's temporary base directory, restricts writes to\nfax-safe extensions, and blocks executable content before writing.\n\nRingCentral and SignalWire previously read file"
+ },
+ "ff59ad1ff63e79dc11fdd80a5980504865ed84b9": {
+  "date": "2026-08-16",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "src/Services/InsuranceService.php",
+   "src/Services/Search/SearchFieldStatementResolver.php"
+  ],
+  "blamed_total": 17,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "92d7240567e48a1847aa939cdd90da4d488c4d17": {
+  "date": "2026-08-16",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/billing/sl_eob_process.php"
+  ],
+  "blamed_total": 20,
+  "ai_hits": {
+   "d3d4a807b795e5ca841017a3f3de8e23c35689de": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-02-06",
+    "author": "Eric Stern",
+    "subject": "refactor(db): migrate deprecated sqlQ() calls to QueryUtils (#10545)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.5 <noreply@anthropic.com>"
+    ]
+   },
+   "ac5bb730d27354bd85cc2fc586977d2de5c52bef": {
+    "lines": 4,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-02-12",
+    "author": "Michael A. Smith",
+    "subject": "fix(billing): create ERA directory and add overwrite confirmation (#10728)",
+    "trailers": [
+     "Co-authored-by: Claude <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "Assisted-by: Claude Code\n\nCo-authored-by: stephen waite <stephen.waite@cmsvt.com>"
+ },
+ "31e13ee2d9d32cc186faff3603f7c17996e78065": {
+  "date": "2026-08-16",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/forms/fee_sheet/new.php",
+   "src/Services/DrugSalesService.php"
+  ],
+  "blamed_total": 18,
+  "ai_hits": {
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   },
+   "be636987b7634570df51cb240c393ca295a4c124": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-09",
+    "author": "Michael A. Smith",
+    "subject": "refactor: replace $GLOBALS access with OEGlobalsBag across the codebase (#11017)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "The drug-inventory lookup in DrugSalesService::sellDrug() interpolated the\nwarehouse value directly into the ORDER BY clause. That value originates from\nattacker-controllable Fee Sheet POST data (prod[N][warehouse]), so any\nauthenticated user with Fee Sheet access could inject SQL and read the whole\ndatabase via a blind ORDER BY timing oracle (CWE-89). The value is now bound as\na query parameter.\n"
+ },
+ "e0c5962594149ab8499825a31e1f9670785e1d64": {
+  "date": "2026-08-16",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "library/classes/Controller.class.php"
+  ],
+  "blamed_total": 11,
+  "ai_hits": {
+   "0381a2dbc1a573547cce96f7a73264ae27f5dd90": {
+    "lines": 10,
+    "kind": [
+     "adjacent",
+     "deleted"
+    ],
+    "date": "2026-03-20",
+    "author": "Michael A. Smith",
+    "subject": "fix(controller): add order-independent routing via dispatch() method (#11163)",
+    "trailers": [
+     "Co-authored-by: Claude <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "Co-authored-by: stephen waite <stephen.waite@cmsvt.com>"
+ },
+ "95b125088f78cf34ce5c4b502c74882e465a545c": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "src/Services/QuestionnaireResponseService.php"
+  ],
+  "blamed_total": 9,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "92a2ff9eaaa80674b3a934a6556e35e7aded5a41": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "src/Services/MessageService.php"
+  ],
+  "blamed_total": 14,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Add pid to the WHERE clause in MessageService::update(), matching the\nexisting pattern in delete(). Previously, the UPDATE and preceding\nSELECT used only the message id, allowing an authenticated user to\nread and modify any patient's notes by supplying another message id."
+ },
+ "605eea8b9dbb2bf904cddf5feaab7dc66eb8b0c9": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "src/Services/EncounterService.php"
+  ],
+  "blamed_total": 12,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Remove any id field from the request data before passing it to\nVitalsService::save() in the insert path. A user-supplied id caused the\nservice to perform an UPDATE instead of INSERT, allowing an attacker to\noverwrite any patient's vitals by providing another patient's vital id."
+ },
+ "08f67a4718c6b6cfa89f0411899bd94d481e671a": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "library/classes/Prescription.class.php"
+  ],
+  "blamed_total": 17,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Validate the sort parameter in prescriptions_factory() using\nescape_sql_column_name() and escape_sort_order() instead of the\nineffective add_escape_custom() (which is just mysqli_real_escape_string\nand provides no protection for ORDER BY injection)."
+ },
+ "324b104ea4599426a1e5fc59eb0a788c746860f0": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "controllers/C_Document.class.php"
+  ],
+  "blamed_total": 10,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Add patient ownership checks to view_action() and retrieve_action() in\nthe document controller. Previously, any authenticated user could view\nor retrieve documents belonging to other patients by enumerating\ndocument IDs. The document's foreign_id (patient) is now verified\nagainst the requested patient_id before exposing any data."
+ },
+ "49fcfee68e96e9a76a25afe0cea700e3343e8a30": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/forms/eye_mag/view.php"
+  ],
+  "blamed_total": 11,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "af0e722df2ce85d9a1a3cdace4c464db59544a9f": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "controllers/C_Document.class.php"
+  ],
+  "blamed_total": 8,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "dd7c4beec5ccb571e19c61fd89ef7e86b2e3100d": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "controllers/C_Document.class.php"
+  ],
+  "blamed_total": 13,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Sanitize the user-supplied destination parameter with basename() before\nusing it to build file paths. Previously, the destination was\nconcatenated directly to temporary_files_dir with only whitespace\nreplacement, allowing ../  sequences to write the zip file outside the\nintended directory."
+ },
+ "01d4c34bed4facc93cf8749dcf140078fc1af185": {
+  "date": "2026-02-05",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/forms/LBF/printable.php"
+  ],
+  "blamed_total": 20,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "bab313cc42e3bd6794a28742c9fc137cb62c77aa": {
+  "date": "2026-02-01",
+  "src": "fork-merge",
+  "ghsa": [
+   "GHSA-6h2m-4ppf-ph4j"
+  ],
+  "files": [
+   "interface/orders/types_ajax.php",
+   "interface/orders/types_edit.php"
+  ],
+  "blamed_total": 34,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* fix(security): add ACL and CSRF checks to procedure type endpoints\n\ntypes_edit.php and types_ajax.php had no access control checks,\nallowing any authenticated user to view, add, edit, or delete\nprocedure type configuration by accessing these endpoints directly,\nbypassing the ACL checks in the parent types.php page.\n\nAdd admin/super ACL check to types_edit.php with CSRF token\nprotection on form s"
+ },
+ "e3f6fe8ab173d87a63791f938c94bbef9b93466b": {
+  "date": "2026-01-31",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "library/auth.inc.php"
+  ],
+  "blamed_total": 13,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "The skip_timeout_reset request parameter was guarding both the session\nexpiration check and the expiration timer reset. An expired session\ncould bypass forced logout by appending ?skip_timeout_reset=1 to any\nrequest.\n\nRestructure the conditional so the expiration check always runs. Only\nthe timer reset is skipped for background polling requests (Messages,\nReminders, Flow Board)."
+ },
+ "2644efe4c3832a95d49a982178dc4119e6977592": {
+  "date": "2026-01-31",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "apis/routes/_rest_routes_standard.inc.php"
+  ],
+  "blamed_total": 24,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Document and insurance REST API routes were missing\nRestConfig::request_authorization_check() calls, allowing any valid API\nbearer token to access or modify data regardless of ACL permissions."
+ },
+ "69dec5dd9739ce45ee5f4569dcad2bb4ee5b4ed3": {
+  "date": "2026-01-31",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/main/messages/messages.php"
+  ],
+  "blamed_total": 4,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Force $show_all to \"no\" for non-admin users so the GET parameter\ncannot bypass the access control on viewing all users' messages."
+ },
+ "d6ab3cd0b621b19b942cf49d2db2026e288aa214": {
+  "date": "2026-01-30",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "portal/portal_payment.php"
+  ],
+  "blamed_total": 4,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* fix(security): prevent portal patient pid override in payment endpoint\n\nIn portal context, ignore user-supplied pid from request parameters\nand form inputs. The session-derived pid is authoritative for portal\npatients, preventing horizontal privilege escalation (IDOR).\n\n* fixup! fix(security): prevent portal patient pid override in payment endpoint"
+ },
+ "806cd796be98271dd090fa00f8e6a6b99cb4288d": {
+  "date": "2026-01-29",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/modules/zend_modules/module/Carecoordination/Module.php"
+  ],
+  "blamed_total": 16,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Add centralized ACL check in the module's dispatch event listener to\nprevent unauthorized access. Previously, any authenticated user could\naccess Care Coordination endpoints by crafting direct HTTP requests,\nbypassing the menu-level ACL that only hides the UI.\n\nThe check uses zhAclCheck with the send_to_hie section (the module's\nregistered ACL) with a superuser fallback, and skips patient portal\ns"
+ },
+ "30e27b1f274339cb4725456a506efcb53b2e8ef8": {
+  "date": "2026-01-29",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/reports/message_list.php"
+  ],
+  "blamed_total": 24,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* fix(security): add ACL check to message list report\n\nThe message list report (message_list.php) had no access control check,\nallowing any authenticated user to view and export all patient messages\nas CSV, exposing patient PII. Add patients/med ACL check matching the\nmenu configuration in standard.json.\n\n* fixup! fix(security): add ACL check to message list report\n\nfixup! fix(security): add ACL c"
+ },
+ "5ce10a3961b73862aaf31eb30044ffe1018465cc": {
+  "date": "2026-01-29",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "src/Services/FHIR/FhirLocationService.php"
+  ],
+  "blamed_total": 47,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* WIP fix, working on unit tests to verify\n\nWIP for unit tests.  Afterwards will write integration tests to verify\neverything is working properly.\n\n* Have a working unit test now.\n\nNext steps is to work on the integration tests.\n\n* OR clause was still leaking records.\n\nFixed the fhir location search processing as it was using an OR clause\non the last modified date which essentially just returned e"
+ },
+ "fe6341496dc82d5b4f5a3f35891bb2e2481f3b25": {
+  "date": "2026-01-29",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/patient_file/front_payment.php",
+   "library/globals.inc.php",
+   "portal/portal_payment.authorizenet.js",
+   "portal/portal_payment.php"
+  ],
+  "blamed_total": 25,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* Only render the api key on the authorize.net path where its safe\n\n* Add comment on the variable for future scope\n\n* Complete semantic merge\n\n* baseline (why?)\n\n* Add disclaimer for anet non-secret"
+ },
+ "8e4de59ab58222f13abc4e4040128737d857db9c": {
+  "date": "2026-01-28",
+  "src": "fork-merge",
+  "ghsa": [
+   "GHSA-qwff-3mw7-7rc7"
+  ],
+  "files": [
+   "library/MedEx/MedEx.php"
+  ],
+  "blamed_total": 44,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "The MedEx callback endpoint returned sensitive API tokens in its response,\nallowing any caller to obtain credentials for the MedEx service.\n\nChanges:\n- Return 404 if MedEx is not enabled (hide endpoint existence)\n- Validate callback_key is present before processing\n- MedEx validates the callback_key server-side (existing behavior)\n- Return only success/failure status, never sensitive tokens\n- Add "
+ },
+ "8a6b2cac8f7e4499697bc6ceca5318548cdd2ff3": {
+  "date": "2026-01-28",
+  "src": "fork-merge",
+  "ghsa": [
+   "GHSA-rccq-vjfg-ggjh"
+  ],
+  "files": [
+   "interface/billing/edih_main.php"
+  ],
+  "blamed_total": 16,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Add access control to edih_main.php to match edih_view.php. Previously,\nany authenticated user could directly access the AJAX endpoint bypassing\nthe ACL check in the parent page, allowing unauthorized access to EDI logs.\n\nFixes GHSA-rccq-vjfg-ggjh"
+ },
+ "943e23cad6e979f87cdf168807fce2a7b32dd194": {
+  "date": "2026-01-28",
+  "src": "fork-merge",
+  "ghsa": [
+   "GHSA-rcc2-45v3-qmqm"
+  ],
+  "files": [
+   "src/Services/PatientService.php",
+   "src/Services/Search/SearchConfigClauseBuilder.php"
+  ],
+  "blamed_total": 17,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Add validation to SearchConfigClauseBuilder::buildSortOrderClauseFromConfig()\nto ensure sort field names only contain valid SQL identifier characters.\nThis prevents SQL injection via the _sort parameter in REST API endpoints.\n\nFixes GHSA-rcc2-45v3-qmqm"
+ },
+ "3cce5ca4118e4bf94fa2ed524ce8d5cf034be821": {
+  "date": "2026-01-27",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/forms/eye_mag/view.php"
+  ],
+  "blamed_total": 5,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "0747bba7fc6b65492d0b564540222b06abe16bc9": {
+  "date": "2026-01-27",
+  "src": "fork-merge",
+  "ghsa": [
+   "GHSA-xc8x-mfh8-9xvh"
+  ],
+  "files": [
+   "portal/sign/lib/save-signature.php"
+  ],
+  "blamed_total": 12,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Portal users could forge provider signatures by:\n1. Setting type=admin-signature to bypass patient PID checks\n2. Specifying arbitrary user IDs in POST data\n\nFix:\n- Block portal users from using admin-signature type\n- Override user parameter with session PID for portal requests\n\nFixes GHSA-xc8x-mfh8-9xvh"
+ },
+ "72058f0e4dca5a1d355a10ee70da66d076a22cce": {
+  "date": "2026-01-15",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/modules/zend_modules/module/Immunization/src/Immunization/Controller/ImmunizationController.php",
+   "interface/modules/zend_modules/module/Immunization/src/Immunization/Model/ImmunizationTable.php"
+  ],
+  "blamed_total": 65,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* core fix\n\n* test\n\n* Fix additional SQL injection in query_codes parameter\n\n* test removed before merging"
+ },
+ "b1e3fe8a9ed8bcaf17e0b73d7fad5434f9fe36da": {
+  "date": "2026-01-02",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "controllers/C_Document.class.php",
+   "controllers/C_Prescription.class.php",
+   "interface/billing/sl_eob_process.php",
+   "interface/clickmap/template/general_new.html",
+   "interface/forms/ros/templates/ros/general_new.html",
+   "interface/modules/zend_modules/module/Application/src/Application/Controller/IndexController.php",
+   "interface/modules/zend_modules/module/Application/src/Application/Listener/Listener.php",
+   "interface/modules/zend_modules/module/Carecoordination/src/Carecoordination/Model/EncounterccdadispatchTable.php",
+   "interface/modules/zend_modules/module/Multipledb/src/Multipledb/Controller/MultipledbController.php",
+   "interface/modules/zend_modules/module/Patientvalidation/src/Patientvalidation/Controller/PatientvalidationController.php",
+   "library/FeeSheetHtml.class.php",
+   "library/htmlspecialchars.inc.php",
+   "library/smarty/plugins/function.xl.php",
+   "src/Billing/SLEOB.php",
+   "src/Common/Acl/AclExtended.php",
+   "templates/documents/general_upload.html"
+  ],
+  "blamed_total": 97,
+  "ai_hits": {
+   "cce6e7139a25b6508f992ba727dc2fba5872019d": {
+    "lines": 1,
+    "kind": [
+     "deleted"
+    ],
+    "date": "2025-12-22",
+    "author": "Copilot",
+    "subject": "refactor: remove deprecated mode, prepend, append parameters from xl() (#9960)",
+    "trailers": [
+     "Co-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>"
+    ]
+   }
+  },
+  "subject": "Merge commit from fork",
+  "body": "* refactor: use escaped translation functions consistently\n\nReplace direct xl() calls with properly escaped wrappers to ensure\nconsistent string sanitization in translation output:\n\n- Add xlx() function for XML context (xl + xmlEscape)\n- Add type declarations to xl wrapper functions (xlt, xla, xlj, xlx)\n- Update Smarty {xl} plugin to use xlt() for HTML context\n- Use xmlEscape/xlx() for XML output "
+ },
+ "5f20b756441fc9868f43410a9ef97536c38b2ba6": {
+  "date": "2025-12-30",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/forms/gad7/view.php"
+  ],
+  "blamed_total": 9,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Co-authored-by: hungdq <hungdqde160536@fpt.edu.vn>"
+ },
+ "7347f37c1125091a6d1f458da8d3983ac82052d5": {
+  "date": "2025-12-16",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "portal/messaging/messages.php"
+  ],
+  "blamed_total": 2,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": ""
+ },
+ "63cee66e56a5b0db1a2ded82b6d65b95055b2844": {
+  "date": "2025-12-15",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/eRxXMLBuilder.php",
+   "interface/eRx_xml.php",
+   "interface/globals.php",
+   "interface/modules/custom_modules/oe-module-faxsms/src/EtherFax/EtherFaxClient.php",
+   "library/globals.inc.php",
+   "library/maviq_phone_api.php",
+   "modules/sms_email_reminder/sms_clickatell.php",
+   "modules/sms_email_reminder/sms_tmb4.php",
+   "portal/patient/fwk/libs/verysimple/HTTP/HttpRequest.php",
+   "src/Common/Http/oeHttpRequest.php",
+   "src/Common/Http/oeOAuth.php",
+   "src/Services/CDADocumentService.php",
+   "src/Services/Cda/CdaValidateDocuments.php",
+   "src/Services/ProductRegistrationService.php",
+   "src/Telemetry/TelemetryService.php"
+  ],
+  "blamed_total": 144,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* fix(http requests): verify ssl\n\n- verify ssl by default\n- add capability to disable ssl verification via environment variable\n\n* chore(phpstan): avoid oeglobalsbag\n\nto make it easier to backport this to 7.0.3"
+ },
+ "f074f1affa25668e5394b6e4658d86e700ee936e": {
+  "date": "2025-12-09",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "portal/patient/libs/Controller/PatientController.php"
+  ],
+  "blamed_total": 21,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "Add authorization check to ensure users can only update their own profiles.\nUpdate test coverage for profile modification scenarios."
+ },
+ "8d5e8d3412ddc1927b8cabfca60cb8d0352dccd9": {
+  "date": "2025-12-08",
+  "src": "fork-merge",
+  "ghsa": [],
+  "files": [
+   "interface/billing/ub04_form.php",
+   "interface/billing/ub04_helpers.php"
+  ],
+  "blamed_total": 50,
+  "ai_hits": {},
+  "subject": "Merge commit from fork",
+  "body": "* No inline JS: Moves potentially attacker-controlled content out of an inline onclick string (which is parsed by the HTML attribute parser, not by your JSON encoder).\nCorrect escaping for attribute context: Uses attr(...) (OpenEMR\u2019s helper) so both quotes are escaped for HTML attributes.\nThe extra JSON_HEX_* flags are belt-and-suspenders to avoid </tag>/quotes/amps turning into HTML/JS syntax bef"
+ },
+ "a406b3df28b579740b472f54cb4d2daabeeceb3e": {
+  "date": "2026-07-14",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-vv5j-6gjw-ffx9"
+  ],
+  "files": [],
+  "blamed_total": 0,
+  "ai_hits": {},
+  "subject": "feat(release): add release-amendment workflow (post-GHSA-publish CHANGELOG rerun) (#12996)",
+  "body": "## Summary\n\nFollow-up to #12969 and #12993 (option 2b from the amendment-workflow\ndesign discussion). Adds a manual-dispatch workflow that a release\nmanager runs after publishing security advisories in the days/weeks\nfollowing a release cut, to include those GHSAs in the shipped\n\\`CHANGELOG.md\\` and the GitHub Release body.\n\nCloses the timing gap: \\`openemr:release-prep\\` only fires during the\nrel"
+ },
+ "e53d804b1979e242f64e54c3dd86f894b0209587": {
+  "date": "2026-08-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-26g3-9466-c639"
+  ],
+  "files": [],
+  "blamed_total": 0,
+  "ai_hits": {},
+  "subject": "feat(contrib): add Docker deployment backup script (#13624)",
+  "body": "#### Short description of what this changes or resolves:\n\nAdds a host-side backup script for Docker Compose deployments, replacing\nthe\nAdministration \u2192 System \u2192 Backup routine removed in #13471 (whose import\npath\nwas the subject of GHSA-26g3-9466-c639). With the in-app backup gone,\nDocker\ndeployments have no bundled backup path; this provides a supported one.\n\n#### Changes proposed in this pull re"
+ },
+ "59a920da661076360c4cb75ab9465685aae9880f": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-6vx2-w9hw-prqj"
+  ],
+  "files": [
+   "interface/main/messages/save.php",
+   "library/MedEx/API.php"
+  ],
+  "blamed_total": 8,
+  "ai_hits": {},
+  "subject": "fix: ghsa-6vx2-w9hw-prqj",
+  "body": ""
+ },
+ "9b072d69efe1fa556d639fede3a235af0036be78": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-6ch2-p26g-x33h"
+  ],
+  "files": [
+   "interface/forms/eye_mag/SpectacleRx.php",
+   "interface/forms/eye_mag/a_issue.php",
+   "interface/forms/eye_mag/report.php"
+  ],
+  "blamed_total": 4,
+  "ai_hits": {},
+  "subject": "fix: ghsa-6ch2-p26g-x33h",
+  "body": ""
+ },
+ "62a17812f704c0e40d8b8718ddfe7b2b62abdb91": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-54m8-wpg9-9665"
+  ],
+  "files": [
+   "custom/export_xml.php"
+  ],
+  "blamed_total": 8,
+  "ai_hits": {},
+  "subject": "fix: ghsa-54m8-wpg9-9665",
+  "body": ""
+ },
+ "7533efd98c79dcc8aab521e815e09a4d7b51b567": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-wwhf-6cvc-6766"
+  ],
+  "files": [
+   "library/ajax/graphs.php"
+  ],
+  "blamed_total": 3,
+  "ai_hits": {},
+  "subject": "fix: ghsa-wwhf-6cvc-6766",
+  "body": ""
+ },
+ "2443c74bef951d578db58620c209c26fe1150677": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-cpph-949w-w79v"
+  ],
+  "files": [
+   "custom/ajax_download.php"
+  ],
+  "blamed_total": 9,
+  "ai_hits": {},
+  "subject": "fix: ghsa-cpph-949w-w79v",
+  "body": ""
+ },
+ "a5d40da86c738f56722aa6f41c52d59b85865d2f": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-cpph-949w-w79v"
+  ],
+  "files": [
+   "custom/ajax_download.php"
+  ],
+  "blamed_total": 4,
+  "ai_hits": {},
+  "subject": "fix: ghsa-cpph-949w-w79v - use filter_input instead of (int) cast",
+  "body": ""
+ },
+ "d291eb3602fb66b06e61ed4b41c71d67bc7736fb": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-9757-3cfj-wc8q"
+  ],
+  "files": [
+   "src/Services/Cda/XmlExtended.php"
+  ],
+  "blamed_total": 2,
+  "ai_hits": {},
+  "subject": "fix: ghsa-9757-3cfj-wc8q",
+  "body": ""
+ },
+ "887aa84d6a7a2f07be712bfb5c2b9737384babef": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-rq3v-38x5-3rm5"
+  ],
+  "files": [
+   "interface/main/calendar/modules/PostCalendar/pnadmin.php"
+  ],
+  "blamed_total": 5,
+  "ai_hits": {},
+  "subject": "fix: ghsa-rq3v-38x5-3rm5",
+  "body": ""
+ },
+ "1f35f55b1261d226948f779da3e9c8510b90266d": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-ww94-26v7-x4gp"
+  ],
+  "files": [
+   "apis/routes/_rest_routes_standard.inc.php"
+  ],
+  "blamed_total": 20,
+  "ai_hits": {},
+  "subject": "fix: ghsa-ww94-26v7-x4gp",
+  "body": ""
+ },
+ "02a1cca7a0da78ba4750d2a8d2f1a4ca40805a6c": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-v8q6-h79f-736x"
+  ],
+  "files": [
+   "library/ajax/graphs.php"
+  ],
+  "blamed_total": 21,
+  "ai_hits": {},
+  "subject": "fix(security): remove user input from SQL alias in graphs (#11093)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Remove user-controlled input from SQL alias in the ajax graphs library\nto prevent SQL injection\n\nRef: GHSA-v8q6-h79f-736x /\n[CVE-2026-32127](https://nvd.nist.gov/vuln/detail/CVE-2026-32127)\n\n## Test plan\n\n- [ ] Verify graphs still render correctly with valid input\n- [ ] Confirm SQL injection payloads in graph param"
+ },
+ "62e2e80975e53eafcc55da8c132b715b1679a6da": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-g3p5-5grq-m65m"
+  ],
+  "files": [
+   "interface/billing/get_claim_file.php"
+  ],
+  "blamed_total": 8,
+  "ai_hits": {
+   "be636987b7634570df51cb240c393ca295a4c124": {
+    "lines": 2,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-09",
+    "author": "Michael A. Smith",
+    "subject": "refactor: replace $GLOBALS access with OEGlobalsBag across the codebase (#11017)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>"
+    ]
+   },
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 3,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix: ghsa-g3p5-5grq-m65m",
+  "body": ""
+ },
+ "9e1af061399e0940e80428aeba84c515df3371b7": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-hf37-5rp9-j27j"
+  ],
+  "files": [
+   "portal/lib/appsql.class.php",
+   "portal/portal_payment.php"
+  ],
+  "blamed_total": 4,
+  "ai_hits": {},
+  "subject": "fix: ghsa-hf37-5rp9-j27j",
+  "body": ""
+ },
+ "3f04f213c0156684a6723f252ad65f7e2602bf2a": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-g77x-9p3x-2j8f"
+  ],
+  "files": [
+   "interface/modules/zend_modules/public/xsl/cda.xsl"
+  ],
+  "blamed_total": 3,
+  "ai_hits": {},
+  "subject": "fix: ghsa-g77x-9p3x-2j8f",
+  "body": ""
+ },
+ "f131dbab43fbcdbd099d267df7c4f4eb56b8d977": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-9qh7-cfq4-j7c3"
+  ],
+  "files": [
+   "library/custom_template/custom_template.php",
+   "portal/portal_payment.php"
+  ],
+  "blamed_total": 8,
+  "ai_hits": {},
+  "subject": "fix: ghsa-9qh7-cfq4-j7c3",
+  "body": ""
+ },
+ "f8f0616d7df69eb00ec22e3bb0ac780067a3ee17": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-w9w5-7x6h-657q"
+  ],
+  "files": [
+   "portal/sign/lib/show-signature.php"
+  ],
+  "blamed_total": 12,
+  "ai_hits": {
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 1,
+    "kind": [
+     "deleted"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix: ghsa-w9w5-7x6h-657q",
+  "body": ""
+ },
+ "9c974db4852df2a0163c156e01b9d543ab9c0a30": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-r973-h5cq-35rc"
+  ],
+  "files": [
+   "interface/modules/custom_modules/oe-module-faxsms/src/Controller/AppDispatch.php"
+  ],
+  "blamed_total": 8,
+  "ai_hits": {
+   "3967019fe8cc9ce21c598ae8f9c4333832d5b28e": {
+    "lines": 3,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-05",
+    "author": "Eric Stern",
+    "subject": "refactor(crypto): Migrate CryptoGen to CryptoInterface (#10982)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.5 <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix(security): add authorization to FaxSMS AppDispatch (#11193)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-r973-h5cq-35rc"
+ },
+ "68350bf4cb580b573c3d4ccc6f2e2f6b2f5934f2": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-752v-x6m4-6cf8"
+  ],
+  "files": [
+   "src/ClinicalDecisionRules/Interface/ControllerRouter.php"
+  ],
+  "blamed_total": 1,
+  "ai_hits": {},
+  "subject": "fix(security): negate ACL condition in CDR ControllerRouter (#11094)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Fix inverted ACL condition in CDR ControllerRouter that allowed any\nauthenticated user to modify/delete clinical rules and plans\n- Replace old unit test with isolated test that verifies correct ACL\nbehavior\n\nRef: GHSA-752v-x6m4-6cf8 /\n[CVE-2026-32126](https://nvd.nist.gov/vuln/detail/CVE-2026-32126)\n\n## Test plan\n\n"
+ },
+ "0c0a768f90a53d6e271c1f9b13cd7edee9432cd6": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-qvf6-6xc6-9qv7"
+  ],
+  "files": [
+   "portal/portal_payment.php"
+  ],
+  "blamed_total": 1,
+  "ai_hits": {},
+  "subject": "fix(security): escape inline script values in portal payment (#11194)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-qvf6-6xc6-9qv7"
+ },
+ "900f4927a3e9da298c732dfe825d72237097e11e": {
+  "date": "2026-09-22",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-66j9-ffq4-h222"
+  ],
+  "files": [
+   "interface/main/dated_reminders/dated_reminders_log.php"
+  ],
+  "blamed_total": 4,
+  "ai_hits": {},
+  "subject": "fix(reminders): restore missing bootstrap require in dated_reminders_log.php (#14192)",
+  "body": "## Summary\n\n- `interface/main/dated_reminders/dated_reminders_log.php` is an entry\npoint in its own right: `dated_reminders.php` opens it as a `dlgopen()`\niframe, and its own inline script re-requests it via ajax `GET`. It has\nno bootstrap other than what it includes itself.\n- Its `require_once(\"../../globals.php\")` and\n`require_once(\"$srcdir/dated_reminder_functions.php\")` were removed by\nthe `$G"
+ },
+ "e1dde8b503c3a338d28ce23abe2bb6f3a32c66d6": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-66j9-ffq4-h222"
+  ],
+  "files": [
+   "interface/main/dated_reminders/dated_reminders_log.php"
+  ],
+  "blamed_total": 3,
+  "ai_hits": {},
+  "subject": "fix(security): add authorization to dated reminders log (#11192)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-66j9-ffq4-h222"
+ },
+ "92d09cd8ff03ac29961747b22c4a5348beacbb54": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-cp37-pmfx-5mhm"
+  ],
+  "files": [
+   "templates/patient/portal_login/print.html.twig"
+  ],
+  "blamed_total": 9,
+  "ai_hits": {},
+  "subject": "fix(security): escape portal credential print output (#11191)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-cp37-pmfx-5mhm"
+ },
+ "cf9a33aae5734f004d3b346d6ba788a2e3dc4a8a": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-244w-vxhp-7x99"
+  ],
+  "files": [
+   "library/ajax/graph_track_anything.php"
+  ],
+  "blamed_total": 14,
+  "ai_hits": {},
+  "subject": "fix(security): escape Track Anything graph titles and labels (#11095)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Escape graph title and item names in Track Anything to prevent stored\nXSS via Dygraph rendering\n\nRef: GHSA-244w-vxhp-7x99 /\n[CVE-2026-32125](https://nvd.nist.gov/vuln/detail/CVE-2026-32125)\n\n## Test plan\n\n- [ ] Verify Track Anything graphs render correctly with special\ncharacters\n- [ ] Confirm XSS payloads in graph"
+ },
+ "323b4c5f772205d7a5b11679e8de5ea3288bd061": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-9hw7-22mr-qhfc"
+  ],
+  "files": [
+   "interface/patient_file/encounter/find_code_dynamic_ajax.php"
+  ],
+  "blamed_total": 12,
+  "ai_hits": {},
+  "subject": "fix(security): escape code descriptions in dynamic code picker (#11096)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Escape code descriptions in the dynamic code picker to prevent stored\nXSS\n\nRef: GHSA-9hw7-22mr-qhfc /\n[CVE-2026-32124](https://nvd.nist.gov/vuln/detail/CVE-2026-32124)\n\n## Test plan\n\n- [ ] Verify code picker still renders descriptions correctly\n- [ ] Confirm XSS payloads in code descriptions are escaped"
+ },
+ "b0cf80848ab433f9772c9a23b2828030d66cf747": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-j4mm-wg7q-v57q"
+  ],
+  "files": [
+   "interface/patient_file/encounter/forms.php"
+  ],
+  "blamed_total": 10,
+  "ai_hits": {
+   "be636987b7634570df51cb240c393ca295a4c124": {
+    "lines": 1,
+    "kind": [
+     "deleted"
+    ],
+    "date": "2026-03-09",
+    "author": "Michael A. Smith",
+    "subject": "refactor: replace $GLOBALS access with OEGlobalsBag across the codebase (#11017)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix(security): check sensitivity from correct table for group encounters (#11097)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Check sensitivity from the appropriate table (`form_encounter` vs\n`form_groups_encounter`) based on encounter type, so therapy group\nsensitivity ACL is properly enforced\n\nRef: GHSA-j4mm-wg7q-v57q /\n[CVE-2026-32123](https://nvd.nist.gov/vuln/detail/CVE-2026-32123)\n\n## Test plan\n\n- [ ] Verify individual encounter for"
+ },
+ "95a41866b49fcfa60f27b8b6fae68fdf0f6850bf": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-rwf9-px3c-3prw"
+  ],
+  "files": [
+   "library/ajax/billing_tracker_ajax.php"
+  ],
+  "blamed_total": 16,
+  "ai_hits": {},
+  "subject": "fix(security): add ACL check to claim file tracker endpoint (#11091)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Add authorization check to the claim file tracker AJAX endpoint to\nprevent unauthorized access\n\nRef: GHSA-rwf9-px3c-3prw /\n[CVE-2026-32122](https://nvd.nist.gov/vuln/detail/CVE-2026-32122)\n\n## Test plan\n\n- [ ] Verify authorized users can still access the claim file tracker\n- [ ] Confirm unauthorized users receive a"
+ },
+ "00adc41b2c85be066195fc5c4a23200acfe5eb9e": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-68fr-xm3v-p4vw"
+  ],
+  "files": [
+   "portal/sign/assets/signer_api.js"
+  ],
+  "blamed_total": 9,
+  "ai_hits": {},
+  "subject": "fix(security): prevent XSS in portal signer modal (#11090)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Replace unsafe `.html()` call with safe DOM methods in portal signer\nmodal to prevent stored DOM XSS\n\nRef: GHSA-68fr-xm3v-p4vw /\n[CVE-2026-32121](https://nvd.nist.gov/vuln/detail/CVE-2026-32121)\n\n## Test plan\n\n- [ ] Verify portal signer modal still renders correctly\n- [ ] Confirm XSS payloads in signer data are not"
+ },
+ "1c70f4bc8ed3a4a66f5ee08c054f553001960f24": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-pvvj-mv7h-7847"
+  ],
+  "files": [
+   "library/FeeSheet.class.php"
+  ],
+  "blamed_total": 15,
+  "ai_hits": {},
+  "subject": "fix: ghsa-pvvj-mv7h-7847",
+  "body": ""
+ },
+ "dbd597c9c09d839de4563848f19794071c943887": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-3vvq-pfq6-pw98"
+  ],
+  "files": [
+   "interface/forms/procedure_order/handle_deletions.php"
+  ],
+  "blamed_total": 16,
+  "ai_hits": {
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix: ghsa-3vvq-pfq6-pw98",
+  "body": ""
+ },
+ "1785d8c8a2615bffc2f406372fef83be073dd6a0": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-q283-5j7f-r6hp"
+  ],
+  "files": [
+   "library/js/SearchHighlight.js"
+  ],
+  "blamed_total": 13,
+  "ai_hits": {},
+  "subject": "fix(security): sanitize SearchHighlight input (#11190)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-q283-5j7f-r6hp"
+ },
+ "337b148ae9efe78ffca1d7a966658b472f7b3a3a": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-4gh4-q39r-45wf"
+  ],
+  "files": [
+   "controllers/C_Prescription.class.php"
+  ],
+  "blamed_total": 15,
+  "ai_hits": {},
+  "subject": "fix(security): escape patient data in prescription print view (#11092)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Escape patient demographic data in the prescription CSS/HTML print\nview to prevent stored XSS\n\nRef: GHSA-4gh4-q39r-45wf\n\n## Test plan\n\n- [ ] Verify prescription print view renders patient data correctly\n- [ ] Confirm XSS payloads in patient demographics are escaped in print\noutput"
+ },
+ "e09872f247ac31d04cd7ff66c6e3921d84cff167": {
+  "date": "2026-03-12",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-55qj-x8wh-m4rm"
+  ],
+  "files": [
+   "library/js/clickmap.js"
+  ],
+  "blamed_total": 1,
+  "ai_hits": {},
+  "subject": "fix(security): prevent XSS in clickmap annotation legend (#11089)",
+  "body": "## Summary\n\nForward-port of the security fix from the 8.0.0.1 patch to `master`.\n\n- Escape annotation text before inserting into the clickmap legend to\nprevent stored XSS\n\nRef: GHSA-55qj-x8wh-m4rm /\n[CVE-2026-32118](https://nvd.nist.gov/vuln/detail/CVE-2026-32118)\n\n## Test plan\n\n- [ ] Verify clickmap annotations with special characters render\ncorrectly\n- [ ] Confirm XSS payloads in annotation text"
+ },
+ "2b15ec00ef0a3cb47ec73bcd27ef3cae70f5bb19": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-6pmc-3xm7-pm86"
+  ],
+  "files": [
+   "interface/main/backup.php"
+  ],
+  "blamed_total": 39,
+  "ai_hits": {},
+  "subject": "fix(security): sanitize backup export command arguments (#11185)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-6pmc-3xm7-pm86"
+ },
+ "31d07f2c173a14e539516e533378e6c9bf7ec792": {
+  "date": "2026-03-25",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-8gj5-r8vm-mghq"
+  ],
+  "files": [
+   "interface/main/messages/messages.php",
+   "interface/patient_file/summary/pnotes_fragment.php",
+   "interface/patient_file/summary/pnotes_full.php",
+   "interface/patient_file/summary/pnotes_full_add.php",
+   "library/pnotes.inc.php"
+  ],
+  "blamed_total": 47,
+  "ai_hits": {
+   "e3bd356a797282dd31d9946276e2a7ff53299112": {
+    "lines": 6,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-20",
+    "author": "Milan Zivkovic",
+    "subject": "feat(session): porting core and portal apps to HttpSessionFactory (#10244)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix: ghsa-8gj5-r8vm-mghq",
+  "body": ""
+ },
+ "9ac869de30ea59666f2ac8c5a1d0cf5e3298f6b7": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-v9v3-q973-xp2h",
+   "GHSA-5pc3-2crw-96rv",
+   "GHSA-pgvq-f22q-2whp"
+  ],
+  "files": [
+   "interface/forms/eye_mag/report.php"
+  ],
+  "blamed_total": 43,
+  "ai_hits": {},
+  "subject": "fix(security): escape user data in Eye Exam report (#11186)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n-\nhttps://github.com/openemr/openemr/security/advisories/GHSA-pgvq-f22q-2whp\n-\nhttps://github.com/openemr/openemr/security/advisories/GHSA-5pc3-2crw-96rv\n-\nhttps://github.com/openemr/openemr/security/advisories/GHSA-v9v3-q973-xp2h"
+ },
+ "3cecd087c43f560ac074def6952961497f9a0267": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-mv9m-j65p-g55f"
+  ],
+  "files": [
+   "interface/forms/vitals/C_FormVitals.class.php",
+   "src/RestControllers/EncounterRestController.php",
+   "src/Services/EncounterService.php"
+  ],
+  "blamed_total": 18,
+  "ai_hits": {},
+  "subject": "fix(security): enforce encounter ownership on vitals (#11189)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-mv9m-j65p-g55f"
+ },
+ "2d4ad50e1b90a4631051bddeae66447ccc83c316": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-rppw-f689-6hrm"
+  ],
+  "files": [
+   "controllers/C_Document.class.php"
+  ],
+  "blamed_total": 5,
+  "ai_hits": {
+   "be636987b7634570df51cb240c393ca295a4c124": {
+    "lines": 1,
+    "kind": [
+     "adjacent"
+    ],
+    "date": "2026-03-09",
+    "author": "Michael A. Smith",
+    "subject": "refactor: replace $GLOBALS access with OEGlobalsBag across the codebase (#11017)",
+    "trailers": [
+     "Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>"
+    ]
+   }
+  },
+  "subject": "fix(security): validate DICOM zip entry paths (#11188)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-rppw-f689-6hrm"
+ },
+ "d25affc9cb99adb46b7b1ee82f89959d51725462": {
+  "date": "2026-03-19",
+  "src": "advisory-link",
+  "ghsa": [
+   "GHSA-v68v-pwc4-8p2m"
+  ],
+  "files": [
+   "src/Common/Acl/AclMain.php"
+  ],
+  "blamed_total": 32,
+  "ai_hits": {},
+  "subject": "fix(security): respect explicit ACL denies in zhAclCheck (#11187)",
+  "body": "Forward-port of the fix from 8.0.0.2 to master.\n\n\nhttps://github.com/openemr/openemr/security/advisories/GHSA-v68v-pwc4-8p2m"
+ }
+}
