@@ -51,8 +51,32 @@ Each quadrant of the four-quadrant framework is labeled by what this repository 
 |---|---|---|
 | Humans introduce | Traced, not rated | Introducing commits for the 24 scored CVEs are recorded in [`study-results/cves.csv`](study-results/cves.csv) (intro dates 2005-2024). No rate of human-introduced defects is computed. |
 | AI introduces | Cited, not measured | External research only. See [`references.md`](references.md). |
-| Humans catch | Not measured | This study has no human-reviewer comparison. The [human review packet](human-review-packet/) is a separate exercise and is not part of the reported results. |
+| Humans catch | Not measured; human misses documented | No human catch rate: every case is a vulnerability that was merged. 11 of the 24 introducing changes went through a PR reviewed by a second maintainer (see Human Review of the Introducing Changes). The [human review packet](human-review-packet/) is a separate exercise and is not part of the reported results. |
 | AI catches | **Measured** | 24 OpenEMR CVEs, blinded introducing diffs, two pinned models, 3 runs per diff (see Headline Findings). |
+
+## Human Review of the Introducing Changes
+
+For each scored CVE we looked up the GitHub pull request behind the introducing commit and read its review record. Data: [`study-results/pr_review/pr_reviews.csv`](study-results/pr_review/pr_reviews.csv), with the scripts that produced it.
+
+- **Commits:** the 24 CVEs trace to 21 distinct introducing commits.
+- **No PR record (12 CVEs):** commits from 2005 to 2017 that were pushed directly or merged before a PR workflow. Whether anyone reviewed them is unknown.
+- **PR found (12 CVEs):** 11 through the GitHub API and one (CVE-2026-24898) through the PR number in its commit message (#1949).
+- **Reviewed by a second maintainer: 11 of 12.** CVE-2026-24849 (PR #7429) had no reviewer and was merged by its author.
+- **Sign-off on those 11:** 4 recorded GitHub approvals, 5 written sign-offs in the PR conversation (for example "looks good to me"), 1 "review complete" with minor issues noted, and 1 with no written sign-off. OpenEMR's CONTRIBUTING.md says a maintainer reviews each PR. It does not require a GitHub approval, and maintainers often sign off in the conversation.
+- **Comments on the vulnerable file:** reviewers commented on the vulnerable file in 4 PRs. None of the comments addressed the vulnerability:
+
+| CVE | PR | Reviewer comments on the vulnerable file |
+|---|---|---|
+| CVE-2026-25146 (gateway secret exposed) | #2099 | 7 comments on output escaping and translation. None on the gateway key rendered into browser JavaScript. After signing off, the reviewer noted how the encrypted key should be decrypted, not where it was sent. |
+| CVE-2018-15152 (portal authentication bypass) | #1090 | 8 comments, including a question about session handling at the top of the file. None on the portal session flag set before authentication. |
+| CVE-2026-24890 (authorization) | #2614 | 2 comments on error-output escaping. None on the authorization branch. |
+| CVE-2025-43860 (XSS) | #5557 | 1 comment on a delete button's role. None on the `innerHTML` sinks. |
+
+**AI results on the same 11 reviewed cases:** Claude Sonnet 5 scored 9 Caught and 2 Partial. Claude Haiku 4.5 scored 4 Caught, 2 Partial and 5 Missed.
+
+This is not a matched human-versus-AI comparison. The cases were selected because they became CVEs, so every one is a human miss by construction, and the bugs reviewers did stop are not visible. Reviewers saw the whole PR at merge time. The models saw a blinded single-file diff years later, with possible prior exposure to the public fix.
+
+Open item: for CVE-2026-25476, PR #4435's file list does not include the vulnerable file (`library/auth.inc.php`), so that commit-to-PR link is under review.
 
 ## Inventory and Scope
 

@@ -1,0 +1,25 @@
+cve_id,group,intro_commit,intro_date,traceable,commit_author,committer,pr_number,pr_author,merged_by,other_reviewers,other_approvals,comments_on_vuln_file,pr_touches_vuln_file,vuln_file,note,signoff,vuln_file_comment_topics
+CVE-2026-24908,A,6c97865a0472,2023-09-02,yes,adunsulag,web-flow,6801,adunsulag,adunsulag,bradymiller,1,0,yes,src/Services/Search/SearchConfigClauseBuilder.php,,github_approval,
+CVE-2026-24898,A,0718350fadb4,2018-11-11,yes,ophthal,bradymiller,1949,ghost,bradymiller,bradymiller,0,0,yes,library/MedEx/MedEx.php,PR found via commit message (#1949),written_signoff,
+CVE-2026-33346,A,aca3dd6ec9bf,2017-01-10,yes,sjpadgett,bradymiller,,,,,,,,portal/portal_payment.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2026-24890,A,0cb7ccc25dcf,2019-08-10,yes,sjpadgett,sjpadgett,2614,sjpadgett,sjpadgett,bradymiller,0,2,yes,portal/sign/lib/save-signature.php,,review_complete_no_signoff,2 comments on error-output escaping; none on the authorization branch
+CVE-2026-23627,A,6c78b1545764,2020-08-13,yes,sjpadgett,web-flow,3847,sjpadgett,sjpadgett,bradymiller,0,0,yes,interface/modules/zend_modules/module/Immunization/src/Immunization/Controller/ImmunizationController.php,,written_signoff,
+CVE-2026-24487,A,3cbe16d02116,2021-05-25,yes,adunsulag,web-flow,4407,adunsulag,bradymiller,bradymiller;stephenwaite,0,0,yes,src/Services/FHIR/FhirCareTeamService.php,,written_signoff,
+CVE-2026-25746,A,7080e87bbabb,2005-03-09,partial,wpennington,wpennington,,,,,,,,library/classes/Prescription.class.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2026-24849,A,4cafd7df73,2024-05-20,yes,sjpadgett,web-flow,7429,sjpadgett,sjpadgett,,0,0,yes,interface/modules/custom_modules/oe-module-faxsms/src/Controller/EtherFaxActions.php,,no_review,
+CVE-2026-25146,A,2ab074e827b9,2019-01-06,yes,sjpadgett,web-flow,2099,sjpadgett,sjpadgett,bradymiller,0,7,yes,portal/portal_payment.php,,written_signoff,7 comments on output escaping and translation; none on the gateway key rendered into browser JS
+CVE-2026-25476,A,fae906cb06f7,2021-06-01,yes,sunsetsystems,web-flow,4435,sunsetsystems,sunsetsystems,bradymiller;stephenwaite,1,0,no,library/auth.inc.php,PR file list does not include the vulnerable file; link under review,github_approval,
+CVE-2026-32238,A,1ab6846ed00f,2014-06-19,yes,sunsetsystems,sunsetsystems,,,,,,,,interface/main/backup.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2026-29187,A,a9aa64513e45,2010-07-27,yes,bradymiller,bradymiller,,,,,,,,interface/new/new_search_popup.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2026-33913,A,1024a1a838b2,2022-11-01,yes,sjpadgett,web-flow,5870,sjpadgett,sjpadgett,bradymiller,0,0,yes,src/Services/Cda/XmlExtended.php,,no_text_signoff,
+CVE-2026-33321,A,00aa8a6f2cd1,2016-07-12,yes,ophthal,bradymiller,,,,,,,,interface/forms/eye_mag/report.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2026-33918,A,7080e87bbabb,2005-03-09,partial,wpennington,wpennington,,,,,,,,interface/billing/get_claim_file.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2026-24847,A,f4f46f287587,2024-02-09,yes,stephenwaite,web-flow,7156,stephenwaite,stephenwaite,bradymiller,2,0,yes,interface/forms/eye_mag/view.php,,github_approval,
+CVE-2023-22973,B,a3f08b6c7763,2009-07-31,yes,sunsetsystems,sunsetsystems,,,,,,,,interface/forms/LBF/new.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2018-15152,B,9829bf4e0b86,2017-09-27,yes,sjpadgett,bradymiller,1090,sjpadgett,bradymiller,bradymiller,0,8,yes,portal/account/register.php,,written_signoff,8 comments incl. a session-handling question; none on the portal session flag set before authentication
+CVE-2018-15145,B,aca3dd6ec9bf,2017-01-10,yes,sjpadgett,bradymiller,,,,,,,,portal/add_edit_event_user.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2020-29140,B,305b22d59aeb,2011-05-08,yes,rreddy70,bradymiller,,,,,,,,interface/reports/immunization_report.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2021-40352,B,44e594b48a8f,2007-05-06,partial,sunsetsystems,sunsetsystems,,,,,,,,interface/patient_file/summary/pnotes_print.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2022-2824,B,aca3dd6ec9bf,2017-01-10,yes,sjpadgett,bradymiller,,,,,,,,portal/sign/lib/show-signature.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2025-31121,B,81d00d00b96e,2015-09-16,yes,Vinish K,bradymiller,,,,,,,,controllers/C_Document.class.php,no PR associated (direct push or pre-GitHub history),,
+CVE-2025-43860,B,8a80577cc848,2022-07-14,yes,psoas,web-flow,5557,psoas,sjpadgett,bradymiller;sjpadgett,1,1,yes,library/templates/address_list_form.php,,github_approval,1 comment on a delete button role; none on the innerHTML sinks
