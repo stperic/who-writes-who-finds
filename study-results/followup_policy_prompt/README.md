@@ -98,7 +98,9 @@ show, based on guesses about older versions.
 - Two vulnerable diffs and ten benign diffs, one benign review per model per
   arm. Differences of one or two reviews are within noise.
 - One judge model. Rule B rulings were applied by Claude Opus 5.5, which is
-  also one of the reviewers; the Opus 5.5 rows need a human check.
+  also one of the reviewers. The study author approved publication; the
+  rulings have not had a line-by-line human check, so read the Opus 5.5 rows
+  with that in mind. Each ruling quotes the review in `final_detection.csv`.
 - The frozen benign reviews for Sonnet 5 and Haiku 4.5 are the study's
   (Claude Code harness); every other run used the API directly.
 - Cost of this experiment at list prices: about $2.62 for 110 review calls and

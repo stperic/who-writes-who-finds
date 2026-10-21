@@ -109,7 +109,9 @@ Compared with the two earlier arms: **generic** (`../prompt.md`, results in
 - Two vulnerable diffs and ten benign diffs, one benign review per model per
   prompt. Differences of one or two reviews are within noise.
 - One judge. Rule B rulings applied by Claude Opus 5.5, which is also a
-  reviewer; they need a human check before publication.
+  reviewer. The study author approved publication; the rulings have not had a
+  line-by-line human check. Each ruling quotes the review in
+  `final_detection.csv`.
 - The judge knew these reviews came from a security-focused prompt (see the
   changed sentence above).
 - Cost at list prices: about $4.10 for 160 review calls and $8.96 for 160 judge
