@@ -1,6 +1,6 @@
 # numbers.md: every number the deck may quote
 
-Generated 2026-10-17 by `recompute.py`. Do not edit by hand.
+Generated 2026-10-21 by `recompute.py`. Do not edit by hand.
 Initial runs: 2026-08-17. Ground-truth repair (CVE-2026-24487, CVE-2026-24849, CVE-2026-25146 run 2) and 10-diff benign control pass: 2026-10-15 on identical pinned models (`claude-sonnet-5`, `claude-haiku-4-5-20251001`).
 
 ## Case counts
@@ -8,7 +8,8 @@ Initial runs: 2026-08-17. Ground-truth repair (CVE-2026-24487, CVE-2026-24849, C
 - Inventory records: 32 (31 with CVE IDs)
 - Scored cases: 24 (A: 16, B: 8)
 - Repaired and re-run after ground-truth audit: 2: CVE-2026-24487, CVE-2026-24849 (plus 1 empty run on CVE-2026-25146)
-- Excluded: 0
+- Excluded from scoring: 0
+- Inventory CVEs not scored: 7 (CVE-2018-15156, CVE-2019-3963, CVE-2019-3966, CVE-2023-22972, CVE-2023-22974, CVE-2026-24848, CVE-2026-65983); no run data, so they are outside every denominator. Reasons are not recorded in validity.csv.
 - **Valid scored cases: 24** (A: 16, B: 8)
 - Review runs: 144; remaining execution errors: 0 (1 initial empty output repaired)
 - Benign control diffs evaluated: 10 (6 security-fix patches + 4 routine non-security commits)
@@ -89,7 +90,7 @@ caught_by: `vendor-AI` = AISLE; `researcher` = a named reporter or analyst credi
 ## Commit-to-disclosure interval (traceable=yes only; partial traces carry a lower bound and are left out)
 
 - **Valid scored cases (the deck's denominator)**: n = 21; median 2043 days (5.6 yrs); max 5720 days (15.7 yrs); min 322 days
-- Full inventory, excluded cases removed: n = 22; median 2217 days (6.1 yrs); max 5720 days (15.7 yrs); min 322 days
+- All traced inventory CVEs, scored or not (traceable=yes only): n = 22; median 2217 days (6.1 yrs); max 5720 days (15.7 yrs); min 322 days
 
 ## Aggregation notes
 

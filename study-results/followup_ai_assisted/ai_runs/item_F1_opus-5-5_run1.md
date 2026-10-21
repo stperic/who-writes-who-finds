@@ -1,0 +1,80 @@
+# Code Review: `Controller::act()` / `dispatch()` refactor
+
+The whitelist for controller names and the table-driven ACL check are improvements over sanitizing user input with `preg_replace`. However, the refactor introduces several regressions in how actions are dispatched.
+
+---
+
+### 1. `method_exists()` guard removed, so missing-method handling breaks
+**Location:** `dispatch()`, the `is_callable([$controllerObj, $processMethod])` and `is_callable([$controllerObj, $actionMethod])` checks
+**Severity:** High
+
+The deleted comment explained why the old code checked both conditions. Smarty 4 defines `__call`, so `is_callable()` always returns `true` on a `Smarty` subclass. Without `method_exists()`, this causes three problems:
+- **Any `process=true` request to an action without a `*_action_process` method breaks.** The code now calls the missing method, which goes to `Smarty::__call`. That either throws a `SmartyException` or does something unexpected. Previously, such requests just ran the normal action.
+- **The `NotFoundHttpException` branch can never run.** Unknown actions are routed into `Smarty::__call` instead of producing a clean 404.
+- **User-chosen method names reach Smarty's magic dispatcher.** Smarty's `__call` maps some names to internal get/set operations, so a request can now trigger Smarty internals by choosing any `{name}_action` value.
+
+**Fix:** Restore `method_exists($controllerObj, $method)`. Better still, use `method_exists` plus `(new ReflectionMethod(...))->isPublic()`.
+
+### 2. Action name is no longer sanitized
+**Location:** `dispatch()`, where `$action = is_string($params['action'] ?? null) ? $params['action'] : 'default';`
+**Severity:** Medium (security)
+
+The old code removed every character outside `[A-Za-z0-9_]` from the action. Now the raw value is used in three places:
+- in the method name,
+- in `$controllerObj->_current_action`, which feeds `_link()` and templates, creating a possible reflected-XSS or URL-injection vector,
+- in the exception message.
+
+**Fix:** Validate with `preg_match('/^[A-Za-z0-9_]+$/', $action)`, and throw `BadRequestHttpException` if it fails.
+
+### 3. `process` as a positional key is now misrouted
+**Location:** `act()`, where `$positionalAction = (string) ($keys[1] ?? 'default');`
+**Severity:** Medium
+
+The old code removed `process` from `$qarray` *before* reading the action from the key order. Now, for a URL like `?practice_settings&process=true&edit`:
+- `process` is taken as the action, so the code calls `process_action`.
+- `process` is then skipped as "positional", so it never reaches `dispatch()`. As a result, `$_POST['process']` is never set.
+
+**Fix:** Strip `process` from `$qarray` before computing `$keys`.
+
+### 4. Reserved keys in legacy URLs can override routing and shift arguments
+**Location:** `act()` loop, `$params[$key === 'action' ? 'sub_action' : $key] = $value;`
+**Severity:** Medium
+
+- If a legacy query string contains a non-positional `controller=` key, it overwrites `$params['controller']`. The request is then routed to a different controller than the first key named.
+- `dispatch()` drops any key named `controller` or `process` from `$args`. This shifts all later positional arguments by one compared with the old behavior.
+- If a `sub_action` key already exists, it is silently overwritten.
+
+**Fix:** In `act()`, refuse or namespace reserved keys rather than letting them collide.
+
+### 5. `dispatch()` is described as "order-independent", but arguments are still positional
+**Location:** `dispatch()` docblock and `$controllerObj->$method(...array_values($args))`
+**Severity:** Medium (correctness/maintainability)
+
+The docblock example is `?controller=document&action=view&patient_id=123&doc_id=456`. In practice, swapping `patient_id` and `doc_id` in the URL swaps the method arguments. New callers who trust the docblock will introduce bugs.
+
+**Fix:** Either pass named arguments (`...$args` with string keys, which needs handling for unknown keys) or correct the documentation.
+
+### 6. Exceptions replace the old echo/exit with no handler in the legacy entry point
+**Location:** `throw new BadRequestHttpException` / `NotFoundHttpException`
+**Severity:** Medium (reliability)
+
+The diff does not show how `controller.php` handles these. If there is no kernel or listener converting them into HTTP responses, users get uncaught-exception 500 pages. Those pages may also show stack traces and internal class names, depending on display settings.
+
+**Fix:** Confirm a handler exists, or catch the exceptions at the entry point and render a proper 400/404.
+
+### 7. Smaller behavior changes
+- **`$controllerObj->_state === false`** (Low): The old check was loose (`== false`). Controllers that set `_state` to `null`, `0`, or `''` to stop processing will now continue into the main action.
+- **Empty-value handling** (Low): The old code passed `null` for any `empty()` value except `"0"`, which covered `null` and empty arrays. The new code only converts `''`.
+- **`callMethod` return handling** (Low): Non-string return values are silently discarded. Old behavior was string concatenation, which is roughly equivalent for `null`, but integer returns are now dropped.
+- **`act()` with an empty array** (Low): `$keys[0]` triggers an undefined-index warning before the `BadRequest` is thrown. The `non-empty-array` docblock is not enforced at runtime.
+- **Mixed key types in `act()`** (Low): `$key === $controller` and `$key === $positionalAction` compare against string-cast values. If PHP converted a numeric key such as `?0&...` to an int, the comparison fails and that key leaks into the arguments.
+
+### 8. ACL coverage and whitelist completeness (pre-existing, worth noting)
+**Severity:** Low (observation)
+
+- **Whitelist:** Please confirm `VALID_CONTROLLERS` covers every `controllers/C_*.class.php` that is still reachable via `controller.php`. Any controller left out is now a hard 400.
+- **ACL:** Only `practice_settings` and `prescription` have ACL entries. `pharmacy`, `insurance_company`, `x12_partner`, `insurance_numbers`, and `document_category` are normally reached through Practice Settings, but they remain directly callable without the `admin/practice` check. This is not a regression, but the new `CONTROLLER_ACL_MAP` makes it easy to close the gap, so consider adding them.
+
+---
+
+**Summary:** Items 1–3 should block the merge. Item 1 in particular breaks POST-with-`process` handling for any action that lacks a `_process` method, and it exposes Smarty's magic `__call` to user-chosen method names.

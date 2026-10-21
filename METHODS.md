@@ -66,14 +66,36 @@ control (see Section 6).
 ### Selection criteria, in priority order
 
 1. **Traceability**: an identifiable fixing commit, so the introducing commit can
-   be found. CVEs whose fix could not be located were dropped, not guessed.
+   be found. CVEs whose fix could not be located were not scored, not guessed.
+   Partial traces were kept as scored cases and carry lower-bound intervals.
 2. **Category coverage**: spread across OWASP Top 10 to populate the routing model.
 3. **Contamination status**: Group A disclosed after model cutoffs; Group B before.
 4. **Severity and salience**: flagship criticals included for narrative weight, but
    not at the expense of category balance.
 
 Final dataset: **32 candidate CVEs** (19 Group A, 13 Group B), recorded one row
-per CVE in `cves.csv`.
+per CVE in `cves.csv`. One row has no CVE ID, so 31 records carry an ID.
+
+**Scored set: 24 of the 31 CVEs with IDs.** Scored: 16 Group A, 8 Group B. Of the
+scored cases, 21 are fully traced and 3 are partially traced.
+
+**Not scored: 7 records.** The traceability rule above does not explain this split
+on its own:
+
+| CVE | Group | Trace status in `cves.csv` |
+|---|---|---|
+| CVE-2026-24848 | A | No introducing commit recorded |
+| CVE-2026-65983 | A | No introducing commit recorded |
+| CVE-2018-15156 | B | No introducing commit recorded |
+| CVE-2023-22972 | B | Fully traced, not scored |
+| CVE-2023-22974 | B | Partial trace, not scored |
+| CVE-2019-3963 | B | Partial trace, not scored |
+| CVE-2019-3966 | B | Partial trace, not scored |
+
+The reason the seven were not scored is not recorded in this repository.
+`study-results/validity.csv` lists only excluded cases, and none of these seven is
+in it. Until the reason is recorded, these seven should be described as "not scored"
+and not as "excluded for traceability."
 
 ---
 
