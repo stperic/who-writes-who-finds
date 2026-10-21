@@ -1,0 +1,20 @@
+item_F1_sonnet-5-5_run1.md ok claude-sonnet-5-5 end_turn 3904 chars 3050 output tokens
+item_F1_sonnet-5-5_run2.md ok claude-sonnet-5-5 end_turn 4387 chars 3498 output tokens
+item_F1_sonnet-5-5_run3.md ok claude-sonnet-5-5 end_turn 4673 chars 3290 output tokens
+item_F1_opus-5-5_run1.md ok claude-opus-5-5 end_turn 6535 chars 4921 output tokens
+item_F1_opus-5-5_run2.md ok claude-opus-5-5 end_turn 8389 chars 6380 output tokens
+item_F1_opus-5-5_run3.md ok claude-opus-5-5 end_turn 6547 chars 4303 output tokens
+item_F1_haiku-5-5_run1.md ok claude-haiku-5-5 end_turn 4134 chars 2849 output tokens
+item_F1_haiku-5-5_run2.md ok claude-haiku-5-5 end_turn 5122 chars 3545 output tokens
+item_F1_haiku-5-5_run3.md ok claude-haiku-5-5 end_turn 5840 chars 4085 output tokens
+item_F2_sonnet-5-5_run1.md ok claude-sonnet-5-5 end_turn 2800 chars 1597 output tokens
+item_F2_sonnet-5-5_run2.md ok claude-sonnet-5-5 end_turn 2310 chars 1485 output tokens
+item_F2_sonnet-5-5_run3.md ok claude-sonnet-5-5 end_turn 3244 chars 1826 output tokens
+item_F2_opus-5-5_run1.md ok claude-opus-5-5 end_turn 3300 chars 1745 output tokens
+item_F2_opus-5-5_run2.md ok claude-opus-5-5 end_turn 3554 chars 1863 output tokens
+item_F2_opus-5-5_run3.md ok claude-opus-5-5 end_turn 3821 chars 1922 output tokens
+item_F2_haiku-5-5_run1.md ok claude-haiku-5-5 end_turn 2848 chars 1692 output tokens
+item_F2_haiku-5-5_run2.md ok claude-haiku-5-5 end_turn 2281 chars 1590 output tokens
+item_F2_haiku-5-5_run3.md ok claude-haiku-5-5 end_turn 2799 chars 1612 output tokens
+
+[exited with code 0]
