@@ -1,0 +1,4 @@
+FINDING | Whitelist safety depends on unseen caller-provided lists | severity=Medium | class=SPECULATIVE | Call sites are not in the diff, and the review only asks that they be audited rather than asserting a flaw.
+FINDING | Rejected sort fields dropped silently without logging | severity=Low | class=PLAUSIBLE | The diff visibly `continue`s on non-whitelisted fields with no audit entry, a minor but real monitoring gap in the touched code.
+FINDING | Empty ORDER BY masks tampering instead of erroring | severity=Low/Informational | class=FALSE | Silently ignoring non-whitelisted sort fields is a standard safe pattern and the review itself concedes it is not a vulnerability; this merely restates finding 2 as a design preference.
+SUMMARY: findings=3 false=1 speculative=1 plausible=1

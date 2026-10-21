@@ -1,0 +1,2 @@
+FINDING | js_escape quote removal creates XSS/injection risk | severity=HIGH | class=FALSE | The diff shows a standard fix replacing hand-quoted interpolation with an escaping helper whose quoted output makes the removed quotes correct, and the review asserts a HIGH vulnerability only on a hypothetical about the helper rather than anything the code shows.
+SUMMARY: findings=1 false=1 speculative=0 plausible=0

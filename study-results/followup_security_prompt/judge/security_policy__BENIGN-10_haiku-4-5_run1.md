@@ -1,0 +1,3 @@
+FINDING | innerHTML XSS from numeric Math.round result | severity=HIGH | class=FALSE | The assigned value is always a Number (inputs are coerced with `* 1` and Math.round), so no markup can reach innerHTML, as the review itself concedes.
+FINDING | Loose comparison enabled type juggling attacks | severity=MEDIUM | class=FALSE | The original used strict `===` (never loose), so no juggling was possible; the parseInt change fixes a pure correctness bug, not a security weakness.
+SUMMARY: findings=2 false=2 speculative=0 plausible=0

@@ -1,0 +1,3 @@
+FINDING | Catch block swallows JsonException without logging | severity=Informational / Low | class=PLAUSIBLE | The diff visibly shows the catch returning a fixed string with no logging, a minor but real monitoring gap in code the change adds.
+FINDING | Verify `$where` content and response content type for XSS | severity=Informational | class=SPECULATIVE | It asks to confirm properties of `$where` and the caller's content type, which are outside the diff and not asserted as a vulnerability.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

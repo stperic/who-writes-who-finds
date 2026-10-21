@@ -1,0 +1,4 @@
+FINDING | Pre-change ORDER BY field concatenation enabled SQL injection | severity=High/Critical | class=PLAUSIBLE | The diff shows `getField()` was concatenated unfiltered into ORDER BY and the change adds a whitelist, consistent with a real fixed injection path.
+FINDING | Verify every caller passes hard-coded whitelist | severity=Informational | class=SPECULATIVE | Call sites are not in the diff, so the review only asks to confirm no caller builds `$allowedColumns` from request data.
+FINDING | Rejected sort fields dropped silently without logging | severity=Low | class=PLAUSIBLE | The shown code does `continue` on invalid fields with no logging, a minor but real detection gap in the touched code.
+SUMMARY: findings=3 false=0 speculative=1 plausible=2

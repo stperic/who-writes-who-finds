@@ -1,0 +1,5 @@
+FINDING | Missing interface may have allowed cross-patient CareTeam access | severity=none | class=SPECULATIVE | The review frames it as "likely" hardening dependent on routing/authorization code not shown, without asserting a confirmed vulnerability.
+FINDING | Verify getPatientContextSearchField exists and maps correct field | severity=none | class=SPECULATIVE | The method lives outside the diff, so its existence and correctness cannot be judged from what is shown.
+FINDING | Verify compartment filter covers search and read-by-id | severity=none | class=SPECULATIVE | Enforcement across access paths depends on framework code not in the diff; the review only asks for confirmation and tests.
+FINDING | Verify bulk export respects patient compartment scoping | severity=none | class=SPECULATIVE | The BulkExportSupportAllOperationsTrait behavior is defined elsewhere and cannot be assessed from the diff.
+SUMMARY: findings=4 false=0 speculative=4 plausible=0

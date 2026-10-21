@@ -1,0 +1,3 @@
+FINDING | Removing isset check is broken access control | severity=Medium | class=FALSE | Rendering an empty results table unconditionally is a UI/correctness issue with no access-control or exploitable security impact shown in the diff.
+FINDING | Removed guard eliminates logging of zero-result searches | severity=Low | class=FALSE | The removed branch only printed a "No groups found" message and never performed any logging, so no monitoring capability is lost.
+SUMMARY: findings=2 false=2 speculative=0 plausible=0

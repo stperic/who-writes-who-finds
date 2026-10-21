@@ -1,0 +1,6 @@
+FINDING | Missing JSON_HEX flags enables reflected XSS | severity=Medium | class=FALSE | The function returns a JSON string, and nothing in the diff shows it being embedded in HTML or a script context, so HEX flags are not required and no XSS is supported by the code shown.
+FINDING | Unvalidated $where in response url field | severity=Unknown | class=SPECULATIVE | The review admits the origin of $where is not visible and only asks that it be verified before merge.
+FINDING | JsonException caught without logging | severity=Low | class=PLAUSIBLE | The new catch block does silently discard the exception, so the lack of logging is a small but real observation about touched code.
+FINDING | Verify auth, ACL and CSRF on caller | severity=none | class=SPECULATIVE | The review explicitly says it could not verify this and asks for confirmation rather than asserting a flaw.
+FINDING | Verify response message excludes PHI/credentials | severity=none | class=SPECULATIVE | A request to confirm message contents that the diff does not reveal, with no vulnerability asserted.
+SUMMARY: findings=5 false=1 speculative=3 plausible=1

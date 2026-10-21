@@ -1,0 +1,5 @@
+FINDING | XInclude removal closed local file disclosure / SSRF | severity=High | class=PLAUSIBLE | LIBXML_XINCLUDE genuinely allows xi:include to pull local files or URLs into parsed CDA input, and the diff removes it from both parse paths.
+FINDING | LIBXML_PARSEHUGE lifts libxml limits, DoS risk | severity=Medium | class=PLAUSIBLE | The flag remains on both touched lines and does disable nesting-depth and node-size limits, making memory/CPU exhaustion via crafted CDA documents a credible weakness.
+FINDING | Verify directory-relative resolution for path traversal | severity=none | class=SPECULATIVE | The review explicitly says this is not a vulnerability as written and asks to check code paths outside the diff.
+FINDING | Confirm entity loader disabled if PHP < 8.0 | severity=none | class=SPECULATIVE | The review concludes XXE is not exploitable here and only asks to verify runtime PHP version/configuration not visible in the diff.
+SUMMARY: findings=4 false=0 speculative=2 plausible=2

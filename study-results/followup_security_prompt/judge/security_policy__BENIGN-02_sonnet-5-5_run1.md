@@ -1,0 +1,6 @@
+FINDING | LIBXML_PARSEHUGE lifts libxml depth/expansion limits, DoS | severity=Medium | class=PLAUSIBLE | The flag is visible in the diff and genuinely removes libxml's hard-coded limits, enabling memory/CPU exhaustion on untrusted input.
+FINDING | Missing LIBXML_NONET and DTD/entity hardening | severity=Medium | class=SPECULATIVE | Default XMLReader settings don't substitute entities or load external DTDs; the review only asks to confirm nothing enables them elsewhere and recommends defense-in-depth.
+FINDING | $filename passed to open() may allow stream wrappers | severity=Medium | class=SPECULATIVE | The concern is conditioned on callers exposing $filename to users, which cannot be judged from the diff.
+FINDING | $directory may still drive manual include resolution | severity=Medium to High | class=SPECULATIVE | The review admits it cannot see the parent class include logic and explicitly asks for verification.
+FINDING | Error handler restoration and logging of malformed XML | severity=Low | class=SPECULATIVE | The closure body and restore_error_handler call are outside the diff, so this is a request to confirm rather than an asserted flaw.
+SUMMARY: findings=5 false=0 speculative=4 plausible=1

@@ -1,0 +1,6 @@
+FINDING | denyWithTemplate may not halt execution | severity=High | class=SPECULATIVE | Helper is defined outside the diff and the review only asks to confirm it terminates.
+FINDING | No audit logging on access denial | severity=Low–Medium | class=FALSE | Asserts absence of logging without seeing denyWithTemplate, which may log internally; unsupported by the diff.
+FINDING | Write permission required for read operation | severity=Informational/Low | class=SPECULATIVE | Review admits it is not a vulnerability and asks for confirmation; requiring write is more restrictive, not less.
+FINDING | Unseen file-serving logic may have traversal/SQLi/IDOR | severity=Potentially High | class=SPECULATIVE | Concerns code not in the diff and explicitly requests verification rather than asserting a flaw.
+FINDING | CSRF token transmitted via GET parameter | severity=Low–Medium | class=PLAUSIBLE | Diff shows $_GET["csrf_token_form"], and GET tokens genuinely leak via history, logs, and Referer.
+SUMMARY: findings=5 false=1 speculative=3 plausible=1

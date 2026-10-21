@@ -1,0 +1,3 @@
+FINDING | LIBXML_XINCLUDE removal fixes XInclude file disclosure/SSRF | severity=Medium–High | class=PLAUSIBLE | The diff shows the flag was enabled and removed, and XInclude processing of untrusted XML is a real local-file/remote-fetch vector.
+FINDING | Verify DTD/entity loading disabled to prevent classic XXE | severity=Potentially High | class=SPECULATIVE | The review explicitly says entity/DTD configuration is outside the diff and asks for confirmation rather than asserting a vulnerability exists.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

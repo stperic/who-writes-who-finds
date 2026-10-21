@@ -1,0 +1,5 @@
+FINDING | skip_timeout_reset bypassed expiry check before; now fixed | severity=Medium to High | class=PLAUSIBLE | The old code shown gated the entire expiry check on a client-controlled request parameter, and the diff demonstrably moves the check outside that gate.
+FINDING | $skipSessionExpirationCheck bare global could disable enforcement | severity=Low | class=SPECULATIVE | It only asks to confirm the variable is set solely by trusted server-side code, which cannot be judged from the diff.
+FINDING | $_REQUEST also reads cookies; prefer explicit $_GET/$_POST | severity=Informational | class=PLAUSIBLE | Accurate observation about $_REQUEST input sources, acknowledged as harmless since it now only affects timer extension.
+FINDING | Verify authLoginScreen(true) terminates script execution | severity=Low | class=SPECULATIVE | A request to confirm behavior of a function defined outside the diff, without asserting a vulnerability.
+SUMMARY: findings=4 false=0 speculative=2 plausible=2

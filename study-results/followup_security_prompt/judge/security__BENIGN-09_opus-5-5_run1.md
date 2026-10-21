@@ -1,0 +1,2 @@
+FINDING | Removed isset guard may leak paths via PHP warnings | severity=Informational/Low | class=PLAUSIBLE | The diff does remove the `isset($result)` guard around a results block that renders `$result`, so undefined-variable warnings (and path disclosure if `display_errors` is on) are a credible, if configuration-dependent, consequence.
+SUMMARY: findings=1 false=0 speculative=0 plausible=1

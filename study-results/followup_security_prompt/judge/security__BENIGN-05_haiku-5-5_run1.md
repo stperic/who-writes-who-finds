@@ -1,0 +1,5 @@
+FINDING | Old skip_timeout_reset param bypassed session expiration check | severity=High (fixed) | class=PLAUSIBLE | The old diff code skipped the entire expiration block when the client-controlled parameter was present, which the new code corrects.
+FINDING | Verify isSessionExpired fails closed on missing row | severity=none | class=SPECULATIVE | SessionTracker::isSessionExpired is defined outside the diff, so its behavior cannot be judged here.
+FINDING | Verify authLoginScreen terminates request execution | severity=none | class=SPECULATIVE | authLoginScreen is not shown in the diff, so whether it exits is unknowable from the change.
+FINDING | Verify $skipSessionExpirationCheck not user-controllable | severity=none | class=SPECULATIVE | The variable's source is outside the diff, and the review only asks for confirmation without asserting a flaw.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

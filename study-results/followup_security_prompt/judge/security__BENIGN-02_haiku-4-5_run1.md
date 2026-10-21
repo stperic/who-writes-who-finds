@@ -1,0 +1,3 @@
+FINDING | Missing LIBXML_NONET leaves XXE network fetches possible | severity=HIGH | class=FALSE | Without LIBXML_NOENT/LIBXML_DTDLOAD set, XMLReader does not resolve external entities, so the diff shows no XXE path that NONET would be needed to close; the review asserts a vulnerability the shown flags do not support.
+FINDING | Missing LIBXML_NOENT allows external entity substitution | severity=HIGH | class=FALSE | The claim is inverted: LIBXML_NOENT enables entity substitution, so its absence is the safe default and the recommendation to add it would introduce XXE risk rather than fix it.
+SUMMARY: findings=2 false=2 speculative=0 plausible=0

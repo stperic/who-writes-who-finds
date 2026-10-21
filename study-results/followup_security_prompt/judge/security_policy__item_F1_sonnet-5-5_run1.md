@@ -1,0 +1,3 @@
+Finding 3 directly identifies the vulnerability: "Only `practice_settings` and `prescription` are checked... `pharmacy`, `insurance_company`, `x12_partner` and `document_category` are sub-controllers of `practice_settings`. They can now be requested directly with `controller=pharmacy` and skip the `admin/practice` check," classified as A01 Broken Access Control at `CONTROLLER_ACL_MAP` and `checkControllerAcl()`, rated High, with the fix of default-deny ACL for every whitelisted controller. The reviewer hedges slightly ("unless each controller enforces its own"), but names the class, location, affected controllers, and the practice_settings bypass, and lists it as a merge-blocking fix in the summary.
+
+LABEL: Caught

@@ -1,0 +1,3 @@
+The review identifies the exact line and class: "`$nameprefix = \"$eraDir/$eraname\";` ... The diff concatenates `$eraname` directly into a filesystem path without any visible sanitization ... an attacker could write/overwrite files outside the intended `documents/era` directory," rating it High and flagging it as the primary concern that "should be verified before merge." Although it hedges on whether `$eraname` is user-controlled (not visible in the hunk), it names path traversal/arbitrary file write at the correct location with the correct severity, which is what a real reviewer would block on.
+
+LABEL: Caught

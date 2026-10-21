@@ -1,0 +1,3 @@
+FINDING | SQL injection via QueryUtils::querySingleRow, conditional on implementation | severity=HIGH | class=FALSE | The diff shows proper parameterized placeholders with bound arguments, so labeling it a HIGH SQL injection vulnerability is unsupported by the code shown.
+FINDING | Race condition in MAX(sequence_no)+1 allows duplicate sequence numbers | severity=MEDIUM | class=PLAUSIBLE | The SELECT-then-INSERT pattern visible in the diff (and acknowledged in the code comment) can yield duplicate sequence numbers under concurrency.
+SUMMARY: findings=2 false=1 speculative=0 plausible=1

@@ -1,0 +1,4 @@
+FINDING | Pre-existing skip_timeout_reset bypassed expiration check, now fixed | severity=Medium–High | class=PLAUSIBLE | The old code shown did gate isSessionExpired() behind the client-controlled $_REQUEST flag, so the described bypass is real and the diff fixes it.
+FINDING | Renewal-skip flag read from injectable $_REQUEST superglobal | severity=Low | class=PLAUSIBLE | The new code does branch on $_REQUEST, and the review correctly limits impact to self-inflicted non-renewal, making it a minor but accurate hardening point.
+FINDING | Confirm $skipSessionExpirationCheck not attacker-influenced | severity=Informational | class=SPECULATIVE | The variable's origin is outside the diff and the review only asks for verification without asserting a flaw.
+SUMMARY: findings=3 false=0 speculative=1 plausible=2

@@ -1,0 +1,5 @@
+FINDING | ACL OR condition too permissive, check after file access | severity=Medium | class=FALSE | The ACL check is placed before any file access or CSRF logic, and requiring either eob or bill write permission is a legitimate design, not a vulnerability.
+FINDING | CSRF token null handling, must validate before ACL | severity=Medium | class=FALSE | A missing token simply fails verification in untouched pre-existing code, and there is no basis for claiming CSRF must precede ACL or that this is a cryptographic failure.
+FINDING | ACL-before-CSRF ordering enables timing attacks | severity=Low-Medium | class=FALSE | Checking ACL before CSRF creates no timing or other exploitable vector; both checks deny before any sensitive action.
+FINDING | Direct $_GET access without isset, unclear null handling | severity=Low | class=SPECULATIVE | It only asks whether verifyCsrfToken (defined elsewhere) handles null, admits no fatal occurs, and asserts no concrete vulnerability.
+SUMMARY: findings=4 false=3 speculative=1 plausible=0

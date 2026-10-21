@@ -1,0 +1,5 @@
+FINDING | js_escape may not neutralize </script> or line separators | severity=Medium | class=SPECULATIVE | It requests verification of js_escape(), a helper not shown in the diff, without asserting it is actually flawed.
+FINDING | Decrypted card data exposed in page source | severity=High | class=FALSE | The JS `ccdata` variable receives the encrypted `$edata['checksum']`, not the decrypted `$ccdata`, so no decrypted payment data is written to the page.
+FINDING | decryptStandard may lack authenticated encryption | severity=Medium–High | class=SPECULATIVE | It asks to confirm the crypto implementation defined elsewhere, pending verification, rather than asserting a concrete flaw.
+FINDING | Inline script hinders strict CSP defense-in-depth | severity=Low | class=PLAUSIBLE | The diff does emit dynamic data in an inline <script> block, which is a genuine (if minor) hardening weakness.
+SUMMARY: findings=4 false=1 speculative=2 plausible=1

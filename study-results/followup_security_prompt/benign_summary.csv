@@ -1,0 +1,6 @@
+model_slug,security_reviews_with_false_alert,security_reviews_with_false_medium_plus,security_findings,security_plausible,security_speculative,security_false,security_policy_reviews_with_false_alert,security_policy_reviews_with_false_medium_plus,security_policy_findings,security_policy_plausible,security_policy_speculative,security_policy_false
+sonnet-5,4,1,22,6,12,4,5,2,37,11,20,6
+haiku-4-5,6,4,15,3,3,9,9,9,25,4,4,17
+sonnet-5-5,0,0,25,12,13,0,0,0,41,13,28,0
+opus-5-5,0,0,25,11,14,0,0,0,30,11,19,0
+haiku-5-5,2,1,31,9,20,2,4,2,40,10,26,4

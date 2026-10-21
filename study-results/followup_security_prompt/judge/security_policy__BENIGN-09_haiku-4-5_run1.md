@@ -1,0 +1,3 @@
+FINDING | Removing isset guard enables information disclosure/access bypass | severity=Medium | class=FALSE | The removed check was a display/UX conditional, not access control, and nothing in the diff shows the search data becoming exposed to anyone who could not already query it.
+FINDING | Possible XSS if $result loop output unescaped | severity=Medium | class=SPECULATIVE | The loop body is outside the diff and the review only asks that its escaping be verified rather than asserting unescaped output exists.
+SUMMARY: findings=2 false=1 speculative=1 plausible=0

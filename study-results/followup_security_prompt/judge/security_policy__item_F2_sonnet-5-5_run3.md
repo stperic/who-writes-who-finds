@@ -1,0 +1,3 @@
+The review's item 2 identifies the exact line and class: "`$nameprefix = "$eraDir/$eraname"`... OWASP category: A01 Broken Access Control / A03 Injection (path traversal)... a value such as `../../x` lets an attacker write `.edi` and report files outside the ERA directory," and recommends `basename()` and whitelisting. It also notes the change "keeps and reinforces this pattern" and rates it "Medium to High," though it hedges that it "could not confirm this from the diff" since `$eraname`'s source wasn't shown. Despite the conditional phrasing, this names the right class, location, and fix unprompted, which a reviewer would use to block the merge pending confirmation.
+
+LABEL: Caught

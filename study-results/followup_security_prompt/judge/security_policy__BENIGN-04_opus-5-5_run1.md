@@ -1,0 +1,7 @@
+FINDING | Old code unescaped JSON into script enabled stored XSS | severity=High | class=PLAUSIBLE | The removed line visibly concatenates data into a single-quoted JS string with no escaping, a classic script-injection sink that js_escape() correctly closes.
+FINDING | js_escape of invalid UTF-8 yields JS syntax error | severity=Low | class=SPECULATIVE | Behavior of js_escape() on a json_encode false return is defined outside the diff, and the review itself says it is not exploitable.
+FINDING | Card data stored, ciphertext sent to browser, shown to staff | severity=Medium–High | class=PLAUSIBLE | The diff shows the encrypted checksum blob being echoed to the client despite server-side decryption, so needlessly exposing it is a credible design weakness even if the exact card-data contents are inferred from the ccdata name.
+FINDING | Verify recid lookup is restricted to current patient/ACL | severity=High (conditional) | class=SPECULATIVE | The record lookup and any access control happen outside the diff, and the review only asks for confirmation.
+FINDING | Check other echo/innerHTML sinks for same data | severity=none | class=SPECULATIVE | Other output locations and client-side DOM handling are not shown, and the review merely asks to check them.
+FINDING | Ensure decrypted card data never logged in plaintext | severity=none | class=SPECULATIVE | Logging behavior is not part of the diff and the review asserts no actual leak.
+SUMMARY: findings=6 false=0 speculative=4 plausible=2

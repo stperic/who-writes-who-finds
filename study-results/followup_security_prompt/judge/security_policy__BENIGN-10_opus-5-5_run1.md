@@ -1,0 +1,2 @@
+FINDING | Hidden fields user-modifiable; server must validate amounts | severity=none | class=SPECULATIVE | The review notes client-side values can be tampered with but asserts no vulnerability, deferring to server-side validation that cannot be judged from the diff.
+SUMMARY: findings=1 false=0 speculative=1 plausible=0

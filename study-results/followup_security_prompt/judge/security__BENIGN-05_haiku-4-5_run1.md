@@ -1,0 +1,4 @@
+FINDING | skip_timeout_reset lets attackers keep sessions alive | severity=HIGH | class=FALSE | The parameter only suppresses the timer reset (expiring sooner), the expiration check now always runs, so it cannot extend a session and the change actually removes the prior bypass.
+FINDING | authUser/authProvider in audit log may cause stored XSS | severity=MEDIUM | class=SPECULATIVE | The logging line is unchanged and the concern depends on EventAuditLogger and log-rendering code not shown, framed as a verification request.
+FINDING | skip_timeout_reset usage not logged, silent session extension | severity=MEDIUM | class=FALSE | Rests on the inverted premise that the parameter extends sessions, whereas omitting it is what resets the timer and that is ordinary behavior for every request.
+SUMMARY: findings=3 false=2 speculative=1 plausible=0

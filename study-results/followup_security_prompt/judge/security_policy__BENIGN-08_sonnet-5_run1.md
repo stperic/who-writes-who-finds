@@ -1,0 +1,5 @@
+FINDING | Pre-existing MAX+1 race condition on sequence numbers | severity=Medium–High | class=PLAUSIBLE | The non-atomic SELECT MAX+1 pattern is visible in the diff and acknowledged by the code comment, and duplicate sequence numbers are a credible integrity weakness in financial records.
+FINDING | New RuntimeException may leak details or go unlogged | severity=Low–Medium | class=SPECULATIVE | Whether the caller catches, logs, or exposes the exception is outside the diff, and the review only asks for confirmation rather than asserting a flaw.
+FINDING | Authorization for patient/encounter writes not verified in method | severity=Informational/Medium | class=SPECULATIVE | Access control enforcement by callers cannot be judged from the diff and the review explicitly flags it only for verification.
+FINDING | SQL injection absent, confirm QueryUtils binds parameters | severity=none | class=SPECULATIVE | The query uses placeholders and the review asserts no vulnerability, merely asking to confirm the externally defined helper's binding behavior.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

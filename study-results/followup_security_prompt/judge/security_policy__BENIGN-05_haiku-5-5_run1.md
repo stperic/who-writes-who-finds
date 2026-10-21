@@ -1,0 +1,7 @@
+FINDING | Old skip_timeout_reset bypassed expiration check entirely | severity=High (resolved) | class=PLAUSIBLE | The old condition shown in the diff skipped both the expiry check and forced logout whenever the client-supplied parameter was present, which the new code corrects.
+FINDING | skip_timeout_reset now only suppresses timer refresh | severity=Informational | class=PLAUSIBLE | The diff confirms the parameter can only prevent extension of the caller's own session, an accurate low-impact residual observation rather than a vulnerability.
+FINDING | $skipSessionExpirationCheck origin must be trusted server-side | severity=Medium (pending verification) | class=SPECULATIVE | The variable is assigned outside the diff, so the review correctly asks for verification without asserting a bypass exists.
+FINDING | Confirm audit log runs before authCloseSession() | severity=Informational | class=FALSE | The diff plainly shows the EventAuditLogger call precedes authCloseSession(), so the raised concern is already answered by the visible code.
+FINDING | Enclosing condition must restrict block to authenticated sessions | severity=none | class=SPECULATIVE | The surrounding `if (` guard is not shown, so this is a verification request about context outside the diff.
+FINDING | isSessionExpired() should read server-side state, fail closed | severity=none | class=SPECULATIVE | SessionTracker's implementation is not in the diff, so the review only asks to confirm its behavior.
+SUMMARY: findings=6 false=1 speculative=3 plausible=2

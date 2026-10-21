@@ -1,0 +1,5 @@
+FINDING | Old code concatenated sort field into ORDER BY, injectable | severity=none | class=PLAUSIBLE | The diff shows getField() was interpolated unchecked before, and the whitelist now addresses that.
+FINDING | Whitelist safety depends on callers passing static lists | severity=none | class=SPECULATIVE | Call sites and their $allowedColumns contents are not in the diff, so this is a verification request only.
+FINDING | Rejected sort fields silently dropped without logging | severity=very low | class=PLAUSIBLE | The shown code does `continue` with no log entry, a minor but accurate monitoring gap.
+FINDING | Sibling WHERE/LIMIT/OFFSET builders may interpolate config values | severity=none | class=SPECULATIVE | Those methods are outside the diff; the review only asks for them to be reviewed, asserting no vulnerability.
+SUMMARY: findings=4 false=0 speculative=2 plausible=2

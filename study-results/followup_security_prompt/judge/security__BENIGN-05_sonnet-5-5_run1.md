@@ -1,0 +1,4 @@
+FINDING | Old code let skip_timeout_reset bypass session expiry check | severity=none | class=PLAUSIBLE | The removed code shows the client-controlled $_REQUEST parameter skipped the entire isSessionExpired() check, so the fix description is accurate.
+FINDING | skip_timeout_reset still client-controlled but fails closed | severity=low | class=PLAUSIBLE | The diff confirms the parameter now only suppresses the timer refresh, which cannot extend a session and is correctly judged low risk.
+FINDING | Verify authLoginScreen(true) terminates the request | severity=none | class=SPECULATIVE | authLoginScreen is defined outside the diff and the review asks for verification without asserting a vulnerability.
+SUMMARY: findings=3 false=0 speculative=1 plausible=2

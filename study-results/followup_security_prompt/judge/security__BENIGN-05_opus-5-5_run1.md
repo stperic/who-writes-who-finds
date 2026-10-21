@@ -1,0 +1,4 @@
+FINDING | Old code let skip_timeout_reset bypass session expiration | severity=Medium to High | class=PLAUSIBLE | The removed code shows the request parameter gating the entire expiration check, so an expired session could persist by supplying it.
+FINDING | Verify authLoginScreen(true) halts execution after logout | severity=none | class=SPECULATIVE | authLoginScreen is defined outside the diff, so whether it exits cannot be judged here and no vulnerability is asserted.
+FINDING | Check $skipSessionExpirationCheck never set from user input | severity=none | class=SPECULATIVE | The variable's assignments live in other scripts not shown, and the review frames it as a defensive check rather than a flaw.
+SUMMARY: findings=3 false=0 speculative=2 plausible=1

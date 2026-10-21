@@ -1,0 +1,3 @@
+FINDING | Interface added without visible patient-scoping implementation | severity=Medium–High | class=SPECULATIVE | The review hedges with "if" and asks to verify methods defined outside the diff rather than asserting a flaw.
+FINDING | Managing organization argument change may break attribution | severity=Low | class=SPECULATIVE | It requests verification of `addManagingOrganization`'s signature (not shown) and the review itself concedes it is primarily a correctness concern.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

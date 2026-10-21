@@ -1,0 +1,7 @@
+FINDING | Original unescaped JS concatenation was XSS, now fixed | severity=High | class=PLAUSIBLE | The diff shows DB values concatenated directly into single-quoted JS strings, and the fix replaces that with js_escape.
+FINDING | Verify js_escape implementation cannot emit literal </script> | severity=Low | class=SPECULATIVE | js_escape is defined outside the diff and the review only asks to confirm its behavior without asserting a flaw.
+FINDING | Encrypted card blob and invoice data exposed to browser | severity=Medium | class=PLAUSIBLE | The diff visibly echoes the checksum ciphertext and table_args into page JS, which is a specific insecure-design exposure concern.
+FINDING | Client round-trip of ccdata could allow tampering/oracle | severity=Medium | class=SPECULATIVE | Whether the server later accepts ccdata back from the client is not shown and the review only asks to check.
+FINDING | $edata lookup may be IDOR if not session-bound | severity=none | class=SPECULATIVE | The query selecting $edata is outside the diff and the review requests verification rather than asserting a vulnerability.
+FINDING | Unchecked decrypt/json_decode results silently yield null | severity=Low | class=PLAUSIBLE | The diff shows both decode calls with no failure handling, a concrete weakness in the touched code.
+SUMMARY: findings=6 false=0 speculative=3 plausible=3

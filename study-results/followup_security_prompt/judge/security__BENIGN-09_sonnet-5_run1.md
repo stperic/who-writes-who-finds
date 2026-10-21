@@ -1,0 +1,4 @@
+FINDING | Undefined $result causes PHP notice info disclosure | severity=Low | class=SPECULATIVE | Relies on a presumed unguarded foreach not shown in the diff plus display_errors being enabled, so it cannot be judged from the change itself.
+FINDING | Removing "No groups found" branch is insecure design | severity=Low | class=FALSE | Dropping a UI fallback message is a functional/cosmetic regression, not a security weakness, and the review identifies no concrete exploitable state.
+FINDING | Unseen foreach may echo unescaped data (XSS) | severity=none | class=SPECULATIVE | Explicitly a request to double-check code outside the diff without asserting a vulnerability.
+SUMMARY: findings=3 false=1 speculative=2 plausible=0

@@ -1,0 +1,3 @@
+The review's Issue 1 directly identifies the vulnerability: "The `CONTROLLER_ACL_MAP` only covers 2 controllers (`practice_settings`, `prescription`), but `VALID_CONTROLLERS` whitelist contains 9 controllers. Controllers not in the ACL map return early from `checkControllerAcl()` without any authorization check, allowing unrestricted access," rated High and "Must Fix," with the correct fail-closed remediation. It names the class (broken access control), the exact location (checkControllerAcl early return / CONTROLLER_ACL_MAP), and the right severity, even though it doesn't spell out the concrete x12_partner/patient_finder impact.
+
+LABEL: Caught

@@ -1,0 +1,4 @@
+FINDING | Client-side computed payment values trusted by server | severity=High | class=SPECULATIVE | The review explicitly conditions this on server-side PHP handling not shown in the diff and asks for confirmation rather than asserting the server trusts the values.
+FINDING | innerHTML assignment of Math.round result is XSS risk | severity=Low | class=FALSE | Math.round always yields a number (or NaN), so the assigned value cannot carry markup and the review itself concedes no attacker-controlled content reaches the sink.
+FINDING | Hidden field values lack validation before arithmetic | severity=Medium | class=FALSE | Client-side validation of values the user already controls in their own browser is not a security boundary, and the only security-relevant check (server-side) is outside the diff and already covered by the first finding.
+SUMMARY: findings=3 false=2 speculative=1 plausible=0

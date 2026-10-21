@@ -1,0 +1,3 @@
+The review's finding 1 directly identifies the vulnerability: "`CONTROLLER_ACL_MAP` has entries only for `practice_settings` and `prescription`. Every other whitelisted controller (`document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `pharmacy`, `x12_partner`, `patient_finder`) is dispatched with no ACL check at the router," and notes that sub-controllers like `pharmacy` meant to sit under `practice_settings`/`admin/practice` are "now directly routable via `controller=pharmacy`," bypassing that permission. It rates it High, recommends "Deny by default when no entry exists," and blocks merge on it, matching the advisory's class, location, and severity even though it hedges with "pending verification."
+
+LABEL: Caught

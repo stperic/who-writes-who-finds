@@ -1,0 +1,3 @@
+The review identifies the exact line and class: "`$nameprefix = \"$eraDir/$eraname\";` ... A01:2021 Broken Access Control / A03:2021 Injection (path traversal)... a value like `../../../somefile` could escape the `era` directory," and notes it affects both reads and report writes. However, it treats this as a "Context note, not introduced by this diff," makes severity conditional ("N/A if validation exists elsewhere"), and renders a verdict of "**Approve**," so it would not block the merge for this reason despite correctly locating the flaw.
+
+LABEL: Partial

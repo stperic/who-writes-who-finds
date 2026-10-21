@@ -1,0 +1,2 @@
+FINDING | Verify IPatientCompartmentResourceService method exists and maps correctly | severity=none | class=SPECULATIVE | The review asks to confirm an unseen method (getPatientContextSearchField) is implemented correctly for patient-scoped filtering, which cannot be judged from the diff and no vulnerability is asserted.
+SUMMARY: findings=1 false=0 speculative=1 plausible=0

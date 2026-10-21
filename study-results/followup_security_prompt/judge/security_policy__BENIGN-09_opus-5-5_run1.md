@@ -1,0 +1,4 @@
+FINDING | Undefined $result may leak paths via PHP warnings | severity=Low | class=PLAUSIBLE | The diff does remove the isset guard, so an undefined variable on first load is credible, though disclosure requires display_errors on.
+FINDING | Confirm group search query uses bound parameters | severity=none | class=SPECULATIVE | The query is outside the diff and the review asks for verification without asserting a flaw.
+FINDING | Confirm page enforces calendar/groups ACL | severity=none | class=SPECULATIVE | ACL handling is not in the diff and the review explicitly has no evidence of a flaw.
+SUMMARY: findings=3 false=0 speculative=2 plausible=1

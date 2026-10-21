@@ -1,0 +1,3 @@
+FINDING | Pre-existing MAX+1 race may duplicate sequence numbers | severity=Low/Informational | class=PLAUSIBLE | The diff's own comment confirms the non-atomic SELECT-then-INSERT, so concurrent postings could collide on sequence_no, a credible data-integrity weakness in touched code.
+FINDING | Ensure callers don't silently swallow new exception | severity=none | class=SPECULATIVE | Callers are outside the diff and the review only asks to verify handling without asserting a vulnerability.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

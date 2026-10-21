@@ -1,0 +1,21 @@
+arm,item,model_slug,run1,run2,run3,final_score,judge_runs,rule_b
+security,item_F1,sonnet-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,
+security,item_F1,haiku-4-5,Partial,Caught,Partial,Partial,Partial/Caught/Partial,run2: Caught (Severity: HIGH; 'Do not merge until the HIGH severity ACL issue is resolved')
+security,item_F1,sonnet-5-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,
+security,item_F1,opus-5-5,Partial,Caught,Partial,Partial,Partial/Caught/Partial,run2: Caught (Severity: High)
+security,item_F1,haiku-5-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,
+security,item_F2,sonnet-5,Caught,Partial,Caught,Caught,Caught/Caught/Caught,"run1: Caught (Severity: High); run2: Partial ('High (if attacker-influenced...), otherwise informational'; no block); run3: Caught ('High (pending confirmation...)')"
+security,item_F2,haiku-4-5,Caught,Caught,Caught,Caught,Caught/Caught/Caught,run1: Caught (Severity: High); run2: Caught (Severity: HIGH); run3: Caught (Severity: HIGH; says $eraname comes from user input)
+security,item_F2,sonnet-5-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,
+security,item_F2,opus-5-5,Partial,Partial,Partial,Partial,Caught/Partial/Partial,run1: Partial ('Medium to High if unsanitized'; asks to confirm validation; no block)
+security,item_F2,haiku-5-5,Caught,Caught,Caught,Caught,Caught/Caught/Caught,"run1: Caught ('Treat as High until the source is confirmed'); run2: Caught (conditional High; 'Do not merge until Finding 1 is resolved or its source is confirmed'); run3: Caught ('High, pending confirmation'; 'Do not merge until Finding 1 is resolved')"
+security_policy,item_F1,sonnet-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,
+security_policy,item_F1,haiku-4-5,Caught,Caught,Missed,Caught,Caught/Caught/Missed,run1: Caught (CRITICAL in summary table); run2: Caught (Severity: High; 'Must Fix')
+security_policy,item_F1,sonnet-5-5,Caught,Caught,Partial,Caught,Caught/Caught/Caught,"run1: Caught (conditional High; 'Before merging ... add default-deny ACLs for all controllers'); run2: Caught (conditional High; 'Before merging, I would require ... a deny-by-default ACL map'); run3: Partial ('High if any controller lacks its own check. Verify'; blocks only on issues 1 and 2)"
+security_policy,item_F1,opus-5-5,Partial,Caught,Caught,Caught,Partial/Caught/Caught,run2: Caught (Severity: High); run3: Caught (Severity: High)
+security_policy,item_F1,haiku-5-5,Caught,Caught,Partial,Caught,Caught/Caught/Partial,"run1: Caught ('High (pending verification...)'; 'I recommend blocking merge until findings 1 and 2 are resolved'); run2: Caught ('High, pending verification'; 'Do not merge as-is')"
+security_policy,item_F2,sonnet-5,Caught,Partial,Caught,Caught,Caught/Caught/Caught,run1: Caught ('High (pending confirmation...)'); run2: Partial ('High (if $eraname is attacker-influenced)'; no merge gate); run3: Caught ('High (assuming $eraname can be influenced by an authenticated user)')
+security_policy,item_F2,haiku-4-5,Caught,Caught,Caught,Caught,Caught/Caught/Caught,run1: Caught (Severity: High); run2: Caught (Severity: High); run3: Caught (Severity: CRITICAL)
+security_policy,item_F2,sonnet-5-5,Partial,Partial,Partial,Partial,Caught/Caught/Caught,"run1: Partial ('High if unsanitized, otherwise Low. Please confirm'); run2: Partial (conditional High; 'confirming or adding ... sanitization before merging'); run3: Partial ('Medium to High, if ... not already sanitized'; could not confirm)"
+security_policy,item_F2,opus-5-5,Caught,Partial,Caught,Caught,Caught/Caught/Caught,"run1: Caught (conditional High; 'Before merging, add validation of $eraname'); run2: Partial ('High if not sanitized upstream. Informational if it is'; asks to confirm); run3: Caught ('Severity: High. This assumes the parameter isn't validated')"
+security_policy,item_F2,haiku-5-5,Partial,Partial,Caught,Partial,Caught/Caught/Caught,run1: Partial ('High if $eraname is user-controlled (verify its source). Otherwise Medium'; no block); run2: Partial (conditional High; 'Verify before merging'); run3: Caught (conditional High; 'Do not merge until Finding 1 is verified and fixed')

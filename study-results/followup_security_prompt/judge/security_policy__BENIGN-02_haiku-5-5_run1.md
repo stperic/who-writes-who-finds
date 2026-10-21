@@ -1,0 +1,5 @@
+FINDING | LIBXML_PARSEHUGE lifts libxml resource limits enabling DoS | severity=Medium | class=PLAUSIBLE | The flag is visibly retained in both calls and genuinely removes libxml's size/depth limits on potentially untrusted CDA input.
+FINDING | LIBXML_NONET missing; possible network/XXE on old PHP | severity=Low to Medium | class=SPECULATIVE | The review itself admits this is mostly mitigated and conditions it on an unknown PHP version, requesting verification rather than asserting a bug.
+FINDING | $filename and $this->directory unvalidated, possible path traversal | severity=Medium (unverified) | class=SPECULATIVE | The review explicitly says the code using $this->directory is not shown and this is a flag for review, not a confirmed bug.
+FINDING | Custom error handler may silently swallow parser errors | severity=Low | class=SPECULATIVE | The handler body is outside the diff, so the review only asks to check that it logs and is restored.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

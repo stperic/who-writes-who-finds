@@ -1,0 +1,3 @@
+FINDING | JsonException swallowed without logging (A09) | severity=Informational | class=PLAUSIBLE | The catch block shown does discard the exception silently, a specific and credible (if minor) logging gap in the touched code.
+FINDING | Verify $where derivation and document access control | severity=none | class=SPECULATIVE | The review explicitly says it did not evaluate how `$where` is built and merely recommends a separate look, asserting no vulnerability.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

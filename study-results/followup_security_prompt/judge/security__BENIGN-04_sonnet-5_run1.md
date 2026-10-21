@@ -1,0 +1,3 @@
+FINDING | js_escape implementation unverified, fix may be incomplete | severity=Medium–High | class=SPECULATIVE | Asks to verify a helper defined outside the diff without asserting it is actually flawed.
+FINDING | Decrypted payment data exposed to client-side JavaScript | severity=Medium | class=FALSE | The diff echoes the raw encrypted `$edata['checksum']`, not the decrypted `$ccdata`, so decrypted data is not sent to the browser.
+SUMMARY: findings=2 false=1 speculative=1 plausible=0

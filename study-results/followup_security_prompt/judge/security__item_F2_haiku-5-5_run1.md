@@ -1,0 +1,3 @@
+The review's Finding 1 identifies the exact sink and class: "`$nameprefix = "$eraDir/$eraname";`... `$eraname` is concatenated into a filesystem path without validation... a value such as `../../../config` could read or write files outside `documents/era/`," labels it path traversal, rates it High, and recommends `basename()`/allowlist validation and `realpath` checks. Although it hedges that the source of `$eraname` is outside the diff, it explicitly says to "Treat as High until the source is confirmed" and recommends requesting changes before merge, which matches the advisory's class, location, and severity.
+
+LABEL: Caught

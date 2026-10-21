@@ -1,0 +1,3 @@
+The review's first item directly names the vulnerability class and location: "Path Traversal via `$eraname` ... **Location:** `$nameprefix = "$eraDir/$eraname";`" and explains that "if `$eraname` ... contains sequences such as `../`, an attacker could write or read files outside the intended `documents/era` directory," recommending `basename()` or a whitelist regex. It assigns High severity (conditional on user influence, which it could not verify from the diff) and explicitly asks for confirmation of `$eraname`'s source before approving, which matches the advisory's class, location, and impact.
+
+LABEL: Caught

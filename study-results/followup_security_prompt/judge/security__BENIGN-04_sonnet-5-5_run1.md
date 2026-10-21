@@ -1,0 +1,5 @@
+FINDING | Pre-existing stored XSS via unescaped inline script values | severity=high | class=PLAUSIBLE | The old code shown concatenates DB values into a single-quoted JS string, so quotes, backslashes or </script> would break out, and js_escape is a correct fix.
+FINDING | Encrypted card checksum blob exposed to browser | severity=informational | class=SPECULATIVE | The review itself says it is encrypted and not directly exploitable, and asks to verify whether the client needs it, which the diff cannot show.
+FINDING | Inline script forces CSP unsafe-inline; use data attributes | severity=optional/hardening | class=PLAUSIBLE | The diff does emit an inline script block, so the CSP hardening observation is accurate though framed as non-blocking.
+FINDING | Confirm js_escape is in the include chain | severity=none | class=SPECULATIVE | This asks to verify a helper defined outside the diff and the review notes a missing function is a fatal error, not a security hole.
+SUMMARY: findings=4 false=0 speculative=2 plausible=2

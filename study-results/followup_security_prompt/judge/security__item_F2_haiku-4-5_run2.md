@@ -1,0 +1,3 @@
+The review's issue #2 names "Path Traversal / Injection Vulnerability" at the exact line, quoting `$nameprefix = "$eraDir/$eraname";` and explaining that "if `$eraname` contains path traversal sequences... an attacker could write files outside the intended ERA directory," rated HIGH, with a basename()/whitelist fix recommended. This matches the known vulnerability's class, location, and severity, and a reviewer would block the merge on this basis.
+
+LABEL: Caught

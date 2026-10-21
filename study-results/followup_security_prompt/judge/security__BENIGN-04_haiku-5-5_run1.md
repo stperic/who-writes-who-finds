@@ -1,0 +1,4 @@
+FINDING | Verify js_escape safely escapes script-breaking sequences | severity=High if weak, Low if safe | class=SPECULATIVE | The old line's XSS is real but the finding only asks to confirm an unseen helper's implementation rather than asserting the new code is vulnerable.
+FINDING | Encrypted payment ciphertext emitted into page JavaScript | severity=Medium | class=FALSE | The value is ciphertext from decryptStandard's key and the diff shows neither its plaintext contents nor that the client does not need it, so no exposure is demonstrated.
+FINDING | Confirm $edata access control, CSRF, input validation | severity=Unknown | class=SPECULATIVE | It explicitly concerns code outside the diff and requests verification without asserting a vulnerability.
+SUMMARY: findings=3 false=1 speculative=2 plausible=0

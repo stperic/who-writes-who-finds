@@ -1,0 +1,5 @@
+FINDING | Pre-change ORDER BY concatenation was SQL injection sink | severity=none | class=PLAUSIBLE | The removed line interpolates `$search->getField()` directly into SQL, and the diff adds an allowlist precisely to close that sink.
+FINDING | Allowlist could be built from request data by callers | severity=low | class=SPECULATIVE | Caller-supplied `$allowedColumns` is not visible in the diff, so this is a verification request rather than an asserted flaw.
+FINDING | Field name may be concatenated unsafely elsewhere | severity=low | class=SPECULATIVE | Other uses of `SearchQueryConfig` fields in WHERE/GROUP BY are outside the diff and the review only asks for an audit.
+FINDING | Rejected sort fields silently dropped without logging | severity=low | class=PLAUSIBLE | The new code does `continue` with no logging, so the minor monitoring-gap observation is accurate to the shown code.
+SUMMARY: findings=4 false=0 speculative=2 plausible=2

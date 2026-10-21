@@ -1,0 +1,3 @@
+The review's Finding 4 identifies the exact location and class: "Only `practice_settings` and `prescription` have an ACL requirement. The other eight whitelisted controllers (including `document`, `hl7`, `insurance_numbers`, and `x12_partner`) are dispatched with no check at this layer," under A01 Broken Access Control, with the correct fix of default-deny ACL. However, it rates it only "Low to Medium (depends on whether each controller enforces its own ACL)", dismisses it as "not a regression", and explicitly says it "can be tracked as follow-ups" rather than block the merge — so it would not stop the bug for the right reason, missing the impact that these sub-controllers were meant to be gated through practice_settings' admin check.
+
+LABEL: Partial

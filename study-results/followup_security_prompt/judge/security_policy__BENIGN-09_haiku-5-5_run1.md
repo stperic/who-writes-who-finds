@@ -1,0 +1,3 @@
+FINDING | Undefined $result warning could leak paths via display_errors | severity=Low | class=SPECULATIVE | The loop over `$result` and any prior initialization are outside the diff, and the review conditions the warning/info-exposure on unseen code and deployment settings rather than asserting it.
+FINDING | Verify row escaping and search-parameter SQL handling | severity=Not assessable (High if unescaped/concatenated) | class=SPECULATIVE | The rendering loop and query construction are not in the diff, and the review explicitly frames this as a verification request contingent on unseen code.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

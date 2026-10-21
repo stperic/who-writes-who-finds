@@ -1,0 +1,3 @@
+FINDING | Pre-change ORDER BY concatenated unvalidated field, now whitelisted | severity=High | class=PLAUSIBLE | The diff shows the original code concatenated getField() directly into SQL with no validation, and the whitelist fix addresses that.
+FINDING | Verify callers populate allowedColumns with legitimate columns | severity=none | class=SPECULATIVE | Callers are not in the diff, so this is a verification request rather than an asserted vulnerability.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

@@ -1,0 +1,3 @@
+Finding #4 identifies the exact gap: "`VALID_CONTROLLERS` whitelist formally exposes 10 dispatchable controllers ... but `CONTROLLER_ACL_MAP` only enforces ACL for `practice_settings` and `prescription`," and notes that sensitive controllers "have no enforcement at this dispatch layer." However, it assigns only Medium severity with "verification required; may be pre-existing," treats it as a secondary hardening item behind the dynamic-dispatch findings, and does not identify the concrete impact (x12_partner credential rewriting, patient enumeration via patient_finder) or that these were intended to be reachable only via practice_settings. The right area and class are flagged, but the severity and merge-blocking conclusion are wrong.
+
+LABEL: Partial

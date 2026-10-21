@@ -1,0 +1,7 @@
+FINDING | Prior code concatenated sort field into ORDER BY, SQL injection | severity=none | class=PLAUSIBLE | The removed line clearly concatenates `getField()` unescaped into SQL, and the diff's allowlist is a genuine fix for that.
+FINDING | Callers must pass hardcoded allowlists; check call sites | severity=Low / informational | class=SPECULATIVE | Call sites are not in the diff, and the review only asks to verify them rather than asserting a bypass.
+FINDING | Rejected sort fields silently dropped, no logging | severity=Low | class=PLAUSIBLE | The `continue` shown in the diff does discard disallowed fields without any trace, a credible low-severity monitoring gap.
+FINDING | Allowlisted value concatenated unquoted; entries must be trusted | severity=Informational | class=SPECULATIVE | Safety depends on allowlist contents defined elsewhere, and the review frames this as a condition to confirm rather than a flaw.
+FINDING | Other clause builders in class may concatenate config values | severity=none | class=SPECULATIVE | The rest of the file is not shown, so this is an unverifiable request to audit.
+FINDING | Other codebase uses of getField() should be audited | severity=none | class=SPECULATIVE | Nothing outside this method is in the diff; the review merely suggests a wider audit.
+SUMMARY: findings=6 false=0 speculative=4 plausible=2

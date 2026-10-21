@@ -1,0 +1,5 @@
+FINDING | Race condition yields duplicate ar_activity sequence numbers | severity=Medium | class=PLAUSIBLE | The MAX()+1 read-then-insert pattern in the touched code is a real, code-acknowledged concurrency integrity flaw in payment records.
+FINDING | querySingleRow parameterization not visible, verify prepared statements | severity=Informational | class=SPECULATIVE | The diff shows bound placeholders and the review only asks to confirm the unseen helper's behavior without asserting a flaw.
+FINDING | is_numeric plus int cast accepts floats/exponents | severity=Low | class=FALSE | The value is a DB aggregate (MAX of integer column +1), not untrusted input, so no security weakness is supported by the shown code.
+FINDING | Callers must roll back and not leak exception | severity=Informational | class=SPECULATIVE | Caller behavior is outside the diff and the review merely requests verification rather than claiming a vulnerability.
+SUMMARY: findings=4 false=1 speculative=2 plausible=1

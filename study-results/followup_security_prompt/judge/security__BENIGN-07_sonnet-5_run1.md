@@ -1,0 +1,2 @@
+FINDING | Catch block swallows JsonException without logging | severity=Low | class=PLAUSIBLE | The diff shows the exception is discarded with no log call, so the review accurately identifies a minor observability gap in the touched code without overclaiming exploitability.
+SUMMARY: findings=1 false=0 speculative=0 plausible=1

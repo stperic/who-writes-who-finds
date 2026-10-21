@@ -1,0 +1,3 @@
+Finding 5 identifies the exact location and class: "Only `practice_settings` and `prescription` have dispatcher-level ACL checks. The other whitelisted controllers (`x12_partner`, `insurance_company`, `pharmacy`, `hl7`, `document_category`, and others) have none... Make the ACL map mandatory for every whitelisted controller... failing closed." However, the reviewer rates it only "Medium (verify each controller enforces its own ACL)", hedges on whether the sub-controllers are actually exposed rather than confirming the unauthenticated-to-privileged impact (x12_partner credential rewrite, patient enumeration), and explicitly says "Items 4 and 5 should be tracked as follow-ups" rather than blocking merge on it.
+
+LABEL: Partial

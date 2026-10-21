@@ -1,0 +1,3 @@
+The review explicitly identifies the vulnerable line and class: "`$eraname` in `$nameprefix = "$eraDir/$eraname"`... If any part of it comes from `$_GET`, `$_POST`, or an uploaded filename, it must be sanitized (for example with `basename()` or an allowlist of characters) to prevent path traversal." However, it frames this as an "item to verify (outside the diff)" with a verdict of "no exploitable vulnerabilities introduced by this diff," rather than confirming the input is unsanitized `$_REQUEST` data and blocking the merge. It names the right location and class but hedges on severity and doesn't assert the bug exists, so it would prompt a comment but not necessarily stop the merge.
+
+LABEL: Partial

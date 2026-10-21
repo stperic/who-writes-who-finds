@@ -1,0 +1,5 @@
+FINDING | Unescaped DB values in inline script enabled XSS | severity=High pre-fix; Low to Medium pending js_escape review | class=PLAUSIBLE | The removed line concatenates raw values into a single-quoted JS string, a genuine XSS this diff fixes, and the js_escape caveat is a reasonable verification note.
+FINDING | Change newly exposes encrypted card ciphertext to browser | severity=Medium to High | class=FALSE | The original line already echoed `$edata['checksum']` to the client, so the diff does not introduce this exposure and the finding misattributes pre-existing behavior to the change.
+FINDING | $edata lookup authorization scoping not visible | severity=Unknown | class=SPECULATIVE | It asks to verify access control in code outside the diff without asserting a vulnerability exists.
+FINDING | decryptStandard mode and integrity unknown | severity=Unknown | class=SPECULATIVE | It requests review of a helper defined elsewhere and does not claim a concrete weakness.
+SUMMARY: findings=4 false=1 speculative=2 plausible=1

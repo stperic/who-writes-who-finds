@@ -1,0 +1,6 @@
+FINDING | XInclude removal closes file-read/SSRF vector | severity=Positive change | class=PLAUSIBLE | The diff shows LIBXML_XINCLUDE being dropped, and XInclude in XMLReader does enable href-based file/network inclusion, so the mitigation claim is supported.
+FINDING | Verify no residual ->xinclude() call elsewhere | severity=Informational (verify) | class=SPECULATIVE | Whether another call enables XInclude cannot be judged from this diff and the review asserts no vulnerability.
+FINDING | LIBXML_NONET absent; defense-in-depth hardening gap | severity=Low / Informational | class=PLAUSIBLE | The option flags are visible in the diff and NONET is indeed not set, making it a specific though low-impact hardening gap.
+FINDING | Confirm LIBXML_NOENT unset and libxml/PHP versions current | severity=Low / Informational | class=SPECULATIVE | Other option usage and library versions are outside the diff and the review only requests confirmation.
+FINDING | Confirm $filename not user-controlled without validation | severity=none | class=SPECULATIVE | The source of $filename is not shown, and the review asks to verify rather than asserting a flaw.
+SUMMARY: findings=5 false=0 speculative=3 plausible=2

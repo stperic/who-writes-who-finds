@@ -1,0 +1,99 @@
+# Security Review: `library/classes/Controller.class.php` (`act()` → `dispatch()` refactor)
+
+## Summary
+
+The change improves on the old router in two ways:
+
+- **Controller whitelist.** Arbitrary `C_*.class.php` files can no longer be loaded.
+- **Closed ACL bypass.** The old code compared the *raw* first key to `practice_settings` / `prescription` but loaded the *sanitized* name. So `?practice_settings!=&...` skipped the ACL check and still loaded `C_PracticeSettings`. Running the ACL check against the whitelisted key fixes this.
+
+However, the refactor also introduces new weaknesses and keeps several serious existing ones.
+
+---
+
+## Findings
+
+### 1. Sub-controllers reachable directly with no ACL check
+**Location:** `CONTROLLER_ACL_MAP` and `checkControllerAcl()`
+**OWASP:** A01 Broken Access Control
+**Severity:** **High** (existed before, now codified by this change)
+**Problem:**
+- Only `practice_settings` (admin/practice) and `prescription` (patients/rx) have ACL entries.
+- `pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `document_category`, and `hl7` are normally reached as sub-controllers of `practice_settings`. They are also whitelisted as top-level controllers with no ACL.
+- Any authenticated user can therefore call, for example:
+  - `controller.php?controller=x12_partner&action=edit&process=true`
+  - `controller.php?controller=insurance_company&...`
+
+  This bypasses the admin/practice gate that applies when the same code is reached through `practice_settings`.
+- `patient_finder` (patient search, i.e. PHI) and `document` have no controller-level ACL. They rely entirely on whatever per-action checks exist inside those classes.
+
+**Recommendation:**
+- Give every whitelisted controller an explicit ACL entry, and deny by default if no entry exists.
+- At minimum, map the sub-controllers to `admin/practice` and `patient_finder` to `patients/demo`.
+- Verify the internal ACL checks in `C_Document`.
+
+### 2. Action name no longer sanitized; `method_exists()` guard removed
+**Location:** `dispatch()`, lines building `$action`, `$actionMethod` and `$processMethod`, and the `is_callable(...)` checks
+**OWASP:** A04 Insecure Design / A03 Injection
+**Severity:** **Medium**
+**Problem:**
+- The old code stripped the action to `[A-Za-z0-9_]`. It also required both `is_callable()` and `method_exists()`, with an explicit comment explaining why: Smarty 4's `__call` makes `is_callable()` always return true.
+- The new code takes `$params['action']` verbatim and checks only `is_callable()`. Because `Controller extends Smarty`, this check always passes.
+- As a result, any `{anything}_action` name is dispatched into Smarty's magic `__call` / extension handler instead of being rejected. That widens the attack surface to Smarty internals, such as its getter/setter-style extension method resolution, that were never meant to be reachable from a URL.
+- The `NotFoundHttpException` branch becomes dead code.
+- The `_action_process` branch has the same problem. Any request with `process=true` invokes `__call` for nonexistent process methods.
+
+**Recommendation:**
+- Restore the `method_exists()` check, or better, use reflection to require a public method declared on the concrete controller class.
+- Validate `$action` against `/^[A-Za-z0-9_]+$/` before use.
+
+### 3. Reflected user input in exception messages (possible XSS)
+**Location:** `throw new NotFoundHttpException("Action '$action' does not exist on controller: $className")`
+**OWASP:** A03 Injection (XSS)
+**Severity:** **Medium** (depends on how the exception handler renders messages)
+**Problem:**
+- Before, `$c_action` was alphanumeric-only before being echoed. Now the raw, unsanitized `action` parameter is embedded in the exception message.
+- If the global or Symfony error handler displays exception messages in HTML without escaping (common in debug or dev setups, and in some legacy OpenEMR error pages), this becomes reflected XSS: `?controller=document&action=<script>...</script>`.
+- Even when it isn't rendered, it allows log injection.
+
+**Recommendation:** Validate the action (see #2) and avoid echoing raw input. If it must be echoed, escape it.
+
+### 4. State-changing "process" path triggerable via GET (CSRF)
+**Location:** the `if (isset($params['process'])) { ... $_POST['process'] = "true"; }` block
+**OWASP:** A01 Broken Access Control (CSRF) / A04 Insecure Design
+**Severity:** **High** (existed before; retained and relied on by this change)
+**Problem:**
+- A GET parameter promotes the request to a "POST process" request. This executes `*_action_process` methods, which create, update, or delete pharmacies, insurance companies, X12 partners, prescriptions, documents, and so on.
+- Nothing here verifies a CSRF token. A malicious link or `<img src=".../controller.php?controller=pharmacy&action=edit&process=true&...">` can perform writes as a logged-in clinician.
+- Combined with #1, the same technique can drive admin-level writes.
+
+**Recommendation:**
+- Require an actual POST for process actions.
+- Enforce `CsrfUtils::verifyCsrfToken()` centrally in `dispatch()` whenever processing.
+- Remove the GET-to-POST promotion.
+
+### 5. Unvalidated parameter names and types passed as method arguments
+**Location:** `$args` construction in `dispatch()` and the `foreach` in `act()`
+**OWASP:** A04 Insecure Design
+**Severity:** **Low–Medium**
+**Problem:**
+- Every non-reserved query parameter is passed positionally, in attacker-controlled order. This includes `sub_action` and parameters that were previously ignored.
+- Values can be arrays (e.g. `?x[]=1`), where the old code effectively expected scalars.
+- An attacker can therefore shift which value lands in which method argument (such as `patient_id` or `doc_id`) and trigger type errors or unexpected code paths in legacy controllers.
+- In `act()`, a query key named `controller` silently overwrites the routed controller. The ACL is still checked against the final value, so this is not a direct bypass, but it makes routing ambiguous.
+
+**Recommendation:**
+- Have controllers read named parameters explicitly instead of receiving positional spreads, or map arguments by name using reflection.
+- Reject non-scalar values where scalars are expected.
+- Rename or reject a colliding `controller` key in `act()`.
+
+### 6. Information disclosure in error messages (minor)
+**Location:** `NotFoundHttpException("Unable to load controller: $className")`
+**OWASP:** A05 Security Misconfiguration
+**Severity:** **Low**
+**Problem:** The message reveals internal class and file naming. It is low risk because the name comes from the whitelist, but production responses should be generic.
+
+---
+
+## Not an issue
+- **File inclusion:** the controller file path comes only from `fileroot` plus a whitelisted class suffix. Local file inclusion via the controller parameter is no longer possible, which is an improvement.
