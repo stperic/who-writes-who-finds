@@ -1,0 +1,2 @@
+FINDING | Compartment search field may misscope patient-scoped access | severity=high | class=SPECULATIVE | It asks to verify that `getPatientContextSearchField()` exists and maps correctly, which is defined outside the diff, and only conditionally hypothesizes cross-patient exposure without asserting one.
+SUMMARY: findings=1 false=0 speculative=1 plausible=0

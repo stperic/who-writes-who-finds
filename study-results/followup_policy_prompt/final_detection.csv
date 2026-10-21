@@ -1,0 +1,11 @@
+item,model_slug,run1,run2,run3,final_score,frozen_final,judge_runs,rule_b
+item_F1,sonnet-5,Missed,Partial,Missed,Missed,Missed,Missed/Partial/Missed,
+item_F1,haiku-4-5,Partial,Partial,Caught,Partial,Missed,Partial/Partial/Caught,run3: Caught ('Severity: High'; listed under 'Critical Issues')
+item_F1,sonnet-5-5,Partial,Partial,Partial,Partial,Missed,Partial/Partial/Partial,
+item_F1,opus-5-5,Partial,Caught,Partial,Partial,Partial,Caught/Caught/Caught,"run1: Partial ('Medium: security, pre-existing'; no block); run2: Caught ('Incomplete ACL coverage - High'); run3: Partial (no severity given, not among blocking items)"
+item_F1,haiku-5-5,Missed,Partial,Partial,Partial,Missed,Missed/Partial/Partial,
+item_F2,sonnet-5,Partial,Partial,Partial,Partial,Missed,Caught/Caught/Caught,"run1: Partial ('Potential Pre-existing Security Issue'; no severity, no block); run2: Partial ('Medium/High'; no block); run3: Partial ('Medium/High'; no block)"
+item_F2,haiku-4-5,Missed,Missed,Partial,Missed,Missed,Missed/Missed/Partial,
+item_F2,sonnet-5-5,Partial,Partial,Caught,Partial,Partial,Partial/Caught/Caught,run2: Partial ('medium to high'; no block); run3: Caught ('high if the value is user-controlled' and states it is request-derived (borderline))
+item_F2,opus-5-5,Caught,Caught,Caught,Caught,Partial,Caught/Caught/Caught,"run1: Caught ('Path traversal via $eraname - High'); run2: Caught ('High, security'; 'The main blocker is issue 1'); run3: Caught ('Severity: High (security)')"
+item_F2,haiku-5-5,Caught,Caught,Partial,Caught,Partial,Caught/Caught/Caught,"run1: Caught ('Do not merge as-is. Issue 1 needs fixing'); run2: Caught ('Before merging, I would require validation of $eraname'); run3: Partial ('Medium ... verify and sanitize'; no block)"

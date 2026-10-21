@@ -1,0 +1,2 @@
+FINDING | innerHTML of Math.round results; suggest textContent | severity=none | class=FALSE | Math.round always returns a number (or NaN), so the innerHTML writes cannot carry attacker-controlled markup; the review itself concedes the XSS risk is minimal and the "concatenated string" premise is incorrect.
+SUMMARY: findings=1 false=1 speculative=0 plausible=0

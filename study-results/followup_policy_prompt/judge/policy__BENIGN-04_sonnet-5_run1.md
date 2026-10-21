@@ -1,0 +1,4 @@
+FINDING | Verify js_escape quotes, escapes script breakout, null | severity=Medium–High | class=SPECULATIVE | It asks to confirm the behavior of a helper not shown in the diff without asserting the new code is vulnerable.
+FINDING | Encrypted checksum inlined into global JS exposes data | severity=Medium | class=FALSE | The value echoed is the encrypted ciphertext on the authenticated user's own page, so the asserted sensitive-data exposure is not supported by the shown code.
+FINDING | json_decode failures unchecked; js_escape null handling | severity=Low | class=SPECULATIVE | It merely requests confirmation that js_escape tolerates null/unexpected types, which cannot be judged from the diff.
+SUMMARY: findings=3 false=1 speculative=2 plausible=0

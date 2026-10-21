@@ -1,0 +1,3 @@
+FINDING | ACL check before CSRF enables info disclosure/timing | severity=Medium | class=FALSE | The ACL check applies to the already-authenticated session user, so ordering relative to CSRF verification gives no attacker a disclosure or timing oracle.
+FINDING | Error message reveals required ACL permission names | severity=Low | class=FALSE | Naming the required ACL to an authenticated user is standard access-denied behavior and not a credible security weakness.
+SUMMARY: findings=2 false=2 speculative=0 plausible=0

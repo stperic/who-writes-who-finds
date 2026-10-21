@@ -1,0 +1,3 @@
+FINDING | XInclude removal closes local file read vector | severity=Low-Medium | class=PLAUSIBLE | LIBXML_XINCLUDE does enable xi:include resolution of local/remote resources, so the review correctly identifies the removed flag as a real XXE-like vector the change mitigates.
+FINDING | Other XML loaders may still allow XXE | severity=Medium | class=SPECULATIVE | Asks to verify entity-loader/NOENT/DTD settings at call sites not in the diff, without asserting a concrete vulnerability.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

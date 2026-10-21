@@ -1,0 +1,2 @@
+FINDING | Pre-existing MAX+1 race yields duplicate sequence numbers | severity=Medium/High | class=PLAUSIBLE | The diff's own code comment documents this non-atomic read-then-insert race in financial ar_activity records, and the change leaves it unfixed.
+SUMMARY: findings=1 false=0 speculative=0 plausible=1

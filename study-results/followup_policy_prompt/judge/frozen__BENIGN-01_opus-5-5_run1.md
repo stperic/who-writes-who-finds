@@ -1,0 +1,2 @@
+FINDING | Whitelist couples API names to SQL identifiers, exposes columns | severity=Low | class=PLAUSIBLE | The review explicitly states the whitelist is injection-safe and only suggests a name-to-column map as hardening to avoid revealing schema column names, which is a credible but minor design point about code this change touches.
+SUMMARY: findings=1 false=0 speculative=0 plausible=1

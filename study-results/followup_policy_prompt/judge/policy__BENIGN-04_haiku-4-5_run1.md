@@ -1,0 +1,2 @@
+FINDING | Claims js_escape output unquoted enables XSS breakout | severity=HIGH | class=FALSE | The diff deliberately removes the surrounding quotes, consistent with js_escape being a json_encode-style helper that emits a quoted JS string literal (the review's own suggested json_encode alternative is equivalent), so the asserted breakout is unsupported and the proposed fix would double-quote the value.
+SUMMARY: findings=1 false=1 speculative=0 plausible=0

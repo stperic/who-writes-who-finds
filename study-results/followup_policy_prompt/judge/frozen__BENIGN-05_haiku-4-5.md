@@ -1,0 +1,2 @@
+FINDING | Original skip_timeout_reset bypassed session expiration check entirely | severity=significant | class=PLAUSIBLE | The pre-change `&&` condition did skip the expiry check when the parameter was present, letting such requests proceed on an expired session, which the diff corrects.
+SUMMARY: findings=1 false=0 speculative=0 plausible=1

@@ -1,0 +1,3 @@
+FINDING | Client-computed payment values may be trusted server-side | severity=none | class=SPECULATIVE | Asks to verify server-side handling not shown in the diff and asserts no vulnerability.
+FINDING | CountIndex in element IDs might derive from user input | severity=none | class=SPECULATIVE | Requests confirmation about PHP template rendering outside the diff, conceding it is probably fine.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

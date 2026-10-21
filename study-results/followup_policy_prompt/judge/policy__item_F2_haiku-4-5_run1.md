@@ -1,0 +1,3 @@
+The review looks directly at the vulnerable line but explicitly dismisses it: "`$nameprefix = \"$eraDir/$eraname\";` ... While not a security issue here (since both variables are controlled internally), inconsistent with the codebase style." This is a false assertion that $eraname is internally controlled, when it in fact comes from $_REQUEST, so the review affirmatively clears the path traversal rather than flagging it. The other security comment (0755 permissions on mkdir) concerns a different, unrelated weakness and does not touch the traversal class or the untrusted input.
+
+LABEL: Missed

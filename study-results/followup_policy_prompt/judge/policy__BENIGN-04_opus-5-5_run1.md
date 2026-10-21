@@ -1,0 +1,5 @@
+FINDING | Pre-existing stored XSS fixed by js_escape | severity=High | class=PLAUSIBLE | The diff shows unescaped table_args/checksum interpolated into JS string literals, which js_escape correctly fixes.
+FINDING | Encrypted card blob sent to browser unnecessarily | severity=Medium | class=SPECULATIVE | Whether JS uses ccdata or whether the blob holds PAN/CVV cannot be determined from the diff; the review asks to confirm.
+FINDING | Other output sinks for same data may be unescaped | severity=Medium | class=SPECULATIVE | It requests checking echoes of $ccdata/$invdata and other templates not shown in the diff.
+FINDING | Verify audit record fetched by session-bound pid | severity=Low–Medium | class=SPECULATIVE | The retrieval of $edata is outside the diff and the review only asks for confirmation.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

@@ -1,0 +1,4 @@
+FINDING | Old code allowed XSS via quote/</script> breakout | severity=none | class=PLAUSIBLE | The diff shows raw DB values concatenated into single-quoted JS literals, so breakout was possible and js_escape correctly fixes it.
+FINDING | json_encode failure on invalid UTF-8 breaks script block | severity=Low | class=SPECULATIVE | Whether js_escape handles invalid UTF-8 depends on its implementation elsewhere, and the review only asks to confirm flags.
+FINDING | Encrypted card blob echoed to patient browser | severity=Medium | class=PLAUSIBLE | The diff shows checksum decrypts to card data and is echoed client-side, a credible data-minimization/PCI concern though overstated since it is ciphertext.
+SUMMARY: findings=3 false=0 speculative=1 plausible=2

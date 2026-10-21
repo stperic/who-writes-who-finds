@@ -1,0 +1,5 @@
+FINDING | Undocumented change; needs rationale and XInclude regression test | severity=Medium | class=SPECULATIVE | It asserts no vulnerability, only asks for rationale, fixture checks, and a test that cannot be judged from the diff.
+FINDING | Retained $this->directory may still allow relative file access | severity=Low | class=SPECULATIVE | How `$this->directory` is consumed is not shown in the diff, and the review only asks that it be checked.
+FINDING | Other code may re-enable XInclude via xinclude() calls | severity=Low | class=SPECULATIVE | A grep request for code outside the diff, with no vulnerability asserted.
+FINDING | LIBXML_PARSEHUGE weakens libxml limits, resource exhaustion risk | severity=Low | class=PLAUSIBLE | The flag is visibly retained on both calls and genuinely lifts libxml2 size/depth limits for untrusted CDA input.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

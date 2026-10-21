@@ -1,0 +1,6 @@
+FINDING | Raw DB values in JS caused stored XSS risk | severity=none | class=PLAUSIBLE | The diff shows unescaped `table_args`/`checksum` concatenated into JS strings, which `js_escape()` now correctly fixes.
+FINDING | Verify js_escape loaded and escapes slashes/angle brackets | severity=Low | class=SPECULATIVE | `js_escape()` is defined outside the diff, so its availability and escaping behavior cannot be judged here and no vulnerability is asserted.
+FINDING | decryptStandard may return false into json_decode | severity=Low | class=SPECULATIVE | The helper's return behavior is defined elsewhere and the note only suggests a guard without asserting exploitability.
+FINDING | Encrypted checksum blob exposed to browser unnecessarily | severity=Info | class=SPECULATIVE | Whether client code needs `ccdata` cannot be determined from the diff, and the review only suggests reconsidering exposure.
+FINDING | Inline script incompatible with future strict CSP | severity=Info | class=PLAUSIBLE | The diff clearly emits an inline `<script>` block, so the hardening observation is accurate though not a current vulnerability.
+SUMMARY: findings=5 false=0 speculative=3 plausible=2

@@ -1,0 +1,4 @@
+FINDING | Old code let skip_timeout_reset bypass expiry check | severity=none | class=PLAUSIBLE | The removed code visibly skipped `isSessionExpired()` whenever the client-controlled parameter was present, so the described pre-fix weakness is supported by the diff.
+FINDING | Concurrent polls may create duplicate timeout audit entries | severity=Low | class=SPECULATIVE | Whether in-flight requests race before `authCloseSession()` takes effect depends on session handling outside the diff, and the review only asks to confirm.
+FINDING | Verify Flow Board actually sends skip_timeout_reset | severity=none | class=SPECULATIVE | Whether the Flow Board endpoint passes the parameter (and thus keeps sessions alive) cannot be determined from this diff, and the review merely requests confirmation.
+SUMMARY: findings=3 false=0 speculative=2 plausible=1

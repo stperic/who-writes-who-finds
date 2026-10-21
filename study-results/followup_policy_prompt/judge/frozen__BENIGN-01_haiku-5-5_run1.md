@@ -1,0 +1,3 @@
+FINDING | Pre-change ORDER BY concatenation was injectable; whitelist fixes it | severity=none | class=PLAUSIBLE | The old code shown concatenates unchecked field names into SQL, and the review correctly frames the whitelist as the fix rather than claiming a new flaw.
+FINDING | Whitelist safety depends on callers passing trusted lists | severity=Medium | class=SPECULATIVE | It asks that callers/documentation ensure `$allowedColumns` is hardcoded, which cannot be judged from the diff since no call sites are shown and no vulnerability is asserted.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

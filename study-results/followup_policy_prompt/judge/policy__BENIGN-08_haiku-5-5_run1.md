@@ -1,0 +1,3 @@
+FINDING | MAX+1 then INSERT race yields duplicate sequence numbers | severity=Medium | class=PLAUSIBLE | The diff's own comment acknowledges the non-atomic read-then-insert race, a real integrity weakness in the touched code that the change leaves unfixed.
+FINDING | Verify callers roll back transaction on new exception | severity=Medium | class=SPECULATIVE | Caller and transaction handling are outside the diff, and the review only asks to verify rollback rather than asserting a flaw.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

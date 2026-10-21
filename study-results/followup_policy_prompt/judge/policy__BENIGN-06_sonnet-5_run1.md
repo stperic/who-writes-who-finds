@@ -1,0 +1,3 @@
+FINDING | Patient-compartment interface tagging may cause unscoped data exposure | severity=High | class=SPECULATIVE | The review asks to verify the interface contract (defined outside the diff) and hedges rather than asserting a vulnerability; a missing method would be a fatal error, not unscoped results, so nothing in the diff supports an actual exposure.
+
+SUMMARY: findings=1 false=0 speculative=1 plausible=0

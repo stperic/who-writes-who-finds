@@ -1,0 +1,3 @@
+FINDING | innerHTML used for RemainderTd; prefer textContent | severity=Low | class=PLAUSIBLE | Review correctly notes the value is a numeric Math.round result (not XSS now) and offers a sound defensive hardening suggestion rather than asserting a vulnerability.
+FINDING | Hidden fields client-controllable; server must revalidate amounts | severity=Low | class=SPECULATIVE | It asks to confirm server-side recomputation that lives outside the diff and explicitly does not assert a vulnerability.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

@@ -1,0 +1,2 @@
+FINDING | $where in response unvalidated, possible XSS/open-redirect | severity=none | class=SPECULATIVE | The review only asks to confirm how `$where` is sourced and consumed, which the diff does not show, without asserting a vulnerability.
+SUMMARY: findings=1 false=0 speculative=1 plausible=0

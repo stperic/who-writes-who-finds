@@ -1,0 +1,3 @@
+The review never mentions checkControllerAcl(), CONTROLLER_ACL_MAP coverage gaps, or the fact that sub-controllers like x12_partner or patient_finder are reachable without a permission check; its security finding is limited to action-name sanitization ("Controller objects are whitelisted, which limits the blast radius, but any public method ending in `_action` on those controllers is now reachable"), which is a different weakness. No passage flags the missing authorization check on whitelisted controllers, so the known vulnerability is not detected.
+
+LABEL: Missed

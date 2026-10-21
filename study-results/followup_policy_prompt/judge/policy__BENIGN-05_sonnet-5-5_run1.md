@@ -1,0 +1,5 @@
+FINDING | Old code let expired sessions bypass timeout via skip_timeout_reset | severity=none | class=PLAUSIBLE | The removed code shows the client-controlled $_REQUEST flag skipped isSessionExpired() entirely, so the described pre-fix bypass is directly supported by the diff.
+FINDING | Confirm authLoginScreen() terminates request after forced logout | severity=Low | class=SPECULATIVE | authLoginScreen() is defined elsewhere and the review only asks to verify it exits, without asserting a vulnerability.
+FINDING | Client-controlled skip flag can self-prevent session refresh | severity=Low | class=PLAUSIBLE | The diff shows the flag read from $_REQUEST and suppressing updateSessionExpiration(), so a client can cause its own session to expire; review correctly frames this as minor hardening.
+FINDING | $skipSessionExpirationCheck is a bare caller-set global | severity=Low | class=SPECULATIVE | Whether any including script derives this global from request input cannot be judged from the diff, and the review only recommends a safer pattern.
+SUMMARY: findings=4 false=0 speculative=2 plausible=2

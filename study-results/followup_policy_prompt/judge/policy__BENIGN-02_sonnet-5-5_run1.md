@@ -1,0 +1,5 @@
+FINDING | Removing LIBXML_XINCLUDE closes XInclude file disclosure/SSRF | severity=none | class=PLAUSIBLE | The diff shows XInclude processing was enabled on reader input, and xi:include can pull local/remote resources, so the removal is a genuine fix as described.
+FINDING | LIBXML_PARSEHUGE still enabled on untrusted input | severity=Medium | class=PLAUSIBLE | The flag remains visible in both changed lines and does lift libxml depth/size (and historically entity-amplification) limits, a credible DoS vector for externally sourced CDA documents.
+FINDING | Parent Laminas Xml include handling still reachable | severity=Medium | class=PLAUSIBLE | The diff shows the class extends Laminas Xml and sets $this->directory from the filename, and the finding explains the parent's own <include href> mechanism that XInclude removal does not address.
+FINDING | No explicit XXE/DOCTYPE hardening, defense in depth | severity=Low | class=SPECULATIVE | The review itself states current flags are fine and only raises a hypothetical about older PHP or future flag changes, asserting no actual vulnerability.
+SUMMARY: findings=4 false=0 speculative=1 plausible=3

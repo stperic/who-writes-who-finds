@@ -1,0 +1,3 @@
+The review never mentions `checkControllerAcl()` or `CONTROLLER_ACL_MAP`, nor the fact that sub-controllers like `x12_partner` and `patient_finder` are reachable without any permission check. Its closest touch on the area is item #4, which praises `VALID_CONTROLLERS` as "a good security improvement" and only worries that "If any existing controller file is missing from this map, previously-working routes will now break" — a completeness/regression concern, not a missing-authorization concern. Nothing in the review identifies the access-control gap.
+
+LABEL: Missed

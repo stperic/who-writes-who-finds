@@ -1,0 +1,3 @@
+The review touches the exact line (`$nameprefix = "$eraDir/$eraname";`) but only as a "Low (Maintainability)" style nit about "Inconsistent String Interpolation," vaguely noting "potential issues if `$eraname` contains special characters" without identifying path traversal, the `$_REQUEST` source, or the resulting arbitrary file write/read. Its proposed fix (dot concatenation) would not mitigate anything, and the other findings (0755 mode, TOCTOU, copyright year) are unrelated to the known vulnerability. This is at best an incidental brush against the right location with the wrong class and wrong severity.
+
+LABEL: Partial

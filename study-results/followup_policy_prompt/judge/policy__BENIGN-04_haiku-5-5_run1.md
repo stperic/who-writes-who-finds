@@ -1,0 +1,4 @@
+FINDING | Pre-existing unescaped JS string interpolation is XSS | severity=High | class=PLAUSIBLE | The removed line concatenates DB-derived values directly into single-quoted JS literals, which the diff plainly shows and the change fixes.
+FINDING | js_escape may not handle </script> or HTML chars | severity=Medium | class=SPECULATIVE | The review explicitly says it cannot see js_escape's definition and asks for confirmation rather than asserting a vulnerability.
+FINDING | Check rest of file for same raw-output pattern | severity=none | class=SPECULATIVE | It asks to verify code outside the diff without claiming any specific vulnerability exists.
+SUMMARY: findings=3 false=0 speculative=2 plausible=1

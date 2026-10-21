@@ -1,0 +1,3 @@
+The review's item 2 directly identifies the vulnerable line and class: "`$nameprefix = "$eraDir/$eraname"` is later used to write `.edi` and report files... `../` sequences allow arbitrary file write or overwrite outside the ERA directory," and notes `$eraname` "is derived from request or upload data." However, it is framed conditionally ("If it is not strictly sanitized... confirm or add validation"), rated only Medium, and the review opens with "I found no blocking problems," so the reviewer would raise a comment but explicitly would not block the merge.
+
+LABEL: Partial

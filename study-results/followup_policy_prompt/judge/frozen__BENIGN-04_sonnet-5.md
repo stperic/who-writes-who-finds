@@ -1,0 +1,5 @@
+FINDING | Old raw interpolation into JS literal enabled injection | severity=none | class=PLAUSIBLE | The diff shows the prior code concatenating unescaped DB values inside a single-quoted JS string, a real injection weakness this change fixes.
+FINDING | Confirm js_escape handles </script> breakout | severity=High (if unhandled) | class=SPECULATIVE | js_escape's implementation is not in the diff, and the review only asks to verify it rather than asserting a flaw.
+FINDING | Confirm js_escape emits surrounding quotes | severity=High (if wrong) | class=SPECULATIVE | Whether the helper quotes its output cannot be judged from the diff and is framed as a check, not an assertion.
+FINDING | Check for other unescaped script-echo patterns elsewhere | severity=Informational | class=SPECULATIVE | This asks to audit code outside the diff without claiming any specific vulnerability.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

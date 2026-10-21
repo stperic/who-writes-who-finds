@@ -1,0 +1,3 @@
+FINDING | Removing LIBXML_XINCLUDE flagged as HIGH functional/security issue | severity=HIGH | class=FALSE | Dropping XInclude is a security hardening (prevents local file inclusion/SSRF via xi:include), not a vulnerability or defect, so rating it HIGH misjudges the change.
+FINDING | Unvalidated $filename plus PARSEHUGE enables XXE/billion laughs | severity=none | class=SPECULATIVE | It is explicitly pre-existing, conditioned on whether the path/content is user-controlled, and only asks to verify upstream validation without asserting a demonstrated flaw.
+SUMMARY: findings=2 false=1 speculative=1 plausible=0

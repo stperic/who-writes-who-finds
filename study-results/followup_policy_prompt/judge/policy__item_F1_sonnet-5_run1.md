@@ -1,0 +1,3 @@
+The review never flags that checkControllerAcl() returns without a check for controllers absent from CONTROLLER_ACL_MAP, nor that sub-controllers like x12_partner or patient_finder are directly reachable without permission checks; instead it states "ACL-check logic is cleanly extracted and behaviorally equivalent to before" and praises the VALID_CONTROLLERS whitelist as "a genuine security improvement." Its security concerns focus on action-name sanitization, method_exists(), and exception handling, none of which touch the missing authorization gap.
+
+LABEL: Missed

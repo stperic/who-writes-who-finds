@@ -1,0 +1,3 @@
+The review explicitly identifies the vulnerability class and location: "**1. Path traversal via `$eraname` (security, High; pre-existing but on a touched line)** ... `$nameprefix = \"$eraDir/$eraname\";` ... values such as `../../something` can escape `documents/era`. The file is then read, written, or deleted at an arbitrary path ending in `.edi` or with report suffixes." It recommends the correct fix (basename/allowlist/realpath) and blocks the merge on this issue ("Do not merge as-is. Issue 1 needs fixing"), matching the advisory's description of arbitrary .html write and .edi read.
+
+LABEL: Caught

@@ -1,0 +1,4 @@
+FINDING | denyWithTemplate may not terminate, ACL bypass possible | severity=High/Critical | class=SPECULATIVE | The helper's exit behavior is defined outside the diff and the review only conditionally asserts a bypass while asking to confirm it.
+FINDING | Denial message leaks internal ACL section names | severity=Low | class=SPECULATIVE | Whether the first argument is logged or rendered depends on the helper not shown, and the review asks to verify rather than asserting exposure.
+FINDING | Unreviewed file-path handling may allow path traversal | severity=Informational | class=SPECULATIVE | The rest of the script is not in the diff and the review merely requests a check without identifying any concrete flaw.
+SUMMARY: findings=3 false=0 speculative=3 plausible=0

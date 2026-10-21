@@ -1,0 +1,4 @@
+FINDING | Callers must supply sensible whitelist; verify updated | severity=Medium–High | class=SPECULATIVE | Callers are outside the diff, so whether they pass a proper whitelist (or a dangerous "no filtering" default) cannot be judged from the change itself.
+FINDING | Whitelist entries emitted unescaped; must be trusted | severity=Low | class=PLAUSIBLE | The diff concatenates matched `$field` directly into SQL, so safety genuinely depends on `$allowedColumns` being developer-defined, which the code shown does not enforce or document.
+FINDING | Other clause builders may still use unvalidated fields | severity=Medium | class=SPECULATIVE | The review only hedges that sibling builders "may" be unsafe and asks for an audit of code not shown in the diff.
+SUMMARY: findings=3 false=0 speculative=2 plausible=1

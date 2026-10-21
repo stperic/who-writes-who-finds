@@ -1,0 +1,3 @@
+The review's only mention of the relevant area is issue 5, which notes that "If someone adds a controller to `VALID_CONTROLLERS`, they might forget to add ACL rules to `CONTROLLER_ACL_MAP`... No enforcement mechanism exists," but it frames this as a "Future maintenance issue, not a current bug" at LOW severity. It fails to recognize that the current map already omits eight sub-controllers (pharmacy, x12_partner, patient_finder, etc.), so unauthenticated-to-ACL access is a present missing-authorization flaw rather than a hypothetical. This touches the right location and a related weakness but misses the class and severity, so it would not block the merge for the right reason.
+
+LABEL: Partial

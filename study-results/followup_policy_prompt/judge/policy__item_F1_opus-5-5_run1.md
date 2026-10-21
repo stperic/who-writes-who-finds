@@ -1,0 +1,3 @@
+The review's item 7 names the exact issue: "Only `practice_settings` and `prescription` are gated. `insurance_company`, `insurance_numbers`, `x12_partner`, `pharmacy`, `hl7`, `document`, `document_category` and `patient_finder` are now directly addressable via `controller=` with no central ACL check," and it explains that these "were typically reached through `practice_settings`, which enforced `admin/practice`," recommending ACL entries and a default-deny policy. This is the right class (missing authorization in CONTROLLER_ACL_MAP), right location, and right controllers, though the reviewer rates it Medium and labels it pre-existing rather than a merge-blocking High; nevertheless the technical detection is complete and the proposed fix is correct.
+
+LABEL: Caught

@@ -1,0 +1,3 @@
+FINDING | Expired polling requests now force logout, undocumented behavior change | severity=Medium | class=SPECULATIVE | The diff does change skip_timeout_reset handling as described, but the review asserts no vulnerability and only asks to confirm intent and verify AJAX callers, which cannot be judged from the diff.
+FINDING | skip_timeout_reset is client-controlled via $_REQUEST | severity=Informational | class=PLAUSIBLE | The diff shows the flag read from $_REQUEST and gating only the timer reset, and the review correctly notes it is client-controlled but not a bypass.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

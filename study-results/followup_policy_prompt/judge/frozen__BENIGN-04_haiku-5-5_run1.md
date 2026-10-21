@@ -1,0 +1,3 @@
+FINDING | js_escape output and script-context safety unverified | severity=Medium | class=SPECULATIVE | It asks to confirm a helper not shown in the diff without asserting it is actually unsafe.
+FINDING | Encrypted checksum emitted to browser page | severity=Low | class=SPECULATIVE | It flags a pre-existing, encrypted value and asks to confirm client-side need rather than asserting a concrete exposure.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

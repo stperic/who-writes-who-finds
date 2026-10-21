@@ -1,0 +1,3 @@
+The review's first item explicitly names "Path traversal through `$eraname`" at "`$nameprefix = "$eraDir/$eraname";`", noting it "is derived from request data" and that "values like `../../x` can read, write or overwrite files outside `documents/era`," with impact including "arbitrary file write," and recommends `basename()` or a whitelist regex. This matches the advisory's class, location, and severity, and the reviewer notes the PR rewrites this exact line and should fix it.
+
+LABEL: Caught

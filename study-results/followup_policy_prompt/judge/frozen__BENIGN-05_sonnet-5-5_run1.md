@@ -1,0 +1,3 @@
+FINDING | Repeated authCloseSession and duplicate timeout audit events | severity=Low | class=SPECULATIVE | Asks to confirm a helper defined outside the diff is idempotent, without asserting a vulnerability.
+FINDING | $_REQUEST lets any client opt out of extension | severity=Low | class=PLAUSIBLE | The diff does read skip_timeout_reset from $_REQUEST, so a client can decline its own session extension, a real but self-limiting and pre-existing weakness.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

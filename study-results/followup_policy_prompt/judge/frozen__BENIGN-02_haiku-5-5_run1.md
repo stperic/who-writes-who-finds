@@ -1,0 +1,3 @@
+FINDING | XInclude removal is hardening; verify no other xinclude() path | severity=none | class=SPECULATIVE | The review correctly notes XInclude's file/remote-fetch risk and only asks to confirm no parent-class or DOM path still expands includes, which the diff cannot show.
+FINDING | Confirm external entity loading disabled on same paths | severity=none | class=SPECULATIVE | It asks to verify entity-expansion settings not visible in the diff without asserting an actual XXE vulnerability exists.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

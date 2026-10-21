@@ -1,0 +1,5 @@
+FINDING | SSRF via request-supplied document URI to SDK | severity=High (if present) | class=SPECULATIVE | The diff shows no URI handling; the review explicitly frames this as a verify-not-confirmed check on code outside the hunk.
+FINDING | PHI file written to web-accessible predictable path | severity=High (if present) | class=SPECULATIVE | Only `$response['url'] = $where;` is visible, so how `$where` is produced cannot be judged and the review asks for verification.
+FINDING | Verify session, ACL, and CSRF on handler | severity=Medium (verify) | class=SPECULATIVE | The dispatcher's auth/CSRF enforcement is not in the diff and the review requests confirmation rather than asserting a flaw.
+FINDING | Path traversal when building local filename `$where` | severity=Medium (verify) | class=SPECULATIVE | Filename construction is not shown in the hunk; the review conditionally asks for sanitization checks without asserting a vulnerability.
+SUMMARY: findings=4 false=0 speculative=4 plausible=0

@@ -1,0 +1,5 @@
+FINDING | Possible path traversal in unseen filename handling code | severity=potentially high | class=SPECULATIVE | The filename handling is not in the diff; the review only asks to confirm sanitization rather than asserting a flaw.
+FINDING | Confirm denyWithTemplate terminates execution | severity=medium | class=SPECULATIVE | The helper is defined elsewhere, so whether it exits cannot be judged from the diff and the review only requests verification.
+FINDING | CSRF token read from GET without isset, exposed in logs | severity=low | class=PLAUSIBLE | The diff does show the token taken from a GET parameter, which is a real if minor exposure via logs/referrers.
+FINDING | Write permission choice may mismatch link-generating pages | severity=low | class=SPECULATIVE | Whether the ACL matches related pages depends on code outside the diff and is posed as something to confirm.
+SUMMARY: findings=4 false=0 speculative=3 plausible=1

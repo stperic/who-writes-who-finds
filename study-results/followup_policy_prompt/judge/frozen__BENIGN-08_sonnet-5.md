@@ -1,0 +1,3 @@
+FINDING | Uncaught RuntimeException could leak stack trace upstream | severity=Medium | class=SPECULATIVE | Whether callers catch the exception or whether error display exposes traces cannot be determined from the diff, and the review only asks for confirmation.
+FINDING | Pre-existing race in MAX(sequence_no)+1 sequence generation | severity=Low/informational | class=PLAUSIBLE | The shown query computes MAX+1 without a locking read, so concurrent inserts can genuinely produce duplicate sequence numbers in payment records, as the code's own comment acknowledges.
+SUMMARY: findings=2 false=0 speculative=1 plausible=1

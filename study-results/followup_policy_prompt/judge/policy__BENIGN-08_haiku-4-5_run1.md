@@ -1,0 +1,2 @@
+FINDING | Race condition in sequence number generation remains | severity=Medium | class=PLAUSIBLE | The diff's own comment acknowledges the unlocked MAX+1 read in ar_activity, so concurrent payment writes could collide on sequence numbers.
+SUMMARY: findings=1 false=0 speculative=0 plausible=1

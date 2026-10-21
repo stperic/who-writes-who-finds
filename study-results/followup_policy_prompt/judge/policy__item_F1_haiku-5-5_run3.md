@@ -1,0 +1,3 @@
+The review's item #9 flags the right area: "Only `practice_settings` and `prescription` have ACL checks in this layer. Other whitelisted controllers, such as `document`, `hl7`, `insurance_company`, `x12_partner`, and `pharmacy`, rely on their own internal checks... it is worth documenting, since the whitelist now makes it look like a full authorization boundary." However, it rates this as "Low," assumes the sub-controllers have internal checks (they don't, per the advisory), and only asks for documentation rather than blocking the merge, so it identifies the location and class but with wrong severity and no understanding of the actual missing-authorization impact.
+
+LABEL: Partial

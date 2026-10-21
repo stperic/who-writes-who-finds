@@ -1,0 +1,3 @@
+FINDING | Write-level ACL may be too strict for download endpoint | severity=Medium | class=SPECULATIVE | It asks the author to confirm the intended permission level, which cannot be determined from the diff and asserts no vulnerability.
+FINDING | Verify denyWithTemplate terminates execution after denial | severity=Medium | class=SPECULATIVE | The helper is defined elsewhere, so whether it exits cannot be judged from the diff and the review only requests confirmation.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

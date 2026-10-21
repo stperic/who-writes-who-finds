@@ -1,0 +1,3 @@
+FINDING | Whitelist safety depends on caller-supplied column lists | severity=Low | class=SPECULATIVE | Asks to confirm callers pass hard-coded names; callers are not in the diff and no vulnerability is asserted.
+FINDING | Other SQL from same config may remain injectable | severity=none | class=SPECULATIVE | Conditional request to check WHERE/LIMIT paths not shown in the diff, without asserting a concrete flaw.
+SUMMARY: findings=2 false=0 speculative=2 plausible=0

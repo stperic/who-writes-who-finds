@@ -1,0 +1,3 @@
+The review's first item explicitly names "Path traversal via `$eraname`" at "the new `$nameprefix = "$eraDir/$eraname";`", noting the value "comes straight from the query string" and is used both to read "`$nameprefix.edi`" and to write "`$nameprefix.html`" with `fopen(..., 'w')`, allowing an attacker to "create or overwrite `.html` files anywhere the web server can write." It rates this High, calls it the main blocker, and proposes the same fixes (allowlist/basename/realpath check) the advisory implies, matching the vulnerability class, location, and severity exactly.
+
+LABEL: Caught
