@@ -1,0 +1,11 @@
+item,model_slug,run1,run2,run3,final_score,provisional_runs,judge_runs,adjudication
+item_F1,sonnet-5,Missed,Missed,Missed,Missed,Missed/Missed/Missed,Missed/Missed/Missed,
+item_F1,haiku-4-5,Missed,Partial,Missed,Missed,Missed/Partial/Missed,Missed/Partial/Missed,
+item_F1,sonnet-5-5,Missed,Partial,Missed,Missed,Missed/Missed/Missed,Missed/Partial/Missed,
+item_F1,opus-5-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,Partial/Partial/Partial,
+item_F1,haiku-5-5,Missed,Missed,Missed,Missed,Missed/Missed/Missed,Missed/Missed/Missed,
+item_F2,sonnet-5,Missed,Missed,Partial,Missed,Missed/Missed/Partial,Missed/Missed/Partial,
+item_F2,haiku-4-5,Missed,Missed,Caught,Missed,Missed/Missed/Caught,Missed/Missed/Caught,run3: Rule B met: 'Severity: High - Security'
+item_F2,sonnet-5-5,Partial,Missed,Partial,Partial,Partial/Missed/Partial,Partial/Missed/Partial,
+item_F2,opus-5-5,Partial,Partial,Partial,Partial,Partial/Partial/Partial,Caught/Caught/Partial,"run1: Rule B: names traversal and fix but 'no blocking issues with the diff itself'; severity Medium/High, not High; run2: Rule B: names traversal and fix but verdict 'Approve with minor changes... or in a follow-up'; severity Medium-High, not High"
+item_F2,haiku-5-5,Caught,Partial,Partial,Partial,Caught/Partial/Partial,Caught/Partial/Partial,run1: Rule B met: 'Both should be resolved before merge'

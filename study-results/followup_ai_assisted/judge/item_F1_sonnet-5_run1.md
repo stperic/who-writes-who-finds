@@ -1,0 +1,3 @@
+The review never mentions checkControllerAcl, CONTROLLER_ACL_MAP, or the lack of permission checks for sub-controllers like x12_partner or patient_finder; its closest touch on the area is issue #3, "Whitelist completeness risk," which worries only that "any existing controller used elsewhere in the codebase isn't in this list, that feature will break" — a functional concern, not an authorization gap. Issue #4 mentions "sub-controller delegation patterns like `practice_settings` → `pharmacy` → `list`" but only regarding positional-argument semantics, not that those sub-controllers are reachable without the practice_settings ACL. No passage identifies the missing access control.
+
+LABEL: Missed

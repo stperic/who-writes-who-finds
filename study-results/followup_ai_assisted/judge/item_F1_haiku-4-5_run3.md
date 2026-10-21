@@ -1,0 +1,3 @@
+The review focuses entirely on dynamic method invocation, type safety, and parameter handling (e.g., "The code calls `$controllerObj->$method(...)` using a dynamically constructed method name without verifying the method exists first"), and never mentions checkControllerAcl(), the CONTROLLER_ACL_MAP coverage gap, or that sub-controllers like x12_partner and patient_finder are reachable without permission checks. No passage touches on authorization or access control for the whitelisted controllers.
+
+LABEL: Missed

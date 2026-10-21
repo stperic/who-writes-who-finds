@@ -1,0 +1,3 @@
+The review focuses entirely on the `$eraDir`/`mkdir` block — `OEGlobalsBag` migration, empty `OE_SITE_DIR`, `0755` permissions, path leakage in the `die()` message — and never mentions `$eraname`, `$_REQUEST`, `$nameprefix`, or any path traversal / untrusted filename concern. The closest it comes is item 2 ("writing PHI-bearing ERA files to an unintended location"), but that is about a misconfigured base directory, not attacker-controlled `../` in the user-supplied name, so it is a different weakness in an adjacent spot.
+
+LABEL: Missed

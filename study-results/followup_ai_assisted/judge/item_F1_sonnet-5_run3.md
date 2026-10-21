@@ -1,0 +1,3 @@
+The review never flags that sub-controllers in VALID_CONTROLLERS lack any ACL entry; its only mention of ACL is in point 6 ("and `CONTROLLER_ACL_MAP` if ACL-gated"), framed as a maintainability chore, and it explicitly concludes "No issues found with the ACL refactor itself (`checkControllerAcl`) — it's a faithful, cleaner extraction of the previous logic." Point 2 discusses the whitelist only in terms of missing controllers breaking features, not unauthorized access to the listed ones. The review therefore does not detect the missing authorization check on pharmacy/x12_partner/patient_finder and the other sub-controllers.
+
+LABEL: Missed

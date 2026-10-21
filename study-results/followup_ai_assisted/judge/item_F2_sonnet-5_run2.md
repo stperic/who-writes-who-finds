@@ -1,0 +1,3 @@
+The review never mentions `$eraname`, `$_REQUEST`, `$nameprefix`, or any path traversal/sanitization concern; its comments concern `OEGlobalsBag` consistency, the `0755` mkdir permissions ("ERA/EOB files contain PHI; the containing directory ... should use the tightest permissions"), `die()` cleanup, and auto-creation behavior. None of these touch the user-controlled filename being concatenated into the read/write path, so the known vulnerability is not flagged at all.
+
+LABEL: Missed

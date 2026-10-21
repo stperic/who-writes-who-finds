@@ -1,0 +1,3 @@
+The review's item #10 identifies the exact gap: "`pharmacy`, `insurance_company`, `x12_partner`, and others are normally reached via `practice_settings`. They remain directly routable without the `admin/practice` check. This gap existed before the PR, but now that there is an explicit map, it should be closed." This correctly names the missing authorization check in `CONTROLLER_ACL_MAP` / `checkControllerAcl()` for the sub-controllers, matching the advisory. However, it is filed under 🟡 Low and excluded from the blocking summary ("Items #1 and #2 are blocking"), so the reviewer would raise a comment but not block the merge for this reason, which is the wrong severity for a high-severity authorization bypass.
+
+LABEL: Partial

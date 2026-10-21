@@ -1,0 +1,3 @@
+The review never flags that checkControllerAcl() returns without checking when a controller lacks a CONTROLLER_ACL_MAP entry, nor that sub-controllers like x12_partner or patient_finder are reachable by any authenticated user; its closest comments are about the whitelist being a "behaviour change" that "silently breaks any controller not on it" and a generic note that "A routing rewrite with ACL implications needs tests for ACL denial," neither of which identifies the missing authorization gap. The security issues it does raise (unsanitized `$action`, `is_callable` vs `method_exists`) are unrelated to the advisory's access-control bypass.
+
+LABEL: Missed

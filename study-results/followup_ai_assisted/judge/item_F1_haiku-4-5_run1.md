@@ -1,0 +1,3 @@
+The review never addresses the ACL gap: it does not mention checkControllerAcl() returning early for controllers absent from CONTROLLER_ACL_MAP, nor the direct reachability of sub-controllers like x12_partner or patient_finder. Its only ACL-adjacent comment is about "Unsafe String Interpolation in Error Messages" in the AccessDeniedHelper call, which concerns message formatting rather than missing authorization. The high-severity finding it raises ("Missing Method Existence Check Before Calling Action Method") is a robustness issue unrelated to the known vulnerability.
+
+LABEL: Missed

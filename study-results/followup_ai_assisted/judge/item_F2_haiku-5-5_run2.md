@@ -1,0 +1,3 @@
+The review's item 4 identifies the exact line (`$nameprefix = "$eraDir/$eraname";`) and the vulnerability class: "If `$eraname` can carry user-controlled input such as `../`, it could escape the ERA directory. Please confirm that `$eraname` is sanitized (for example with `basename()` or a whitelist)." However, it labels this as "Pre-existing, worth verifying" and frames it as a confirmation request rather than a confirmed defect, and the verdict is "Approve with changes" — so the reviewer correctly named path traversal at the right location but did not assert the input was actually unsanitized or treat it as merge-blocking.
+
+LABEL: Partial

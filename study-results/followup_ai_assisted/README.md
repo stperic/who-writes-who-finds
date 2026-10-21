@@ -28,10 +28,14 @@ had reviewed those changes as pull requests.
 - Runs: 3 fresh runs per model per diff via the Anthropic Messages API
   (`run.py`), default settings otherwise. Raw outputs in `ai_runs/`, call
   metadata in `run_status.json`.
-- Scoring: `../rubric.md` labels and majority rule, in `scores.csv`. Applied
-  consistently as: **Caught** = names the flaw at the right line and rates it
+- Scoring: `../rubric.md` labels and majority rule. Final scores are in
+  `final_scores.csv`: the independent judge's labels with the human
+  adjudicator's rule for Caught applied (Rule B, chosen by the study author on
+  2026-10-21): **Caught** = names the flaw at the right line and either rates it
   High or says it must be fixed before merge; **Partial** = names the flaw but
   treats it as optional, "verify", or a follow-up; **Missed** = does not name it.
+  This matches the main study's treatment of the payment-credential case
+  (CVE-2026-25146), scored Partial for a right-area, understated-severity review.
 
 ## Deviations from the main study
 
@@ -42,20 +46,41 @@ had reviewed those changes as pull requests.
   max_tokens`; the budget went to extended thinking). Following the study's
   rule, these were logged as execution errors and re-run at `max_tokens=16000`.
   The 5.5 models ran at `max_tokens=16000` from the start.
-- Scores are provisional: one scorer (Claude Opus 5.5), no human check yet.
-  The main study used a separate judge model plus human adjudication. The
-  scorer is the same model as one of the reviewers, so the Opus 5.5 rows in
-  particular need an independent check.
+- Scoring: a provisional scorer (Claude Opus 5.5, `scores.csv`) and an
+  independent judge (Claude Fable 5.1, `judge.py`, `judge_scores.csv`,
+  rationales in `judge/`). The judge saw the rubric labels, the ground truth
+  and the review text, in shuffled order, without the reviewer's identity or
+  the provisional score. The human adjudicator chose the rule for the one
+  disagreement that mattered (see Result). The remaining non-Missed runs in
+  `SPOT-CHECK.md`, where both scorers agree, have not yet had a line-by-line
+  human check.
 
 ## Result
 
+Final scores (judge labels, Rule B applied; `final_scores.csv`):
+
 | Item | Sonnet 5 | Haiku 4.5 | Sonnet 5.5 | Opus 5.5 | Haiku 5.5 |
 |---|---|---|---|---|---|
-| F1 access control | M M M: **Missed** | M P M: **Missed** | M M M: **Missed** | P P P: **Partial** | M M M: **Missed** |
+| F1 access control | M M M: **Missed** | M P M: **Missed** | M P M: **Missed** | P P P: **Partial** | M M M: **Missed** |
 | F2 path traversal | M M P: **Missed** | M M C: **Missed** | P M P: **Partial** | P P P: **Partial** | C P P: **Partial** |
 
 No model caught either flaw by majority. The 5.5 models raised the issue far
-more often: 11 of 18 runs, against 3 of 12 for Sonnet 5 and Haiku 4.5.
+more often: 12 of 18 runs, against 3 of 12 for Sonnet 5 and Haiku 4.5.
+
+Scorer agreement: the independent judge (Claude Fable 5.1) and the provisional
+scorer (Claude Opus 5.5) agreed on 27 of 30 runs and 9 of 10 case-level scores.
+
+| Run | Provisional | Judge | Final |
+|---|---|---|---|
+| F1 / Sonnet 5.5 / run 2 | Missed | Partial | Partial (judge label; no case-level change) |
+| F2 / Opus 5.5 / run 1 | Partial | Caught | Partial (Rule B) |
+| F2 / Opus 5.5 / run 2 | Partial | Caught | Partial (Rule B) |
+
+The two Opus 5.5 runs name the traversal, the line and the fix, then decline to
+block because the flaw is pre-existing (severity "Medium/High" and
+"Medium-High"). Under a looser rule that credits naming plus a fix regardless
+of the merge verdict (Rule A), Opus 5.5 on F2 would score **Caught** (C C P);
+every other case-level score is the same under both rules.
 
 The pattern is the same in nearly every run that found the flaw: the reviewer
 named it correctly, then rated it as pre-existing, lowered the severity, and

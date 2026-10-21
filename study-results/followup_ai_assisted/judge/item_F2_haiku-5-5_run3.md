@@ -1,0 +1,3 @@
+The review does touch the right spot: "`$eraname` is still interpolated into a filesystem path. This predates the diff, but since the code now touches this path logic, it is worth confirming that `$eraname` is sanitized or generated server-side." However, it is buried under "Other observations (Low)", never names path traversal or the write/read primitive, and the reviewer explicitly does not make it a merge blocker (the summary lists only issues 1 and 2 as pre-merge fixes). This is the right area with the wrong severity and no clear class, so it would raise a comment but not stop the bug.
+
+LABEL: Partial

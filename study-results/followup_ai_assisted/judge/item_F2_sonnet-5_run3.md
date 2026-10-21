@@ -1,0 +1,3 @@
+The review's point 5 explicitly identifies the vulnerability: "`$nameprefix = "$eraDir/$eraname"` still concatenates the user/file-supplied `$eraname` without sanitization... verify `$eraname` cannot contain `../` or absolute-path segments that could let `$nameprefix` escape `$eraDir`." This names the correct class (path traversal), the exact location and line, and the exploit vector. However, it hedges on severity ("Medium (not introduced by this diff, but worth flagging)") and frames it as a "good opportunity to verify" rather than a blocking issue, and the review's closing says "No other functional or security issues were found" — so a reviewer reading it would likely comment but not necessarily block the merge for this reason.
+
+LABEL: Partial

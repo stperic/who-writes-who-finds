@@ -1,0 +1,3 @@
+The review identifies the exact line and vulnerability class: "Possible path traversal through `$eraname`... Location: `$nameprefix = "$eraDir/$eraname";`... a value containing `../` or `/` could write outside the ERA directory. Confirm that `$eraname` is validated or reduced to a basename before this point." It correctly names path traversal, pinpoints the touched line, and recommends `basename()`/allowlist, and the summary says this "should be resolved before merge." Although hedged as "needs verification" and rated Medium because the diff didn't show the source of `$eraname`, the reviewer requested confirmation of sanitization as a merge blocker, which matches the advisory's finding.
+
+LABEL: Caught

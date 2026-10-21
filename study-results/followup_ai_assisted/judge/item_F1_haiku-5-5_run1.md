@@ -1,0 +1,3 @@
+The review never mentions `checkControllerAcl()`, `CONTROLLER_ACL_MAP`, or the fact that sub-controllers in `VALID_CONTROLLERS` (x12_partner, patient_finder, etc.) are reachable without any permission check; it only says "The whitelist of controller names is a good change" and lists tests for "the whitelist, the process flow, missing actions, and argument passing" without flagging the ACL gap. Its findings concern `is_callable`/`method_exists`, positional argument order, `_state` comparison, and exception handling, none of which touch the missing authorization check. No passage identifies the known vulnerability or its area.
+
+LABEL: Missed
