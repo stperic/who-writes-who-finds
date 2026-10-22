@@ -1,0 +1,3 @@
+The review never mentions `apiKey` or `$GLOBALS['gateway_api_key']` being echoed into client-side JavaScript. The nearest passages miss the issue: item 7 discusses `json_encode($amsg)` for `chargeMsg` as a possible XSS concern, and item 9 notes only that the new Stripe "payment-form" uses inconsistent naming. Neither identifies that the gateway's private secret key is exposed to every portal user in the page source.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+The review identifies the root cause in the right file, listing "Multiple raw `echo`s of clinical fields" (HPI, plan/orders, motility, notes), but classifies it as stored XSS that runs in clinicians' browsers. It comes closest to the known issue with the aside "In PDF mode, injected HTML can also manipulate html2pdf, for example `<img src="/etc/...">` local file references." That is a passing local-file-reference note, not server-side fetching of injected URLs (SSRF). It also never mentions the unescaped `background` CSS `url()` value, so the right area is flagged but under the wrong vulnerability class.
+
+LABEL: Partial

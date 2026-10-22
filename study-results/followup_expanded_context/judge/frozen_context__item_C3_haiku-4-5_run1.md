@@ -1,0 +1,3 @@
+The review never mentions the client-side `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` line, and it never raises any exposure of the payment gateway secret key to portal users. Its security findings cover other ground: SQL injection via `$_REQUEST`, the `$pid` override and authorization bypass, inconsistent escaping and session fixation. None of these touches the leaked credential, so no relevant passage exists.
+
+LABEL: Missed

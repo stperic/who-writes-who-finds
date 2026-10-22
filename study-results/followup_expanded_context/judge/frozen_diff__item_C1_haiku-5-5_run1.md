@@ -1,0 +1,3 @@
+Issue 4 points at the right mechanism: "If the controller dispatcher forwards request parameters into action arguments, any HTTP client could set `disable_exit=1`... the script would continue into whatever code follows, possibly emitting unexpected output." However, it never notes that the raw file bytes are echoed as text/html, and never names cross-site scripting or script execution in the browser. It treats the issue as a hedged, medium-severity control-flow concern rather than a stored XSS that must block the merge.
+
+LABEL: Partial

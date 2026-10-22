@@ -1,0 +1,3 @@
+The review's issue #6 flags the root cause in the right file: "Data from `$IMPPLAN_items` is echoed without escaping... `echo $item['plan']`". The plan field is one of the stored, user-supplied values involved. However, it treats this only as a MEDIUM browser XSS / output-encoding concern. It never connects the unescaped markup (e.g., the CSS `background` url) to the server-side HTML-to-PDF renderer fetching injected URLs, so the SSRF class and its severity are missed.
+
+LABEL: Partial

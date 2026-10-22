@@ -1,0 +1,3 @@
+Finding 3 identifies the right mechanism and location. It says that "OpenEMR's `Controller::act()` maps query-string segments positionally onto `*_action` method arguments" and that a remote user "could supply a 5th argument and set `$disable_exit`," taking "the 'internal' code path, which skips headers, encryption, and any logging." However, it never says that the returned raw file bytes are echoed as text/html, so embedded HTML/JS in an uploaded image would execute as stored XSS. It frames the issue as insecure design or access control at Medium severity, conditional on "verify it," so it flags the right area with the wrong vulnerability class and severity.
+
+LABEL: Partial

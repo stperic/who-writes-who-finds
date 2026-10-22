@@ -1,0 +1,3 @@
+The review's item 4, "Stripe secret key is emitted to every page," quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It explains that the setting is the "API Secret" for Stripe and is "output unconditionally into the portal HTML, so any patient can read it from page source." It rates this Critical/High, lists it among the issues that "should be fixed before merge," and correctly notes that only publishable values should go to the browser. That covers both the vulnerability class and its location.
+
+LABEL: Caught

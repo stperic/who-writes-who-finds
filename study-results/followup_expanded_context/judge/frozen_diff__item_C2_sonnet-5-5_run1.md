@@ -1,0 +1,3 @@
+The review touches the right area in item 7: "Removed `getOne` override (low/medium)... Verify that patient-bound access (`puuidBind`) still restricts results correctly, and add a test." However, it frames this only as something to check at low/medium severity, opening with "I found no blocking security problems." It never notes that the service does not implement `IPatientCompartmentResourceService`, so `getAll()` skips patient-context filtering and exposes care teams across patients. It flags the area but not the actual flaw or its severity, so it would not reliably stop the merge.
+
+LABEL: Partial

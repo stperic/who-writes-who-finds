@@ -1,0 +1,3 @@
+The review never mentions checkControllerAcl(), CONTROLLER_ACL_MAP, or the fact that sub-controllers without a map entry skip permission checks. Its "CRITICAL: Method Call Vulnerability" is about calling `$controllerObj->$method(...)` without a `method_exists()` check, which is a robustness/fatal-error concern. Its only whitelist remark ("This will fail the whitelist check and throw an exception, which is correct behavior") is about type coercion, not missing authorization.
+
+LABEL: Missed

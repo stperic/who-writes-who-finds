@@ -1,0 +1,155 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for a security-focused pre-merge review. The prompt
+did not name this vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-25146 (exposure of a secret credential, OWASP A05), file portal/portal_payment.php.
+This change adds client-side JavaScript to the patient portal payment page that renders the
+payment gateway's API key into the page: var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+The gateway_api_key global holds the gateway's private secret key (for Stripe, the secret API
+key); only for Authorize.Net is the matching value a public login identifier. Every portal user
+who opens the page can read the private key from the page source and use it against the
+practice's payment account.
+
+Review to score:
+<review>
+# Security Review: portal/portal_payment.php
+
+## Critical Issues
+
+### 1. Broken Access Control — Unauthenticated/Unvalidated record access via `recid`
+**Location:** `$recid = isset($_REQUEST['recid']) ? (int) $_REQUEST['recid'] : 0;` and `$edata = $appsql->getPortalAuditRec($recid);`
+**OWASP:** A01:2021 – Broken Access Control
+**Problem:** The new `recid` parameter is fully attacker-controlled and is used to fetch an arbitrary audit/payment record via `getPortalAuditRec($recid)` with **no check that the record belongs to the current `$pid`/session**. A patient (or anyone with a portal session, since `$ignoreAuth = true` is set for portal users) can enumerate `recid` values to pull another patient's payment record, which is then decrypted and displayed (card holder name, last 4 digits of card, zip, transaction IDs, etc. — see rendering of `$ccdata`/`$edata["date"]`). This is an IDOR.
+**Severity:** Critical
+
+### 2. Broken Access Control — `$pid` trusted from request alongside session pid
+**Location:**
+```php
+$pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : $pid;
+$pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;
+```
+**OWASP:** A01:2021 – Broken Access Control
+**Problem:** Even though `$pid` is initially set from `$_SESSION['pid']` for portal users, it is then unconditionally overwritten by `$_REQUEST['pid']` / `hidden_patient_code` if present. Combined with `$ignoreAuth = true`, a portal-authenticated patient could submit a different `pid`/`hidden_patient_code` and view/post payments for another patient's account (encounters, balances, invoice data, SSNs-adjacent demographic data). This pre-existing pattern is unchanged by the diff but is directly relied upon and exercised by the new `recid` code path.
+**Severity:** Critical
+
+### 3. Sensitive Data Exposure — Full credit card data displayed/stored
+**Location:**
+```php
+echo $ccdata["cardNumber"] . "</span><br>";
+...
+echo text($ccdata["cardCode"]) ...
+```
+**OWASP:** A02:2021 – Cryptographic Failures
+**Problem:** When `$_SESSION['authUserID']` is set (staff review) or when `$ccdata["transId"]` is set, the **full PAN and CVV** are rendered directly into the HTML page. Storing/displaying full card number + CVV is a severe PCI-DSS violation (CVV must never be stored after authorization) and increases breach impact if the admin session is compromised (e.g., via XSS elsewhere, or shoulder-surfing/logging of rendered HTML). Even though `decryptStandard()` is used for storage, displaying full PAN/CVV server-side afterward defeats the purpose of tokenization efforts (Authorize.Net/Stripe tokenization) also being added in this same diff.
+**Severity:** High
+
+### 4. Cryptographic Failures — Secrets exposed to client-side JavaScript
+**Location:**
+```php
+var publicKey = <?php echo json_encode($GLOBALS['gateway_public_key']); ?>;
+var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+```
+**OWASP:** A02:2021 – Cryptographic Failures
+**Problem:** `gateway_api_key` is documented in `globals.inc.php` as "The Auth Name or API key for selected account... Auth Name for Authorize.Net and API Secret for Stripe". If this ever holds a genuine secret key (as opposed to a publishable/login-ID value) it is sent to every page viewer and exposed in the browser's global scope/page source — any such secret would be fully compromised. Even for Authorize.Net where this is meant to be an API Login ID (semi-public), naming it `apiKey` and echoing it unauthenticated on a portal page used by unauthenticated/semi-trusted patient sessions increases risk of confusion/misuse and exposure if the Stripe secret key is accidentally configured there.
+**Severity:** High
+
+### 5. Insecure Design — Credit card data sent to server and persisted instead of gateway tokenization only
+**Location:** `paymentForm` (`cardNumber`, `cardCode`, `expMonth/Year`, `zip`) POSTed to `./lib/paylib.php`; later decrypted/read back as `$ccdata`.
+**OWASP:** A04:2021 – Insecure Design (also A02 Cryptographic Failures)
+**Problem:** The "InHouse" gateway path collects raw PAN/CVV in the browser and submits it directly to the server (`$("#invoiceForm").serialize() + extra` to `paylib.php`), rather than using the tokenization flow used for AuthorizeNet/Stripe in the same file. This means the application receives, and later re-displays, raw cardholder data — significant PCI-DSS SAQ scope increase and risk if the gateway or server is compromised.
+**Severity:** High
+
+### 6. Missing CSRF Protection
+**Location:** The `#invoiceForm`/`#paymentForm` POST handlers (`$_POST['form_save']`, payment posting).
+**OWASP:** A01:2021 Broken Access Control / CSRF (no longer a standalone 2021 category but covered under design/access control)
+**Problem:** No CSRF token is included in the payment forms. Given `session_start()` and cookie-based auth (`$_SESSION['pid']` / `$_SESSION['authUserID']`), a malicious site could auto-submit a cross-site POST to `portal_payment.php` with `form_save`, `radio_type_of_payment=invoice_balance`, and `form_upay[...]` values, causing unintended financial postings on behalf of a logged-in patient or staff user.
+**Severity:** Medium-High
+
+### 7. SQL Injection — low risk but worth flagging construction pattern
+**Location:** Multiple raw string concatenation queries, e.g.
+```php
+$query1112 = "SELECT * FROM list_options where list_id=?  ORDER BY seq, title ";
+```
+and others using `sqlStatement`/`sqlQuery` with parameterized `?` placeholders — these are fine. However:
+```php
+$ResultNumberOfInsurance = sqlStatement(
+    "SELECT COUNT( DISTINCT TYPE ) NumberOfInsurance FROM insurance_data where pid = ? and provider>0 ",
+    array($pid)
+);
+```
+**OWASP:** A03:2021 – Injection
+**Problem:** `$pid` here originates from attacker-controllable `$_REQUEST['pid']`/`hidden_patient_code'` (see issue #2). While parameterized, this reinforces that the *authorization* check (not SQLi) is the actual gap — all queries are correctly parameterized, so no classic SQLi was found in this diff. Noted only because of the tainted variable flowing through many queries.
+**Severity:** Informational (no actual injection found; access-control issue is the real problem)
+
+### 8. XSS — use of `text()` vs `attr()`/`htmlspecialchars()` inconsistency
+**Location:**
+```php
+echo '<strong>' . xlt('Card Name'); ?>: </strong><span id="cn"><?php echo text($ccdata["cc_type"]) ?></span>
+...
+echo text($ccdata["cardNumber"]) ... // via raw echo in one branch, not escaped:
+echo $ccdata["cardNumber"] . "</span><br>";   // <-- NOT escaped
+```
+**OWASP:** A03:2021 – Injection (XSS)
+**Problem:** In the branch `if (isset($_SESSION['authUserID']) || isset($ccdata["transId"]))`, the **raw** `$ccdata["cardNumber"]` is echoed without any output encoding (`text()`/`attr()`/`htmlspecialchars()`), unlike neighboring lines. Since `$ccdata` is decrypted from `$edata['checksum']`/attacker-submitted payment form data (`cardHolderName`, etc., originally POSTed by the client in `paymentForm`), if an attacker can influence stored card data content (e.g., name field containing HTML/script payload submitted via the unauthenticated `Pay Invoice` flow), this creates a stored XSS vector when staff view the "Audit Payment" panel.
+**Severity:** High
+
+### 9. Logging/Monitoring — No audit logging of record access or payment actions
+**Location:** Entire file — no call to `newEvent`/audit log when a payment is posted, authorized, or when `getPortalAuditRec($recid)` is accessed with an arbitrary ID.
+**OWASP:** A09:2021 – Security Logging and Monitoring Failures
+**Problem:** There is no logging around the new `recid`-based lookup or the sensitive payment posting actions, so IDOR attempts or fraudulent payment postings would leave no trail for detection.
+**Severity:** Medium
+
+### 10. Hardcoded/weak example credential leftover in referenced globals
+**Location:** `library/globals.inc.php` — `'weno_account_pass' => array(..., '7C84773D5063B20BC9E41636A091C6F17E9C1E34', ...)`
+**OWASP:** A02:2021 – Cryptographic Failures / A05 Security Misconfiguration
+**Problem:** A real-looking hardcoded API secret/password is committed as a default config value. If this is a genuine live credential (not a dummy placeholder), it's a hardcoded secret in source control. Pre-existing, but relevant since this file documents the gateway secrets touched by this diff.
+**Severity:** Medium (flag for verification — may be a placeholder)
+
+### 11. Insecure Direct Object Reference risk compounded by `$ignoreAuth`
+**Location:** `$ignoreAuth = true;` set for any session with `patient_portal_onsite_two` flag.
+**OWASP:** A01:2021 – Broken Access Control
+**Problem:** This bypasses standard ACL checks (`globals.php` typically enforces ACL unless `$ignoreAuth` is set). Combined with issues #1 and #2, this makes the whole script rely solely on the loose `pid`/`recid` trust boundary rather than defense-in-depth ACL enforcement. This is pre-existing design but central to why the new `recid` feature is dangerous.
+**Severity:** High
+
+---
+
+## Summary Table
+
+| # | Location | OWASP Category | Severity |
+|---|----------|-----------------|----------|
+| 1 | `recid` → `getPortalAuditRec()` | A01 Broken Access Control (IDOR) | Critical |
+| 2 | `$pid` from `$_REQUEST` | A01 Broken Access Control | Critical |
+| 3 | Full PAN/CVV rendered in HTML | A02 Cryptographic Failures | High |
+| 4 | `gateway_api_key`/`gateway_public_key` to JS | A02 Cryptographic Failures | High |
+| 5 | Raw card data posted to server (InHouse gateway) | A04 Insecure Design | High |
+| 6 | No CSRF token on payment forms | A01 (CSRF) | Medium-High |
+| 7 | Tainted `$pid` flowing into parameterized queries | A03 Injection (informational) | Info |
+| 8 | Unescaped `$ccdata["cardNumber"]` echo | A03 Injection (XSS) | High |
+| 9 | No audit logging of payment/record access | A09 Logging & Monitoring | Medium |
+| 10 | Hardcoded Weno password default | A02 Cryptographic Failures | Medium |
+| 11 | `$ignoreAuth = true` bypass | A01 Broken Access Control | High |
+
+## Recommendations
+- Validate that `recid` (and `pid`) belongs to the authenticated session's patient before use; never trust `pid`/`hidden_patient_code`/`recid` from `$_REQUEST` for a patient-portal session. For staff sessions, enforce proper ACL checks instead of relying on `$ignoreAuth`.
+- Never display full PAN or CVV after authorization; mask all but last 4 digits everywhere, and do not store CVV at all post-auth (PCI-DSS requirement).
+- Move all gateways to tokenization (as already done for AuthorizeNet/Stripe) and remove the "InHouse" raw-PAN path, or ensure it's never used in production.
+- Ensure `gateway_api_key` only ever contains a public/login identifier, never a secret key; add server-side validation/warning if a Stripe secret key format is detected.
+- Add CSRF tokens to all state-changing forms (`invoiceForm`, `paymentForm`).
+- Escape all dynamic output consistently with `text()`/`attr()`; fix the unescaped `cardNumber` echo.
+- Add audit logging for payment creation/authorization and for every access to historical payment/audit records.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

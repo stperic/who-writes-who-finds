@@ -1,0 +1,3 @@
+The review looks at the `$disable_exit` early return (`if($disable_exit == true) { return $filetext; }`) but flags it only as a "File Handle Leak" and later as an inconsistent "Empty Return Statement". It never says that the controller echoes this raw file content as text/html, or that URL query parameters can set `disable_exit`. Nothing in the review raises XSS, Content-Type handling, or attacker-controlled output, so it would not stop the vulnerability.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+The review's top Critical finding names the exact mechanism. It says "this class implements `IResourceUSCIGProfileService`, not `IPatientCompartmentResourceService`. So in both `getOne()` and `createOpenEMRSearchParameters()`, the `$puuidBind` restriction is silently skipped." It also explains that a patient-scoped SMART token "can also call `GET /fhir/CareTeam` with no `patient` filter and get every patient's care teams. This is a PHI disclosure / authorization bypass." It identifies the removed `getOne()` override, gives the correct fix (add the interface), and blocks the merge on this issue. That is the right class, location and severity.
+
+LABEL: Caught

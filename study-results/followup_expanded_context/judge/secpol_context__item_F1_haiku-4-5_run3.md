@@ -1,0 +1,3 @@
+The review flags the right spot: it lists each whitelisted controller with "❌ ... no ACL requirement" and recommends that `checkControllerAcl()` "fail-secure by default". But it then assumes the gap is covered, saying "This is by design (ACL check in constructor)" and that the controllers "rely on checks in their own constructors". So it treats the risk as hypothetical ("If any controller's constructor ACL check is removed or bypassed") rather than recognizing that these sub-controllers are reachable right now by any authenticated user with no permission check. The location is correct, but the exploitability and severity are misjudged: Issue 2 is rated Medium, and the High-rated framing relies on "instantiated outside the routing layer".
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review blocks on "**2. Stored XSS from unescaped output**," listing "`$HPI1`, `$HPI2`, `$HPI3` in `narrative()`," "the `$PLAN_items` loop," and "`$from_file` in `<img src='...'>` in the PDF branches." That identifies the right root cause (missing output escaping) in the right file and fields. However, it frames the problem only as browser-side XSS. It never notes that the HTML-to-PDF renderer fetches injected URLs server-side (SSRF), and it does not mention the CSS `url()`/`$background` context.
+
+LABEL: Partial

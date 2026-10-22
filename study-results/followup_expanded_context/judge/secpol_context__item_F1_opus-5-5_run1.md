@@ -1,0 +1,3 @@
+Finding 4 names the exact flaw: "ACL map covers only 2 of 10 routable controllers." It lists `pharmacy`, `insurance_company`, `x12_partner`, `patient_finder` and the other sub-controllers, notes that "Direct access skips the `practice_settings` check" so "low-privilege users could view or modify X12 partners," and says to "Make 'no entry' fail closed." That matches the advisory's class (broken access control from a missing ACL entry), its location and its mechanism. The review rates it Medium and hedges on whether each controller has its own ACL, but the detection itself is precise enough to block the merge for the right reason.
+
+LABEL: Caught

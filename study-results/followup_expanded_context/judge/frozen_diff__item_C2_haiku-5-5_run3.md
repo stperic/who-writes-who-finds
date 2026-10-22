@@ -1,0 +1,3 @@
+The review's top blocking item zeroes in on the removed override: "The diff deletes `getOne()`, which parsed the OpenEMR record into a FHIR resource… `GET /CareTeam/{id}` will now return raw OpenEMR data or fail… or the override should be kept." That points at the right change but treats it as a functional parsing regression. It never mentions patient scoping, `IPatientCompartmentResourceService`, or patient-context tokens returning care teams for every patient. Right area, wrong class, so the cross-patient exposure is not actually identified.
+
+LABEL: Partial

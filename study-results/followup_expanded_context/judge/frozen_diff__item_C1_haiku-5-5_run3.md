@@ -1,0 +1,3 @@
+The review's issue 2 points at the right spot: "Controller actions in this codebase are typically dispatched from request parameters... any client can supply `disable_exit` and change the function's control flow." But it gives the impact only as "the surrounding framework continues and may emit extra output or skip cleanup." It never says the returned raw file bytes are echoed as text/html, which lets HTML or JavaScript embedded in an image run as stored XSS. The review flags the attacker-controllable flag at Medium severity but misidentifies the vulnerability class and its consequence.
+
+LABEL: Partial

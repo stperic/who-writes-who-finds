@@ -1,0 +1,3 @@
+The review gets the mechanism right: it notes that `retrieve_action()` "is invoked through the generic `Controller::act()` dispatcher, which builds its positional argument array from `$_GET`/`$_POST`." It also warns the method can end up "returning raw file bytes into the page output," and in #6 that the parameter may be "reachable as a routed action parameter." But it treats this as a loose-comparison and unexpected-behavior bug. It never says the raw bytes are served as text/html, so embedded HTML/JS in an uploaded image would execute as stored XSS. The right area is flagged but with the wrong vulnerability class.
+
+LABEL: Partial

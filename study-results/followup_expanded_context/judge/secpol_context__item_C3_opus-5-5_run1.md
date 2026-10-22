@@ -1,0 +1,3 @@
+The review's Finding 1 identifies exactly the known vulnerability. It quotes the line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and states that "When Stripe is the gateway, `gateway_api_key` holds the Stripe secret key, and the PR writes it into the page for every portal patient." It rates this Critical, notes the Authorize.Net nuance, and requires removing the emission and rotating secrets before merge, so it names the right class (secret credential exposure, A05/A02) in the right location.
+
+LABEL: Caught

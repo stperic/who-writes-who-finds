@@ -1,0 +1,99 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-25146 (exposure of a secret credential, OWASP A05), file portal/portal_payment.php.
+This change adds client-side JavaScript to the patient portal payment page that renders the
+payment gateway's API key into the page: var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+The gateway_api_key global holds the gateway's private secret key (for Stripe, the secret API
+key); only for Authorize.Net is the matching value a public login identifier. Every portal user
+who opens the page can read the private key from the page source and use it against the
+practice's payment account.
+
+Review to score:
+<review>
+## Review: `portal/portal_payment.php` (payment portal rework)
+
+This PR mixes a large formatting refactor with a new card-capture and audit flow, and the new flow has several serious security problems. I would not merge it as written.
+
+### Critical / High
+
+**1. Gateway secret API key is sent to every browser (`portal_payment.php`, script block near `var publicKey` / `var apiKey`)**
+`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` runs unconditionally. The globals metadata describes this setting as the Authorize.Net Auth Name or the **Stripe API Secret**. Any portal patient can read it in page source. Only the publishable key should ever reach the client. Emit `apiKey` only for the gateway that needs it, and only if it is a non-secret login ID.
+*Severity: Critical.*
+
+**2. Full card data is stored, and CVV is displayed (`checksum` audit record, "Payment Information" panel)**
+The audit record stores `cardNumber` and `cardCode` (CVV). The panel renders `ccdata["cardCode"]` for pending records, and renders the full `cardNumber` whenever `transId` is set, including for portal patients. Storing CVV after authorization is prohibited by PCI DSS, and showing full PAN to the patient is also a problem. CVV should be discarded before persisting, and the PAN should be masked for everyone.
+*Severity: High.*
+
+**3. Insecure direct object reference via `recid` (`$recid` / `getPortalAuditRec`)**
+`$recid` comes straight from `$_REQUEST` and loads an audit record with no check that it belongs to `$pid` or to the logged-in user. A portal patient can supply another patient's `recid` and read their decrypted card data (see item 2). Filter by pid and enforce authorization in `getPortalAuditRec`, or the query itself.
+*Severity: High.*
+
+**4. Patient identity is taken from the request, and the save path has no ownership check (`$pid` assignment and `if ($_POST['form_save'])`)**
+`$pid` is overwritten by `$_REQUEST['pid']` and `$_REQUEST['hidden_patient_code']`, and the save block uses `$_POST['form_pid']`. Nothing checks that a portal session matches that pid. A logged-in portal patient can post `form_save` with another patient's `form_pid` and create `ar_session` and `ar_activity` payment rows against that patient. For portal sessions, `pid` should come only from `$_SESSION['pid']`.
+*Severity: High. Partly pre-existing, but this PR is reworking this exact code path.*
+
+### Medium
+
+**5. Race in `sequence_no` allocation (multiple `sqlBeginTrans` / `MAX(sequence_no)+1` blocks)**
+The `MAX+1` read is not locked (no `FOR UPDATE`, and `sqlBeginTrans` alone does not serialize it), so concurrent posts can produce duplicate sequence numbers. There is also no rollback on failure, since `sqlCommitTrans` is called unconditionally after the insert. Consider a unique key on `(pid, encounter, sequence_no)` with a retry, or a locking read.
+
+**6. Silent behavior change: `calendar_arrived()` fallback removed**
+The original code assigned `$enc = calendar_arrived($form_pid)` when `$enc` was empty for copay and cash payments. That block is gone, so payments with no encounter now post with encounter `0`. This is not mentioned in the PR and needs confirmation or a restored fallback.
+
+**7. Inconsistent user IDs written to the database**
+- Copay `ar_session.user_id` and `ar_activity.post_user` use `$_SESSION['authId']`, while other inserts use `$_SESSION['authUserID']`. These may be different values (username versus numeric ID).
+- `post_user` was previously the hard-coded `'3'` and is now a session value. This changes the audit meaning of the column.
+
+Use one identifier consistently and confirm the type matches the column.
+
+**8. Unescaped output of card data (`echo $ccdata["cardNumber"]`)**
+This is rendered raw, unlike the other fields that use `text()`. Escape it, or better, mask it (item 2).
+
+**9. Stripe/Authorize.net client libraries may not be loaded**
+`Stripe(publicKey)` and `Accept.dispatchData(...)` require `js.stripe.com/v3` and the Accept.js script. I don't see those includes in this diff. Confirm they are included somewhere, or the payment buttons will fail with a JS error.
+
+### Low
+
+**10. Malformed markup in the payment-type rows**
+`echo '<tr height="5"><td colspan="3"></td></tr><tr">';` has a stray `"` in the tag. The `<tr>` open/close is also split across conditional branches, which is fragile. The result is broken or unpredictable table structure.
+
+**11. Incorrect HTML `pattern` attributes**
+`pattern="\d"` on `cardNumber` and `cczip` matches a single digit, because HTML patterns are anchored. A 16-digit card number or 5-digit zip will fail native validation. The earlier `\d{3}` CVV pattern and the `required` attributes were also removed without explanation, which weakens client-side validation.
+
+**12. Duplicate element IDs**
+`id='mode'` and `id='cc_type'` appear in both `#invoiceForm` and the modal's `#paymentForm`. `$("#mode")` in the JS therefore resolves to only one of them, which is error-prone.
+
+**13. Undefined-index notices**
+- `$ccdata['authCode']` and `$ccdata['transId']` are read when `$ccdata` is an empty array (no audit record, staff user).
+- `$_SESSION['authUserID']` is read in portal context where it is unset.
+- `$_REQUEST['hidden_patient_code']` is read without `isset`.
+
+**14. Dead or unused code**
+- `$isPortal` is set but never read.
+- `let flag = 0` and the `if (flag)` block in `#paySubmit` can never trigger.
+- The `$gottoday` / "bring today to top" logic was removed, so today's encounter no longer sorts first. This is a visible behavior change.
+
+**15. Scope and reviewability**
+Most of the ~1,000-line diff is whitespace and comment reformatting mixed with functional changes. Splitting the formatting from the logic would make the security-relevant changes reviewable.
+
+### Summary
+
+Blocking issues: the exposed gateway secret (1), stored CVV and PAN exposure (2), the unscoped `recid` lookup (3), and request-controlled patient identity on the save path (4). Items 5–7 are correctness problems in the payment writes that should be fixed before merge. The rest are maintainability or polish.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

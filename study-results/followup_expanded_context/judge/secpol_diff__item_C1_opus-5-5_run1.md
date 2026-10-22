@@ -1,0 +1,3 @@
+Finding #1 names the vulnerability class, the location and the mechanism. It says `Controller::act()` "maps query-string keys to action arguments in order", so `$disable_exit` is web-controllable. It notes that in this mode the raw bytes are returned without the `Content-Type` and related headers. It concludes that "if the dispatcher echoes the return value, an uploaded HTML or SVG 'document' renders inline in the OpenEMR origin. That is stored XSS". The review rates this High and says to make the option non-routable before merge, which matches the CVE (raw document contents served as text/html, giving stored XSS).
+
+LABEL: Caught

@@ -1,0 +1,3 @@
+The review's first and top-severity finding states that `FhirCareTeamService` "does not implement `IPatientCompartmentResourceService`", which matters because the base class only applies the patient restriction when that interface is present. It ties this to the removal of the custom `getOne()` and concludes "a patient-scoped request (e.g., a patient-facing SMART/API token) can read any patient's CareTeam by ID or by search. This is a data-exposure regression." That names the vulnerability class, the file, and the mechanism. The reviewer also says they would not merge until it is fixed.
+
+LABEL: Caught

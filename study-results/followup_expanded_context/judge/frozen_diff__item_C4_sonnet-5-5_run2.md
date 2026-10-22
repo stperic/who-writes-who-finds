@@ -1,0 +1,3 @@
+The review's item 3, **"Stored XSS from unescaped output,"** identifies the root cause in the right file. It lists unescaped echoes of `$HPI1`, the `$MOTILITY_*` values, `$item['plan']` and `$PLAN` items, and even "`$providerNAME` in the PDF branch." However, it frames the flaw only as browser-side XSS. It never says that the server's HTML-to-PDF rendering fetches injected URLs (e.g., via CSS `url()`/`background`), so the server-side request forgery class is not named. The location and root cause are right, but the class and impact are wrong.
+
+LABEL: Partial

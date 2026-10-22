@@ -42,7 +42,12 @@ Status values: **Open** (not yet tested), **Supported**, **Partly supported**,
     more often than SSRF.
   - Context helps more under the security plus touched-code prompt than under
     the generic prompt.
-- Status: **Open**. Evidence will be `followup_expanded_context/`.
+- Status: **Partly supported** (2026-10-21). Model/case pairs Caught, diff only to
+  with context: generic 2 to 10 of 25, security plus touched code 7 to 16 of 25.
+  C2 (0 to 4), C3 (2 to 4) and C1 (0 to 2, and 1 to 4) gained as expected; C4 stayed
+  lowest (0 to 0, and 0 to 1), as expected. **Refuted for F1**: no gain (0 to 0, and
+  4 to 3). **Not supported**: context did not help more under the security prompt
+  (+8 and +9 pairs). Evidence: `followup_expanded_context/README.md`.
 - Not measured in step 4: false alarms with added context.
 - Judge (decided 2026-10-21, after the six abnormal runs were rerun and before
   any step 4 review was judged): Claude Opus 5.5, the study author's choice.
@@ -119,3 +124,37 @@ human check are required before results are published.
 An audit found background-run logs only in temporary storage and 12 early
 calls without token usage. From step 4 on, every call stores its exact prompt
 and full raw response.
+
+### I9. Added context turns hedged comments into blocking findings when the missing piece is a fact (from H3)
+Without the dependent file, reviewers usually found the right line and asked
+someone to verify it ("Removal of `getOne()` override (Low, verify)"). With the
+file, they named the mechanism and blocked the merge. Under the generic prompt,
+runs naming the flaw stayed flat (59 to 58 of 75) while runs that would block
+rose from 7 to 27. Context and the security prompt add up: 2 of 25 pairs with
+neither, 16 of 25 with both. Evidence: `followup_expanded_context/README.md`.
+
+### I10. Context does not fix a scope judgment, and a guard in the context file can reassure the reviewer (from H3; F1 explanation post hoc)
+F1 gained nothing from its context file. Reviewers read the parent
+controller's `admin/practice` check in that file as protection ("still performs
+its own ACL check in its constructor, so this is not a bypass"). The flaw is
+pre-existing, and only the touched-code sentence, added to the security
+prompt, got reviewers to block it. A routing policy should keep that
+instruction even when it supplies context. Evidence:
+`followup_expanded_context/judge/frozen_context__item_F1_*.md`.
+
+### I11. Review pipeline failures are intermittent: retry and log, never read them as "no findings" (process, step 4)
+The cyber safety classifier stopped 2 of 27 Opus 5.5 security-prompt reviews
+mid-review (0 of 27 under the generic prompt); both went through on an
+identical retry. Four reviews ran out of output budget; all four finished
+under the same budget on rerun. A pipeline that treats a refused or cut-off
+review as a clean review would pass those changes unreviewed. Evidence:
+`followup_expanded_context/execution_errors.csv`.
+
+### I12. Opus 5.5 as judge matched Fable 5.1 on 29 of 30 runs; the one difference favored its own review (post hoc)
+Opus 5.5 judged step 4 (the study author's choice). On the 30 reused F1 reviews
+it gave Fable 5.1's label 29 times. The exception was one of its own reviews,
+which it rated Caught and Fable rated Partial; Rule B returned it to Partial,
+so the 30 final labels are identical. Thirty runs cannot rule out a
+self-scoring effect. Evidence: `followup_expanded_context/judge_detection.csv`
+against `followup_security_prompt/judge_detection.csv` and
+`followup_ai_assisted/judge_scores.csv`.

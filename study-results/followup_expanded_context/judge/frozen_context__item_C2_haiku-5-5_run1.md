@@ -1,0 +1,3 @@
+The review names the exact mechanism in its first, high-severity issue: "it does not implement `IPatientCompartmentResourceService`. `FhirServiceBase` only applies patient binding when that interface is present." It then states the consequence, "a request made in a patient-bound context (`$puuidBind` set) will not restrict results to that patient... this could expose other patients' care teams." It also ties the `getOne()` removal to this binding issue and calls it a blocking security concern, which matches the known vulnerability's class and location.
+
+LABEL: Caught

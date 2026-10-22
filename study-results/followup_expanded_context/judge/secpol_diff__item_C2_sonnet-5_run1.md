@@ -1,0 +1,3 @@
+The review explicitly flags the deleted patient-scoped `getOne()` override as an A01 Broken Access Control issue. It warns that "a caller could potentially retrieve any CareTeam record ... regardless of the patient context under which they are authorized — an IDOR vulnerability exposing PHI ... across patients," and states this "should block merge until confirmed." It does not pinpoint the missing `IPatientCompartmentResourceService` interface as the mechanism and hedges on base-class behavior, but it names the right class, the right file and change, and the cross-patient impact, so a reviewer would block for the right reason.
+
+LABEL: Caught

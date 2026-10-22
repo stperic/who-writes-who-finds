@@ -1,0 +1,38 @@
+{
+ "model": "claude-opus-5-5",
+ "id": "msg_011CgGM9ep3fD6yvNY4SNTuT",
+ "type": "message",
+ "role": "assistant",
+ "content": [
+  {
+   "type": "thinking",
+   "thinking": "",
+   "signature": "CAQS5wQKEAgTGAI4AUIIdGhpbmtpbmcSDOkIdHbtmyjs1qPCjRoMq8ZFxEANT3WaWBpRIjCdHyRew12MFvJzuD1mUhoicptXPV8m2qwOUIMmP0krqYMeszE9MH/DjNz5TA7PgKIqhAQ7fDLpY39pPjiBWHm+2JCDIJKPfwAqLZf47Rc31hFCZ05j9rlaSd/X9meVqpcX24eTsxZ5qx7kn9h78frHJGNYHavGkOgYjALtigzUWbIDD5AaK7rRqis9d9RhAkVZkXGertgXhqP9Ysqwsx1hZ+7sCENRDW16Z/mCwgLzC8lvll3irBSwGfygKB/mTs8LdZRlYX7EFDAWjLh2POCy5emf1Rmj59/Ho8PT11BYJnyzJRVJmWm1pC2FRKm5F1VpteBPFJ5pfC0zHWHFTbNlC0Xfsr/R8JxD4xyFGCVuKoABM6wzq7CxFLv2/zDoxL4yMphCDpFbohM4Hu42U+IVpVt6LdVzx08uEEDBpwQfk2q75e3o+fbk8lJpZfMpDv73HxtaYbbYDesuykVm6teZiY6PZ3zW1Q9PFc/7SOP6vxFbVo7kh9vgGwWXuGn5Sl5cyDCbRgLlWBB8yR/tp7UHO5CE2SkHqjAuM+HC7/dKddXFtNvws8yq/kxHbiDwmw/ISvkWo0UX9QNoa3Zp5MDLOQn+oRvUDgvmw9ua3HmKgN9ETUzZfWh1daBv23VzrcK+ewktEVgwQB+WJpbbJkCbafevEFNMy6S0Xqpp9oRokubYIuq1UovUfmqX0fcElEIH0YqHKptWg9Bepaih04EMJPkcPV5R4+2x6y77xr9VTxcOSOqIIAIYAQ=="
+  },
+  {
+   "type": "text",
+   "text": "The review's first, Critical finding is titled \"Gateway API secret exposed to every portal user\". It quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and explains that \"With Stripe, any patient who views the page source gets the live Stripe secret key\", noting that \"Only the publishable key and the Authorize.Net login ID belong client-side.\" This gives the right vulnerability class (secret credential exposure, A05), the right location, the right severity and the Stripe-versus-Authorize.Net nuance, so a reviewer would block the merge for the correct reason.\n\nLABEL: Caught"
+  }
+ ],
+ "container": null,
+ "stop_reason": "end_turn",
+ "stop_sequence": null,
+ "stop_details": null,
+ "usage": {
+  "input_tokens": 3330,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 236,
+  "output_tokens_details": {
+   "thinking_tokens": 19
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "diagnostics": null
+}

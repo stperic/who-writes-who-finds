@@ -1,0 +1,3 @@
+The review never flags that `checkControllerAcl()` returns without a check for controllers missing from `CONTROLLER_ACL_MAP`, which leaves sub-controllers like `x12_partner` and `patient_finder` reachable by any authenticated user. The ACL is touched only in passing: it says the refactor "centralizes ACL checks" and asks for tests covering "ACL denial". Its security-adjacent findings (#2 on `method_exists()`, #5 on action-name sanitization) concern method dispatch and input filtering, not the missing authorization on whitelisted controllers.
+
+LABEL: Missed

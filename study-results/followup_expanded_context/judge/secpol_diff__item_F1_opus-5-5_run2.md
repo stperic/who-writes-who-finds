@@ -1,0 +1,3 @@
+Caught. Issue #3 of the review names the exact flaw: "ACL enforced only for two top-level controllers; sub-controllers reachable directly". It lists `pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `document_category`, `hl7`, `document` and `patient_finder` as being "in `VALID_CONTROLLERS`", and notes "none of these require admin/practice ACL here", rating it "Severity: High". It also gives the right fix ("a missing entry denies access"), which matches the advisory's class, location and severity, even though the review treats it as a high-priority follow-up rather than its main merge blocker.
+
+LABEL: Caught

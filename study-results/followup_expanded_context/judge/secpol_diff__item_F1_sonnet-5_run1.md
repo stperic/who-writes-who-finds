@@ -1,0 +1,3 @@
+Finding 5 points at the right place: "Only `practice_settings` and `prescription` have ACL checks enforced centrally. The remaining eight controllers (`document`, ..., `x12_partner`) presumably perform their own ACL checks inside each controller class." However, it assumes those controllers protect themselves and frames the danger as hypothetical ("any new controller added ... in the future ... would have no access control"). It rates this only "Medium (needs verification)" rather than stating that the eight sub-controllers are reachable right now by any authenticated user without a permission check, so it would raise a comment but not clearly block the merge for the actual bypass.
+
+LABEL: Partial

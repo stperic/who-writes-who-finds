@@ -1,0 +1,3 @@
+The review explicitly identifies the SSRF in report.php. Finding 4 says the "Stored XSS sinks in finding 3 feed directly into the HTML that html2pdf renders" and that "html2pdf fetches `<img src>` targets server-side. Any injected `<img src="http://169.254.169.254/...">` ... in HPI, plan, or notes causes the server to fetch internal resources." It names A10 SSRF, ties it to the missing output escaping as root cause ("Fix finding 3"), and requires the fix before merge. It does not mention the CSS `background` url() sink specifically, but it gets the class, file, mechanism and root cause right.
+
+LABEL: Caught

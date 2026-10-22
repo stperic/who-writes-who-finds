@@ -1,0 +1,3 @@
+The review points to the right root cause and location in issue #2, "Inconsistent/missing output escaping → stored XSS", listing unescaped `$HPI1`, IMPPLAN `codetext`/`plan`, and `$PLAN`/`$PLAN2` echoes in `narrative()`. But it frames this only as browser-side stored XSS. It never mentions the `background:` CSS url() context or the server-side HTML-to-PDF rendering that turns injected URLs into server-side request forgery. So it identifies the right flaw and area but the wrong vulnerability class and impact.
+
+LABEL: Partial

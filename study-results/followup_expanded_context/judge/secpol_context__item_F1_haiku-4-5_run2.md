@@ -1,0 +1,3 @@
+Issue #1 in the review states that `checkControllerAcl()` "silently returns if a controller isn't in the map, allowing unrestricted access." It lists the unmapped sub-controllers (pharmacy, x12_partner, patient_finder, etc.) and notes that "Users could bypass the ACL by calling `/controller.php?controller=pharmacy&action=list` instead of going through `practice_settings`." This names the exact class, location and bypass mechanism, rates it critical, and recommends deny-by-default, which matches the known vulnerability.
+
+LABEL: Caught

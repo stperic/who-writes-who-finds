@@ -1,0 +1,3 @@
+The review flags the right root cause and location: under "Stored XSS from unescaped output" it lists raw echoes of `$HPI1`, `$item['plan']`, `$PLAN`, and "The `$MOTILITY_*` values are echoed raw" in report.php. It frames this only as browser-side XSS, though. It never notes that the markup is rendered server-side by the HTML-to-PDF renderer, so injected URLs (e.g., in CSS `url()`/`background`) would be fetched by the server. That makes it the right area but the wrong vulnerability class (SSRF).
+
+LABEL: Partial

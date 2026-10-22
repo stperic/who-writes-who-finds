@@ -1,0 +1,3 @@
+The review's item 5 points to the right location and class: "Only `practice_settings` and `prescription` have centralized ACL checks... The other 8 controllers (`document`, ..., `patient_finder`, `pharmacy`, `x12_partner`)... have **no ACL check at this layer** at all." However, it rates this only "Medium (needs verification against each controller's internal checks)" and treats it as a pre-existing audit item rather than a confirmed bypass. It also never establishes that these sub-controllers are directly reachable by any authenticated user, letting them rewrite x12 credentials or enumerate patients. The right area is flagged, but the hedged, understated severity means it would not necessarily block the merge for this reason.
+
+LABEL: Partial

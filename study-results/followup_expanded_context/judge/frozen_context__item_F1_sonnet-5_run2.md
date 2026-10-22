@@ -1,0 +1,3 @@
+The review never flags that `checkControllerAcl()` returns without any check for controllers missing from `CONTROLLER_ACL_MAP`, which leaves sub-controllers like `x12_partner` and `patient_finder` directly reachable without permission checks. Its only ACL comment argues the opposite: "Redundant ACL enforcement... Both places enforce `admin/practice`. Not incorrect, but it's a duplicate source of truth." It also endorses the whitelist ("No issues found with the introduction of the `VALID_CONTROLLERS` whitelist itself"), and item 7 treats `practice_settings` → `pharmacy` only as a test-coverage concern, without noting that `pharmacy` can be called directly.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+Finding 4 names the class and location directly: "Only `practice_settings` and `prescription` have ACL checks. Every other whitelisted controller (`document`, `insurance_company`, `insurance_numbers`, `pharmacy`, `x12_partner`, `hl7`, `patient_finder`, `document_category`) is reachable by any user who can reach this script." It also says a direct `controller=pharmacy` request "skips the `admin/practice` check", notes the gap was preserved from the old code, and the summary requires "a deny-by-default ACL map" before merge. That is the right class (broken access control), the right location (`CONTROLLER_ACL_MAP`/`checkControllerAcl`) and a blocking recommendation, even though the severity is hedged on whether the controllers check permissions themselves.
+
+LABEL: Caught

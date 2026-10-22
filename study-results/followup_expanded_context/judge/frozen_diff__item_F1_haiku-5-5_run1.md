@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` skips controllers with no `CONTROLLER_ACL_MAP` entry. It also never notes that sub-controllers like `x12_partner` or `patient_finder` become reachable without a permission check. The only mention of access control is in item 10, which lists "argument handling, ACL, process flow, exceptions" among areas needing tests. That is a test-coverage remark, not identification of the missing-authorization gap. The other findings (`is_callable`, argument order, `_state` comparison, exceptions) concern unrelated behavioral regressions.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+The review does flag the exact line in item 10 ("Gateway configuration exposure (Low–Medium)"): "`json_encode($GLOBALS['gateway_api_key'])` is written into page source for all users... Confirm the transaction key is never output." However, it never says that `gateway_api_key` holds the private secret key. It rates the issue Low–Medium, frames it as something to confirm, and leaves it out of the summary's merge-blocking issues. That puts it in the right area with the wrong severity, so it would not reliably stop the secret-key exposure.
+
+LABEL: Partial

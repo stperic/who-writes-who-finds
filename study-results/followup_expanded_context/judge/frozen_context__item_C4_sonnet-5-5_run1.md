@@ -1,0 +1,3 @@
+The review's item 4, "Unescaped output (XSS)", flags the right root cause and some of the right fields: "`echo $HPI1;`", "the `$MOTILITY_*` values", and "`$PLAN` items". It recommends escaping with `text()`, and it also notes that "`$_SESSION`/DB-derived file paths are also placed raw into `<img src='…'>`". However, it frames the issue only as browser-side stored XSS. It never connects the unescaped output to the server-side HTML-to-PDF rendering that fetches injected URLs (SSRF), and it does not mention the CSS `url()`/`$background` context, so it identifies the right flaw area but the wrong vulnerability class.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review's first finding matches the advisory directly: "`CONTROLLER_ACL_MAP` has entries only for `practice_settings` and `prescription`. Every other whitelisted controller (`document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `pharmacy`, `x12_partner`, `patient_finder`) is dispatched with no ACL check at the router." It also explains that these sub-controllers were meant to sit under `admin/practice`, rates the issue High, recommends "Deny by default when no entry exists," and asks to block the merge. The "pending verification" hedge does not weaken it, because the review names the right class, location and fix, and blocks for the right reason.
+
+LABEL: Caught

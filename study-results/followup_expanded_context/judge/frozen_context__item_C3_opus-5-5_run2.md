@@ -1,0 +1,3 @@
+The review's first critical finding, "Gateway secret key exposed to the browser," quotes the exact `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` line. It explains that "With Stripe selected, the **Stripe secret key** reaches any portal patient's browser. Anyone holding it can issue charges and refunds against the merchant account." It also correctly notes that only the Authorize.Net login ID is meant for the client, and it rates the issue Critical. That matches the right class, location and severity, so a reviewer reading it would block the merge for the right reason.
+
+LABEL: Caught

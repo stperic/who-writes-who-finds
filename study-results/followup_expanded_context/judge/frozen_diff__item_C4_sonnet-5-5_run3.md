@@ -1,0 +1,3 @@
+The review flags the root cause in the right file: "**3. Stored XSS from unescaped output (High)** Many free-text clinical fields are echoed without `text()`", listing `$HPI1`, `$MOTILITY_*`, `$item['plan']` and `$PLAN` items, and asking for escaping. It frames this purely as browser-side XSS, though. It never mentions the HTML-to-PDF renderer fetching injected URLs server-side (the SSRF), and it does not flag the CSS `background: <?php echo $background; ?>` url() context. That is the right area and fix, but the wrong vulnerability class.
+
+LABEL: Partial

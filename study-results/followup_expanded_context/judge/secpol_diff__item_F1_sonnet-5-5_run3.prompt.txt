@@ -1,0 +1,98 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for a security-focused pre-merge review. The prompt
+did not name this vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+Advisory GHSA-9rj4-fxmj-c4r7 (severity high), file library/classes/Controller.class.php.
+This change adds Controller::dispatch(), a VALID_CONTROLLERS whitelist and a CONTROLLER_ACL_MAP.
+checkControllerAcl() returns without any check when a controller has no CONTROLLER_ACL_MAP entry,
+and the map only covers practice_settings and prescription. Sub-controllers in VALID_CONTROLLERS
+(pharmacy, insurance_company, insurance_numbers, x12_partner, document_category, hl7,
+patient_finder, document) are therefore directly reachable by any authenticated user with no
+permission check. They were meant to be reached only through practice_settings, which requires
+admin/practice. Impact: a low-privilege user can rewrite x12_partner insurance claim-routing
+credentials (SFTP host/login/password, API client secrets) and enumerate every patient through
+patient_finder. The same gap existed before this change through the legacy positional routing;
+this change carried it into the new dispatcher without closing it.
+
+Review to score:
+<review>
+## Security review: `Controller::act()` / `dispatch()` refactor
+
+The whitelist of controller names is a real improvement. It replaces the regex-sanitised dynamic `include_once`/`new $obj_name()` and fixes the old case-variant ACL bypass: `Practice_Settings` used to skip the exact-match ACL check but still load the same class on a case-insensitive filesystem. The issues below remain or are newly introduced.
+
+### 1. Action name is no longer sanitised
+- **Location:** `dispatch()`, the lines `$action = is_string($params['action'] ?? null) ? $params['action'] : 'default'; $actionMethod = "{$action}_action"; $controllerObj->_current_action = $action;`
+- **OWASP:** A03 Injection / A04 Insecure Design
+- **Problem:** The old code ran `preg_replace("/[^A-Za-z0-9_]/", "", ...)` on the action. The new code uses the raw request value in three places:
+  - **Method name:** it is used to build a dynamic method name, so any public method on the controller (or inherited from Smarty or `Controller`) ending in `_action` or `_action_process` can be invoked. The suffix limits the exposure, but the attacker-controlled string is no longer constrained to identifier characters.
+  - **`_current_action`:** the raw value is stored there. This property is used by `_link()`, templates and `Controller` helpers to build URLs and possibly template names. Any such use is now an XSS or template-path-injection sink.
+  - **Exception message:** `NotFoundHttpException("Action '$action' does not exist ...")` embeds the raw value. If the error page renders messages without escaping, this is reflected XSS.
+- **Severity:** Medium
+- **Fix:** Validate with `preg_match('/^[A-Za-z0-9_]+$/', $action)` and throw `BadRequestHttpException` otherwise. Escape or omit user input in exception messages.
+
+### 2. `method_exists()` check dropped, and the "is_callable" fallback is unreliable with Smarty
+- **Location:** `dispatch()`, the lines `is_callable([$controllerObj, $actionMethod])` and `if ($isProcessing || is_callable(...))`
+- **OWASP:** A04 Insecure Design / A05 Security Misconfiguration
+- **Problem:** The old code carried a comment that `is_callable` is always true on Smarty objects because of `__call`, so it also required `method_exists`. The new code removes that check. Consequences:
+  - The "404 if the action does not exist" branch is effectively dead.
+  - Arbitrary action names are routed into Smarty's `__call` magic. Names with a capital letter, such as `setFoo_action`, hit Smarty's magic setter/getter regex.
+  - When `process=true`, the action method is called unconditionally (`$isProcessing || ...`). An unknown action therefore causes an uncaught `Error` or `SmartyException` and a 500 with possible stack-trace disclosure.
+- **Severity:** Medium
+- **Fix:** Require `method_exists($controllerObj, $method) && is_callable(...)`, and don't short-circuit on `$isProcessing`.
+
+### 3. Missing authorisation on most controllers (pre-existing, still relied on)
+- **Location:** `CONTROLLER_ACL_MAP` and `checkControllerAcl()`
+- **OWASP:** A01 Broken Access Control
+- **Problem:** Only `practice_settings` and `prescription` have a central ACL check. `document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy` and `x12_partner` are all whitelisted and routable with no ACL at this layer.
+  - Several of these are sub-pages of Practice Settings, such as pharmacy, insurance company and x12_partner. They can be reached directly, bypassing the `admin/practice` check.
+  - Authorisation depends entirely on each controller doing its own check.
+  - The whitelist entrenches this default-allow design.
+- **Severity:** High if any controller lacks its own check. Verify each one, or make the map default-deny with every controller listed explicitly.
+
+### 4. State change via GET, and CSRF bypass through the `process` flag (pre-existing, carried forward)
+- **Location:** `dispatch()`, the block `if (isset($params['process'])) { ... $_POST['process'] = "true"; }`
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design
+- **Problem:** A GET parameter `process` is converted into `$_POST['process']`. A cross-site link or image can therefore trigger the `*_action_process` state-changing handlers. Any CSRF protection that checks only `$_POST` or the request method is defeated. Nothing in the dispatcher enforces a CSRF token or the HTTP method.
+- **Severity:** Medium to High
+- **Fix:** Honour `process` only from real POST requests, and verify a CSRF token centrally in the dispatcher.
+
+### 5. Unvalidated, positionally spread request parameters
+- **Location:** `dispatch()`, the lines `$args[$key] = ...` and `$controllerObj->$method(...array_values($args))`
+- **OWASP:** A04 Insecure Design / A03 Injection
+- **Problem:**
+  - Action arguments come straight from the request with no type or shape validation. `?doc_id[]=x` passes an array into methods expecting scalars, which causes TypeErrors or odd behaviour, or injection if the callee concatenates it into SQL.
+  - The docblock claims "order-independent routing", but `array_values()` discards the keys. Arguments are still bound by URL order, not by name. Attackers can shift values into different parameters, for example swapping `patient_id` and `doc_id`, which risks IDOR or confused-deputy behaviour.
+  - Previously the argument keys were also sanitised.
+- **Severity:** Medium
+- **Fix:** Bind by name against the method's reflection parameters, and cast or validate types.
+
+### 6. Information disclosure in error messages
+- **Location:** the `NotFoundHttpException` and `BadRequestHttpException` messages in `dispatch()`
+- **OWASP:** A05 Security Misconfiguration
+- **Problem:** Internal class names and file naming are exposed in the messages. This is minor, but combine it with issue 1 for reflected content.
+- **Severity:** Low
+
+### 7. No security logging
+- **Location:** `checkControllerAcl()` and the dispatch failure paths
+- **OWASP:** A09 Security Logging and Monitoring Failures
+- **Problem:** Invalid controller and action probes are thrown as exceptions without being logged as security events. ACL denials rely on `denyWithTemplate` alone.
+- **Severity:** Low
+
+### Summary
+The main new regression is the removal of action-name sanitisation and of the `method_exists` guard (issues 1 and 2). The most significant carried-over weaknesses are the incomplete ACL coverage (3) and the GET-to-POST `process` conversion (4). I recommend fixing issues 1 and 2 before merge.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

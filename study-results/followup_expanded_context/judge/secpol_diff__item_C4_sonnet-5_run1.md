@@ -1,0 +1,3 @@
+The review identifies the root cause and location. It flags that `$HPI1` "is echoed raw" and that "`codetext`, `code`, `plan`, `PLAN`, and `PLAN2` are database-stored free-text fields rendered without any escaping." However, it frames these only as browser-side stored XSS, with a passing note that they "could also corrupt PDF generation." It never connects the unescaped markup (or the CSS `background` value) to the server-side HTML-to-PDF renderer fetching injected URLs, so the SSRF class is not identified.
+
+LABEL: Partial

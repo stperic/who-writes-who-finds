@@ -1,0 +1,3 @@
+The review's first issue points at the right spot: it warns that when `$disable_exit=true` the code returns file content before headers are set, so "the response will lack proper `Content-Type`, `Content-Disposition`, etc." It treats this only as a broken-download problem ("Clients won't know how to handle the response"). It never notes that the legacy Controller maps URL parameters onto the action and echoes the return value as text/html, so an attacker-controlled image could run script (stored XSS). The review flags the correct area and the missing Content-Type, but under the wrong vulnerability class.
+
+LABEL: Partial

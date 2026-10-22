@@ -1,0 +1,3 @@
+The review gets close to the mechanism. It notes that the early returns "bypass security headers and normal flow" and that "The `$disable_exit` parameter could be passed via URL/POST" through `Controller.class.php`. However, it frames this as broken access control, missing logging and type validation, and never says the raw file bytes are echoed as text/html. Because it never identifies cross-site scripting from embedded HTML/JS, it flags the right area under the wrong vulnerability class.
+
+LABEL: Partial

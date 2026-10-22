@@ -1,0 +1,3 @@
+Item 14 notes that "`apiKey` (Authorize.net `apiLoginID`) is emitted into page source. Confirm this is acceptable for the gateway; the client key is designed to be public, but the login ID generally should not be exposed." That is the right location and a related concern. However, the review treats it as a Low-severity "confirm" question about an Authorize.Net login ID. It never recognizes that `gateway_api_key` holds the private secret key (e.g., Stripe's secret key) readable by every portal user, and it excludes this item from the blocking conditions in its summary.
+
+LABEL: Partial

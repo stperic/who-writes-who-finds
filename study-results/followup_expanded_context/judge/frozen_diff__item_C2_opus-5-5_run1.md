@@ -1,0 +1,3 @@
+The review's item 5 flags the right area: it says removing `getOne()` "changes the access path for single-resource reads, which is patient-scoping/security relevant" and asks for a test that "a patient-bound token cannot read another patient's CareTeam by id." But it hedges ("This is fine if `FhirServiceBase::getOne` ... applies `$puuidBind` correctly") and never identifies the actual defect: the service no longer implements `IPatientCompartmentResourceService`, so `getAll()` skips patient filtering. It also treats the scoping changes elsewhere (item 7) as a fix, so it raises a concern without asserting the cross-patient exposure that would block the merge.
+
+LABEL: Partial

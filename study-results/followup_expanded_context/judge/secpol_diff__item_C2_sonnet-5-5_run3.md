@@ -1,0 +1,3 @@
+Finding 3 points at the right place and class. It names the "removal of the `getOne($fhirResourceId, $puuidBind)` override" under A01, warns that patient-context SMART token reads "are only safe if the base class passes `$puuidBind` into the search," and asks for a cross-patient regression test. However, it never identifies the missing `IPatientCompartmentResourceService` interface or concludes that patient filtering is actually lost. It rates the issue "Low to Medium, until verified" and ends with "Safe to merge," so it would raise a comment but not block the merge for the real cross-patient exposure.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` skips controllers with no `CONTROLLER_ACL_MAP` entry. It also never says that sub-controllers like `x12_partner` or `patient_finder` are reachable by any authenticated user. It does come close in item 7: "`CONTROLLER_ACL_MAP` and `VALID_CONTROLLERS` are separate constants that must be kept in sync," and item 6 notes "no test coverage ... for ACL." That points at exactly the mismatch behind the bug, but frames it as a Low maintainability concern rather than an authorization bypass, so it would prompt a comment without stopping the bug.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review's item #6 touches the right area: "Removal of `getOne()` override (Low, verify) ... Confirm that `$puuidBind` (patient-context restriction) is still enforced on reads by id. That is the security-relevant part of the old override." However, it rates this Low severity and frames it only as a question. It never identifies that the service fails to implement `IPatientCompartmentResourceService`, and it never states that patient-scoped requests would return care teams for all patients. It flags the related weakness without asserting the cross-patient exposure, so a reader would not necessarily block the merge for that reason.
+
+LABEL: Partial

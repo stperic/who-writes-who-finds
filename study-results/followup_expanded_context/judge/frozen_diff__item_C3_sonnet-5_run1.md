@@ -1,0 +1,3 @@
+The review does point at the exact line in item 8: "var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;". It notes that "if it's the latter [a secret/transaction key], this is a critical key-leak vulnerability." However, it rates this only "Medium (verify)", suggests the value may be a safe public identifier, and leaves it out of the primary concerns it says must be fixed before merge. So it flags the right spot but hedges on the class and severity, and would not necessarily stop the leak.
+
+LABEL: Partial

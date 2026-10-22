@@ -1,0 +1,3 @@
+Finding 4 matches the known vulnerability on location, class, and impact. It names the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and states that "with Stripe configured the Stripe secret key is embedded in the HTML of every portal payment page and is readable by any patient," granting "full account access." It also correctly notes the Authorize.Net exception and recommends removing the key from client-side JavaScript, which is a merge-blocking finding for the right reason.
+
+LABEL: Caught

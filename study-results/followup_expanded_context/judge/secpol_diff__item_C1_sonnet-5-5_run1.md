@@ -1,0 +1,3 @@
+Finding 1 pinpoints the exact mechanism: "`$disable_exit` is just another positional argument, so a user can likely supply `disable_exit=true` in the URL... the raw document bytes are echoed back **without** the `Content-Type`... The browser then sniffs or renders the content as `text/html`. A patient-uploaded HTML or SVG document would execute script in the EMR origin, which is stored XSS against clinicians." It names the class (stored XSS, A03), the location (the `retrieve_action` `$disable_exit` parameter and its returns), and the controller's positional dispatch and echo. Although severity is hedged as "High if the parameter is reachable," the summary makes it the top pre-merge blocker, so a reviewer would block for the right reason.
+
+LABEL: Caught

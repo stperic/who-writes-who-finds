@@ -1,0 +1,3 @@
+The review's Finding #3, "Stripe secret key exposed to the browser," quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It explains that "the secret key is printed into the HTML of every page that renders this form, for every patient or staff user who can reach it" and that "Only the publishable key belongs in client-side code." It rates this Critical, tags it A05, and makes stopping the exposure and rotating the secret its top recommendation, which matches the known vulnerability in class, location and severity.
+
+LABEL: Caught

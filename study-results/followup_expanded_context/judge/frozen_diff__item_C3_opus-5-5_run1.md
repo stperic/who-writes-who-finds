@@ -1,0 +1,3 @@
+The review lists as Critical issue #2, "Possible secret key leak to the browser," and quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It explains that the key "is emitted for every gateway, to every portal user" and that "if `gateway_api_key` holds a Stripe secret key or the Authorize.Net transaction key, it is publicly exposed," noting that only Authorize.Net's Accept.js needs a public login ID. The "possible" hedge does not weaken the finding: it names the right class (secret credential exposure), the right location and Critical severity, and gives the correct fix, so a reviewer would block the merge for this reason.
+
+LABEL: Caught

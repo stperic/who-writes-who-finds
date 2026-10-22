@@ -1,0 +1,3 @@
+The review's finding #4, filed under "Critical / High," quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It explains that the key "is emitted unconditionally, for every gateway, to every portal user" and that "for Stripe (or if an admin stores the transaction key or secret key in this global), it exposes a live secret." That names the secret-credential exposure, the right location, and the same Authorize.Net-versus-Stripe distinction as the advisory, and its fix ("Never send `sk_*` or transaction keys") would block the merge for the right reason despite the hedged heading "possibly leaked."
+
+LABEL: Caught

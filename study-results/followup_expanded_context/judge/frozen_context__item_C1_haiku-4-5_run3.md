@@ -1,0 +1,3 @@
+The review looks closely at the `$disable_exit` return paths, but only for reliability and API consistency. Issue 6 notes that "Line 515: Returns raw `$filetext`" and calls this "confusing for callers" (Maintainability), and Issue 2 flags the unclosed file handle. Nothing in the review says the raw file bytes get echoed by the Controller as text/html, or that request parameters can trigger this path, so the XSS / content-type problem is never identified.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+The review points at the right spot: Finding 2 warns that "If the controller dispatcher maps `$_GET`/`$_POST`/`$_REQUEST` values onto action arguments, an attacker can set `disable_exit=1` and receive content through whatever path calls the function." But it frames the risk as encryption bypass and broken access control (A01/A02/A04). It never says that the returned raw bytes would be echoed with a default text/html Content-Type, so embedded HTML/JS in an uploaded image could run as stored XSS. The location and the request-reachable parameter are correct, but the vulnerability class is wrong.
+
+LABEL: Partial

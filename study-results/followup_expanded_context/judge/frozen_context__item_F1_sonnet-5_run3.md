@@ -1,0 +1,3 @@
+The review touches the right mechanism in item 6: "Nothing fails loudly if a developer forgets the ACL entry — the controller just becomes reachable without an access check." Item 5 also notes that `CONTROLLER_ACL_MAP` only covers `practice_settings` and `prescription`. However, it rates this "Low (process risk)" about future controllers and never says that existing whitelisted sub-controllers (x12_partner, patient_finder, pharmacy, etc.) are already reachable by any authenticated user. That is the right area at the wrong severity, and it would not stop the bug.
+
+LABEL: Partial

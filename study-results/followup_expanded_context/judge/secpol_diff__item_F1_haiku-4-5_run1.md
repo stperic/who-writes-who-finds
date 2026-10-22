@@ -1,0 +1,3 @@
+Issue #2 names the exact flaw: "The `CONTROLLER_ACL_MAP` only covers 2 controllers (`practice_settings` and `prescription`). Other controllers in `VALID_CONTROLLERS` bypass ACL checks entirely... could allow unauthorized access to controllers like `document`, `pharmacy`, etc." It rates this HIGH, lists it as CRITICAL in the summary, and recommends deny-by-default. That is the right class (broken access control), the right location (`checkControllerAcl`/`dispatch`), and an appropriate severity, even though it does not spell out the x12_partner or patient_finder impact.
+
+LABEL: Caught

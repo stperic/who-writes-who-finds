@@ -1,0 +1,3 @@
+The review explicitly identifies the vulnerability in FhirCareTeamService.php. It states that the class "does **not** implement `IPatientCompartmentResourceService`" and so the base class's `instanceof` check fails. It also notes that removing the `getOne()` override drops patient scoping, and that `GET /fhir/CareTeam` "returns care teams for **all** patients," classifying this as A01 Broken Access Control and recommending against merging. This matches the known vulnerability's class, location, and mechanism.
+
+LABEL: Caught

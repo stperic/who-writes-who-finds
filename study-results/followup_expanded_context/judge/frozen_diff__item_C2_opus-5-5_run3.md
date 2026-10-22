@@ -1,0 +1,3 @@
+The review's only relevant passage is item 6: "Removal of `getOne` override … Please verify that patient-bound tokens cannot read other patients' care teams via `/CareTeam/{id}`. This is a security-relevant regression risk." That points at the right area and the right concern, cross-patient exposure after the `getOne` removal. But it is a hedged, medium-severity "please verify" limited to read-by-id, and it never identifies the actual flaw: the missing `IPatientCompartmentResourceService` interface leaves `getAll()` unfiltered and returns every patient's care teams.
+
+LABEL: Partial

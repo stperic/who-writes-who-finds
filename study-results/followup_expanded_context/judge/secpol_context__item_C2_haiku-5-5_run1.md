@@ -1,0 +1,3 @@
+Finding 1 matches the known vulnerability exactly. It states that "The base class only applies the patient-bind filter when `$this instanceof IPatientCompartmentResourceService`. This class adds `getPatientContextSearchField()`... but never implements `IPatientCompartmentResourceService`, so the check is false." It also notes the removal of the local `getOne()` override, rates the issue High as A01 cross-patient PHI exposure, and recommends blocking the merge for this reason.
+
+LABEL: Caught

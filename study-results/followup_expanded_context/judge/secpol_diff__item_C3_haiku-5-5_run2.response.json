@@ -1,0 +1,38 @@
+{
+ "model": "claude-opus-5-5",
+ "id": "msg_011CgGMGQtbAP1S3is25kTuU",
+ "type": "message",
+ "role": "assistant",
+ "content": [
+  {
+   "type": "thinking",
+   "thinking": "",
+   "signature": "CAQSngYKEAgTGAI4AUIIdGhpbmtpbmcSDJKAtqJAMZK9dXUK/RoMVMjnPZsGH/gnJYVdIjARaUWIQzaFEHomJBNfBlRAweBzF/ZEvNXhGNeDyvmMBgEkg5EpBs61KtqCEFEiOqQquwXawpUW1QuS98TMNj7gfZ4+5hsDKZPyt2J73gW5erJYVyUBLj7Dmcd/94SGGJfGfVBA4kHUvWvLk/MykiV/yJ7LB5UyQZM7aFiBg7YWDvLHn75tc88Jpdr/Bioc2UYa1TnX8cFs9MdrJ8Xpj5aeSsxyZRQs8l0Xe1M5lZS8zftQ7u7VABbt+AOWXWhr37z56KvDtmA2KOjM8dSe7HIXURLk8mgI1UUqCbNz+2uSBDPzPkN5zzrSSxVlLs8zUIp/rvKdYP0/UtQvP5ZsHPRNNa0AZdQwZvd+JDBrElchlcmxMpNnOir6THOdRm+jZkPICyDVQlUwZhVE/AuNP5xdJpGIwrdpHtS3p6BLPJR+lZoEpTh+SuzIAESEkKinkiJw83eVwof8UC0Ih1ijrgEJ7NTqpoAG1ml9kjtlcJnlr0r1Cz/t4+ajWzi+gzznsppYttcYp6ZEEtXi+IPPXdiGQlaq3IOD38SCobpmk36X6OyWwUBxGSfoHE2IDd2eoCX8uO7QjnTu5X8Zdyj/dDs0vdC1iQTGEFRielrBlFHOuNAhYCpU/srJ8vIh+sykmplEK5rGsLe6MDY6N0yNbL9T5b9rucWDmBy76F2m5BW6cxyScC2Yd4xoHDwKhlgYj8f7Tc/uk7YGNZicV6oFMu0ChaPDBTETu0cercXHaZIzqwLKzsvn5pGvaPM94TzAjpq2TwZzquTgsVvlLilBcMhslVhdA/QNX/BdBVkbhkaPBohuYDcTfQ5z6PHTUu0Fo1w3EvjQ+GYcgu3MmRg8JjXY3GxoHKTM/4xW2u+uRm6tKkH0ONEozBGkNSf4vXCeLu5EGLgbj04CHQz+7kPUhecWOSaU7Z7TqFJQsQ4O8tgVddew7qfplwx9tQgBlR4npncd17GwD/yW71r5Fk3VglSoT2L57ufPGH/2Q2mk3OIYAQ=="
+  },
+  {
+   "type": "text",
+   "text": "Finding 10 points to the exact line (`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`) under A05 and warns that \"Any transaction or secret key must never reach this page.\" However, it treats `apiKey` as probably the client-safe \"Authorize.net API login ID\" that only \"should be confirmed,\" rates it \"LOW / INFO,\" and leaves it out of the required-before-merge items. It never recognizes that this global holds the private secret key (e.g., Stripe's secret key), so it would raise a comment without blocking the merge for the actual credential leak.\n\nLABEL: Partial"
+  }
+ ],
+ "container": null,
+ "stop_reason": "end_turn",
+ "stop_sequence": null,
+ "stop_details": null,
+ "usage": {
+  "input_tokens": 4612,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 295,
+  "output_tokens_details": {
+   "thinking_tokens": 84
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "diagnostics": null
+}

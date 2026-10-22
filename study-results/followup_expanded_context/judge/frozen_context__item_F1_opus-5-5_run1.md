@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` returns without a check for controllers missing from `CONTROLLER_ACL_MAP`, or that sub-controllers like x12_partner and patient_finder are directly reachable by any authenticated user. It does touch the ACL area, but it dismisses the risk: item 4 says "ACL still follows the final controller, so this is mostly a correctness and maintainability issue rather than a bypass," and item 9 only notes that the practice_settings ACL check is duplicated ("This is harmless"). Neither comment identifies the missing permission checks on the unmapped whitelisted controllers.
+
+LABEL: Missed

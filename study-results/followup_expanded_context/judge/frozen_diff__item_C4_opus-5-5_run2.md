@@ -1,0 +1,3 @@
+The review's item 4, "Stored XSS: many DB fields echoed without `text()`/`attr()`", correctly identifies the root cause: unescaped stored fields such as `$HPI1`, `$MOTILITY_*` and the IMPPLAN `plan` items. However, it frames this only as browser-side XSS. It never notes that the report is rendered server-side by an HTML-to-PDF renderer that fetches injected URLs (SSRF), and it does not mention the CSS `background`/`url()` context. Its mention of "the PDF signature line" is about escaping a name, not about the renderer making outbound requests. It flags the right flaw and location but the wrong vulnerability class.
+
+LABEL: Partial

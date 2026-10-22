@@ -1,0 +1,3 @@
+The review's finding #5 flags the root cause in the right file: "`$HPI1`, `$item['codetext']`, `$item['plan']`... `$PLAN2` are all database-sourced free-text fields that get echoed directly into HTML **without** `text()`/`attr()` sanitization." However, it frames this only as stored XSS in the browser view. It never connects the unescaped markup, or the CSS `url()`/`$background` context, to the server-side HTML-to-PDF renderer fetching injected URLs. Finding #8 mentions html2pdf resolving local paths, but only for path construction from `pid`/`encounter`, not for SSRF via injected content. So it identifies the right flaw but the wrong vulnerability class and impact.
+
+LABEL: Partial

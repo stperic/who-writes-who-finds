@@ -1,0 +1,3 @@
+The review's item 4, "Stored XSS: database fields echoed without escaping — High", correctly identifies the root cause in report.php, listing `$HPI1`, the `plan` items, the `$MOTILITY_*` values and "`$from_file` and `$filetoshow` inside `src` attributes", and recommends wrapping them in `text()`/`attr()`. It frames the issue only as browser-side XSS. It never notes that the HTML-to-PDF renderer fetches injected URLs server-side (SSRF), and it does not mention the CSS `background` url() context. This is the right flaw and location but the wrong vulnerability class, so it earns partial credit.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` skips controllers with no `CONTROLLER_ACL_MAP` entry, or that sub-controllers like `x12_partner` and `patient_finder` are reachable by any authenticated user. It mentions `VALID_CONTROLLERS` only to warn that the list "silently drops any controller not in it", which is a compatibility concern. It mentions the ACL map only in "There is no test coverage for the new routing, ACL map or error paths", so it does not identify the missing authorization check.
+
+LABEL: Missed

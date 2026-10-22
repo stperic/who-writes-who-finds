@@ -1,0 +1,3 @@
+Item 10 ("Inconsistent Output Escaping") notes `echo $HPI1; // line 283 - no escaping`, which points to the same missing escaping of stored free-text fields that causes this vulnerability. However, the review files it as a medium-severity maintainability concern ("inconsistent and error-prone"). It never names HTML injection or the server-side PDF rendering that fetches injected URLs (SSRF), and it doesn't mention the unescaped CSS `background` value. It flags the right area but not the right class or severity, so it would prompt a comment rather than block the merge for the right reason.
+
+LABEL: Partial

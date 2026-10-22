@@ -1,0 +1,3 @@
+The review's only XSS item is Finding 7, "Stored XSS through inline serving of uploaded content (pre-existing, relied upon)," and it places this in "the streaming branch after the new checks, where `Content-Type` is set from the stored mimetype." It never sees that the new `$disable_exit` return path can be triggered from the URL, or that the legacy Controller then echoes raw file bytes as text/html. Instead it treats the flag as an internal library-call concern, mainly about authorization, audit logging and encryption. So it names the right class and file but the wrong mechanism and location, and a reader would not block the merge for the actual bug.
+
+LABEL: Partial

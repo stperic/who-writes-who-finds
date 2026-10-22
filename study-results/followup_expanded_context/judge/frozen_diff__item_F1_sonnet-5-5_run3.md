@@ -1,0 +1,3 @@
+The review never points out that `checkControllerAcl()` returns without any check for controllers missing from `CONTROLLER_ACL_MAP`, or that sub-controllers like `x12_partner` and `patient_finder` become directly reachable without permission. Item 5 treats the whitelist only as a compatibility problem ("silently breaks any controller not on it"). Item 11 says only that a "routing rewrite with ACL implications needs tests for ACL denial", which is a generic testing request and does not identify the authorization bypass.
+
+LABEL: Missed

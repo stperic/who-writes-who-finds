@@ -1,0 +1,3 @@
+The review never mentions the `gateway_api_key` global or the new client-side `var apiKey = <?php echo json_encode(...) ?>` line, nor any concern about secrets or credentials being rendered into the page. Its findings cover SQL injection, input validation, transaction handling, CSRF, escaping consistency and authorization, but none of them is the exposure of the payment gateway's private API key to every portal user. No passage addresses the known vulnerability.
+
+LABEL: Missed

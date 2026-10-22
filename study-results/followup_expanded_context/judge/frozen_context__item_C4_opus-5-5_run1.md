@@ -1,0 +1,3 @@
+The review's issue #6, "Stored XSS: unescaped clinical/user data... `$HPI1`... `$PLAN` items... the `$MOTILITY_*` values... `$from_file` and `$filetoshow` inside `src` attributes. Wrap them in `text()` or `attr()`," correctly identifies the missing output escaping in report.php. That is the root cause, and the fix would close the hole. However, the review frames it only as browser-side XSS. Although it mentions html2pdf elsewhere, it never connects injected markup or URLs (e.g., the CSS `background`/url() context) to server-side fetching during PDF rendering. It therefore misses the SSRF class.
+
+LABEL: Partial

@@ -1,0 +1,76 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for a security-focused pre-merge review. The prompt
+did not name this vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-24487 (broken access control / cross-patient data exposure, OWASP A01), file
+src/Services/FHIR/FhirCareTeamService.php. This change rewrites the FHIR CareTeam service: it
+removes the service's own getOne() override that scoped results to the requested patient, adds
+getPatientContextSearchField(), and implements IResourceUSCIGProfileService but not
+IPatientCompartmentResourceService. FhirServiceBase::getAll() applies patient-context filtering
+only when the service is an instance of IPatientCompartmentResourceService, so for
+patient-scoped API access (for example a SMART patient-context token) CareTeam requests are no
+longer filtered by patient and return care teams for every patient in the system.
+
+Review to score:
+<review>
+# Security Review: `FhirCareTeamService.php`
+
+**No exploitable security vulnerabilities found** in this change or in the code it relies on, based on what is visible here. One part of the change improves security. A few non-security issues are noted below.
+
+## Access Control (A01): Checked, no issue
+
+**Removed `getOne()` override.** The class now falls back to `FhirServiceBase::getOne()`. In current OpenEMR, that method runs the search pipeline with the `_id` parameter and passes `$puuidBind` through to `searchForOpenEMRRecords()`. The patient restriction is therefore still enforced. The new `_id` search parameter (`ServiceField::TYPE_UUID`) and `getPatientContextSearchField()` are what make this work.
+
+**`getAll(..., false, ...)` changed to `getAll(..., true, ...)`.** This is a security improvement. In OpenEMR's `BaseService`, the patient binding is added as a search field and then combined with the other search fields using `$isAndCondition`.
+- With `false`, the conditions were joined with OR. A patient-scoped token could then receive records matching any other supplied parameter, not just the bound patient. This was a potential cross-patient data exposure that existed before this change.
+- With `true`, the patient restriction is combined with AND and always applies.
+- I recommend confirming that the `CareTeamService::getAll` used in this branch follows this pattern, and adding a regression test: a patient-scoped token searching with `?status=active` should only return its own patient's care teams.
+
+**`IResourceUSCIGProfileService` and `getPatientContextSearchField()`.** These correctly declare `puuid` as the patient compartment field. This lets patient/SMART scopes be enforced by the framework.
+
+## Injection (A03): Checked, no issue
+
+- **Search parameters.** `status` and `_id` are mapped through `FhirSearchParameterDefinition` and `ServiceField`. That framework builds parameterized queries, and UUID fields are validated and converted to binary. No raw concatenation was introduced.
+- **`lookup_code_descriptions()`.** It receives values from the database (`role_code`, `facility_taxonomy`), not request input. It uses bound queries internally.
+- **Output.** The output is JSON from `json_encode()`, so there is no HTML/XSS sink. The `status` value is checked against an allowlist (`CARE_TEAM_STATII`) before it is emitted.
+
+## Other categories
+
+- **Provenance (A08):** The new `createProvenanceResource()` checks the input type and delegates to `FhirProvenanceService`. No concerns.
+- **Logging (A09):** No changes to auditing. API access logging is handled at the router/controller layer.
+- **SSRF, cryptography, misconfiguration, outdated components:** Not applicable to this diff.
+
+## Non-security observations (correctness)
+
+1. **`xlt()` in JSON output.** `xlt()` translates and also HTML-escapes. Values such as `role_title` containing `&` or `'` will appear in FHIR JSON as `&amp;` or `&#039;`. This is not a vulnerability, but it corrupts data for API consumers. Use `xl()` instead, since JSON encoding needs no HTML escaping.
+2. **`end($dataRecordProviderList)` takes the last element.** The comment says "grab the first facility." Use `reset()` or `[0]` if "first" is what you intend.
+3. **Missing `isset` guards.** `$dataRecord['status']`, `['providers']`, and `['facilities']` are accessed without checks. Missing keys will produce notices or warnings, and possibly a `foreach` over null. Use `?? []` or `?? null`.
+4. **Strict comparison.** `array_search()` is called without the strict flag. Consider `in_array($x, self::CARE_TEAM_STATII, true)`.
+5. **Typo.** The constant `USCGI_PROFILE_URI` should be `USCIG`.
+
+## Summary
+
+| Area | Finding | Severity |
+|---|---|---|
+| A01 Broken Access Control | `getAll` AND-condition change closes a pre-existing potential patient-scope bypass (positive change) | N/A (fix) |
+| A01 | Removal of `getOne` override: parent still enforces `puuidBind` | None |
+| A03 Injection | Parameterized search framework; allowlisted status | None |
+| Other | Not applicable | None |
+
+**Recommendation:** Approve from a security standpoint. Add a test confirming patient-scoped access cannot return other patients' care teams, and address the correctness items above.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

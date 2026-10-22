@@ -1,0 +1,3 @@
+The review never mentions XSS, Content-Type handling, or the legacy Controller echoing the returned file bytes as text/html. It comes closest in finding 5: "`retrieve_action` is a controller action reachable by request... The new internal-use mode returns raw PHI as a string, so the ACL check at the top of the function should be verified to run before it." That points at the right weakness, a request-reachable path that returns raw document contents, but frames it as an access-control and PHI concern rated Low, not script execution through attacker-controlled file content served as HTML.
+
+LABEL: Partial

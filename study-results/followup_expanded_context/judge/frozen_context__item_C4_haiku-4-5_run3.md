@@ -1,0 +1,3 @@
+The review touches the root cause in item #6, "Inconsistent Output Escaping... Some raw output without escaping (e.g., line 1812 with `report_ACT()`)", and in item #3, "Potential XSS Vulnerability... `echo "<img src='". $from_file."'`". Both point at unescaped output in report.php. However, it frames these only as browser XSS or path issues and never connects the unescaped stored fields (e.g., `$background` in CSS url(), HPI, plan details) to server-side URL fetching by the HTML-to-PDF renderer. That is the right area and root weakness, but the wrong class and severity, so it falls short of SSRF detection.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review's first critical finding, "Gateway secret exposed to the browser (`var apiKey = json_encode($GLOBALS['gateway_api_key'])`)", correctly identifies the vulnerability class and location. It notes that "For Stripe it is the secret key, and it is printed into the page JS for every portal user" and that it is "written out whatever gateway is selected." It ranks this as merge-blocking and recommends never emitting the Stripe secret, which matches the known vulnerability exactly.
+
+LABEL: Caught

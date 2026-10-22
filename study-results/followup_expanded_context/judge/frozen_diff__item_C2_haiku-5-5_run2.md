@@ -1,0 +1,3 @@
+The review touches the right area in item 2, noting the removed `getOne` override means reads "depend on the base class's fallback" and might "leak records across patients." But it frames this as a hedged "verify" item, focused mainly on whether `parseOpenEMRRecord`/`puuidBind` are handled. It never identifies that the service doesn't implement `IPatientCompartmentResourceService`, so `FhirServiceBase::getAll()` skips patient-context filtering and returns every patient's care teams. It points in the right direction but neither names the actual access-control failure nor explains how it happens.
+
+LABEL: Partial

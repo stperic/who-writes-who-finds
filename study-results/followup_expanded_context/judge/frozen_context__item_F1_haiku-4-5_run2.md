@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` returns without a check for controllers missing from `CONTROLLER_ACL_MAP`, or that sub-controllers like `x12_partner` and `patient_finder` are reachable without permission checks. Its only ACL comment points the other way: "The ACL is now checked twice for `practice_settings`... This is redundant", which treats the ACL handling as excessive rather than incomplete. Its security item 7 praises the whitelist ("While the whitelist check is good") and only raises validation of the `action` parameter, not missing authorization.
+
+LABEL: Missed

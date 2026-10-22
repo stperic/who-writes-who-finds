@@ -1,0 +1,3 @@
+The review's first finding hits the vulnerability directly. It says "The base class only enforces patient binding when `$this instanceof IPatientCompartmentResourceService`... `FhirCareTeamService` implements only `IResourceUSCIGProfileService`. As a result, `$puuidBind` is silently ignored." It then states the impact, "A patient-scoped token (e.g. `patient/CareTeam.read`) can read CareTeam resources belonging to other patients," and proposes the correct fix of implementing `IPatientCompartmentResourceService`. That covers the right class, location and severity.
+
+LABEL: Caught

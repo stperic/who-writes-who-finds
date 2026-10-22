@@ -1,0 +1,3 @@
+The review's item #4 flags the removal of the `getOne()` override and notes that "the patient context binding could be lost." It frames this as a hedged "verify correctness — could be a regression," with the main concern being raw records instead of FHIR resources. It never identifies the missing `IPatientCompartmentResourceService` interface, the unfiltered `getAll()` path, or that care teams for every patient would be returned under patient-scoped tokens, so it points at the right area without naming the access-control flaw.
+
+LABEL: Partial

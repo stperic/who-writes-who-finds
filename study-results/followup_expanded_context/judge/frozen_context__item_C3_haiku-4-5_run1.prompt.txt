@@ -1,0 +1,186 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-25146 (exposure of a secret credential, OWASP A05), file portal/portal_payment.php.
+This change adds client-side JavaScript to the patient portal payment page that renders the
+payment gateway's API key into the page: var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+The gateway_api_key global holds the gateway's private secret key (for Stripe, the secret API
+key); only for Authorize.Net is the matching value a public login identifier. Every portal user
+who opens the page can read the private key from the page source and use it against the
+practice's payment account.
+
+Review to score:
+<review>
+# Code Review: portal_payment.php
+
+## Issues Found
+
+### 1. **CRITICAL SECURITY: Potential SQL Injection via `$_REQUEST['recid']`**
+**Location:** Line 59
+```php
+$recid = isset($_REQUEST['recid']) ? (int) $_REQUEST['recid'] : 0;
+```
+**Issue:** While the `(int)` cast provides some protection, this is passed directly to `getPortalAuditRec($recid)` without validation. The underlying implementation should be verified to ensure it's properly parameterized.
+
+**Severity:** HIGH - Requires verification of `getPortalAuditRec()` implementation
+
+---
+
+### 2. **CRITICAL SECURITY: Unvalidated User Input in Payment Processing**
+**Location:** Lines 210-230+ (payment processing section)
+**Issue:** Multiple instances of `$_POST` and `$_REQUEST` data being used in SQL queries without apparent parameterization:
+- `$_REQUEST['form_prepayment']` (line 228)
+- `$_REQUEST['radio_type_of_payment']` (multiple uses)
+- `$_POST['form_upay']` array iteration
+
+**Severity:** CRITICAL - Direct SQL injection risk
+
+---
+
+### 3. **SECURITY: Insufficient Authorization Checks**
+**Location:** Lines 27-32
+```php
+if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite_two'])) {
+    $pid = $_SESSION['pid'];
+    $ignoreAuth = true;  // DANGEROUS!
+```
+**Issue:** Setting `$ignoreAuth = true` in portal context bypasses authorization. Then at line 59:
+```php
+$pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : $pid;
+```
+The `$pid` can be overridden from `$_REQUEST`, potentially allowing a logged-in patient to access another patient's data.
+
+**Severity:** CRITICAL - Authorization bypass
+
+---
+
+### 4. **CORRECTNESS: Race Condition in Transaction Logic**
+**Location:** Lines 254-262 and similar blocks
+```php
+$sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
+$insrt_id=sqlInsert(
+    "INSERT INTO ar_activity (pid,encounter,sequence_no,...)".
+    " VALUES (?,?,?,?,?,?,0,now(),?,?,?,'PCP')",
+    array($form_pid, $enc, $sequence_no['increment'], ...)
+);
+sqlCommitTrans();
+```
+**Issue:** The sequence number is calculated then used without atomicity guarantee. Between the SELECT and INSERT, another concurrent request could insert a record with the same sequence number.
+
+**Severity:** MEDIUM - Data integrity issue in high-concurrency scenarios
+
+---
+
+### 5. **CORRECTNESS: Logic Error in Payment Type Condition**
+**Location:** Lines 232-239 (removed code path)
+```php
+if ($_REQUEST['radio_type_of_payment'] == 'invoice_balance') {
+    ;  // Empty statement - removed logic?
+} else {
+    if (!$enc) {
+        $enc = calendar_arrived($form_pid);
+    }
+}
+```
+**Issue:** The `if` branch was removed entirely but the condition remains. This may indicate incomplete refactoring. The current code structure is confusing.
+
+**Severity:** LOW - Potential logic error
+
+---
+
+### 6. **SECURITY: Inconsistent Use of Escaping Functions**
+**Location:** Multiple locations
+```php
+// Line 1261
+echo htmlspecialchars($patdata['fname'], ENT_QUOTES) . " " . htmlspecialchars($patdata['lname'], ENT_QUOTES);
+
+// Line 1270
+echo "<option value='" . htmlspecialchars($brow1112['option_id'], ENT_QUOTES) . "'>";
+
+// But also line 2056
+echo text($ccdata["cardNumber"]);  // Different escaping function
+```
+**Issue:** Mixing `htmlspecialchars()` with `text()`, `attr()`, and `xlt()` functions. Inconsistent escaping can lead to bypasses if implementations differ.
+
+**Severity:** MEDIUM - Potential XSS if escaping functions are inconsistent
+
+---
+
+### 7. **MAINTAINABILITY: Global State Pollution**
+**Location:** Line 110
+```php
+$sum_charges = $sum_ptpaid = $sum_inspaid = $sum_duept = $sum_copay = $sum_patcopay = $sum_balance = 0;
+```
+**Issue:** Seven global variables are declared at module scope and modified in `echoLine()`. This creates tight coupling and makes the code difficult to refactor or test.
+
+**Severity:** LOW - Code quality issue
+
+---
+
+### 8. **CORRECTNESS: Unsafe Array Access**
+**Location:** Line 1115
+```php
+$sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", array($form_pid, $enc));
+// ...
+array($form_pid, $enc, $sequence_no['increment'], ...)
+```
+**Issue:** If `sqlQuery()` returns false or null, accessing `$sequence_no['increment']` will cause a fatal error. No null check is present.
+
+**Severity:** MEDIUM - Runtime error potential
+
+---
+
+### 9. **SECURITY: Session Fixation Risk**
+**Location:** Line 24
+```php
+session_start();
+```
+**Issue:** No session regeneration or validation. If a session is hijacked before authentication, an attacker could potentially maintain access.
+
+**Severity:** MEDIUM - Session security
+
+---
+
+### 10. **MAINTAINABILITY: Removed Code Comments**
+**Location:** Throughout the diff
+**Issue:** The PR removes many comments without adding new explanatory comments:
+```php
+// Removed: "// $patdata = getPatientData($pid, 'fname,lname,pubpid');"
+// Removed: "// $extra = json_decode($_POST['ajax_mode'], true);"
+// Removed: "// Add taxes."
+```
+**Severity:** LOW - Documentation/maintainability
+
+---
+
+## Summary
+
+**Critical Issues (3):** 
+- Unvalidated `$_REQUEST` data in SQL queries
+- Authorization bypass via `$pid` override
+- Missing parameterization verification
+
+**Recommended Actions:**
+1. Add strict parameter validation/parameterization for all database queries
+2. Remove ability to override `$pid` from `$_REQUEST` when `$ignoreAuth` is true
+3. Implement atomic transactions for sequence number generation
+4. Add null checks for all query results
+5. Audit the `getPortalAuditRec()` implementation
+6. Standardize XSS escaping approach across the file
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

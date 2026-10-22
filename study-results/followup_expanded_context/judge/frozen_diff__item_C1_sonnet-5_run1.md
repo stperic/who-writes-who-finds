@@ -1,0 +1,3 @@
+The review discusses the `$disable_exit` branches only as correctness problems: point 1 says the converted-file branch returns null, and point 2 flags inconsistent encodings. It never notes that raw file bytes returned this way get echoed by the Controller as text/html, or that URL query parameters can set the flag. It even states "No issues found with the function signature itself (default `$disable_exit=false` placed at the end is fine...)". It does not identify the XSS risk or the content-type/URL-reachability problem anywhere.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+The review's item 3, "Stored XSS through unescaped output (High)", flags the right root cause and location: DB-sourced fields such as `$HPI1`, `$item['plan']`, `$PLAN` and `$MOTILITY_*` are echoed without `text()`/`attr()`. It frames this only as browser-side XSS, though. It never notes that the report is rendered server-side into a PDF whose renderer fetches injected URLs (SSRF), and it doesn't mention the CSS `url()`/`$background` context. That is the right area but the wrong vulnerability class.
+
+LABEL: Partial

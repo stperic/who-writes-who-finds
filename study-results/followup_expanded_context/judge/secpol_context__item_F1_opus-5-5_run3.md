@@ -1,0 +1,3 @@
+Finding #3 identifies the exact flaw: "Only `practice_settings` (admin/practice) and `prescription` (patients/rx) are checked." It explains that the sub-controllers "are also in `VALID_CONTROLLERS`, so they can be called directly. For example, `controller.php?controller=x12_partner&action=edit` reaches them without any admin/practice check." It rates this High as broken access control and recommends "deny by default when a controller has no entry." The review does rank it as a follow-up rather than a merge blocker, and it omits patient_finder, but it names the right class, location, mechanism and severity for this pre-existing gap.
+
+LABEL: Caught

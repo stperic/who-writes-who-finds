@@ -1,0 +1,3 @@
+The review's issue #4 names the right class and location: it says the removed `getOne()` had a `$puuidBind` parameter that "allowed restricting visibility to a specific patient." It warns that "its removal could expose data from other patients… direct resource lookups may now bypass patient context filtering," and the summary says "Do not merge until the access control implications of removing `getOne()`… are fully understood." It does not mention the missing `IPatientCompartmentResourceService` interface that causes `getAll()` to skip filtering, but it would block the merge for the correct reason: cross-patient exposure from lost patient scoping in this file.
+
+LABEL: Caught

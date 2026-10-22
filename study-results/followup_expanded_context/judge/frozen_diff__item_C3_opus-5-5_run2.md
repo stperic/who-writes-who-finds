@@ -1,0 +1,3 @@
+The review's item 6, "Secret key exposure risk," quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>` and notes it "is emitted to every portal page regardless of gateway." It asks the author to "Confirm this is only the Authorize.Net API Login ID and never a transaction or secret key. Emit it only for the gateway that needs it." The wording is somewhat hedged, but it names the right class (secret credential exposed client-side), the right location, and the right reason (only Authorize.Net's value is safe to expose), so a reader would hold the merge on it.
+
+LABEL: Caught

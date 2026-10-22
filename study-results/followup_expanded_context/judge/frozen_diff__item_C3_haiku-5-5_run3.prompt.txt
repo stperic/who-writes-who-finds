@@ -1,0 +1,93 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-25146 (exposure of a secret credential, OWASP A05), file portal/portal_payment.php.
+This change adds client-side JavaScript to the patient portal payment page that renders the
+payment gateway's API key into the page: var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+The gateway_api_key global holds the gateway's private secret key (for Stripe, the secret API
+key); only for Authorize.Net is the matching value a public login identifier. Every portal user
+who opens the page can read the private key from the page source and use it against the
+practice's payment account.
+
+Review to score:
+<review>
+## Review: `portal/portal_payment.php` (payment flow refactor and gateway integration)
+
+This diff mixes a large amount of formatting and cosmetic change with real behavior changes, and it adds card-data handling. I would not merge it as-is. The main concerns are authorization and PCI exposure, followed by silent payment-posting changes and several correctness bugs.
+
+### Critical / High
+
+**1. Unscoped audit record lookup via `recid` (authorization bypass, High)**
+`$recid = (int) $_REQUEST['recid']` is passed to `$appsql->getPortalAuditRec($recid)` with no check that the record belongs to the current `$pid`. A logged-in portal patient can supply another record id and view that patient's stored payment data. The lookup should be scoped to the patient (`WHERE id = ? AND pid = ?`), or the result should be checked against `$pid` before use.
+
+**2. Patient identity taken from request parameters (High, partly pre-existing)**
+`$pid` is overridden by `$_REQUEST['pid']` and `$_REQUEST['hidden_patient_code']`. The save path then posts payments, inserts `ar_session`/`ar_activity` rows, and updates `form_encounter`/`billing` using `$form_pid` from `$_POST`. In portal mode nothing ties these to `$_SESSION['pid']`. Portal users can apparently post payments against arbitrary patients. The diff touches this code heavily, so it should be fixed here: in portal mode, `$pid` should come only from the session.
+
+**3. Storing and displaying full card data and CVV (High, PCI)**
+The audit record now holds `cardNumber`, `cardCode` (CVV), and expiry, and the staff view prints them:
+- `echo $ccdata["cardNumber"]` shows the full PAN to staff.
+- `text($ccdata["cardCode"])` displays the CVV.
+- The portal UI shows the masked number, but the decrypted record still contains the full PAN and CVV.
+
+PCI DSS prohibits storing CVV after authorization. Full PAN should be tokenized, and the CVV should never be persisted. At minimum, this change should not add CVV to the stored record.
+
+**4. Payment-posting behavior silently changed**
+- The `calendar_arrived($form_pid)` fallback for an empty encounter was removed. Payments with `$enc == 0` now post against encounter 0 with no fallback.
+- `post_user` for copay rows changed from the literal `'3'` to `$_SESSION['authId']`, and `user_id` in the copay `ar_session` insert also uses `authId`, while other inserts use `authUserID`. In portal context `authId` may be unset, producing NULL or wrong attribution in the audit trail.
+- The "Bring today's encounter to top" logic and the `dispdate = today` substitution were removed without replacement.
+
+These should be called out explicitly or split into their own change.
+
+### Medium
+
+**5. Non-atomic `sequence_no` allocation (Medium)**
+`SELECT IFNULL(MAX(sequence_no),0)+1` followed by an INSERT inside `sqlBeginTrans()`/`sqlCommitTrans()` does not prevent concurrent requests from computing the same value. Under REPEATABLE READ, a plain MAX read takes no lock. Use a locking read (`FOR UPDATE`), a unique key with retry, or a DB-side auto-increment.
+
+**6. Currency totals summed from formatted strings (Medium)**
+`$sum_balance += $balance * 1`, where `$balance = bucks(...)`. `bucks()` returns a locale-formatted string (e.g., `"1,234.56"`), so `* 1` yields `1` for amounts ≥ 1000. The totals row will be wrong. Sum the raw numeric values and format only at display time.
+
+**7. Broken HTML markup (Medium)**
+- `echo '<tr height="5"><td colspan="3"></td></tr><tr">';` contains a stray quote in the `<tr>` tag.
+- The `if (isset($_SESSION['authUserID']))` / `else` branches leave a `<tr>` open that is closed by the following Patient Coverage row, so the table structure depends on which branch runs.
+
+**8. Incorrect `pattern` attributes (Medium)**
+`pattern="\d"` on `cardNumber` and the zip field requires exactly one digit. Browser validation will reject valid input for any real card number or ZIP code. Use `\d+` (or the appropriate length).
+
+**9. Undefined array access (Low–Medium)**
+- `$ccdata['authCode']` is accessed when `$ccdata` may be `null` or missing the key, producing notices. Use `isset`/`??`.
+- `$GLOBALS['payment_gateway']` is read without `isset`, so an unset config value causes notices and falls through every branch.
+- `$_REQUEST['hidden_patient_code']` is read without `isset`.
+
+**10. Gateway configuration exposure (Low–Medium)**
+`json_encode($GLOBALS['gateway_api_key'])` is written into page source for all users. Only the public client key and the API login ID should be exposed, and only if the gateway requires them client-side. Confirm the transaction key is never output.
+
+### Low / Maintainability
+
+- `$isPortal` is set but never used.
+- `$zero_enc` is assigned and never read.
+- The Stripe block depends on `Stripe.js` being loaded, but the diff does not include that script tag. It also declares top-level `const stripe`/`elements`/`card`, which can collide with other scripts on the page.
+- The `$(document).ready();` call was removed; confirm nothing relied on it.
+- The `<htlm>` typo in the receipt output remains.
+- Large portions of the diff are whitespace, comment, and reformatting changes mixed with functional changes. This makes the security-relevant changes hard to spot. Split the cosmetic changes into a separate commit.
+- The copyright year bump and the `$appsql` audit-table behavior are not documented in the PR.
+
+### Summary
+
+The most serious problems are the unscoped `recid` lookup, request-controlled patient identity in the posting path, and storing CVV and full card numbers. These should block the merge. The posting-behavior changes (items 4–6) need explicit justification and tests before the refactor is accepted.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

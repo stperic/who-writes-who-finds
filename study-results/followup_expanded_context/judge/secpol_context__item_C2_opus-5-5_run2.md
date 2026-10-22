@@ -1,0 +1,3 @@
+The review's Finding 1 names the exact class and location. It says "`FhirCareTeamService` defines `getPatientContextSearchField()` but does not declare `implements IPatientCompartmentResourceService`. As a result, both checks are silently skipped." It also notes the removal of the `getOne()` override and labels the issue "A01:2021 – Broken Access Control" with High severity. The impact matches the CVE ("A user authenticated in patient context can retrieve any patient's care team"), and the review recommends blocking the merge with the correct fix.
+
+LABEL: Caught

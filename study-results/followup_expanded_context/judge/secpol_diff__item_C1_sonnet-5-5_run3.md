@@ -1,0 +1,3 @@
+The review finds the right mechanism in item 1: "OpenEMR's controller dispatcher passes query-string values to action methods positionally. A remote user can therefore set `disable_exit` themselves." It then misjudges the effect, saying "Setting it only suppresses output, so the direct impact is small". It never notes that the controller echoes the returned raw file bytes as text/html, which is what enables stored XSS. Item 7 does mention stored XSS, but only through unsanitized headers on the normal download path, not this flag, so the right area is flagged with the wrong class and severity.
+
+LABEL: Partial

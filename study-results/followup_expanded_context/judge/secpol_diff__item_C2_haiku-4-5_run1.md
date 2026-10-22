@@ -1,0 +1,3 @@
+The review's item 5, "Missing Access Control Verification," names the right class (A01) and the right concern: it says "there's no evidence in this diff that... The `$puuidBind` parameter is validated to match the authenticated user's patient context." However, it is a speculative "verify this" note tied to `searchForOpenEMRRecords()`. It never identifies the actual defect: the removed patient-scoped `getOne()` override and the missing `IPatientCompartmentResourceService` interface, which together stop `FhirServiceBase::getAll()` from applying patient filtering. A reviewer would likely leave a comment but not block the merge for the concrete cross-patient exposure, so this flags the right area with the wrong mechanism.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review touches the exact gap only in item 9, rated "Low": "Controllers other than `practice_settings` and `prescription` still have no ACL check, as before." It also notes the two maps are separate. However, it treats this as a maintenance or consistency note. It never says that sub-controllers like x12_partner or patient_finder become directly reachable by any authenticated user, and it never describes the impact (credential rewrite, patient enumeration). So it flags the right location at the wrong severity, and a reader would not block the merge for it.
+
+LABEL: Partial

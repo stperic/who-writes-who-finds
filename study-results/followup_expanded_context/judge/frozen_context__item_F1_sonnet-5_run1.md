@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` returns without checking controllers absent from `CONTROLLER_ACL_MAP`, nor that sub-controllers like `x12_partner` and `patient_finder` are directly reachable without permission checks. Its only ACL comment (#7) calls the map/constructor overlap "Duplicate ACL enforcement… Not a bug (defense in depth)." That points the opposite way from the real gap. Issue #2 likewise worries that the whitelist is too restrictive, not that whitelisted controllers lack authorization.
+
+LABEL: Missed

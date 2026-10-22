@@ -1,0 +1,3 @@
+The review identifies the exact mechanism. Finding 1 says `Controller::act()` "maps URL query parameters onto the action's positional arguments... Any HTTP request can therefore supply a fifth argument and set `$disable_exit`". Finding 2 then says "the file bytes are returned to `act()` and echoed. No `Content-Type`... header is sent first, so PHP's default `text/html` applies," which allows script-bearing uploads to be rendered in the OpenEMR origin, and it labels this "Stored XSS" (A03) at High severity with a "Do not merge" verdict. The side claim that the original streaming path has the same header gap is inaccurate, but it does not undercut the correct detection of the class, location and trigger.
+
+LABEL: Caught

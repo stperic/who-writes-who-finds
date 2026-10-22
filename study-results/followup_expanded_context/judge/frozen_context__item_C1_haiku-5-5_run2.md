@@ -1,0 +1,3 @@
+The review's first finding names the right flaw at the right spot. It says "`act()` builds `$args_array` from every query-string parameter... `&disable_exit=1` is therefore passed straight into `retrieve_action()`", then that the raw content is returned without a forced `Content-Type`, so "the browser may then render an uploaded HTML or SVG document inline on the application's origin, which is a stored XSS vector." Its example payload (HTML/SVG uploads rather than script in an image's EXIF title) differs slightly, but it rates the issue High and requires a fix before merge.
+
+LABEL: Caught

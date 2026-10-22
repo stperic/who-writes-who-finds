@@ -1,0 +1,3 @@
+The review identifies the root cause in the right place under item 3, "Pervasive unescaped output (stored XSS)." It lists `echo $HPI1`, the plan/orders fields, and "`$background` inside a `style` attribute," and asks for everything to be escaped with `text()`/`attr()`. However, it frames this only as browser-side XSS and never notes that the report is rendered server-side into a PDF, where injected URLs (for example in CSS `url()`) would be fetched by the server. It flags the right flaw and location but the wrong vulnerability class, missing the SSRF impact.
+
+LABEL: Partial

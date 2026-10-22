@@ -1,0 +1,3 @@
+The review identifies the root cause: missing output escaping of stored values in report.php. It says "`$item['plan']` is echoed without escaping" and notes that "HPI fields are output raw: … `echo $HPI1;`". However, it frames this only as browser-side XSS and never connects it to the server-side HTML-to-PDF renderer fetching injected URLs (SSRF), nor does it mention the CSS `url()`/`$background` context. That is the right location and flaw but the wrong vulnerability class and impact.
+
+LABEL: Partial

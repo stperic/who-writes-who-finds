@@ -1,0 +1,3 @@
+The review's item 6 flags the removed `getOne` override and notes that "It's a security-relevant path." It asks to "Verify that `puuidBind` and patient-bound access still work." This points at the right area, but it is rated "(low)" and framed only as something to test. It never identifies the missing `IPatientCompartmentResourceService` interface, the unfiltered `getAll()`, or the resulting exposure of every patient's care teams under patient-context tokens, so it would not necessarily block the merge for the right reason.
+
+LABEL: Partial

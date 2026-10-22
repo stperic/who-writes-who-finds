@@ -1,0 +1,3 @@
+The review comes closest in item 7, noting that sub-controllers dispatched via `new Controller()->dispatch()` bypass "the outer controller's constructor-time ACL," but then concludes "That is safe only because the child controllers are listed in the map. Document this dependency." That premise is false: the map covers only practice_settings and prescription, and unmapped controllers skip the check entirely. The review touches the right mechanism but rates it Low and declares it safe, so it would not stop the missing-ACL bug.
+
+LABEL: Partial

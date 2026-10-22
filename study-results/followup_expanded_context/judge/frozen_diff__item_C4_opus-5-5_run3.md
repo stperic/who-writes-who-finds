@@ -1,0 +1,3 @@
+The review's item 6, "Stored XSS — many unescaped outputs of user-entered clinical text," flags the right root cause and locations, listing `echo $HPI1;`, `$MOTILITY_*`, the plan and order items, and even "`$providerNAME` in the PDF branch." However, it frames the flaw only as browser-side XSS. It never notes that the report is rendered server-side by an HTML-to-PDF engine that fetches injected URLs, which is the SSRF. It also omits the CSS `background`/url() context. Right area and root cause, wrong vulnerability class.
+
+LABEL: Partial

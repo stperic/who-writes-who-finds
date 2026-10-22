@@ -1,0 +1,3 @@
+The review pins down the root cause and location in item 4, "Stored XSS: clinical fields printed without encoding," listing `$HPI1`, `$MOTILITY_*` values and the IMPPLAN/`$PLAN` items as raw echoes. But it frames this only as browser XSS and never links the unescaped markup to the server-side HTML-to-PDF renderer fetching injected URLs, and it does not mention the `background` CSS url() injection. Item 11 notes that "html2pdf follows local file paths in `src` attributes" and could pull local files into the PDF, but rates it Low and treats it as a component issue, not as SSRF through the injected stored fields.
+
+LABEL: Partial

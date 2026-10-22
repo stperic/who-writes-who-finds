@@ -1,0 +1,3 @@
+The review's first finding identifies the exact flaw. It notes the removed `getOne()` override, says that "The base class only adds the patient restriction when the service implements `IPatientCompartmentResourceService`," and that "This class does not implement that interface." It concludes that in a patient-scoped SMART context "`GET /CareTeam` returns all patients' care teams. This is a PHI disclosure," marks this as Critical and blocking, and proposes the correct fix.
+
+LABEL: Caught

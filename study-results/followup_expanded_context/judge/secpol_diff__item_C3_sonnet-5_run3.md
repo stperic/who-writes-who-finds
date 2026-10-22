@@ -1,0 +1,3 @@
+The review does flag the right line and class in item #7: "`gateway_api_key` is emitted directly into client-side JavaScript" (Security Misconfiguration, A02/A05). However, it treats the exposure as expected: "For Authorize.Net's Accept.js flow this is expected to be a public API Login ID". It rates it "Low (if confirmed to be the intended public key)" and lists it only under "Verify/clean up", missing that this global holds the private secret key (e.g., Stripe's) and would not block the merge on it. The location and class are right, but the severity is wrong and the reviewer did not recognize that the secret credential is actually exposed.
+
+LABEL: Partial

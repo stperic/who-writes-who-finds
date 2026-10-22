@@ -1,0 +1,218 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for a security-focused pre-merge review. The prompt
+did not name this vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-33321 (server-side request forgery, OWASP A10), file interface/forms/eye_mag/report.php.
+This change adds the eye exam report, which echoes stored, user-supplied values without
+escaping into HTML and into CSS url() contexts (for example background: <?php echo $background; ?>
+and free-text fields such as HPI, motility, visual field, Rx type and plan/order details). The
+patient report page renders forms' report.php output server-side into a PDF with an HTML-to-PDF
+renderer, which fetches URLs in the markup. Injected URLs are therefore fetched by the server:
+out-of-band server-side request forgery. The root cause is the missing output escaping; the
+same flaw also allows HTML injection in the browser view.
+
+Review to score:
+<review>
+# Security Review Report
+
+## Summary
+This code contains several **critical security vulnerabilities**, primarily in SQL injection and improper output encoding categories. Multiple issues across OWASP Top 10 categories were identified.
+
+---
+
+## Critical Issues
+
+### 1. **SQL Injection - CRITICAL**
+**Location:** Line 1892 in `display_draw_image()` function
+```php
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+```
+**OWASP Category:** Injection (A03:2021)
+**Problem:** User-controlled `$filename` is directly concatenated into SQL query without parameterization. The `$filename` is derived from database values but constructed from potentially user-influenced data (`pid`, `encounter`).
+**Severity:** CRITICAL
+
+**Location:** Line 72-73
+```php
+$query  = "SELECT * FROM form_eye_mag_prefs where PEZONE='PREFS' AND id=? ORDER BY ZONE_ORDER,ordering";
+$result = sqlStatement($query,array($_SESSION['authUserID']));
+```
+**OWASP Category:** Injection (A03:2021)
+**Problem:** While this query uses parameterization properly, the subsequent variable extraction with `$$LOCATION` is dangerous (see issue #6 below).
+**Severity:** HIGH
+
+---
+
+### 2. **Broken Access Control - HIGH**
+**Location:** Lines 62-66
+```php
+if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+if ($_REQUEST['formid']) $form_id = $_REQUEST['formid'];
+if ($_REQUEST['formname']) $form_name=$_REQUEST['formname'];
+```
+**OWASP Category:** Broken Access Control (A01:2021)
+**Problem:** User input from `$_REQUEST` is used to set `$pid` and `$encounter` without validation or access control checks. No verification that the current user has permission to access this patient's data.
+**Severity:** CRITICAL
+
+---
+
+### 3. **Improper Output Encoding - HIGH**
+**Location:** Multiple locations where `text()` is NOT used:
+- Line 318: `echo $HPI1;` (should use `text()`)
+- Line 654: `echo $PLAN2;` (should use `text()`)
+- Line 2004: `echo  $item['plan'];` (should use `text()`)
+- Many other instances throughout the file
+
+**OWASP Category:** Injection - XSS (A03:2021)
+**Problem:** Database output is echoed without proper escaping. User-supplied data stored in database could contain HTML/JavaScript that executes in the browser.
+**Severity:** HIGH
+
+---
+
+### 4. **SQL Injection via Dynamic Variable Extraction - HIGH**
+**Location:** Lines 72-76
+```php
+while ($prefs= sqlFetchArray($result))   {    
+  $LOCATION = $prefs['LOCATION'];
+  $$LOCATION = text($prefs['GOVALUE']);
+}
+```
+**OWASP Category:** Injection (A03:2021) & Insecure Design (A04:2021)
+**Problem:** Using `$$LOCATION` creates dynamic variable names based on database content. Combined with later use in queries or output without validation, this is extremely dangerous.
+**Severity:** HIGH
+
+---
+
+### 5. **Path Traversal / File Inclusion - HIGH**
+**Location:** Lines 1950-1962 (multiple locations constructing file paths)
+```php
+$from_file = $GLOBALS["fileroot"] . "/sites/" . $_SESSION['site_id'] .
+'/documents/' . $from_pathname . '/' . $from_filename;
+```
+**OWASP Category:** Injection / Insecure Design (A04:2021)
+**Problem:** `$from_pathname` is derived from database content that could be manipulated. No validation that path doesn't escape intended directory (path traversal via `../../`).
+**Severity:** MEDIUM-HIGH
+
+---
+
+### 6. **Cross-Site Scripting (XSS) - HIGH**
+**Location:** Lines 318, 654, 1216, 2004 and many others
+```php
+echo $HPI1;  // No escaping
+echo $PLAN2; // No escaping
+echo $item['plan']; // No escaping
+```
+**OWASP Category:** Injection - XSS (A03:2021)
+**Problem:** User data from database displayed without HTML escaping. Even data stored in DB should be treated as untrusted.
+**Severity:** HIGH
+
+---
+
+### 7. **Improper Session Handling - MEDIUM**
+**Location:** Line 72
+```php
+array($_SESSION['authUserID'])
+```
+**OWASP Category:** Identification and Authentication Failures (A07:2021)
+**Problem:** Session variables used without validation. Relies on external authentication but doesn't re-validate authorization for specific patient data access.
+**Severity:** MEDIUM
+
+---
+
+### 8. **Information Disclosure via Error Messages - MEDIUM**
+**Location:** Lines 1878-1891 (implicit)
+**OWASP Category:** Security Misconfiguration (A05:2021)
+**Problem:** Database queries and file operations could leak path/system information in error messages if not properly handled by error logging.
+**Severity:** MEDIUM
+
+---
+
+### 9. **Unsafe File Path Construction - MEDIUM**
+**Location:** Lines 1948-1968
+```php
+$from_file = $GLOBALS["fileroot"] . "/sites/" . $_SESSION['site_id'] .
+'/documents/' . $from_pathname . '/' . $from_filename;
+```
+**OWASP Category:** Insecure Design (A04:2021)
+**Problem:** No validation that constructed path stays within intended directory bounds. No check for null bytes or special characters in `$from_filename` or `$from_pathname`.
+**Severity:** MEDIUM
+
+---
+
+### 10. **SQL Injection in Document Query - CRITICAL**
+**Location:** Line 1945
+```php
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+$doc = sqlQuery($sql);
+```
+**OWASP Category:** Injection (A03:2021)
+**Problem:** `$filename` is constructed from `$pid`, `$encounter`, and `$zone` which are not properly validated as integers before use. Direct string concatenation into SQL.
+**Severity:** CRITICAL
+
+---
+
+### 11. **Missing Input Validation - HIGH**
+**Location:** Lines 62-66
+**OWASP Category:** Insecure Design (A04:2021)
+**Problem:** `$pid`, `$encounter`, `$form_id` should be validated as positive integers before database use, but no validation exists.
+**Severity:** HIGH
+
+---
+
+### 12. **Deprecated/Dangerous Functions - MEDIUM**
+**Location:** Lines 2054-2055
+```php
+$term = nl2br(htmlspecialchars($term,ENT_NOQUOTES));
+```
+**OWASP Category:** Vulnerable and Outdated Components (A06:2021)
+**Problem:** `ENT_NOQUOTES` should be `ENT_QUOTES`. Does not escape single quotes, allowing attribute-based XSS.
+**Severity:** MEDIUM
+
+---
+
+## Recommendations
+
+1. **Immediate:** Add access control validation after line 66:
+```php
+// Verify user has access to this patient
+if (!acl_check('patients', 'med', false, array('write', 'addonly'))) {
+  die("Unauthorized access");
+}
+```
+
+2. **Immediate:** Use parameterized queries for all SQL (line 1892, 1945):
+```php
+$sql = "SELECT * from documents where documents.url LIKE ?";
+$doc = sqlQuery($sql, array('%' . $filename . '%'));
+```
+
+3. **Urgent:** Add output encoding for all echoed variables:
+```php
+echo text($HPI1);  // Instead of echo $HPI1;
+```
+
+4. **Urgent:** Validate integer inputs:
+```php
+$pid = intval($_REQUEST['ptid'] ?? 0);
+$encounter = intval($_REQUEST['encid'] ?? 0);
+```
+
+5. **Important:** Remove dynamic variable variables (`$$LOCATION`), use array instead.
+
+6. **Important:** Use `htmlspecialchars($var, ENT_QUOTES, 'UTF-8')` consistently.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

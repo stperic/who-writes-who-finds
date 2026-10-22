@@ -1,0 +1,3 @@
+The review comes closest in item 3, warning that raw content is returned "without the `Content-Disposition`/`Content-Type` headers" and that "if any caller echoes this content into an HTML response... it could result in XSS or MIME-sniffing attacks." But it treats this as a hypothetical internal-caller concern ("contingent on caller behavior — flag for follow-up," Medium). It never sees that the legacy Controller maps URL query parameters onto `disable_exit` and echoes the return value as text/html, so an attacker can trigger stored XSS directly. That puts it in the right area and the right class, but at the wrong severity and without the real exploit path, so it would not necessarily block the merge.
+
+LABEL: Partial

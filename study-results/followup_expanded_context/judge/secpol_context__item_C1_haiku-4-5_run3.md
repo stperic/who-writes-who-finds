@@ -1,0 +1,3 @@
+The review zeroes in on the new `$disable_exit` parameter. It says "an attacker could call `retrieve_action()` with `$disable_exit=true`" and notes that "If `$disable_exit=true`, the file is read but headers are never sent." However, it frames this as broken access control and a resource leak. It never says that the raw file bytes are echoed as text/html, or that embedded HTML/JS would run as stored XSS. It flags the right parameter and code path but names the wrong vulnerability class.
+
+LABEL: Partial

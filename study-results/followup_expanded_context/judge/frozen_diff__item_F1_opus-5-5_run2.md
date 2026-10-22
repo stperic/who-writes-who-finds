@@ -1,0 +1,3 @@
+The review pins down the exact flaw in issue #7: "`pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, and `document_category` are normally reached through `practice_settings`, which requires `admin/practice`. They are directly routable with no ACL check." That is the right class and location. However, it rates this only Medium, frames it as a pre-existing issue that "this PR is the natural place to close," never states the impact (rewriting claim-routing credentials, enumerating patients), and explicitly says "I'd block the merge on #1 and #2" rather than on this. Right class and location but understated severity, with no block for this reason, fits Partial.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review's issue #2 flags the deleted `getOne()` override, noting it "removes the override that was previously providing specialized behavior specific to `FhirCareTeamService`" and asking to "verify... that the parent behavior (building search params differently) is acceptable." That touches the right area, but it never mentions patient scoping, access control, cross-patient data exposure, or the missing `IPatientCompartmentResourceService` that disables patient-context filtering in `getAll()`. It is framed only as a contract or behavior check, not as a data-leak blocker.
+
+LABEL: Partial

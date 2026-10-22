@@ -1,0 +1,3 @@
+Finding #1 matches the known vulnerability: it says `pharmacy`, `insurance_company`, `insurance_numbers`, `document_category`, `x12_partner`, and `hl7` "are all whitelisted as top-level controllers. `CONTROLLER_ACL_MAP` covers only `practice_settings` and `prescription`", and that "a user without `admin/practice` can call these controllers directly and skip the parent check." It rates this High (broken access control) and lists adding ACL map entries for all sub-controllers as a pre-merge action. Despite hedging on whether each controller has its own checks and omitting `patient_finder`, the review correctly names both the vulnerability class and its location.
+
+LABEL: Caught

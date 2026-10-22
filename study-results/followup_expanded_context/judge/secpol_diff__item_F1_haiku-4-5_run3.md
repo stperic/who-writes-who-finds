@@ -1,0 +1,3 @@
+The review never notes that `checkControllerAcl()` returns early, with no check, for controllers missing from `CONTROLLER_ACL_MAP`, which leaves sub-controllers like x12_partner and patient_finder open to any authenticated user. Its "Broken Access Control" item argues the opposite concern: "a security regression if any legitimate controllers are missing from the whitelist—they will become inaccessible". Its only comment on `checkControllerAcl()` is about missing audit logging "when an ACL check fails", not about the check being skipped.
+
+LABEL: Missed

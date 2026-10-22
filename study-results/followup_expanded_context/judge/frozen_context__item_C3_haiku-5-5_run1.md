@@ -1,0 +1,3 @@
+The review never mentions the gateway API key being rendered into client-side JavaScript. The closest passage is item 14, "`Stripe(...)` and `Accept.dispatchData(...)` require their respective JS libraries to be loaded," which only asks whether the libraries are included and says nothing about exposing `$GLOBALS['gateway_api_key']` to portal users. The review's other findings (CVV storage, IDOR, XSS) are unrelated to the secret-credential exposure.
+
+LABEL: Missed

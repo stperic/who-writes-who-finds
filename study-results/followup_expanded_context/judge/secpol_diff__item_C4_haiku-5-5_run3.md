@@ -1,0 +1,3 @@
+The review pinpoints the root cause at the right location. Finding 3 says stored values such as `echo $HPI1;`, `echo $item."<br />";` (PLAN) and IMPPLAN fields are echoed unescaped, which can affect viewers "and in the PDF/fax renderer." It frames this as stored XSS rather than server-side request forgery, though. Its PDF/SSRF discussion (Finding 5, "SSRF-adjacent") concerns embedded local filesystem paths, not injected URLs being fetched by the HTML-to-PDF converter, and it never mentions the CSS `background`/url() context. That is the right area and fix with the wrong vulnerability class.
+
+LABEL: Partial

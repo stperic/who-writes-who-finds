@@ -1,0 +1,3 @@
+The review identifies the exact flaw in issue 5: "Only `practice_settings` and `prescription` controllers have ACL mappings. All other controllers pass through without ACL checks... Controllers like `document`, `patient_finder`, `hl7`, etc., have no access control whatsoever at the dispatch layer." It rates this HIGH and recommends deny-by-default. Issue 1 adds that `pharmacy` and other sub-controllers lack ACL mappings. Issue 3 wrongly says those sub-controllers are missing from the whitelist, but the core class (broken access control from the default-allow `checkControllerAcl`), the location, and the affected controllers are all named, and the review would block the merge for the right reason.
+
+LABEL: Caught

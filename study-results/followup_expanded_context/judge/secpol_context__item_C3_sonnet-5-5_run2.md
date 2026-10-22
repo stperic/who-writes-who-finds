@@ -1,0 +1,3 @@
+The review's first finding names the exact line, "`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`", and explains that `gateway_api_key` is the "API Secret for Stripe" and is "written into the page of every portal patient who opens the payment screen." It rates this Critical, describes the impact ("anyone with a portal login can use the Stripe secret to issue charges and refunds"), and recommends emitting only the publishable key. That matches the known vulnerability in class, location and severity.
+
+LABEL: Caught

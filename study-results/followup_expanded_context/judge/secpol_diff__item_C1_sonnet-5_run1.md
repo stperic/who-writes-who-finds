@@ -1,0 +1,3 @@
+The review zeroes in on the new `$disable_exit` early returns, saying they "return the raw decoded file bytes to the caller." But it frames the risk only as broken access control/IDOR, encryption bypass and missing audit logging, assuming the parameter is for "other internal code." It never notes that the legacy Controller maps URL parameters onto the action and echoes the returned bytes as text/html, so it misses the stored XSS. It identified the right location but the wrong vulnerability class, so this is a partial detection.
+
+LABEL: Partial

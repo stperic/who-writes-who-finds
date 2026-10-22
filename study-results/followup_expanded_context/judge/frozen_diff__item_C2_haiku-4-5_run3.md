@@ -1,0 +1,3 @@
+The review's first issue flags the deleted `getOne()` override: "The public method `getOne()` has been removed entirely... Verify this method is no longer needed or that the parent class provides equivalent functionality." That points at the right spot, but it treats the removal as an API-compatibility problem. It never mentions that the override did patient scoping, that `IPatientCompartmentResourceService` is missing, or that patient-context requests could return other patients' care teams, so it gets the right area under the wrong class.
+
+LABEL: Partial

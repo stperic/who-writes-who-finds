@@ -1,0 +1,3 @@
+The review does flag the exact location and class in issue #3: "`gateway_api_key` is embedded directly in page source. If this global actually holds a secret/transaction key... this leaks merchant credentials to anyone viewing page source." However, it treats this as conditional ("Medium/High depending on what `gateway_api_key` actually stores — worth explicit verification/comment in code"). Its recommendation also lists only #1 and #2 as must-fix before merge and says "the rest can be tracked as follow-up cleanup." So it understates the severity and would not block the merge for this secret-key exposure.
+
+LABEL: Partial

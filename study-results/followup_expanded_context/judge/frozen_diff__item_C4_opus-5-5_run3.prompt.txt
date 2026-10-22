@@ -1,0 +1,214 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-33321 (server-side request forgery, OWASP A10), file interface/forms/eye_mag/report.php.
+This change adds the eye exam report, which echoes stored, user-supplied values without
+escaping into HTML and into CSS url() contexts (for example background: <?php echo $background; ?>
+and free-text fields such as HPI, motility, visual field, Rx type and plan/order details). The
+patient report page renders forms' report.php output server-side into a PDF with an HTML-to-PDF
+renderer, which fetches URLs in the markup. Injected URLs are therefore fetched by the server:
+out-of-band server-side request forgery. The root cause is the missing output escaping; the
+same flaw also allows HTML injection in the browser view.
+
+Review to score:
+<review>
+# Code Review: `interface/forms/eye_mag/report.php`
+
+This file has several **critical security issues** (SQL injection, missing authorization, stored XSS, variable-variable injection) and a number of **clinical-data correctness bugs**. Clinical bugs matter here because this report is printed and faxed.
+
+---
+
+## Critical / High — Security
+
+### 1. SQL injection and cross-patient data leak in `display_draw_image()`
+```php
+$base_name = $pid."_".$encounter."_".$side."_".$zone."_VIEW";
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+```
+- **Injection:** `$pid` and `$encounter` can come straight from `$_REQUEST['ptid']` / `$_REQUEST['encid']` and are concatenated into SQL. This is SQL injection.
+- **Wrong-patient matches:** Even with clean input, `LIKE '%1_5_OU_...'` also matches `11_5_OU_...` and `21_5_...`. In addition, `_` is a LIKE single-character wildcard. The result is that **another patient's drawings can be rendered into this patient's report** (a PHI leak).
+- **Fix:**
+  - Use a bound parameter.
+  - Escape `_` and `%`.
+  - Match on the full path or on `foreign_id = ?`.
+  - Restrict to the correct patient.
+
+### 2. Unauthenticated parameter override and no ACL check (IDOR)
+```php
+if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+if ($_REQUEST['formid']) $form_id = $_REQUEST['formid'];
+if ($_REQUEST['formname']) $form_name=$_REQUEST['formname'];
+```
+- Any logged-in user can view any patient's or encounter's full eye exam by changing the URL.
+- `acl.inc` is included, but `acl_check()` is never called.
+- **Fix:**
+  - Add an ACL check, e.g. `acl_check('patients','med')`.
+  - Validate that the encounter belongs to the patient.
+  - Cast the IDs to `int`.
+
+### 3. SQL built by concatenation
+```php
+$sql = "select * from facility where id=" . $_SESSION['pc_facility'];
+```
+Use `sqlQuery($sql, array($_SESSION['pc_facility']))`.
+
+### 4. Variable-variable injection from preferences
+```php
+$LOCATION = $prefs['LOCATION'];
+$$LOCATION = text($prefs['GOVALUE']);
+```
+- A DB value controls which global variable gets written. A pref row with `LOCATION='pid'` or `'encounter'` would silently redirect the report to a different patient.
+- `text()` is applied here, and values are then `text()`-escaped again on output, so they will be double-encoded.
+- **Fix:** Use an associative array (`$prefs[$LOCATION]`) with a whitelist.
+
+### 5. `@extract()` of full DB rows into local scope
+In both `eye_mag_report()` and `narrative()`:
+- `@extract($encounter_data)` overwrites `$pid`, `$encounter`, `$id`, etc. with whatever columns exist in `form_encounter.*` and `form_eye_mag.*`. A future column such as `cols` or `choice` would silently change behavior.
+- The `@` operator hides failures. If the query returns no row, `extract(null)` is suppressed and every field is simply undefined.
+- **Fix:** Read from the result array explicitly.
+
+### 6. Stored XSS — many unescaped outputs of user-entered clinical text
+| Location | Value |
+|---|---|
+| HPI | `echo $HPI1;` (note: `HPI2` and `HPI3` *are* escaped) |
+| Chronic problems | `echo "&nbsp;".$CHRONIC2`, `$CHRONIC3` |
+| Impression/Plan | `$item['codetext']`, `$item['code']`, `$item['plan']` (only `title` is escaped) |
+| Orders | `$PLAN` items and `$PLAN2` |
+| Document notes | `$note->get_note()` |
+| Contact lens | `echo ($CTLOSVA?:"-")` (every sibling cell uses `text()`) |
+| Motility grid | `$MOTILITY_*` |
+| Signature | `$providerNAME` in the PDF branch |
+| Image `src` | `$pid`, `$filetoshow`, `$from_file` (not `attr()`-escaped) |
+| Amsler `src` | `$form_folder` |
+
+- **Plan text:** Use `nl2br(text(...))` instead of `str_replace` followed by a raw echo.
+
+---
+
+## High — Clinical correctness bugs
+
+### 7. Left-eye motility grid shows the wrong muscle
+```php
+<td class="mot"><?php echo $MOTILITY_LLIO; ?></td>
+<td class="mot"><?php echo $MOTILITY_LI; ?></td>
+<td class="mot"><?php echo $MOTILITY_LLIO; ?></td>
+```
+- The first cell should be `$MOTILITY_LRIO`.
+- As written, the LRIO value is never shown and LLIO is duplicated. This produces an incorrect exam record.
+
+### 8. Typos in variable names hide data
+- **ccNear row:** `if ($ODNEARVA_1||$WNEAROSVA_1)` — `$WNEAROSVA_1` doesn't exist and should be `$OSNEARVA_1`. An OS-only near acuity is never shown.
+- **Gonioscopy:** `if ($ODGONIO||$OSDGONIO)` should be `$OSGONIO`. OS-only gonioscopy is never shown.
+- **NPC:** `if ($ODNPC or $OSNPC)` uses variables that are never set. The block then prints `$NPC`, so NPC is effectively never displayed.
+
+### 9. Section display conditions ignore OS-only findings
+- **Retina:** The condition is `if ($ODDISC||$OSDISC||$ODCUP||$ODMACULA||$ODVESSELS||$ODPERIPH)`. A left-eye-only finding (cup, macula, vessels, periphery, CMT, or comments) hides the entire retina section.
+- **Refraction table:** It is gated on `$ODVA||$OSVA`. Current-Rx acuities are stored as `$ODVA_1` etc., so wearing-only Rx data likely never renders.
+
+### 10. Autorefraction comments use a stale loop index
+After the `for ($i=1; $i <= $count_rx; $i++)` loop, the Autorefraction block uses `${"COMMENTS_$i"}`. At that point `$i == $count_rx+1`, so the value is undefined or wrong.
+
+### 11. `$RX_TYPE` is not reset per row
+If `RX_TYPE_n` is null or unexpected, the previous row's type ("Bifocals", etc.) carries over to the next Rx.
+
+### 12. Signature date is today, not the sign or encounter date
+```php
+xlt('electronically signed on')." ".oeFormatShortDate()
+```
+- Reprinting an old report stamps today's date as the e-signature date. That is a misleading legal record.
+- In addition, the image is shown whenever a file exists. No signing or authorization status is checked.
+
+---
+
+## Medium — Correctness / Reliability
+
+### 13. `CHOICE` / `choice` case mismatch
+```php
+if ($_REQUEST['CHOICE']) $choice = $_REQUEST['choice'];
+```
+`$choice` is effectively never set from the request.
+
+### 14. Inverted condition at the end of `eye_mag_report()`
+```php
+} else if ($choice !="narrative") { narrative(...) }
+```
+An explicit `choice=narrative` renders nothing, which contradicts the docblock ("If not present it will display everything == 'narrative'").
+
+### 15. Short open tags (`<?`)
+- These appear after the CC2 block (`</div>\n<?`) and inside the commented DRAW code.
+- With `short_open_tag=Off` (the default in many installs), PHP source is emitted as HTML and the page breaks.
+- Use `<?php` everywhere.
+
+### 16. `"\x85"` in the newline replacement list corrupts UTF-8
+`str_replace` on byte `0x85` mangles every multibyte character containing that byte (e.g. `Å` = `C3 85`, `…` = `E2 80 A6`, and many CJK characters).
+
+Separately, `"\u2028"` without braces is a literal string, not a Unicode escape. Use `nl2br(text(...))` instead.
+
+### 17. Undefined variables
+- **`$IMPPLAN_items`:** Not initialized. With zero rows, `foreach` warns on null.
+- **`$bad`:** Not initialized before `$bad++`.
+- **`$css_header`:** Not declared `global` in `narrative()`, so the stylesheet link is empty.
+- **`$GLOBALS['web_root']` vs `$GLOBALS['webroot']`:** These are used inconsistently. `web_root` is likely undefined, which breaks the signature image in the non-PDF branch.
+
+### 18. Encounter query weaknesses
+- **`narrative()` query:**
+  - Lacks `forms.formdir = 'eye_mag'`, so `form_eye_mag.id=forms.form_id` can join against a different form type with the same id.
+  - Lacks `forms.pid = form_eye_mag.pid`.
+- **`eye_mag_report()` query:** Lacks `forms.deleted = 0`.
+- **No-row case:** If no row is returned, `new DateTime(null)` silently uses "now" as the visit date.
+
+### 19. Translation bugs
+- `xlt('sc Near{{without correction near')` is missing the closing `}}`.
+- `<span title="<?php xla(...); ?>">` is missing `echo`, so the title is empty.
+- Several strings are untranslated: `"Full to CF OU"`, `"Orders/Next Visit:"`, `"Comments:"`.
+
+---
+
+## Low — Maintainability / HTML
+
+### 20. Debug leftovers and dead code
+- `xlt('Type').$count_rx` prints the Rx count into the column header.
+- `left_overs()` uses undefined `$table_name` and `$id`, and is dead code.
+- `full_report()` returns immediately; it also prints `<tr>` twice.
+- The DRAW branch contains a large commented-out block.
+- `$titleres` and `$facility` are queried but never used.
+- `$visit_date` and `$fname`/`$extension` are computed but unused.
+
+### 21. Invalid or broken HTML/CSS
+- **Invalid CSS values:** `text-align:middle`, `text-align:bottom`, `margin:1 auto`, `padding:5 5 10 5` (no units).
+- **Bad attributes:** `heght=75`, and `<table style="report_vitals" style="...">` (duplicate `style` attribute).
+- **Column mismatch:** The refraction header has 10 cells; the CTL sub-header has 9.
+- **Unclosed `<td>`:** In the pupils block when only `PUPIL_NORMAL` is set.
+- **ACT layout:** `</tr><tr>` sits inside the `ACT5CCDIST` conditional, so the layout depends on which tests were done.
+
+### 22. Massive duplication
+- The HPI1/2/3 blocks, ACT grids, and refraction rows are copy-pasted.
+- This duplication is how bugs like #7–#10 slipped in.
+- Refactor into helpers, e.g. `render_hpi($n)`, `render_act_grid($suffix)`, `render_rx_row($prefix)`.
+
+### 23. Miscellaneous
+- `&blahblah=".rand()` is used as a cache buster. Use a meaningful name or a content hash.
+- The file has a trailing `?>` and no newline at EOF, which risks stray output before headers or PDF generation. Drop the closing tag.
+- Typo in label text: `Constaast`.
+
+---
+
+**Recommendation: Request changes.** Items 1–6 (SQL injection, authorization/IDOR, XSS, variable injection) and 7–12 (incorrect clinical data on printed/faxed reports) should be fixed before merge.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

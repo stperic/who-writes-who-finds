@@ -1,0 +1,3 @@
+The review looks closely at the `$disable_exit` branches, but only for correctness and performance. It complains that one path "returns `null` instead of the actual file/converted content" and that `fread()` now runs unconditionally. It even calls the core idea, "allow `retrieve_action` to return file content instead of emitting headers and dying", "reasonable", and it never notes that the legacy Controller lets URL parameters set this flag and echoes the raw bytes as text/html, which enables stored XSS.
+
+LABEL: Missed

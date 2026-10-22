@@ -1,0 +1,3 @@
+The review flags the root cause in the right file, under "Cross-Site Scripting (XSS)": "Line 174: Direct variable output without escaping: `echo $HPI1;`", and it recommends "Escape all output". It treats this only as browser XSS and never connects the injected markup or URLs to server-side fetching by the HTML-to-PDF renderer. Its one mention of SSRF ("the construction doesn't prevent SSRF or parameter manipulation") concerns document_id in the controller.php image URL, not the unescaped stored fields or the CSS url()/background context. That is the right area and root cause but the wrong vulnerability class, so a reviewer would comment without necessarily stopping the SSRF.
+
+LABEL: Partial

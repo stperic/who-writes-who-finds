@@ -1,0 +1,188 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for a security-focused pre-merge review. The prompt
+did not name this vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-33321 (server-side request forgery, OWASP A10), file interface/forms/eye_mag/report.php.
+This change adds the eye exam report, which echoes stored, user-supplied values without
+escaping into HTML and into CSS url() contexts (for example background: <?php echo $background; ?>
+and free-text fields such as HPI, motility, visual field, Rx type and plan/order details). The
+patient report page renders forms' report.php output server-side into a PDF with an HTML-to-PDF
+renderer, which fetches URLs in the markup. Injected URLs are therefore fetched by the server:
+out-of-band server-side request forgery. The root cause is the missing output escaping; the
+same flaw also allows HTML injection in the browser view.
+
+Review to score:
+<review>
+# Security Review: `interface/forms/eye_mag/report.php`
+
+## Summary
+
+| # | Location | OWASP 2021 | Severity |
+|---|----------|-----------|----------|
+| 1 | report.php top-level `$_REQUEST` overrides of `$pid`/`$encounter`/`$form_id` | A01 Broken Access Control | **High** |
+| 2 | `display_draw_image()` SQL string concatenation | A03 Injection (SQLi) | **High** |
+| 3 | Unescaped clinical fields and notes in `narrative()` / `display_draw_image()` | A03 Injection (Stored XSS) | **High** |
+| 4 | `@extract()` and `$$LOCATION` variable-variables | A04 Insecure Design / A03 | Medium |
+| 5 | `"select * from facility where id=" . $_SESSION['pc_facility']` | A03 Injection | Low |
+| 6 | No ACL check in report.php | A01 Broken Access Control | Medium |
+| 7 | Pre-existing in `custom_report.php` (relied upon) | A01 / A03 | Medium–High |
+| 8 | No audit logging of cross-patient report views | A09 Logging Failures | Low |
+
+---
+
+## 1. Request parameters override the session patient and encounter (IDOR)
+
+**Category:** A01 Broken Access Control · **Severity:** High
+
+```php
+if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+if ($_REQUEST['formid']) $form_id = $_REQUEST['formid'];
+if ($_REQUEST['formname']) $form_name=$_REQUEST['formname'];
+```
+
+This code runs at file scope. `custom_report.php` loads every form's report.php through `include_once` before it renders anything.
+
+- **Effect on the whole report:** adding `?ptid=<other patient>` to a custom report request replaces the global `$pid`. Every later section then renders the other patient's data. That includes demographics, history, insurance, billing, notes, transactions, immunizations and encounter forms.
+- **No authorization check:** nothing confirms the user may access that patient. This is a cross-patient PHI disclosure, which is a HIPAA issue.
+- **Same flaw for `encid` and `formid`:** both are attacker-controlled.
+
+**Fix:**
+- Remove these overrides entirely. Report functions already receive `$pid`, `$encounter` and `$id` as arguments.
+- If a standalone entry point is needed, validate access with `acl_check` and check that the encounter belongs to the patient.
+
+## 2. SQL injection in `display_draw_image()`
+
+**Category:** A03 Injection · **Severity:** High
+
+```php
+$base_name = $pid."_".$encounter."_".$side."_".$zone."_VIEW";
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+$doc = sqlQuery($sql);
+```
+
+`$pid` and `$encounter` are concatenated directly into SQL. They are attacker-controllable in two ways:
+
+- **Through issue #1:** `ptid` and `encid` come straight from the request.
+- **Through `custom_report.php`:** it calls `eye_mag_report($pid, $form_encounter, ...)`, where `$form_encounter = $val` is the raw POST/GET value of the `eye_mag_<id>` field.
+  - Inside `narrative()`, `@extract($encounter_data)` overwrites `$encounter` only if the parameterized query returns a row.
+  - A malicious value matches no row, so it survives unchanged and reaches `display_draw_image("EXT", $encounter, $pid)`.
+  - `$sanitize_all_escapes=true` disables the legacy escaping, so the value is used raw.
+
+A payload such as `eye_mag_1=1' UNION SELECT ... -- ` gives full read access to the database through error-based or blind injection.
+
+The query also has no `foreign_id = ?` restriction. Even without injection, a LIKE suffix match could return another patient's document.
+
+**Fix:**
+```php
+$sql = "SELECT id FROM documents WHERE foreign_id = ? AND url LIKE ?";
+$doc = sqlQuery($sql, array($pid, '%' . $filename));
+```
+Also cast `$pid` and `$encounter` to int at function entry.
+
+## 3. Stored XSS: many clinical fields echoed without escaping
+
+**Category:** A03 Injection (XSS) · **Severity:** High
+
+These values are output raw. Most fields in the file are wrapped in `text()`, but these are not:
+
+| Value | Location in code |
+|---|---|
+| `echo $HPI1;` | Chief complaint section. Note that `$HPI2` and `$HPI3` *are* escaped. |
+| `echo "&nbsp;".$CHRONIC2`, `$CHRONIC3` | Chronic problems section |
+| `$item['codetext']`, `$item['code']`, `$item['codetype']` | IMPPLAN loop |
+| `$item['plan']` | Only newlines are replaced with `<br />`; HTML is not escaped |
+| `$PLAN` items (`explode('|',$PLAN)`), `$PLAN2` | Orders/Next Visit section |
+| `$CTLOSVA` | `echo ($CTLOSVA?:"-")` |
+| `$MOTILITY_*` | Values are prefixed with `"-"` and echoed raw |
+| `$note->get_note()` | `display_draw_image()` |
+| `$providerNAME` | PDF signature block |
+| `$css_header`, `$form_folder` | Inline in `src`/`href` attributes (low risk) |
+
+All of these are free-text fields entered by staff. One user can therefore plant script that runs in a physician's session. That script can steal session cookies, perform actions as the victim (CSRF-like), or read PHI. The output also appears in the encounter mouseover summary (`choice=TEXT`), which widens exposure.
+
+**Fix:**
+- Wrap every value in `text()`.
+- For plan text, use `nl2br(text($item['plan']))`.
+
+## 4. Variable-variable and `extract()` scope pollution
+
+**Category:** A04 Insecure Design · **Severity:** Medium
+
+- **`$$LOCATION = text($prefs['GOVALUE']);`** runs in global scope. It lets any value stored in `form_eye_mag_prefs.LOCATION` set an arbitrary global, such as `$pid`, `$encounter`, `$srcdir` or `$GLOBALS`-backed settings.
+- **`@extract($objQuery)` / `@extract($encounter_data)`** import every column of `form_encounter.*` and `form_eye_mag.*` into local scope. These columns include `pid`, `id`, `encounter` and `form_id`, so they silently override function arguments. The `@` suppresses errors.
+- This is the mechanism that makes the injection in #2 conditional and hard to reason about.
+
+**Fix:**
+- Use an explicit whitelist: `extract($row, EXTR_SKIP)` restricted to known keys, or plain array access.
+- Store prefs in an array rather than in variable-variables.
+
+## 5. Unparameterized facility query
+
+**Category:** A03 Injection · **Severity:** Low
+
+```php
+$sql = "select * from facility where id=" . $_SESSION['pc_facility'];
+```
+
+The value comes from the session, so this is not directly exploitable. It should still be `sqlQuery("... where id=?", array($_SESSION['pc_facility']))`. The same pattern exists in `custom_report.php`.
+
+## 6. No authorization in the new file
+
+**Category:** A01 Broken Access Control · **Severity:** Medium
+
+`report.php` requires `acl.inc` but never calls `acl_check()`. The file can be requested directly, and its functions are invoked from several callers (custom report, encounter history mouseover, fax/taskman). All of them should enforce `encounters/notes` or `patients/med` permissions plus patient ownership. Combined with #1, this makes cross-patient access trivial.
+
+## 7. Pre-existing issues in `custom_report.php` that this change relies on
+
+These are outside the diff, but the new form depends on them:
+
+- **Unvalidated encounter value (A03, High):** `$form_encounter = $val` is passed to `<form>_report()` with no integer validation. This is the entry point for #2.
+- **Document IDOR (A01, Medium):** `documents[]` IDs are loaded through `new Document($document_id)` without checking `foreign_id == $pid`. Any document in the system can be rendered into a report.
+- **Command injection risk (A03, Medium):** `exec("convert -density 200 \"$from_file\" ... \"$to_file\"")` puts DB-derived file paths in a shell command without `escapeshellarg()`. A crafted stored filename could inject shell commands.
+- **Stored XSS (A03, Medium):** the following are echoed unescaped:
+  - facility name, street and phone
+  - patient name in the title link
+  - issue `title`/`comments`
+  - `$dcode`
+  - batchcom data
+  - immunization notes
+  - billing `code_text`
+  - document note text
+  - `$fname`
+- **Dynamic SQL with `$pid` (A03, Low):** `"... where pid = '$pid'"`, `"patient_id = '$pid'"` and the `IN (...)` lists use `add_escape_custom`. These should be parameterized. Note that once #1 lets an attacker control `$pid`, these become injectable as well.
+- **Arbitrary `_report` function call (A04, Low–Medium):** `call_user_func($res[1] . "_report", ...)` uses a name derived from the request key. Any function whose name ends in `_report` can be invoked.
+
+## 8. Logging
+
+**Category:** A09 Security Logging and Monitoring Failures · **Severity:** Low
+
+No audit event records which patient's exam data was rendered, so the PHI disclosure in #1 would go undetected. OpenEMR's `newEvent()` audit log should record report views.
+
+---
+
+## Recommendation
+
+**Do not merge as-is.** Required changes:
+
+1. Remove the `$_REQUEST` overrides of `$pid`, `$encounter`, `$form_id` and `$form_name`.
+2. Parameterize the query in `display_draw_image()` and scope it to the patient.
+3. Escape all output with `text()`/`attr()`.
+4. Replace `extract()` and the variable-variables with explicit array access.
+5. Add `acl_check()` and patient/encounter ownership validation.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

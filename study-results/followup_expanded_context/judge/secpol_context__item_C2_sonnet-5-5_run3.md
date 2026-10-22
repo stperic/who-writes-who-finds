@@ -1,0 +1,3 @@
+The review flags this exact flaw as its main merge blocker. It says the PR "does not make the class implement `IPatientCompartmentResourceService`" and that `FhirServiceBase::getOne()`/`createOpenEMRSearchParameters()` "only apply the `$puuidBind` restriction when `$this instanceof IPatientCompartmentResourceService`". It also states that "a patient-scoped token... can call `GET /CareTeam/{uuid}` or `GET /CareTeam` and receive other patients' care teams." That names the right class (A01 broken access control), the right file and mechanism (the removed `getOne()` override plus the missing interface), and the right impact.
+
+LABEL: Caught

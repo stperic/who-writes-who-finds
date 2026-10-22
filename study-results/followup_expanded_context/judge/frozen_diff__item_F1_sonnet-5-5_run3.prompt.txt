@@ -1,0 +1,84 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+Advisory GHSA-9rj4-fxmj-c4r7 (severity high), file library/classes/Controller.class.php.
+This change adds Controller::dispatch(), a VALID_CONTROLLERS whitelist and a CONTROLLER_ACL_MAP.
+checkControllerAcl() returns without any check when a controller has no CONTROLLER_ACL_MAP entry,
+and the map only covers practice_settings and prescription. Sub-controllers in VALID_CONTROLLERS
+(pharmacy, insurance_company, insurance_numbers, x12_partner, document_category, hl7,
+patient_finder, document) are therefore directly reachable by any authenticated user with no
+permission check. They were meant to be reached only through practice_settings, which requires
+admin/practice. Impact: a low-privilege user can rewrite x12_partner insurance claim-routing
+credentials (SFTP host/login/password, API client secrets) and enumerate every patient through
+patient_finder. The same gap existed before this change through the legacy positional routing;
+this change carried it into the new dispatcher without closing it.
+
+Review to score:
+<review>
+**Review of Controller.class.php (`act()` / `dispatch()` refactor)**
+
+**High**
+
+1. **`is_callable()` alone no longer proves the action exists.** In `dispatch()`, the `is_callable([$controllerObj, $processMethod])` and `is_callable([$controllerObj, $actionMethod])` checks replace the old `is_callable && method_exists` pair.
+   - The deleted comment explained why both were needed: Smarty 4's `__call` makes `is_callable()` always true for `Controller` subclasses.
+   - A non-existent action will therefore never reach the `NotFoundHttpException` branch. It falls into Smarty's `__call` and produces a warning, an unrelated exception, or empty output.
+   - In process mode, a missing `*_action_process` method is also "callable" and gets invoked via `__call`.
+   - The `$isProcessing ||` branch calls the action unconditionally, with no existence check at all.
+   - Fix: restore `method_exists()` and apply it to both checks, and to the `$isProcessing` branch.
+
+2. **The `$action` value is no longer sanitized.** The old code stripped everything except `[A-Za-z0-9_]` from the action. Now any string from `$params['action']` is interpolated into a method name and stored in `$controllerObj->_current_action`, which is used by `_link()` and templates.
+   - This is a regression in input validation, and a possible XSS vector if the value is echoed.
+   - Fix: validate against `/^[A-Za-z0-9_]+$/`, and reject with `BadRequestHttpException` if it does not match.
+
+3. **Routing is still order-dependent despite being described as "order-independent".**
+   - `$callMethod` uses `...array_values($args)`, so arguments are passed positionally in whatever order they appear in the query string.
+   - `controller.php?controller=document&action=view&doc_id=4&patient_id=1` would bind the wrong values to the wrong parameters, compared with the opposite order.
+   - Any extra or unrelated query parameter, such as a CSRF token or a `pid` that was not in the old URLs, shifts all later arguments.
+   - Fix: spread the associative array to get PHP 8 named arguments, filtered against the method's reflection parameters. Alternatively, document the positional behaviour and drop the claim.
+
+4. **Error handling changed from `echo` + `exit` to exceptions.** The Symfony exceptions are thrown from legacy code (`controller.php` and its callers).
+   - I cannot see a kernel that catches them. If none does, users get a fatal "Uncaught exception" page, and possibly a stack trace, instead of the friendly message.
+   - The diff also relies on `symfony/http-kernel` being a runtime dependency.
+   - Fix: confirm the callers handle these exceptions, or add a catch at the entry point.
+
+**Medium**
+
+5. **The controller whitelist is a behaviour change.**
+   - The old code accepted any controller with a matching `controllers/C_*.class.php` file. The new hardcoded list silently breaks any controller not on it, including module or custom controllers.
+   - Lookups are now case-sensitive and exact (`Document` was previously accepted).
+   - Fix: verify the list covers every `controllers/C_*.php` file, or fall back to a validated filename check.
+
+6. **`act()` compares keys unreliably.** `$key === $controller` and `$key === $positionalAction` compare against string-cast values.
+   - Integer keys never match, which is an edge case.
+   - More importantly, when only one key is present, `$positionalAction` is `'default'`. A real param named `default` would be dropped.
+
+7. **`_state === false` is stricter than the old `== false`.** Controllers that set `_state` to `0`, `null` or `""` to halt processing will now continue into the action. Verify how existing controllers set it.
+
+8. **Non-string action results are silently discarded.** `is_string($result) ? $result : ''` hides bugs, and may drop output that used to be concatenated, such as ints or Stringable objects.
+
+9. **Process-flag handling is broader than before.** `$_POST['process'] = "true"` is now set whenever `$params['process']` exists, not only when it came from `$_GET`. `dispatch()` also unsets `$_GET['process']` even if `$params` is not `$_GET`. This global mutation is surprising for a method that takes explicit params.
+
+**Low**
+
+10. **Empty-value normalization is inconsistent.** Only `''` becomes `null`. The old `empty()` check also nulled empty arrays and `null`, while keeping `"0"`.
+
+11. **No tests are included.** A routing rewrite with ACL implications needs tests for ACL denial, an unknown action, the process flow, and argument ordering.
+
+12. **`act()` has no guard for an empty `$qarray`.** The `@param non-empty-array` annotation does not stop `$keys[0]` from raising an undefined index warning at runtime.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

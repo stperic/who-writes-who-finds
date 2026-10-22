@@ -1,0 +1,3 @@
+The review never notes that `checkControllerAcl()` returns without any check for controllers missing from `CONTROLLER_ACL_MAP`, nor that sub-controllers like `x12_partner` or `patient_finder` are reachable by any authenticated user. Its only ACL mention, in item 7, says "ACL is evaluated against the overriding value, so this is not a bypass." Item 4 treats the whitelist purely as a compatibility concern ("Confirm every existing caller and link is covered"), not as a missing-authorization problem.
+
+LABEL: Missed

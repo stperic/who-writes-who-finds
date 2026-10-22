@@ -1,0 +1,3 @@
+The review's point 4 finds the right mechanism: "If the dispatcher passes positional URL arguments through, a remote user could set `$disable_exit` and change the response behavior." But it misjudges the impact as "At best this produces an empty page. At worst it changes control flow in unexpected ways," and rates it low–medium. It never notes that raw file bytes would be echoed as text/html, enabling stored XSS. It flags the right area and attack vector but gets the vulnerability class and severity wrong.
+
+LABEL: Partial

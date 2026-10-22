@@ -1,0 +1,3 @@
+Finding 2 identifies the vulnerability directly. It says "`Controller::act()` builds the action arguments from the query string and passes them positionally. A user can therefore supply the fifth argument in the URL," and that the raw bytes are "returned without `Content-Type`... An uploaded HTML or SVG document would then be rendered as `text/html`, a stored XSS vector." That names the class (stored XSS), the location (`retrieve_action`'s new `$disable_exit` parameter reached through the Controller), and the mechanism, at High severity with a fix that would block the merge.
+
+LABEL: Caught

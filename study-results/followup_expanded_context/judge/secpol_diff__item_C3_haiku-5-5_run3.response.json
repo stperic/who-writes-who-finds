@@ -1,0 +1,38 @@
+{
+ "model": "claude-opus-5-5",
+ "id": "msg_011CgGMGTDUahQsw5YwRGF3Z",
+ "type": "message",
+ "role": "assistant",
+ "content": [
+  {
+   "type": "thinking",
+   "thinking": "",
+   "signature": "CAQS5wcKEAgTGAI4AUIIdGhpbmtpbmcSDCVHBLaAQHMXv2Sy8RoMSHOiMqzjHc/nyjoYIjAERgLebaSphEP2irmgPp2xOu9GvjwtESiZsVSC4VROUEYM7C1jL9Ata394usn+d7cqhAf3HLakFFutpm4iPXYTAuePayrVK/7Nuy4AoMRazsDZB3UIEf9V4RS6EkjmeEm5suPofVxrwvEaaQ90/vFVQuW7xrfuqmxydV8R1EHUYF5ufrwLhslBKkN3LHGxq+CMBZLHdEBLUUeMovKKJvIBEZV9E4g/x9ueXHQ9rDNz6PAAKPmcKKTeXo1K+owBOUR7PeRBbUetVcmleCwC49GxxXrF7ukyqRkW+l5+KQ8X1XDXK+5nvywQYT1rOft1MnRMARV4ILfLGsk5/jOpQkdom+HQcbG1M+DK9Vesthdh9u+ZW0CcPloKJOPAa66gp5TfqrWHtQYv6tONpbTxhbrnYdVkCaN4lnmSWZtBbwZ2ZbwtOOOKPozGpj1iGkP2QkO9QzTAOt4KaKR4S66QUz+pPP6tGtrRer6h/lY9xW5VoDwSPfIwPLChwwdHyO27t3+xcZomvOnvRQiPw06XDKaaA+y4I93XDALiQFwRIhVtG4n2z58sXRRbhhUFFg6mp+orfJ0NsQrYvGfItEkYf7I6GzHeIgN1QXnsFudA5AyuzDNDuZ18yDH1EITcYGtjJ70hARzkIMMqp+h/hKHboJVe0rRsmfAR+Kni2iGc84tdMgVCzfVu3ZIUZBxa7LU9meSjz34ncDdGtMgnkYFCVpBRAL5/ZMo6SdE+6og6nAtvd0BvoCkT6gjiaJenbJCsxV4cIf5mmtzYEKX32shTw540Lj2CAMn0/G20q5fzgzdZAJQl/4ap/yiiFDiaEmTo+TWWMRORPMr2JkQrFMIZ7LsQcZEXw947V9k+b9vtJOToY/dqVIySMCrhxjXmztAUHvvoMaNWlshcmKz23KwrFTIRdLqMSxPooIDa2/F0dNutDRiTS/fOZ+9Rs2jLK0Ejsxfazlf8pi38AHAlF3D4VfYmMauxxm/JyocNB5Y0KSjpgRpm7BkKEFcN5EEgnRHbfXDj5yFyh8sgV7TFsutr2oIukV6PhRx+gXdp4R/nthtM4wL0jnzEfHWuz84ZENQL9doyVW//TfW++R3xWjPLyywFCt44C8i4j7eS/FgvA7wUwUmAvjxcbfkiYQDzshaDpI/xE3fYQYCEgq1ATYGsjGVajcEQ3HDE+UvZjkmBh1oNiLcv+cbPBC3pZby/G5c+LRukfaPW8rSINtEvgwSiVKfgJsGHh3SgFovsAsCt/Q/c9GSP1yd2oOwYAQ=="
+  },
+  {
+   "type": "text",
+   "text": "Finding 8 points at the exact line (`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`) and names the right class: \"If this is a transaction key or secret rather than the public client identifier, it is a credential leak. Only the public client key should reach the browser.\" However, the review hedges on whether the value is secret, rates it \"Medium (High if `gateway_api_key` is a secret)\", and leaves it out of the \"Required before merge: findings 1\u20136\" list. So it would not block the merge for this reason, which makes it a correct identification at the wrong severity.\n\nLABEL: Partial"
+  }
+ ],
+ "container": null,
+ "stop_reason": "end_turn",
+ "stop_sequence": null,
+ "stop_details": null,
+ "usage": {
+  "input_tokens": 4549,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 354,
+  "output_tokens_details": {
+   "thinking_tokens": 147
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard"
+ },
+ "diagnostics": null
+}

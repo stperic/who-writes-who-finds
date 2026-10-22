@@ -1,0 +1,3 @@
+The review discusses the `disable_exit` parameter at length but only in terms of memory use, error handling, consistency across branches, style, and documentation. Its closest passage, "Since this is a public controller action that other code will likely call directly... the contract should be documented," treats the action as an internal API needing docs. It never notes that URL query parameters can set `disable_exit`, or that the raw file bytes get echoed back as text/html and enable stored XSS.
+
+LABEL: Missed

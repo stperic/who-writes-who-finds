@@ -1,0 +1,3 @@
+The review's first finding names the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, and rates it **"Stripe secret key exposed to the browser (Critical, security)."** It explains that `gateway_api_key` is the "API Secret for Stripe" and is "emitted on every render of the page, for every gateway, including to portal patients." It also states the impact ("Anyone holding it can issue refunds, read customer data, and create charges") and the right fix (emit it only for Authorize.Net), which matches the known vulnerability's class, location and severity.
+
+LABEL: Caught

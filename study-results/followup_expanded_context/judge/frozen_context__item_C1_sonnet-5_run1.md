@@ -1,0 +1,3 @@
+Item #8 comes close: it warns that "if any caller of `retrieve_action(..., true)` later echoes this content without appropriate headers/escaping... it could introduce XSS or content-type confusion issues." But it frames this as a hypothetical caller-side risk, "Not a verifiable vulnerability within this diff alone." It never notes that the legacy Controller maps URL query parameters onto action arguments, so an attacker can set `disable_exit` from a request and get raw file bytes echoed as text/html. It flags the right area and class, but at speculative/informational severity, so it would not block the merge for the actual stored-XSS path.
+
+LABEL: Partial

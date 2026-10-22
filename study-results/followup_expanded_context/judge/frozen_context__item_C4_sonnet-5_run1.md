@@ -1,0 +1,3 @@
+The review flags the right root cause and location in its section on unescaped output: "Stored/Reflected XSS from unescaped DB output — High … `<?php echo $HPI1; ?>` // not escaped … `echo $item['plan']` … PLAN items, not escaped". However, it frames the issue only as browser-side stored XSS. It never mentions that report.php output is rendered server-side by the HTML-to-PDF renderer, which turns injected URLs into server-side fetches (SSRF), and it does not cover the CSS `background`/url() context. Because it identifies the right weakness but the wrong vulnerability class and impact, this counts as partial detection.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+The review's Issue 4 names the exact location and the eight affected controllers. It says "Only `practice_settings` and `prescription` are enforced at the dispatch layer. The other eight whitelisted controllers (`document`, …, `patient_finder`, `pharmacy`, `x12_partner`) depend entirely on their own constructors or action methods, which are not shown," and recommends default-deny. However, it never concludes that these controllers are actually reachable by any authenticated user. It rates the issue "Low–Medium (requires checking each controller)" and states "I found no critical or high-severity issues," so it identifies the right area at too low a severity and stops short of a confirmed broken-access-control finding.
+
+LABEL: Partial

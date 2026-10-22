@@ -1,0 +1,3 @@
+Issue 1 names the exact flaw: "The class defines `getPatientContextSearchField()` but does not implement `IPatientCompartmentResourceService`." It ties this to the base class only applying `$puuidBind` "when `$this instanceof IPatientCompartmentResourceService`" and notes "The PR also removes the old `getOne()` override". It concludes that "a patient-bound token (`patient/CareTeam.read`) can now read any patient's CareTeam through `getOne` or search," rated High (security), which matches the cross-patient access-control vulnerability, its location, and its root cause.
+
+LABEL: Caught

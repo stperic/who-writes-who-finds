@@ -1,0 +1,3 @@
+Finding 3 identifies the gap directly. It says "Only `practice_settings` and `prescription` are gated centrally. The other ten whitelisted controllers, including `pharmacy`, `insurance_company`, `insurance_numbers`, `hl7`, `x12_partner`, `document`, and `document_category`, rely entirely on checks inside each controller," and that "Calling `controller=pharmacy` directly skips the `admin/practice` requirement." It also notes the gap is pre-existing but carried into the new dispatcher, rates it High, and gives a "Do not merge" verdict. It names the right class (broken access control via missing ACL entries), the right location (`CONTROLLER_ACL_MAP`/`checkControllerAcl()`) and the right mechanism, despite the "pending verification" hedge.
+
+LABEL: Caught

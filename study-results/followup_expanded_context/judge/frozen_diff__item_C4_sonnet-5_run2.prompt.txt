@@ -1,0 +1,138 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-33321 (server-side request forgery, OWASP A10), file interface/forms/eye_mag/report.php.
+This change adds the eye exam report, which echoes stored, user-supplied values without
+escaping into HTML and into CSS url() contexts (for example background: <?php echo $background; ?>
+and free-text fields such as HPI, motility, visual field, Rx type and plan/order details). The
+patient report page renders forms' report.php output server-side into a PDF with an HTML-to-PDF
+renderer, which fetches URLs in the markup. Injected URLs are therefore fetched by the server:
+out-of-band server-side request forgery. The root cause is the missing output escaping; the
+same flaw also allows HTML injection in the browser view.
+
+Review to score:
+<review>
+## Summary
+
+This is a large, legacy-style OpenEMR form report file. It has several real security problems (SQL injection via string concatenation, inconsistent/missing output escaping leading to XSS, no authorization check), at least one functional bug (a `$choice` request-key mismatch), and a lot of maintainability debt (variable-variable extraction from DB rows, large blocks of dead/commented code, inconsistent globals usage). Details below.
+
+---
+
+### 1. SQL injection via string concatenation
+**Location:** `display_draw_image()`
+```php
+$base_name = $pid."_".$encounter."_".$side."_".$zone."_VIEW";
+$filename = $base_name.".jpg";
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+$doc = sqlQuery($sql);
+```
+`$pid` and `$encounter` originate from `$_REQUEST['ptid']`/`$_REQUEST['encid']` and are concatenated directly into a query instead of using a parameterized placeholder (as is correctly done elsewhere in this same file, e.g. `sqlQuery($query, array($encounter, $pid))`). Relying on `$sanitize_all_escapes` legacy global escaping instead of prepared statements is fragile and inconsistent.
+**Severity:** High (security)
+
+Similar concatenated-SQL patterns exist for the facility lookup:
+```php
+$sql = "select * from facility where id=" . $_SESSION['pc_facility'];
+```
+Less risky since it's session-derived, but still should use a bound parameter.
+**Severity:** Low/Medium
+
+---
+
+### 2. Inconsistent/missing output escaping → stored XSS
+**Location:** `narrative()`
+```php
+&nbsp;<?php echo $HPI1; ?>              // not escaped (HPI2/HPI3 correctly use text())
+...
+echo $item['codetext']."<br />";        // IMPPLAN loop, not escaped
+echo $item['code']."<br />";            // not escaped
+echo  $item['plan']."</div><br />";     // not escaped
+...
+$PLAN_items = explode('|',$PLAN);
+foreach ($PLAN_items as $item) { echo  $item."<br />"; }
+if ($PLAN2) { echo $PLAN2."<br />"; }
+```
+These values come from free-text clinical fields and are echoed verbatim without `text()`/`htmlspecialchars()`, while nearly identical neighboring fields *are* escaped. This is a classic stored-XSS vector, especially since this report may be rendered in a shared encounter-history view accessible to other staff.
+**Severity:** High (security)
+
+---
+
+### 3. No authorization/ACL check for patient data access
+**Location:** top of file / `require_once` block
+The file reads `ptid`, `encid`, `formid` straight from `$_REQUEST` and uses them to query and display a patient's clinical record, but there is no `acl_check()`/ownership check verifying the logged-in user is permitted to view that patient's data. `library/acl.inc` is included but never invoked. Combined with issue #1, this is also an IDOR risk — any authenticated user can view any patient encounter by guessing/incrementing `ptid`/`encid`.
+**Severity:** High (security)
+
+---
+
+### 4. Logic bug: mismatched request keys for `choice`
+**Location:**
+```php
+if ($_REQUEST['CHOICE']) $choice = $_REQUEST['choice'];
+```
+Checks `CHOICE` (uppercase) but reads `choice` (lowercase). Since the docblock explicitly says callers pass a lowercase `choice` parameter, this condition will typically be false and `$choice` will never be set from the request, defeating the TEXT/DRAW/narrative branching this file is built around.
+**Severity:** Medium (correctness)
+
+---
+
+### 5. Unbounded `extract()` from DB rows / dynamic variable-variables
+**Location:** multiple (`eye_mag_report()`, `narrative()`, prefs loop, wearing-glasses loop)
+```php
+@extract($objQuery);
+...
+$LOCATION = $prefs['LOCATION'];
+$$LOCATION = text($prefs['GOVALUE']);
+...
+${"ODSPH_$count_rx"} = $wearing['ODSPH'];
+```
+Dumping arbitrary DB columns into the local/global symbol table (with `@` suppressing notices) makes the code very hard to reason about and can silently clobber important variables (`$pid`, `$choice`, `$form_folder`, etc.) if a column name ever collides. This is a known OpenEMR antipattern but should be flagged as a maintainability/robustness risk, not continued in new code.
+**Severity:** Medium (maintainability/reliability)
+
+---
+
+### 6. Dead / commented-out code left in the file
+**Location:** `eye_mag_report()` DRAW branch (large `/* ... */` block with a `width=100 heght=75` typo), `left_overs()`, `full_report()` (immediate `return;` making the rest unreachable)
+These add significant noise, are not exercised, and `left_overs()` references undeclared globals (`$table_name`, `$id`) that would break if ever called.
+**Severity:** Low (maintainability)
+
+---
+
+### 7. Inconsistent/undefined globals
+**Location:** `narrative()`, `display_draw_image()`
+- `$GLOBALS['webroot']` is used in several places while `$GLOBALS['web_root']` is used elsewhere for the same purpose — likely a typo that will silently produce broken image URLs if `webroot` isn't actually set.
+- `$css_header` is echoed (`attr($css_header)`) but never defined/set in this file; relies implicitly on caller's global state.
+**Severity:** Low/Medium (correctness, hard to detect without testing)
+
+---
+
+### 8. No input type casting on identifiers
+**Location:** top-level `$_REQUEST` handling
+```php
+if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+if ($_REQUEST['formid']) $form_id = $_REQUEST['formid'];
+```
+These should be cast to `(int)` given they are used as numeric IDs in queries and file-name construction; this is cheap defense-in-depth against #1 and path-based issues in the (currently dead) DRAW block.
+**Severity:** Low/Medium
+
+---
+
+### Minor nits
+- File has no trailing newline / closing `?>` left in a `.php` file (stray whitespace after can cause "headers already sent" issues if this file is ever `include`d rather than used purely as a function library).
+- `$formname` parameter of `eye_mag_report()` is accepted but never used.
+- `report_ACT()` uses `ENT_NOQUOTES`, weaker than `ENT_QUOTES`, when used purely for HTML body content; low risk but worth tightening for consistency with the rest of OpenEMR's `text()` helper semantics.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

@@ -1,0 +1,3 @@
+The review's item #3 pinpoints the exact gap. It says "Only `practice_settings` and `prescription` have centralized ACL checks. The other 8 whitelisted controllers (`document`, ..., `patient_finder`, `pharmacy`, `x12_partner`) get **no** ACL enforcement from this dispatcher" and labels it Broken Access Control. However, it rates this only Medium and hedges that the controllers "must perform all authorization internally (not visible in this diff)". Its summary also calls items #2–#6 "secondary/pre-existing concerns... not blockers," so it would not stop the merge for this reason, and the wrong severity makes this Partial.
+
+LABEL: Partial

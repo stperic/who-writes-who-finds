@@ -1,0 +1,79 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-25146 (exposure of a secret credential, OWASP A05), file portal/portal_payment.php.
+This change adds client-side JavaScript to the patient portal payment page that renders the
+payment gateway's API key into the page: var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+The gateway_api_key global holds the gateway's private secret key (for Stripe, the secret API
+key); only for Authorize.Net is the matching value a public login identifier. Every portal user
+who opens the page can read the private key from the page source and use it against the
+practice's payment account.
+
+Review to score:
+<review>
+Review of `portal/portal_payment.php`: issues found, most severe first.
+
+**1. Gateway API key exposed to the browser (critical)**
+- Location: the `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` line in the head script.
+- Problem: `gateway_api_key` holds the Authorize.Net login name or the Stripe secret key, per the globals description "API Secret for Stripe". The page prints it into JavaScript for every portal user. This happens regardless of the selected gateway, including `InHouse`, which doesn't need it. Anyone who views the page source gets the Stripe secret.
+- Fix: only emit the publishable or public key. Only emit the Authorize.Net login ID when that gateway is selected. Never emit the Stripe secret.
+
+**2. Insecure direct object reference through `recid` (high)**
+- Location: `$recid = ... $_REQUEST['recid']` and `$appsql->getPortalAuditRec($recid)`.
+- Problem: the record is fetched purely by ID, with no check that it belongs to `$pid` or to the logged-in portal patient. A patient can enumerate `recid` values and load other patients' encrypted payment audit records. The page then decrypts them and renders name, zip, card data and invoice amounts. `$pid` itself is also overridable from `$_REQUEST['pid']` and `hidden_patient_code` (existing code, but it makes this worse).
+- Fix: restrict the lookup to the session pid for portal users, or allow `recid` only for authenticated staff.
+
+**3. Full card number, CVV and expiry rendered and stored (high)**
+- Location: the card display block.
+- Problem:
+  - The condition `isset($_SESSION['authUserID']) || isset($ccdata["transId"])` prints the full `cardNumber` to anyone, including the patient, once a transaction ID exists. The masking therefore applies only to the pending state.
+  - The CVV (`cardCode`) is displayed from the stored audit record. Storing CVV after authorization violates PCI-DSS.
+  - `echo $ccdata["cardNumber"]` is not escaped, which is an XSS vector, since the data originates from user input.
+- Fix: always mask the PAN, never persist or display CVV, and wrap output in `text()`.
+
+**4. Client-controlled amount and invoice data (medium)**
+- Location: the hidden `payment` / `paymentAmount` and `invValues` fields, and the `form_paytotal` value copied into the modal.
+- Problem: the charge amount and invoice values come from the browser and are posted to `paylib.php`. That file isn't in this diff, so I can't confirm it recomputes or validates the totals server-side. This should be verified before merge.
+
+**5. Gateway JS libraries not loaded in this diff (medium)**
+- Location: the `Accept.dispatchData(...)` call and the `Stripe(publicKey)` call.
+- Problem: no `<script>` tag for `accept.js` or `stripe.js` appears in this diff. If they aren't loaded elsewhere, these code paths throw ReferenceError.
+- Additional problem: in the Authorize.Net error branch, errors are only `console.log`ged, so the user gets no feedback.
+
+**6. `ar_activity` writes (medium/low)**
+- The `MAX(sequence_no)+1` read has no `FOR UPDATE`, so concurrent postings can collide even inside `sqlBeginTrans`/`sqlCommitTrans`.
+- `$_SESSION['authId']` is used in the copay path, but `authUserID` is used elsewhere in the same file. Pick one.
+- `post_user` was previously the hardcoded `'3'` and is now a session value. This is probably a fix, but if the session key is unset, it posts as null or 0.
+- The `calendar_arrived($form_pid)` fallback for `!$enc` was removed without explanation. This is a behavior change for copay with no encounter.
+
+**7. Malformed HTML and a stray unused variable (low)**
+- `echo '<tr height="5"><td colspan="3"></td></tr><tr">';` contains a stray quote, `<tr">`.
+- `$isPortal` is set but never used.
+
+**8. Display bug (low)**
+- The Transaction Id span renders `transId . "/" . year`. This looks copy-pasted from the expiry display and shows a meaningless year next to the ID.
+
+**9. Validation and maintainability (low)**
+- The `pattern="\d"` attributes on card number and zip match only a single digit and would reject real values if native validation ever runs.
+- The expiry year list is hardcoded (2019–2028) and will go stale.
+- The `if (option_id != 'credit_card' || option_id == 'debit' || ...) continue;` condition is logically redundant. The `|| == 'debit'` and `|| == 'bank_draft'` branches can never matter.
+- `id='mode'`, `cc_type`, `paymentAmount` and `invValues` are duplicated across the `invoiceForm`, `paymentForm` and `payment-form` forms. `$("#mode")` only reaches the first one. This is fragile.
+- Old audit records stored with the previous keys (`name`, `cc_number`, `pin`) will no longer render, because the code now reads `cardHolderName`, `cardNumber` and `cardCode`. A fallback or migration is needed.
+- The patch mixes large whitespace and reformat changes with functional changes, which makes review harder.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

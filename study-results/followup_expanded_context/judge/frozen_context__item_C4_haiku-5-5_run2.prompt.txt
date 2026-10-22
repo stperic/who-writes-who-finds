@@ -1,0 +1,124 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2026-33321 (server-side request forgery, OWASP A10), file interface/forms/eye_mag/report.php.
+This change adds the eye exam report, which echoes stored, user-supplied values without
+escaping into HTML and into CSS url() contexts (for example background: <?php echo $background; ?>
+and free-text fields such as HPI, motility, visual field, Rx type and plan/order details). The
+patient report page renders forms' report.php output server-side into a PDF with an HTML-to-PDF
+renderer, which fetches URLs in the markup. Injected URLs are therefore fetched by the server:
+out-of-band server-side request forgery. The root cause is the missing output escaping; the
+same flaw also allows HTML injection in the browser view.
+
+Review to score:
+<review>
+## Review: `interface/forms/eye_mag/report.php` (new file, ~2060 lines)
+
+The file has security problems (missing authorization, SQL built by concatenation, unescaped output), a few correctness bugs that will show wrong clinical data, and a lot of dead code. I would not merge it in its current form.
+
+### Security
+
+**1. No authorization check on direct access. Severity: High**
+The file runs at top level and reads `$_REQUEST['ptid']`, `encid`, and `formid`, then queries and renders patient data. It never calls `acl_check()` for `patients`/`med` or `encounters`/`notes`. `custom_report.php` checks ACLs, but this file can be requested directly with any patient ID. Add the same ACL checks the other report paths use, and verify that the encounter and form belong to the patient.
+
+**2. SQL built by string concatenation in `display_draw_image()`. Severity: High**
+```php
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+```
+`$filename` is built from `$pid` and `$encounter`, which come from request parameters. Even with `$sanitize_all_escapes`, this should be a prepared statement. The `LIKE` pattern also has unescaped `%` and `_` wildcards, so it can match the wrong document. Use `sqlQuery($sql, array(...))` with a bound pattern.
+
+**3. Unescaped output (stored XSS risk). Severity: High**
+Free-text clinical fields are echoed without `text()` or `attr()`. Examples:
+- `echo $HPI1;`, `$HPI2`, `$HPI3`, `$CHRONIC2`, `$CHRONIC3`
+- `$PLAN`, `$PLAN2`, in `explode('|', $PLAN)` loop
+- `$item['codetext']`, `$item['code']`, `$item['plan']` in the IMPPLAN loop
+- `$CTLOSVA` (`echo ($CTLOSVA?:"-")`)
+- `$display_Add` in a `class` attribute
+- `$note->get_note()` in `display_draw_image()`, which is also used in `custom_report.php`'s document loop
+
+Wrap each of these in `text()` or `attr()`. The `report_ACT()` helper escapes correctly, so the pattern is known to the authors.
+
+**4. Variable-variables from database values. Severity: High**
+```php
+$LOCATION = $prefs['LOCATION'];
+$$LOCATION = text($prefs['GOVALUE']);
+```
+The variable name comes from the database and runs at file scope. This runs when the file is included from `custom_report.php`'s loop, so a row with `LOCATION` set to `pid`, `printable`, `_SESSION`, or `GLOBALS` can overwrite request or session state. The values are also `text()`-escaped at load time and escaped again on output, which double-encodes them. Use a fixed whitelist of allowed keys, or store the values in an array.
+
+**5. `extract()` of query results. Severity: Medium**
+`@extract($objQuery)` and `@extract($encounter_data)` import every column into the local scope and silence errors. Columns named `pid`, `form_id`, or `encounter` overwrite the function's own inputs. If the query returns no rows, `extract(false)` fails silently and `$encounter_date` is undefined, so `new DateTime($encounter_date)` gets an empty or null value. Select the specific columns you need and check for a row before using it.
+
+### Correctness
+
+**6. Typo in the `choice` check. Severity: Medium**
+```php
+if ($_REQUEST['CHOICE']) $choice = $_REQUEST['choice'];
+```
+The condition tests `CHOICE` but reads `choice`. Requests with `choice` set are dropped, and requests with `CHOICE` set produce an undefined-index notice.
+
+**7. Motility variable-variable is wrong on PHP 7+. Severity: Medium**
+```php
+($$zone[$i] >= '1') ? ($$zone[$i] = "-".$$zone[$i]) : ($$zone[$i] = '');
+```
+In PHP 5, `$$zone[$i]` means `${$zone[$i]}`. In PHP 7 and later it means `${$zone}[$i]`, which converts the array to the string `"Array"`. The motility values will not display correctly. Write `${$zone[$i]}` explicitly.
+
+**8. Motility grid duplicates a cell. Severity: Medium**
+The bottom row of the left-eye table outputs `MOTILITY_LLIO`, `MOTILITY_LI`, `MOTILITY_LLIO`. The last cell should be `MOTILITY_LRIO`, so that value is never shown.
+
+**9. Wrong variable for near VA. Severity: Medium**
+```php
+<?php } if ($ODNEARVA_1||$WNEAROSVA_1) { ?>
+```
+`WNEAROSVA_1` should be `OSNEARVA_1`. The near-correction row is hidden when only the left eye has a value.
+
+**10. Undefined `$bad` and other uninitialized variables. Severity: Low**
+`$bad` is incremented without being initialized. `$id` is read in `if (!$id)` before any assignment. `$count` and `$table_name` are used in dead functions.
+
+**11. Inconsistent global name for web root. Severity: Medium**
+Some places use `$GLOBALS['webroot']` (`narrative()`, `display_draw_image()`), and others use `$GLOBALS['web_root']`. The codebase uses `web_root`, so the `webroot` references will probably produce broken image URLs.
+
+**12. Malformed translation strings. Severity: Low**
+- `xlt('sc Near{{without correction near')` is missing the closing `}}`.
+- `xlt('Cyl{{Cyinder}}')` and `xlt('Contrast{{Constaast Visual Acuity}}')` contain typos. Translation keys that include context must match the source, so these will not translate.
+- Some `xla()` calls inside attributes are not echoed (for example, `title="<?php xla(...); ?>"`), so the title may be empty depending on the helper's behavior.
+
+**13. Inconsistent deleted-form filter. Severity: Low**
+`narrative()` filters `forms.deleted != '1'`, but `eye_mag_report()` does not. Deleted forms can appear in one path and not the other.
+
+**14. Invalid HTML attributes. Severity: Low**
+`<table style="report_vitals" style="font-size: 8px;...">` has a duplicate `style` attribute, and `text-align:middle` is not a valid value.
+
+### Maintainability
+
+**15. Large amounts of dead code. Severity: Medium (maintainability)**
+- `full_report()` returns on its first line, and the rest of the body is unreachable.
+- `left_overs()` is never called and references undefined variables.
+- The `DRAW` branch of `eye_mag_report()` is inside a commented-out block, and the surrounding code does not match.
+- `$formres`, `$dateres`, `$web_root`, and `$display_W_*` are declared or set but never used.
+
+**16. Heavy duplication. Severity: Medium (maintainability)**
+The ACT grid, the refraction rows, the OD/OS row pattern, and the `document`-to-image logic are each repeated many times. Each new field has to be added in several places. Small helper functions or a data-driven table would reduce the file substantially and make bugs like items 8 and 9 less likely.
+
+**17. Global side effects at include time. Severity: Medium**
+Top-level code (the prefs query, `$fake_register_globals`, `$sanitize_all_escapes`, and the `$_REQUEST` assignments) runs when `custom_report.php` includes this file. It sets globals in the caller's scope. Move this into a function that the report calls explicitly.
+
+### Summary
+
+The most important items to fix before merging are the missing ACL check (1), the SQL concatenation (2), the unescaped clinical text (3), and the database-driven variable-variables (4). The motility bug (7) and the near-VA typo (9) will show incorrect clinical data. The rest are real but lower risk, and the dead code and duplication (15, 16) should be cleaned up as part of the same change.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

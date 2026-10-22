@@ -1,0 +1,3 @@
+The review's first finding names broken access control and cross-patient data exposure (OWASP A01) in `FhirCareTeamService.php`. It points to the right cause: the deleted `getOne()` override, and the class implementing `IResourceUSCIGProfileService` while "it does **not** implement `IPatientCompartmentResourceService`, even though it defines `getPatientContextSearchField()`." It explains that because of this "`createOpenEMRSearchParameters()` will never add the patient-restriction search field," rates the issue Critical, and says it should block the merge, which matches the known vulnerability's root cause and impact.
+
+LABEL: Caught

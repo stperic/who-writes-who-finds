@@ -1,0 +1,3 @@
+The review never says that `checkControllerAcl()` returns early when a controller has no `CONTROLLER_ACL_MAP` entry, or that sub-controllers like x12_partner and patient_finder are reachable without permission checks. The only ACL-adjacent comment is Issue 6 ("User-controlled values are interpolated into error messages without escaping"), which is about the formatting of the denial message, not the missing authorization. The rest covers method-existence and class-loading robustness, which is unrelated to the access-control gap.
+
+LABEL: Missed

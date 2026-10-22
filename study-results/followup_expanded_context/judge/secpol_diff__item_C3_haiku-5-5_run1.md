@@ -1,0 +1,3 @@
+Finding 10 points to the exact line (`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`) and names the right class, noting that "a Stripe or other secret key is not [public]. If `gateway_api_key` is a secret, it is exposed to every browser." However, it treats the secret-key case as hypothetical and rates it "Low (Medium if the value is a secret key)." It never establishes that this global actually holds the gateway's private key. It also leaves the issue out of the "fix findings 1–3 at minimum" blockers, so the merge would not be stopped for this reason.
+
+LABEL: Partial

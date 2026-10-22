@@ -1,0 +1,3 @@
+The review's issue 3 notes that "If the controller dispatcher forwards request parameters positionally... a remote user could set it and change the function's behaviour (returning content instead of streaming it)". That is the right mechanism and location: a request-controlled `disable_exit` reaching the controller. However, it never says that the returned bytes are echoed as text/html and enable stored XSS. It rates this only "Medium, needs verification", and its blocking concern is the unrelated encryption bypass.
+
+LABEL: Partial

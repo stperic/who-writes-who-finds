@@ -1,0 +1,3 @@
+The review names the exact flaw: "The new `FhirCareTeamService` declaration only adds `IResourceUSCIGProfileService` — it does **not** implement `IPatientCompartmentResourceService`," so the `$puuidBind` restriction in `FhirServiceBase` is never applied once the `getOne()` override is removed. It labels this A01 Broken Access Control with cross-patient PHI disclosure, and notes the `patient` parameter "is not automatically enforced for an authenticated patient session." It also says this "should block merge until fixed," which matches the known vulnerability's class, location and mechanism.
+
+LABEL: Caught

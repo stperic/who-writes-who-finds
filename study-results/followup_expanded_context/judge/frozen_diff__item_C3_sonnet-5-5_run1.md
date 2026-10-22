@@ -1,0 +1,3 @@
+The review explicitly flags item 2, "Gateway API key leaked to the browser (`var apiKey = json_encode($GLOBALS['gateway_api_key'])`)". It notes the key "is emitted for every gateway, including Stripe and InHouse, where the key may be a secret key." Its proposed fix is to emit only the public key, or the login ID for AuthorizeNet. It rates this as high severity, which matches the known secret-exposure vulnerability in both class and location.
+
+LABEL: Caught

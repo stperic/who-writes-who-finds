@@ -1,0 +1,3 @@
+The review does focus on the new `$disable_exit` path. Issue 5 says it bypasses retrieval "without: Proper HTTP headers being sent," and the recommendation asks to ensure it is "only called from trusted internal code." But it frames this as a logging and monitoring gap (A09) and as access control. It never notes that the Controller maps URL query parameters onto this argument, that the raw file bytes come back as text/html, or that this enables stored XSS. Issue 7 touches Controller.class.php only as path traversal. It flags the right area with the wrong class, so this is Partial.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+Finding 1 names the exact mechanism. It says that "`act()` in `Controller.class.php` maps positional URL segments to action arguments," so a request can supply `disable_exit=1`. The raw file contents are then "echoed by the front controller, and is served with the default `text/html` type," which yields "stored XSS that can steal sessions." The review uses HTML/SVG uploads as its example rather than script embedded in image EXIF, but it correctly identifies the class, location, and root cause, rates it High, and blocks the merge for that reason.
+
+LABEL: Caught

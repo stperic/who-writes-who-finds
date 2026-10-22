@@ -1,0 +1,3 @@
+Finding 8 points at the exact line (`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`) and names the right class: "If this is a transaction key or secret rather than the public client identifier, it is a credential leak. Only the public client key should reach the browser." However, the review hedges on whether the value is secret, rates it "Medium (High if `gateway_api_key` is a secret)", and leaves it out of the "Required before merge: findings 1–6" list. So it would not block the merge for this reason, which makes it a correct identification at the wrong severity.
+
+LABEL: Partial

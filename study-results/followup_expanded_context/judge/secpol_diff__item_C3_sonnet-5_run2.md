@@ -1,0 +1,3 @@
+Item 7 of the review flags the exact line (`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`) and frames it as a client-side key exposure under A05. However, it hedges heavily: it says Authorize.Net's `apiLoginID` "is expected to be client-visible," that the issue "needs verification," and it rates it "Medium (pending confirmation of key sensitivity)". The summary also leaves it out of the merge-blocking issues, so it raises a comment on the right spot but understates a definite secret-key leak and would not reliably stop the bug.
+
+LABEL: Partial

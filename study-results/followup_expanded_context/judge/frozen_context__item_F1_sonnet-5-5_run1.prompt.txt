@@ -1,0 +1,79 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+Advisory GHSA-9rj4-fxmj-c4r7 (severity high), file library/classes/Controller.class.php.
+This change adds Controller::dispatch(), a VALID_CONTROLLERS whitelist and a CONTROLLER_ACL_MAP.
+checkControllerAcl() returns without any check when a controller has no CONTROLLER_ACL_MAP entry,
+and the map only covers practice_settings and prescription. Sub-controllers in VALID_CONTROLLERS
+(pharmacy, insurance_company, insurance_numbers, x12_partner, document_category, hl7,
+patient_finder, document) are therefore directly reachable by any authenticated user with no
+permission check. They were meant to be reached only through practice_settings, which requires
+admin/practice. Impact: a low-privilege user can rewrite x12_partner insurance claim-routing
+credentials (SFTP host/login/password, API client secrets) and enumerate every patient through
+patient_finder. The same gap existed before this change through the legacy positional routing;
+this change carried it into the new dispatcher without closing it.
+
+Review to score:
+<review>
+I found one likely regression and several smaller issues in `Controller::dispatch()` and `act()`.
+
+**1. High: `is_callable()` alone no longer works for action lookup (`dispatch()`)**
+- The removed code carried a comment: "can no longer rely on is_callable since smarty 4 invokes a `__call` function… so need to do both the is_callable and a method_exists() check." The new code drops `method_exists()`.
+- `Controller` extends `Smarty`, so `is_callable([$controllerObj, $anyName])` is probably always true.
+- **Missing action:** the `NotFoundHttpException` branch becomes unreachable. An unknown action goes into Smarty's `__call` and fails with a `BadMethodCallException` or a fatal error, which is a 500 instead of a 404.
+- **Process step:** with `$_POST['process'] === 'true'`, `is_callable([..., $processMethod])` is true even when no `*_action_process` method exists. The code then calls an undefined method and throws. The old code guarded this.
+- **Fix:** restore `method_exists($controllerObj, $method) && is_callable(...)`.
+- **Related:** the `$isProcessing ||` short-circuit calls the action even when it does not exist.
+
+**2. Medium: `_state` check changed from loose to strict (`dispatch()`)**
+- The old code used `$c_obj->_state == false`. The new code uses `=== false`.
+- `_state` is declared `public $_state;`, so it defaults to `null`. Previously `null`, `0` and `''` returned early after the process step. Now only a literal `false` does.
+- Controllers that do not set `_state` explicitly will now also run the main action after the process action. This is a silent behaviour change in a refactor.
+- Either keep the loose comparison or verify that every controller sets a boolean.
+
+**3. Medium: "order-independent routing" is misleading (`dispatch()`)**
+- The docblock promises order-independent routing. Arguments are still passed positionally via `array_values($args)` in the order the params appear.
+- The URL `…&doc_id=456&patient_id=123` therefore yields different arguments than `…&patient_id=123&doc_id=456`.
+- Any unrelated query parameter, such as a CSRF token, shifts the positions of the real arguments.
+- Either bind by parameter name using reflection or named arguments, or fix the docs and keep the ordering contract explicit.
+
+**4. Medium: error handling changed from `echo` and `exit` to exceptions (`dispatch()` and callers)**
+- `BadRequestHttpException` and `NotFoundHttpException` are thrown. `controller.php` and the other callers are not shown. If nothing catches them, users get a blank 500 or a stack trace instead of the old message.
+- `act()` previously printed a message and exited. Confirm that the entry point has a Symfony-style exception handler.
+
+**5. Low/Medium: unvalidated `action` string (`dispatch()`)**
+- The `action` value is not sanitized any more. The old code stripped non-`[A-Za-z0-9_]` characters.
+- The `_action` suffix limits the exposure, but any public `*_action` method is reachable, and `_current_action` is set to raw user input. It is later used by `_link()` and templates, so this is a potential XSS or injection vector.
+- Re-add the character whitelist, for example `preg_match('/^\w+$/', $action)`.
+
+**6. Low: `act()` edge cases**
+- `$keys[0]` is undefined if `$qarray` is empty. The `non-empty-array` annotation is not enforced at runtime. A bare `controller.php` request would raise a warning and then a confusing 400.
+- PHP converts numeric string keys to ints, so `$key === $controller` (string cast) can fail to match. An int key `0` would not equal `"0"`.
+- The renaming of an explicit `action` to `sub_action` is a hidden convention. It still ends up as a positional argument, so it relies on position, which is fragile. Add a test for the `practice_settings&pharmacy&action=list` flow.
+- The `process` flag is handled in `dispatch()`, but `act()` copies it into `$params` as a regular key. If `process` is the first or second key it is consumed as the controller or action.
+
+**7. Low: whitelist coverage (`VALID_CONTROLLERS`)**
+- The old code loaded any `controllers/C_*.class.php`. The new hard-coded map could break controllers not listed, such as module or custom ones. Confirm that nothing else calls `controller.php?<name>`.
+- The map and the ACL map must be kept in sync by hand, and the map can drift from the files on disk.
+
+**8. Low: maintainability**
+- `xl($displayName)` uses a non-literal string, so the translation extractor will not pick up these strings. The old code used literals.
+- `callMethod` silently converts non-string return values to `''`. An action that returns something unexpected loses its output without any signal.
+- The `$isProcessing` logic is harder to follow than the old structure and should have unit tests covering the process and non-process paths.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

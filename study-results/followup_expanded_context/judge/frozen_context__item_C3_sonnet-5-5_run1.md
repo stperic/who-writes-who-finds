@@ -1,0 +1,3 @@
+The review's top Critical item, **"Gateway secret exposed to the browser"**, quotes the exact `var apiKey = json_encode($GLOBALS['gateway_api_key'])` line in `portal/portal_payment.php`. It explains that the key is emitted "for every portal user, whatever the gateway. With Stripe this leaks the secret key, which allows charges and refunds against the merchant account." It also correctly notes that only the Authorize.Net login ID is meant to be public, so it matches the known vulnerability's class, location and severity, and a reviewer would block the merge on it.
+
+LABEL: Caught

@@ -1,0 +1,3 @@
+The review flags the root cause: **"3. Stored XSS through unescaped output — High"**, listing `$HPI1`, the Impression/Plan `plan` field, `$PLAN_items` and `$PLAN2`, with the advice to "Wrap each in `text()`." However, it frames the problem only as browser-side XSS. It never connects the unescaped output to the server-side HTML-to-PDF rendering, never mentions URL fetching or the CSS `background:` url() sink, and never names server-side request forgery. That is the right area and root cause but the wrong vulnerability class.
+
+LABEL: Partial

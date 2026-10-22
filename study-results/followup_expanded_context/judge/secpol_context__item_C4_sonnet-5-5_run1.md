@@ -1,0 +1,3 @@
+The review's finding 4 flags the root cause, the same fields left unescaped: "`echo $HPI1;` … `$item['plan']` … `$MOTILITY_*` (user strings prefixed with `-` and echoed raw)". However, it treats this only as browser-side stored XSS. Its separate SSRF finding 7 notes that "html2pdf fetches" markup, but it attributes the risk to the `$from_file`/signature filesystem paths in `<img src>`. It never connects injected stored values (or the CSS `background` url) to server-side fetching by the PDF renderer. The review identifies the right flaw and location but the wrong impact class, so the SSRF itself is not detected.
+
+LABEL: Partial

@@ -1,0 +1,186 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for a security-focused pre-merge review. The prompt
+did not name this vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2025-31121 (XSS, OWASP A03), file controllers/C_Document.class.php.
+This change adds a fifth positional parameter, $disable_exit = false, to
+C_Document::retrieve_action() and, when it is set, returns the raw document file contents
+instead of exiting after sending them with the right Content-Type header. The legacy
+Controller (library/classes/Controller.class.php) maps URL query parameters positionally onto
+action arguments and echoes the action's return value with the default text/html content type.
+So a request for a patient image with disable_exit=true makes the server return the raw file
+bytes as text/html; HTML/JavaScript embedded in the image (for example in its EXIF title) runs
+in the viewer's browser: stored cross-site scripting.
+
+Review to score:
+<review>
+# Security Review: `C_Document::retrieve_action` (`$disable_exit` parameter)
+
+## Summary
+
+The new `$disable_exit` parameter was probably meant for internal callers that need a document's bytes in a variable. However, `Controller::act()` turns every URL query key into an action argument. So `disable_exit` can be set by any user from the URL. That makes an internal-only code path reachable from the web.
+
+---
+
+## Finding 1: Internal parameter can be set from the URL, and document bytes are served inline (stored XSS)
+
+**Location:** `controllers/C_Document.class.php`, `retrieve_action()` signature and the three new `if($disable_exit == true) return ...` blocks. The flaw is enabled by `Controller::act()` in `library/classes/Controller.class.php`.
+
+**OWASP:** A03 Injection (XSS) and A04 Insecure Design
+
+**Problem:**
+- `act()` builds `$args_array` from `$qarray` (that is, `$_GET`). It passes the array straight to `call_user_func_array(array(&$c_obj, $c_action . "_action"), $args_array)`.
+- Any trailing query key therefore becomes a positional argument. An example request:
+  `controller.php?document&retrieve&patient_id=1&document_id=5&as_file=1&original_file=1&disable_exit=1`
+  This sets `$disable_exit` to a truthy value.
+- Because the code uses a loose `== true` comparison, any non-empty value other than `"0"` triggers the new path.
+- `act()` returns the action's return value as `$output`, which the front controller echoes.
+- The raw file content is then sent **without** these protections:
+  - `Content-Disposition: attachment`
+  - the correct `Content-Type`
+  - `X-Content-Type-Options: nosniff`
+- PHP's default `Content-Type: text/html` applies instead.
+
+**Impact:**
+- Any user who can upload a document (HTML, SVG, or a file with HTML in it) can have it rendered as active content on the application's own origin. This includes patient-portal users and staff.
+- That gives stored XSS against clinicians: session theft and actions performed as privileged users on PHI.
+- This works against both CouchDB storage (`base64_decode($content)`) and filesystem storage (`$filetext`).
+
+**Severity:** High
+
+**Fix:**
+- Do not expose this as an action parameter. Move the "get document content" logic into a separate non-action method, for example a private or protected `get_document_content($document_id)` that does not end in `_action`. Have both `retrieve_action` and the internal callers use it.
+- Alternatively, make `act()` reject parameters that are not on an allowlist.
+- In all cases, use strict comparison (`=== true`).
+
+---
+
+## Finding 2: Encryption and normal download handling are skipped
+
+**Location:** filesystem branch, new block before `if ( $doEncryption )`
+
+**OWASP:** A02 Cryptographic Failures / A04 Insecure Design
+
+**Problem:**
+- The early return happens before the `$doEncryption` check.
+- A request that asks for an encrypted download can get plaintext back instead. The same applies to an internal caller relying on that flag.
+- Any future server-side requirement to encrypt exports would be silently bypassed through this path.
+
+**Severity:** Medium
+
+**Fix:** Keep the encryption decision in one place, or do not offer a "return raw content" mode on a web-reachable method.
+
+---
+
+## Finding 3: Download auditing may be skipped
+
+**Location:** all three early-return paths
+
+**OWASP:** A09 Security Logging and Monitoring Failures
+
+**Problem:**
+- In the visible code, `document_upload_download_log()` is called only on failure.
+- If success auditing or other access logging happens later in the normal download flow, the new returns skip it.
+- Combined with Finding 1, users could fetch PHI documents through a path that leaves a weaker audit trail. HIPAA access auditing expects every PHI access to be recorded.
+
+**Severity:** Medium (confirm against the rest of the method)
+
+**Fix:** Log every successful retrieval before returning, whatever the output mode.
+
+---
+
+## Finding 4: Whole file now read into memory on every download
+
+**Location:** filesystem branch: `fopen` / `fread($f, filesize($url))` moved ahead of the encryption check
+
+**OWASP:** A04 Insecure Design (resource exhaustion)
+
+**Problem:**
+- Previously, only the encryption path read the whole file into memory. Now every original-file download does, for example large scanned PDFs or DICOM files.
+- A few concurrent requests for large documents can exhaust `memory_limit` or worker memory.
+- `fread` with a length of 0 (empty file) also raises warnings.
+- The file handle opened in the new code is never closed on the early-return path.
+
+**Severity:** Low
+
+**Fix:** Read the full content only when it is actually needed. Otherwise stream it with `readfile()` / `fpassthru()`. Close the handle in all cases.
+
+---
+
+## Pre-existing issues in code this change relies on
+
+### 5. `Controller::act()` maps arbitrary URL keys to action arguments
+
+**OWASP:** A04 Insecure Design / A01 Broken Access Control
+
+**Problem:** Any public `*_action` method in any controller can receive any positional argument from the URL. This is the root cause of Finding 1 and will cause the same class of bug whenever an "internal" parameter is added.
+
+**Severity:** Medium
+
+**Fix:** Use explicit per-action parameter allowlists, and keep internal helpers off the `_action` name pattern.
+
+### 6. Possible missing ownership/ACL check in `retrieve_action` (verify)
+
+**OWASP:** A01 Broken Access Control (IDOR)
+
+**Problem:**
+- The method takes both `patient_id` and `document_id` from the request.
+- Nothing in the visible hunks verifies two things:
+  - that `$d->get_foreign_id()` matches `$patient_id`;
+  - that the current user has ACL rights on the patient's documents (for example `acl_check('patients','docs')`).
+- If no such check exists, any authenticated user can fetch any document by enumerating `document_id`.
+- The new raw-return path makes this easier to exploit.
+
+**Severity:** High if confirmed
+
+**Fix:** Enforce both the ownership check and the ACL check before any content is read.
+
+### 7. `CONTROLLER_THIS` and `_link()` use unescaped `QUERY_STRING` / `REQUEST_URI`
+
+**Location:** `Controller::Controller()` and `Controller::_link()`
+
+**OWASP:** A03 Injection (reflected XSS)
+
+**Problem:** The raw query string and request URI are put into template variables and links. Any template that prints `{$CONTROLLER_THIS}` or a `_link()` result without escaping is vulnerable to reflected XSS.
+
+**Severity:** Medium
+
+**Fix:** Escape on output (`|escape` in Smarty, `htmlspecialchars`), or build these values from validated parameters.
+
+### 8. `populate_object()` mass assignment
+
+**OWASP:** A04 Insecure Design / A01 Broken Access Control
+
+**Problem:**
+- Every `$_POST` key is mapped to a `set_<key>` call on the object.
+- An attacker can call any setter, including security-relevant fields such as owner, foreign id, or ACL-related properties.
+- The guard `strpos("_",$varname) === 0` has its arguments reversed (haystack and needle swapped), so it does not block keys that start with an underscore as intended.
+
+**Severity:** Medium
+
+**Fix:** Allowlist the assignable fields for each object, and correct the argument order to `strpos($varname, "_") === 0`.
+
+---
+
+## Recommendation
+
+**Do not merge as-is.**
+- Remove `$disable_exit` from the public action signature and add an internal content-getter method instead (fixes Findings 1–3).
+- Keep streaming for normal downloads (fixes Finding 4).
+- Confirm that `retrieve_action` enforces patient ownership and ACL checks (Finding 6).
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

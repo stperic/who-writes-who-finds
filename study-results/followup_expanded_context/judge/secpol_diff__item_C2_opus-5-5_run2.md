@@ -1,0 +1,3 @@
+The review looked at the right area and dismissed it. It says the removed `getOne()` override is fine because "The patient restriction is therefore still enforced." It also states that `IResourceUSCIGProfileService` and `getPatientContextSearchField()` "correctly declare `puuid` as the patient compartment field. This lets patient/SMART scopes be enforced by the framework." It never notices that the class does not implement `IPatientCompartmentResourceService`, which means patient-context filtering is skipped. It recommends approval, and the suggested regression test is framed as confirming safety, not as flagging a defect.
+
+LABEL: Missed

@@ -1,0 +1,3 @@
+The review's item 3 flags the right root cause and location: "Several fields pulled straight from patient/encounter data are echoed without `text()`/escaping… `$HPI1`… IMPPLAN plan text, raw… `$PLAN_items`, raw." It frames this only as stored XSS "when rendered outside the PDF/offline context." That explicitly sets aside the server-side HTML-to-PDF rendering path, and the review never mentions the server fetching URLs (SSRF) or the CSS `url()`/`$background` context. The right area and fix are identified, but under the wrong vulnerability class.
+
+LABEL: Partial

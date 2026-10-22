@@ -1,0 +1,3 @@
+The review's finding 3 identifies the root cause and location: unescaped stored free-text fields such as "`echo $HPI1;`", "`$MOTILITY_*` values" and the "IMPPLAN items... `$item['plan']`". It frames this only as browser-side stored XSS ("run script in the browser of every clinician"). It never connects the unescaped markup (or the CSS `background` url context) to the HTML-to-PDF renderer fetching injected URLs server-side. Finding 5 does mention the "PDF engine", but only for DB-derived file paths, not SSRF via injected user content. So the right area and flaw are flagged, but under the wrong vulnerability class.
+
+LABEL: Partial

@@ -1,0 +1,3 @@
+Finding 6 points at the right place and the right class of bug: "Only `practice_settings` and `prescription` have a central ACL check. The whitelist also exposes `hl7`, `x12_partner`, … `patient_finder`," and it recommends "a default-deny ACL check in `dispatch()`." But it rates this "Medium (defense in depth; not verifiable from the diff alone)," assumes access control may live in "each controller's own code," and defers it to follow-up work. The summary even states "No critical or high-severity issues were found," so the review gets the severity wrong and would not block the merge for this reason.
+
+LABEL: Partial

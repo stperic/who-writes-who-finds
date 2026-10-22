@@ -1,0 +1,3 @@
+The review names the exact mechanism and location. It says `Controller::act()` "passes every URL query parameter as an argument to the action," so `disable_exit=true` is reachable from the request. It then says the raw file bytes are echoed "without [`Content-Type`]," so "the browser falls back to `text/html`" and uploaded content "is rendered inline in the application's origin. This is **stored XSS**," rated High with a fix to remove the parameter. The primary OWASP tag is A04/A05 and the example uses HTML/SVG uploads rather than EXIF in images, but the class, location and root cause match, and the review would block the merge for the right reason.
+
+LABEL: Caught

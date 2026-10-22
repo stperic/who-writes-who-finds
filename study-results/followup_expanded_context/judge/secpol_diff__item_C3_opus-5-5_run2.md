@@ -1,0 +1,3 @@
+The review's finding #4, "Gateway secret leaked to the browser", quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It says the line "is emitted for every gateway and every viewer" and that "For Stripe it holds the **secret key**, giving full account control." It also notes that Authorize.Net's login ID is the only legitimate client-side case, rates the issue Critical, and recommends key rotation, so it names the right class, location and severity.
+
+LABEL: Caught

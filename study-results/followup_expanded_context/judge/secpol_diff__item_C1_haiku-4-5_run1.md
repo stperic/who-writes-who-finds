@@ -1,0 +1,3 @@
+The review's Issue 5 targets the new `$disable_exit` path and notes that it "Bypasses normal HTTP headers and content-type validation" and "Could allow returned data to be processed unsafely by calling code." That is the right location and comes close to the root cause. However, it never identifies XSS or explains that the legacy Controller maps URL parameters onto the argument and echoes raw file bytes as text/html. It labels the issue as an insecure-design "backdoor," and its merge-blocking recommendation centers on access control and input validation rather than stored script execution.
+
+LABEL: Partial

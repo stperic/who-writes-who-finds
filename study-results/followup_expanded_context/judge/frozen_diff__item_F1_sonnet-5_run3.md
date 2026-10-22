@@ -1,0 +1,3 @@
+The review never says that controllers missing from `CONTROLLER_ACL_MAP` skip the permission check, or that sub-controllers like x12_partner and patient_finder are reachable by any authenticated user. It explicitly endorses the vulnerable code: "No issues found with the ACL refactor itself (`checkControllerAcl`) — it's a faithful, cleaner extraction of the previous logic." Point 6 only mentions registering in "`CONTROLLER_ACL_MAP` if ACL-gated" as a maintainability chore, not as a missing authorization check.
+
+LABEL: Missed

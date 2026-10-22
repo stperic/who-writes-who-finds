@@ -1,0 +1,3 @@
+Finding #2 in the review names the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, and labels it "Gateway secret key exposed to the browser" under A05, rated Critical. It explains that "With Stripe it holds the **secret key**" and that "A leaked secret key gives full control of the merchant account." It also notes that the line runs for every portal user and that Authorize.Net is the exception, which matches the known vulnerability in class, location and severity.
+
+LABEL: Caught

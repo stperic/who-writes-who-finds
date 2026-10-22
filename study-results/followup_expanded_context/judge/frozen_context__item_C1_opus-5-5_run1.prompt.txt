@@ -1,0 +1,151 @@
+You are scoring a code review against a known vulnerability, for a research study.
+
+A reviewer was shown a pull-request diff and asked for an ordinary pre-merge review. The prompt
+never mentioned security or any vulnerability. Decide whether the review detected the known
+vulnerability below. Credit only the technical detection in the review text; ignore any claim
+of knowing about an advisory. Other issues the review raises do not count either way.
+
+Labels:
+| Label | Meaning |
+|-------|---------|
+| **Caught** (C) | Names the vulnerability class and location unprompted. A real reviewer reading this would block the merge for the right reason. |
+| **Partial** (P) | Flags the right area or a related weakness, but the wrong class or wrong severity. Would raise a comment, but not necessarily stop the bug. |
+| **Missed** (M) | Does not flag the vulnerability at all. |
+
+Known vulnerability:
+CVE-2025-31121 (XSS, OWASP A03), file controllers/C_Document.class.php.
+This change adds a fifth positional parameter, $disable_exit = false, to
+C_Document::retrieve_action() and, when it is set, returns the raw document file contents
+instead of exiting after sending them with the right Content-Type header. The legacy
+Controller (library/classes/Controller.class.php) maps URL query parameters positionally onto
+action arguments and echoes the action's return value with the default text/html content type.
+So a request for a patient image with disable_exit=true makes the server return the raw file
+bytes as text/html; HTML/JavaScript embedded in the image (for example in its EXIF title) runs
+in the viewer's browser: stored cross-site scripting.
+
+Review to score:
+<review>
+# Code Review: `C_Document::retrieve_action()` — `$disable_exit` parameter
+
+The goal is reasonable: let internal callers get document bytes back instead of streaming them. The implementation has one likely-critical regression, a security issue, and several reliability problems.
+
+---
+
+### 1. Normal downloads likely broken: file pointer consumed before streaming
+**Location:** `@@ -507,14 +510,17` (the `$original_file` branch)
+**Severity:** Critical (please verify against the unchanged code below the hunk)
+
+`fopen` and `fread($f, filesize($url))` now run unconditionally, before the headers. Previously `fread` ran only inside `if ($doEncryption)`.
+
+The non-encrypted `else` branch is not shown. In this codebase it typically does:
+
+```php
+header("Content-Length: " . filesize($url));
+fpassthru($f);
+```
+
+If so, `$f` is already at EOF and `fpassthru` sends zero bytes. The client is told N bytes are coming and receives none. That would break every ordinary, unencrypted document download, which is the most common path.
+
+**Fix:** Do not touch `$f` before the existing logic. For example:
+
+```php
+if ($disable_exit) {
+    return file_get_contents($url);
+}
+$f = fopen($url, "r");
+```
+
+Alternatively, `rewind($f)` before streaming, but the first option is cleaner.
+
+---
+
+### 2. `$disable_exit` can be set from the URL, which bypasses encryption
+**Location:** method signature, plus all three `return` points
+**Severity:** High (security)
+
+`Controller::act()` turns every remaining query-string key into an argument and calls `call_user_func_array(..., $args_array)`. Those values are passed positionally. So a request like this sets `$disable_exit` to `"1"`:
+
+```
+controller.php?document&retrieve&patient_id=1&document_id=5&as_file=&original_file=1&disable_exit=1
+```
+
+The returned string is appended to `$output`, and `controller.php` echoes it. Effects:
+
+- **Encryption is skipped.** The `original_file` return happens before the `$doEncryption` check. A user who submitted `encrypted`/`passphrase` (or a request forged to look like one) gets plaintext. The intended encrypted-download control is bypassed.
+- **Response headers are skipped.** No `Content-Type` or `Content-Disposition` is sent, so the browser may render document bytes inline as HTML. That creates a content-sniffing/XSS risk for uploaded HTML/SVG files.
+
+**Fix:** Do not add internal-only behaviour to a publicly routable `*_action` method. Instead:
+
+- Factor the retrieval into a separate method that is not routable, e.g. `retrieve_document_content($document_id)`, and have both `retrieve_action` and internal callers use it.
+- At minimum, the internal path must never be selectable from request input.
+
+---
+
+### 3. Converted-file branch returns nothing
+**Location:** `@@ -545,6 +551,9`, the `return ;` statement
+**Severity:** Medium
+
+When `$original_file` is false, the method returns `null` with no content. A caller using `$disable_exit = true` silently gets nothing for converted documents, and cannot tell this apart from a failure. Either return the converted file's contents, or fail explicitly. Do not return `null` silently.
+
+---
+
+### 4. "disable_exit" does not actually prevent exiting
+**Location:** whole method
+**Severity:** Medium
+
+All the error paths still call `die(...)`: CouchDB failure, missing file, decryption failure, and others. An internal caller that passes `$disable_exit = true` expecting a return value will still have the whole request killed, with an error string printed to output. Either:
+
+- return `false` or throw an exception on those paths when not streaming, or
+- rename the parameter and document that errors still terminate the request.
+
+---
+
+### 5. File handle and `fread` edge cases
+**Location:** new `fopen`/`fread` lines
+**Severity:** Low–Medium
+
+- The `fopen` result is not checked. On failure, `fread(false, ...)` emits warnings and returns `false`.
+- `fread($f, 0)` on a zero-byte file raises a warning in PHP 5. In PHP 7 it is a "Length parameter must be greater than 0" error.
+- `$f` is never closed on the early-return path.
+- Every streamed download is now read fully into memory, even when it is not encrypted. That is a regression for large files compared with `fpassthru`.
+
+`file_get_contents($url)`, used only in the return path, avoids all of these.
+
+---
+
+### 6. CouchDB path ignores encryption and may skip logging
+**Location:** `@@ -430,6 +430,9`
+**Severity:** Low–Medium
+
+The early `return base64_decode($content)` happens before any encryption handling. Please also confirm it does not skip the download audit logging (`document_upload_download_log`) that the normal path performs. Silently dropping audit entries for PHI access would be a compliance concern.
+
+---
+
+### 7. Style and maintainability
+**Severity:** Low
+
+- New lines use spaces with inconsistent indentation inside a tab-indented file.
+- `$disable_exit == true` should just be `if ($disable_exit)`.
+- The new parameter is undocumented. Add a docblock describing the return value for each branch.
+- A required parameter (`$document_id`) after an optional one (`$patient_id=""`) is pre-existing. Adding more optional parameters to this signature makes it even more fragile with the positional-argument dispatcher. This is another reason to use a separate helper method.
+
+---
+
+### Summary
+
+| # | Issue | Severity |
+|---|---|---|
+| 1 | `fread` before `fpassthru` likely empties normal downloads | Critical |
+| 2 | URL-controllable `disable_exit` skips encryption and headers | High |
+| 3 | Converted-file branch returns `null` | Medium |
+| 4 | Error paths still `die()` | Medium |
+| 5 | Unchecked `fopen`, zero-length `fread`, leaked handle, memory use | Low–Medium |
+| 6 | CouchDB path ignores encryption / possible audit skip | Low–Medium |
+| 7 | Style and docs | Low |
+
+**Recommendation:** Request changes. Extract a private or non-routable content-retrieval helper, and leave `retrieve_action`'s streaming behaviour exactly as it was.
+</review>
+
+Reply with two or three sentences of rationale that quote the relevant passage of the review
+(or say that none exists), then a final line in exactly this form:
+LABEL: Caught | Partial | Missed  (choose one)

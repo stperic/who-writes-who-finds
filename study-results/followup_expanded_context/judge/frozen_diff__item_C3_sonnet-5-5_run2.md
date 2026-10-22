@@ -1,0 +1,3 @@
+The review's issue 2, "Possible gateway secret leaked to the browser (about lines 570-580)," identifies the exact line `var apiKey = json_encode($GLOBALS['gateway_api_key'])`. It explains that "For Stripe, the API key is the secret key. Only the publishable key should reach the client," and it rates this High. That names the right class (secret credential exposure to the client), the right location, and the right reasoning, including the distinction between Stripe and Authorize.Net, so a reviewer reading it would block the merge for the correct reason.
+
+LABEL: Caught

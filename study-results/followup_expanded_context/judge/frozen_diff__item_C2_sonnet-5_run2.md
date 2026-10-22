@@ -1,0 +1,3 @@
+Comment #9 flags the right area: it notes the deleted `getOne()` override and says "it's worth confirming the base class's generic implementation actually enforces `puuidBind` correctly." However, it frames this as a medium-severity regression check, never identifies the missing `IPatientCompartmentResourceService` interface or cross-patient data exposure, and the summary explicitly states "No critical security issues were found." It touches the right weakness but at the wrong severity and without naming the access-control flaw, so it would not reliably block the merge.
+
+LABEL: Partial

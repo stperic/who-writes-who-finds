@@ -1,0 +1,3 @@
+The review's only relevant point is item 10, "Inconsistent Escaping": "Line 1812 uses `echo report_ACT($NEURO_COMMENTS)` instead of `text()`; Line 1631 missing `text()` on `$CTLOSVA`... Fix: Consistently use `text()` for all variable output". That touches the root cause, unescaped output in report.php. But it is filed as a MEDIUM maintainability issue. It names no injection or SSRF class, says nothing of the CSS `background` url() context or the PDF renderer fetching injected URLs, and the review's merge-blocking priority is SQL injection instead.
+
+LABEL: Partial

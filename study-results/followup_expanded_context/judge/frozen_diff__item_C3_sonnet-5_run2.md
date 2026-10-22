@@ -1,0 +1,3 @@
+The review never mentions the `apiKey` variable, the `json_encode($GLOBALS['gateway_api_key'])` line, or the gateway secret being rendered into client-side JavaScript. The closest it comes is item #12, which cites "Authorize.Net/Stripe submission via `fetch()`", but only to raise missing CSRF tokens, not exposure of the private Stripe key. Its other security findings (the IDOR, the unescaped PAN, the CVV display) concern cardholder data, not the leaked gateway credential.
+
+LABEL: Missed
