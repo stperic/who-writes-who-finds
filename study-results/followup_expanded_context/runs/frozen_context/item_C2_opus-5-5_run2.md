@@ -1,0 +1,85 @@
+# Code Review: `FhirCareTeamService.php`
+
+## 1. Patient-scope restriction is lost (security, **Critical**)
+
+**Where:** The removed `getOne()` override, `searchForOpenEMRRecords()`, and the class declaration.
+
+**Problem:** The old `getOne()` passed `$puuidBind` straight to `CareTeamService::getOne()`. The service now falls back to `FhirServiceBase::getOne()` and `getAll()`. The base class only enforces patient binding when `$this instanceof IPatientCompartmentResourceService`:
+
+- In `getOne()`, the patient search param is added only in that case.
+- In `createOpenEMRSearchParameters()`, the forced patient filter is applied only in that case.
+
+`FhirCareTeamService` implements only `IResourceUSCIGProfileService`. As a result, `$puuidBind` is silently ignored.
+
+`searchForOpenEMRRecords($params, $puuidBind = null)` does not help. The base class calls it with one argument, so `$puuidBind` is always `null` there.
+
+**Impact:** A patient-scoped token (e.g. `patient/CareTeam.read`) can read CareTeam resources belonging to other patients, either via `GET /CareTeam/{id}` or via search. This is a PHI exposure.
+
+**Fix:**
+- Implement `IPatientCompartmentResourceService`. The class already defines `getPatientContextSearchField()`.
+- Add a test asserting that a patient-bound request cannot retrieve another patient's care team.
+
+## 2. `xlt()` used for values placed in JSON (correctness, **Medium**)
+
+**Where:** `xlt($dataRecordProvider['role_title'])` and both `xlt("Unknown")` calls.
+
+**Problem:** `xlt()` translates *and HTML-escapes* text. That is meant for HTML output. In a FHIR JSON payload, a title like `O'Brien & Assoc` would come out as `&#039;`/`&amp;` entities.
+
+`role_title` is also database data, not a translatable constant. Passing it through the translation layer is inappropriate.
+
+**Fix:**
+- Use `xl("Unknown")` for the constant strings.
+- Use the raw `role_title` value.
+
+## 3. `lookup_code_descriptions()` dependency (reliability, **Medium**)
+
+**Where:** Both calls to `lookup_code_descriptions()`.
+
+**Problem:** This is a global function from `custom/code_types.inc.php`. It is not autoloaded. If the REST/FHIR bootstrap does not include that file, the call is a fatal error.
+
+**Fix:** Confirm the file is included in the API context, or require it explicitly / wrap it in a service.
+
+## 4. `end()` contradicts its comment (correctness, **Low–Medium**)
+
+**Where:** `$dataRecordProvider = end($dataRecordProviderList);`
+
+**Problem:** The comment says "only going to grab the first facility", but `end()` returns the *last* element. In addition:
+- If `$dataRecordProviderList` is empty, `end()` returns `false`. The subsequent array accesses then produce warnings, and `provider_uuid` ends up null.
+- That leads to an invalid `Practitioner/` reference being emitted.
+
+**Fix:**
+- Use `reset()` (or `$list[0]`).
+- Skip the participant if no provider data or `provider_uuid` is present.
+
+## 5. Unchecked array keys (reliability, **Low**)
+
+**Where:** `$dataRecord['status']`, `$dataRecord['providers']`, `$dataRecord['facilities']`, `$dataRecordFacility['uuid']`.
+
+**Problem:**
+- These keys are accessed without `isset`/`??`, so missing keys raise notices.
+- A null `providers` or `facilities` value makes `foreach` warn.
+- `array_search` is non-strict.
+
+**Fix:** Use `in_array($status, self::CARE_TEAM_STATII, true)`, and add `?? []` / `?? null` defaults.
+
+## 6. `status` search mapping not verified (correctness, **Low**)
+
+**Where:** The `'status' => ... ['careteam_status']` search parameter.
+
+**Problem:** Please confirm that `CareTeamService::getAll()` actually exposes and filters on `careteam_status`. Otherwise, `?status=` searches will error out or silently return everything.
+
+## 7. `createProvenanceResource` throws on unexpected input (reliability, **Low**)
+
+**Where:** The new `createProvenanceResource()` implementation.
+
+**Problem:** It throws `BadMethodCallException` if it is not given a `FHIRCareTeam`. The base `getAll()` only catches `SearchFieldException`. Any caller that passes an encoded or array record would crash the request rather than skip provenance.
+
+**Fix:** Consider logging and returning `null`, which `getAll()` already handles.
+
+## 8. Maintainability nits (**Low**)
+
+- `USCGI_PROFILE_URI` misspells "USCIG" and has no visibility modifier. Make it `public const` and fix the name.
+- `searchForOpenEMRRecords` keeps an unused `$puuidBind` parameter, which misleadingly suggests the binding is applied.
+- There are several stray blank lines, e.g. the four blank lines before `if ($encode)`.
+- `meta.lastUpdated` is always "now" and `versionId` is always `1`. This is pre-existing, but it is worth a TODO, since US Core consumers may rely on it.
+- The `facility_taxonomy` column-size TODO references individuals. Track it in an issue rather than in code.

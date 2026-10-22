@@ -1,0 +1,66 @@
+# Security Review: `C_Document::retrieve_action` (adds `$disable_exit`)
+
+**Verdict: Do not merge as written.** The change adds a caller-controlled bypass of the response path, and the new return paths can serve uploaded documents without safe headers, which enables stored XSS.
+
+## Findings
+
+### 1. Caller-controllable `$disable_exit` flag (new)
+- **Location:** `controllers/C_Document.class.php`, `retrieve_action()` signature and the three `if($disable_exit == true)` branches.
+- **OWASP:** A01 Broken Access Control; A04 Insecure Design.
+- **Problem:** `Controller::act()` maps URL query parameters onto the action's positional arguments (`$args_array` is built from `$qarray` keys and passed via `call_user_func_array`). Any HTTP request can therefore supply a fifth argument and set `$disable_exit`. The check `== true` is also a loose comparison, so any non-empty string other than `"0"` enables it. Setting it makes the action return document bytes to the caller rather than streaming them with headers and terminating. This bypasses the normal delivery flow, and any checks, logging, or cleanup that run after the return point will be skipped. It is also an unnecessary new capability reachable from the URL.
+- **Severity:** High.
+- **Fix:** Do not expose this as a method parameter. Move the raw-content logic into a separate internal method (for example `get_document_content()`) that the controller calls directly, and never pass the flag through `act()`. If the parameter must stay, require a strict `=== true` and reject it when it arrives from the request.
+
+### 2. Stored XSS via unsafe raw-content return path
+- **Location:** The `return base64_decode($content);` (CouchDB branch), `return $filetext;` (filesystem branch), and the surrounding unchanged header code.
+- **OWASP:** A03 Injection (XSS); A05 Security Misconfiguration.
+- **Problem:** When `disable_exit` is set, the file bytes are returned to `act()` and echoed. No `Content-Type`, `Content-Disposition: attachment`, or `X-Content-Type-Options: nosniff` header is sent first, so PHP's default `text/html` applies. An uploaded `.html`, `.svg`, or script-bearing document is then rendered in the OpenEMR origin, where it can read session data and act as the logged-in user. The original streaming path has the same header gap, but this change adds a second route that reaches the browser without even those headers.
+- **Severity:** High.
+- **Fix:** Before returning or streaming, set `Content-Type: application/octet-stream` (or the stored MIME type only for safe types), `Content-Disposition: attachment; filename=...`, and `X-Content-Type-Options: nosniff`. Ideally remove the raw-return path altogether (see Finding 1).
+
+### 3. Unchecked `fopen` and whole-file read into memory
+- **Location:** `$f = fopen($url,"r"); $filetext = fread($f, filesize($url));` in the filesystem branch.
+- **OWASP:** A05 Security Misconfiguration (error handling); A04 Insecure Design (resource exhaustion).
+- **Problem:** `fopen` failure is not checked, so `fread` runs on `false` and emits warnings that may leak paths. Reading the full file into memory for every request, including the non-encrypted case that previously streamed it, allows memory exhaustion on large files. The handle is also never closed on the new return path.
+- **Severity:** Medium.
+- **Fix:** Check the return value of `fopen`, call `fclose` on all paths, and keep streaming (for example `readfile` or chunked reads) when encryption is not required. Read into memory only when encryption is actually needed.
+
+### 4. Possible loss of audit logging on the success path
+- **Location:** Both new `return` statements (the CouchDB and filesystem branches).
+- **OWASP:** A09 Security Logging and Monitoring Failures.
+- **Problem:** The diff does not show `document_upload_download_log()` being called on success. If the success log is written after the streaming block, returning early skips it, so raw document retrieval would go unrecorded. This needs confirmation against the full function.
+- **Severity:** Medium (pending verification).
+- **Fix:** Log the access before any return, on every path.
+
+### 5. Authorization not visible in the diff
+- **Location:** The beginning of `retrieve_action()` (not in the diff).
+- **OWASP:** A01 Broken Access Control.
+- **Problem:** `$patient_id` and `$document_id` are taken from the URL. The diff does not show an ACL check (for example `acl_check` for patient documents) before the content is read. If one is missing, any user could retrieve any document by ID. Confirm that the check runs before every return path.
+- **Severity:** Verify (High if missing).
+
+## Pre-existing issues in code this change touches or relies on
+
+6. **Reflected XSS via `CONTROLLER_THIS`** (`library/classes/Controller.class.php`, constructor). `$_SERVER['QUERY_STRING']` is assigned to the template without encoding. If any template outputs it unescaped, it is reflected XSS. A03, Medium. Fix: `htmlspecialchars` or Smarty's `|escape` at output, or do not reflect the query string.
+
+7. **Unsanitized `REQUEST_URI` in `_link()`** (same file). The URL is split and rebuilt from raw input and then used in generated links. Same XSS class as above. A03, Medium. Fix: encode all output.
+
+8. **Reversed check in `populate_object()`** (same file). `strpos("_",$varname) === 0` searches for `$varname` inside the string `"_"`, not the reverse. The intended guard against underscore-prefixed (private) setters never fires. A01, Low. Fix: `strpos($varname, "_") === 0`.
+
+9. **Dynamic controller loading in `act()`** (same file). `$c_name` is restricted to `[A-Za-z0-9_]`, which limits inclusion to `C_*.class.php`. The unquoted `Controller` constant in `call_user_func` is deprecated, and `@` suppresses errors that would help detect abuse. A05, Low. Fix: quote the class name and remove `@`.
+
+10. **Path handling for encrypted output** (same file, `retrieve_action`). `$tmpfilename = "/encrypted_" . $d->get_url_file()` is concatenated into a temp path. If `get_url_file()` can contain separators, this is path traversal. Confirm it is a basename. A01, Low (verify).
+
+11. **Default parameter before a required one** (`$patient_id=""` precedes `$document_id`). This is a PHP deprecation and makes the argument mapping fragile, which contributes to Finding 1. Low.
+
+## Summary
+
+| # | Location | Category | Severity |
+|---|----------|----------|----------|
+| 1 | `retrieve_action` signature and new branches | A01 / A04 | High |
+| 2 | Raw-return paths (no Content-Type or nosniff) | A03 / A05 | High |
+| 3 | `fopen`/`fread` in filesystem branch | A05 / A04 | Medium |
+| 4 | Success-path audit log possibly skipped | A09 | Medium (verify) |
+| 5 | ACL check not visible | A01 | Verify |
+| 6–11 | Pre-existing items in `Controller` and `retrieve_action` | Various | Medium–Low |
+
+Address Findings 1 and 2 before merging. Confirm Findings 4 and 5 against the full function.

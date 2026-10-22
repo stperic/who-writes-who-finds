@@ -1,0 +1,126 @@
+# Security Review: `C_Document::retrieve_action()` — `$disable_exit` change
+
+## Summary
+
+The diff adds a `$disable_exit` flag so internal callers can get a document's contents back as a return value instead of streamed output. The flag itself is reasonable, but the new path has problems:
+
+- It silently skips encryption that the request asked for.
+- It skips the download headers and any audit logging tied to the normal path.
+- It loads every file fully into memory, even for normal downloads.
+
+The function it modifies also has an existing access-control weakness that this change makes easier to exploit, because document contents can now be returned programmatically to other code paths.
+
+---
+
+## Findings
+
+### 1. Missing object-level authorization on document retrieval (pre-existing, made more reachable)
+- **Location:** `retrieve_action()` as a whole. The document is loaded by `$document_id` and served.
+- **OWASP:** A01:2021 – Broken Access Control (IDOR)
+- **Problem:**
+  - The function does not check that the document belongs to `$patient_id`.
+  - It does not check that the current user has ACL rights (e.g. `acl_check('patients','docs')`) or patient-portal ownership for that document's category or patient.
+  - Any authenticated user who can reach the controller can enumerate `document_id` values and download any patient's records.
+  - With `$disable_exit`, new internal callers (e.g. portal, report, or email/fax features) can now pull raw contents. They will inherit this missing check unless they add their own.
+- **Fix:**
+  - Inside `retrieve_action`, verify `$d->get_foreign_id() == $patient_id`.
+  - Enforce ACL and category permissions before returning or streaming anything.
+  - Do not rely on callers to perform the check.
+- **Severity:** **High** (PHI disclosure).
+
+### 2. `$disable_exit` returns plaintext even when encryption was requested
+- **Location:** New early `return $filetext;` (around line 515) and `return base64_decode($content);` (CouchDB branch, around line 433).
+- **OWASP:** A04:2021 – Insecure Design / A02:2021 – Cryptographic Failures
+- **Problem:**
+  - The function still reads `$_POST['encrypted']` and `$_POST['passphrase']`.
+  - The new returns happen *before* the `$doEncryption` handling.
+  - A caller that sets `$disable_exit` during a request where the user asked for an encrypted export will get plaintext back, with no indication that encryption was skipped.
+  - This mismatch between the user's intent and the actual behavior can lead to unencrypted PHI being emailed, stored, or transmitted.
+- **Fix:** Either apply encryption before returning, or make the contract explicit by throwing or erroring if `$doEncryption` is set together with `$disable_exit`.
+- **Severity:** **Medium**.
+
+### 3. `$disable_exit` may be settable from the request
+- **Location:** New parameter in the `retrieve_action` signature.
+- **OWASP:** A04:2021 – Insecure Design / A01:2021
+- **Problem:**
+  - OpenEMR's `Controller::act()` maps query-string segments positionally onto `*_action` method arguments.
+  - If that mapping applies here, a remote user could supply a 5th argument and set `$disable_exit` to a truthy value.
+  - That would take them down the "internal" code path, which skips headers, encryption, and any logging on the normal path.
+  - Separately, `$disable_exit == true` is a loose comparison, so any non-empty string such as `"1"` or `"a"` passes.
+- **Fix:**
+  - Don't expose internal behavior through a routable action. Put the read logic in a separate, non-routable method (e.g. `getDocumentContents($doc_id)`) that both `retrieve_action` and internal callers use.
+  - Use strict `=== true`.
+- **Severity:** **Medium**. This depends on the routing behavior; verify it.
+
+### 4. Audit logging bypass for PHI access
+- **Location:** All three new `return` points.
+- **OWASP:** A09:2021 – Security Logging and Monitoring Failures
+- **Problem:**
+  - Document access is PHI access, and HIPAA requires an audit trail.
+  - The new path returns contents without logging who accessed which document.
+  - In the existing code, `document_upload_download_log` is only called on CouchDB *failure*, so successful retrievals are not logged by this function in either path. That is pre-existing.
+  - The new programmatic path makes untracked bulk access easier.
+- **Fix:** Log every successful retrieval (user, patient, document ID, and whether it was internal or a download) before returning or streaming.
+- **Severity:** **Medium**.
+
+### 5. Entire file read into memory unconditionally (availability regression)
+- **Location:** Lines moved above the headers: `$f = fopen($url,"r"); $filetext = fread($f, filesize($url));`
+- **OWASP:** A04:2021 – Insecure Design (resource exhaustion)
+- **Problem:**
+  - Before this change, the full `fread` only happened when encryption was requested.
+  - Now every download of an original file loads the whole file into PHP memory, even when it will just be streamed.
+  - Large documents (scans, DICOM, video) can exhaust `memory_limit`. Repeated requests become a cheap DoS.
+  - Additional issues on this path:
+    - `fopen` failure is not checked.
+    - `fread` with `filesize()==0` raises an error on PHP 8.
+    - The handle leaks on the early return.
+- **Fix:**
+  - Only read the full file when `$disable_exit` or `$doEncryption` is set.
+  - Otherwise stream it (`readfile`/`fpassthru`).
+  - Check `fopen`'s return value and `fclose` the handle.
+- **Severity:** **Low–Medium**.
+
+### 6. Silent empty return in the converted-file branch
+- **Location:** `if($disable_exit == true) { return ; }` (around line 554).
+- **OWASP:** A04:2021 – Insecure Design
+- **Problem:**
+  - Callers get `null` with no error.
+  - A caller may treat this as "empty document" and continue, for example sending an empty attachment or bypassing a content check.
+  - This is mainly a correctness issue, but a fail-open pattern in security-relevant flows.
+- **Fix:** Return the converted content, or explicitly fail (throw or return `false`) and have callers handle it.
+- **Severity:** **Low**.
+
+### 7. Weak or outdated encryption used for "encrypted" downloads (pre-existing, relied on)
+- **Location:** `$this->encrypt($filetext, $passphrase)`, together with the temp file written to `$GLOBALS['temporary_files_dir'] . "/encrypted_" . $d->get_url_file()`.
+- **OWASP:** A02:2021 – Cryptographic Failures; A06:2021 – Vulnerable and Outdated Components
+- **Problem:**
+  - In this version of the codebase, `encrypt()` is based on the deprecated and removed `mcrypt` extension, using TripleDES.
+  - The user passphrase is used directly as the key, with no KDF and no authentication (MAC/AEAD). Ciphertext can therefore be brute-forced or tampered with undetected.
+  - The temp filename is predictable and derived from the stored filename. If several users export the same document at once, they can collide or race. The plaintext-derived ciphertext also sits on disk unless it is reliably unlinked.
+- **Fix:**
+  - Use libsodium or OpenSSL AES-256-GCM, with a key derived via Argon2id or PBKDF2 and a random salt.
+  - Use `tempnam()` for unique temp files and unlink them in a `finally`.
+- **Severity:** **Medium**.
+
+### 8. Path and header handling from stored data (pre-existing, relied on)
+- **Location:** `$url`, `$from_pathname`, `$convertedFile` used to build filesystem paths; the filename (from `$d->get_url_file()`) emitted in `Content-Disposition`.
+- **OWASP:** A03:2021 – Injection (path traversal / header injection)
+- **Problem:**
+  - Paths are built from database-stored URL and filename values without canonicalization or a check that they stay under `OE_SITE_DIR/documents`.
+  - Anyone who can influence a stored document URL or name (e.g. via upload or import paths) could make `fopen` read arbitrary server files. The new `return $filetext` hands those files straight to the caller.
+  - Filenames placed in headers without sanitization allow header or response splitting on older stacks.
+- **Fix:**
+  - `realpath()` the resolved path and verify it has the documents-directory prefix.
+  - Sanitize filenames for headers, and use `filename*=` with RFC 5987 encoding.
+- **Severity:** **Medium**.
+
+---
+
+## Recommended changes to this PR before merge
+
+1. Move content retrieval into a private or non-routable helper. Do not add a behavior flag to a routable `_action` method.
+2. Add patient ownership and ACL checks inside the shared retrieval logic.
+3. Log every successful access.
+4. Respect or explicitly reject encryption requests on the internal path.
+5. Restore streaming for normal downloads, and only buffer when needed. Handle `fopen` errors and close the handle.
+6. Use strict comparisons, and fail explicitly instead of returning `null`.

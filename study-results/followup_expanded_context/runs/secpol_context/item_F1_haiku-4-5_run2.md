@@ -1,0 +1,241 @@
+# Security Review: Controller.class.php Pull Request
+
+## Summary
+This PR refactors the routing logic from a positional parameter-based system to an explicit parameter-based system with a whitelist. While this is a **positive security improvement**, several **significant vulnerabilities** remain.
+
+---
+
+## CRITICAL ISSUES
+
+### 1. **Broken Access Control - Incomplete ACL Coverage**
+**Location:** `checkControllerAcl()` method and `CONTROLLER_ACL_MAP`
+
+**Category:** OWASP A01:2021 - Broken Access Control
+
+**Problem:** 
+- Only 2 controllers have ACL mappings: `practice_settings` and `prescription`
+- The other 7 controllers in `VALID_CONTROLLERS` (`document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy`, `x12_partner`) have **no ACL checks**
+- The `checkControllerAcl()` method silently returns if a controller isn't in the map, allowing unrestricted access
+- Looking at `C_PracticeSettings.class.php`, we see that sub-controllers like `pharmacy_action()`, `insurance_company_action()`, etc. are being called, but these won't have ACL enforcement in the new `dispatch()` path when called directly
+- Users could bypass the ACL by calling `/controller.php?controller=pharmacy&action=list` instead of going through `practice_settings`
+
+**Severity:** CRITICAL
+
+**Recommendation:** 
+- Add ACL mappings for ALL controllers, or deny by default:
+```php
+private const CONTROLLER_ACL_MAP = [
+    'practice_settings' => ['admin', 'practice', 'Practice Settings'],
+    'prescription' => ['patients', 'rx', 'Prescriptions'],
+    'document' => ['patients', 'docs', 'Documents'],
+    'pharmacy' => ['admin', 'practice', 'Pharmacy'],
+    // ... etc
+];
+
+private function checkControllerAcl(string $controllerName): void
+{
+    if (!isset(self::CONTROLLER_ACL_MAP[$controllerName])) {
+        throw new AccessDeniedException("No ACL configured for controller: $controllerName");
+    }
+    // ... rest of check
+}
+```
+
+---
+
+### 2. **Broken Access Control - Duplicate ACL Checks**
+**Location:** `C_PracticeSettings.class.php` constructor and `dispatch()` method
+
+**Category:** OWASP A01:2021 - Broken Access Control
+
+**Problem:**
+- `C_PracticeSettings.__construct()` performs its own ACL check for `admin/practice`
+- The new `dispatch()` method will ALSO perform this check via `checkControllerAcl()`
+- However, when sub-controllers are invoked via `pharmacy_action()`, etc., they call `dispatch()` directly but those sub-controller actions may NOT re-check ACL
+- Example: `pharmacy_action()` calls `dispatch(['controller' => 'pharmacy', ...])`, but `pharmacy` has no ACL mapping, so it bypasses checks
+- This creates an inconsistency where the old constructor-based ACL still protects direct instantiation, but new `dispatch()` calls don't
+
+**Severity:** CRITICAL
+
+**Recommendation:** Ensure all code paths use the centralized ACL check and add comprehensive mappings.
+
+---
+
+### 3. **Injection - Unsafe Action/Process Method Name Construction**
+**Location:** Lines with `$actionMethod = "{$action}_action"` and dynamic method calls
+
+**Category:** OWASP A03:2021 - Injection
+
+**Problem:**
+- While the `$controllerParam` is whitelisted, the `$action` parameter is **not validated**
+- An attacker could craft: `/controller.php?controller=document&action=__construct&process=1`
+- This would attempt to call `__construct_action()` or `__construct_action_process()`
+- Although method_exists() check may prevent some attacks, PHP's dynamic method invocation combined with insufficient validation is dangerous
+- The code validates controller names but trusts action names entirely
+
+**Severity:** HIGH
+
+**Recommendation:**
+```php
+$action = is_string($params['action'] ?? null) ? $params['action'] : 'default';
+
+// Validate action name (alphanumeric + underscore only)
+if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $action)) {
+    throw new BadRequestHttpException("Invalid action parameter");
+}
+
+// Explicitly reject dangerous method names
+$blockedMethods = ['__construct', '__destruct', '__call', '__callStatic', '__get', '__set'];
+if (in_array($action . '_action', $blockedMethods, true) || 
+    in_array($action . '_action_process', $blockedMethods, true)) {
+    throw new BadRequestHttpException("Invalid action parameter");
+}
+```
+
+---
+
+### 4. **Broken Access Control - Missing Input Validation on Parameters**
+**Location:** `dispatch()` method, parameters passed to controller actions
+
+**Category:** OWASP A01:2021 - Broken Access Control / A03:2021 - Injection
+
+**Problem:**
+- All parameters except `controller` are passed directly to controller action methods without validation
+- No CSRF token validation visible
+- The `$args` array is built from user input and passed via spread operator
+- While individual controllers should validate, there's no framework-level protection
+- Example: `patient_id=123' OR '1'='1` could be passed directly to action methods
+
+**Severity:** HIGH
+
+**Recommendation:**
+- Add CSRF token validation in `dispatch()`
+- Document that controllers MUST validate their parameters
+- Consider parameterized argument passing
+
+---
+
+### 5. **Security Misconfiguration - Missing ControllerInterface Implementation**
+**Location:** `class Controller extends Smarty implements ControllerInterface`
+
+**Category:** OWASP A05:2021 - Security Misconfiguration
+
+**Problem:**
+- The code adds `implements ControllerInterface` but the interface is never defined or shown
+- This suggests incomplete implementation
+- If `ControllerInterface` doesn't mandate security requirements, the architecture is misconfigured
+- The TODO comment mentions moving to PSR-4 autoloading, but current state is incomplete
+
+**Severity:** MEDIUM
+
+**Recommendation:** Ensure `ControllerInterface` defines security requirements (ACL checks, input validation contract).
+
+---
+
+### 6. **Software and Data Integrity Failures - Unsafe Dynamic Instantiation**
+**Location:** `$controllerObj = new $className();`
+
+**Category:** OWASP A08:2021 - Software and Data Integrity Failures
+
+**Problem:**
+- While `$className` is constructed from a whitelisted map, PHP dynamic instantiation still bypasses normal object initialization patterns
+- Constructor arguments aren't validated
+- No verification that instantiated object is actually a valid controller type
+- Missing `instanceof ControllerInterface` check before method calls
+
+**Severity:** MEDIUM
+
+**Recommendation:**
+```php
+$controllerObj = new $className();
+if (!$controllerObj instanceof ControllerInterface) {
+    throw new BadRequestHttpException("Controller does not implement ControllerInterface");
+}
+```
+
+---
+
+### 7. **Security Logging and Monitoring Failures - No Audit Logging**
+**Location:** Throughout `dispatch()` method
+
+**Category:** OWASP A09:2021 - Security Logging and Monitoring Failures
+
+**Problem:**
+- No logging of controller access attempts
+- No logging of ACL failures (relies on `AccessDeniedHelper`)
+- No audit trail for who accessed which controllers
+- Failed action method calls are not logged
+- Security-relevant exceptions are thrown but not logged before throwing
+
+**Severity:** MEDIUM
+
+**Recommendation:**
+```php
+private function checkControllerAcl(string $controllerName): void
+{
+    if (!isset(self::CONTROLLER_ACL_MAP[$controllerName])) {
+        error_log("Security: Attempted access to unconfigured controller: $controllerName");
+        // ... handle error
+    }
+    
+    [$section, $value, $displayName] = self::CONTROLLER_ACL_MAP[$controllerName];
+    if (!AclMain::aclCheckCore($section, $value)) {
+        error_log("Security: ACL denied for $section/$value to user");
+        // ...
+    }
+}
+```
+
+---
+
+## MEDIUM ISSUES
+
+### 8. **Type Safety - Unsafe String Cast**
+**Location:** Line `$controller = (string) $keys[0];`
+
+**Category:** OWASP A03:2021 - Injection
+
+**Problem:**
+- `array_keys()` can return numeric keys, casting them to string creates unexpected behavior
+- If first parameter is numeric, it gets stringified and won't match whitelist
+- This could create confusion or bypass issues in edge cases
+
+**Severity:** MEDIUM
+
+---
+
+### 9. **Incomplete Error Handling**
+**Location:** `i_once()` method and file inclusion
+
+**Category:** OWASP A05:2021 - Security Misconfiguration
+
+**Problem:**
+- `i_once()` silently fails and returns false on include failure
+- Error messages expose controller names and paths to potential attackers
+- No distinction between "file not found" and "file could not be parsed"
+
+**Severity:** LOW-MEDIUM
+
+---
+
+## POSITIVE FINDINGS
+
+✅ **Whitelist approach** - Using `VALID_CONTROLLERS` is excellent security practice
+✅ **Structured ACL mapping** - Centralizing ACL logic is better than scattered checks
+✅ **Exception-based error handling** - Using Symfony exceptions is cleaner than echo/exit
+✅ **Removed process flag bypass** - Properly handling the $_GET/$_POST flag
+
+---
+
+## SUMMARY TABLE
+
+| Issue | Category | Severity | Location |
+|-------|----------|----------|----------|
+| Incomplete ACL coverage | A01 | CRITICAL | `checkControllerAcl()` |
+| Duplicate ACL checks | A01 | CRITICAL | `dispatch()` + `C_PracticeSettings` |
+| Unvalidated action parameter | A03 | HIGH | `$actionMethod` construction |
+| Missing parameter validation | A01/A03 | HIGH | `dispatch()` args building |
+| Missing ControllerInterface enforcement | A05 | MEDIUM | Constructor logic |
+| No instanceof check | A08 | MEDIUM | `new $className()` |
+| No security logging | A09 | MEDIUM | Throughout `dispatch()` |
+| Type casting issue | A03 | MEDIUM | `array_keys()[0]` cast |

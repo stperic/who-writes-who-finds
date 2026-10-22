@@ -1,0 +1,37 @@
+## Security review: `FhirCareTeamService.php`
+
+### 1. Patient-compartment access control is no longer enforced (High)
+- **Location:** class declaration `class FhirCareTeamService extends FhirServiceBase implements IResourceUSCIGProfileService`. The removed `getOne()` override and the unchanged `searchForOpenEMRRecords()` are also involved.
+- **OWASP:** A01:2021 Broken Access Control.
+- **Problem:**
+  - The PR adds `getPatientContextSearchField()` and a `patient` search parameter. It does not make the class implement `IPatientCompartmentResourceService`.
+  - `FhirServiceBase::getOne()` and `createOpenEMRSearchParameters()` only apply the `$puuidBind` restriction when `$this instanceof IPatientCompartmentResourceService`. For this class that check is false, so the restriction is silently skipped.
+  - The old `getOne()` override passed `$puuidBind` to `CareTeamService::getOne()`. This PR deletes it, so the base-class `getOne()` now handles the lookup and applies no patient binding.
+  - `FhirServiceBase::getAll()` calls `searchForOpenEMRRecords($oeSearchParameters)` without `$puuidBind`. The override's `$puuidBind` is therefore always null, and the `getAll(..., true, $puuidBind)` call passes nothing useful.
+- **Impact:** A patient-scoped token (`patient/CareTeam.read`, i.e. a patient using the portal or standalone app) can call `GET /CareTeam/{uuid}` or `GET /CareTeam` and receive other patients' care teams. Those include patient UUIDs, provider and facility identities, and roles. This is a regression, because the old `getOne` enforced the bind.
+- **Fix:**
+  - Implement `IPatientCompartmentResourceService` on the class.
+  - Add a test that a patient-bound request cannot read another patient's CareTeam, for both `getOne` and search.
+  - Make sure the bound patient filter is always applied to the underlying query.
+
+### 2. Unvalidated or unescaped data placed into FHIR output (Low)
+- **Location:** `parseOpenEMRRecord()`, `xlt($dataRecordProvider['role_title'])`.
+- **OWASP:** A03:2021 Injection (output encoding), A04:2021 Insecure Design.
+- **Problem:**
+  - `xlt()` is an HTML-escaping translation function for UI output, not for JSON. It translates and HTML-escapes arbitrary DB text, which corrupts the data (double encoding) and is the wrong sanitization for the context.
+  - Calling `xlt()` on user-supplied values can also pollute the translation tables.
+  - Raw `lookup_code_descriptions` results and the `facility_taxonomy` string are emitted without validation. A JSON consumer that renders them as HTML is exposed to stored content, though `json_encode` makes direct injection unlikely.
+- **Fix:** Use `xl()` or no translation, and let the JSON serializer handle encoding.
+
+### 3. Robustness and availability issues in untrusted-data handling (Low)
+- **Location:** `parseOpenEMRRecord()` and `createProvenanceResource()`.
+- **OWASP:** A04:2021 Insecure Design, A09:2021 Logging and Monitoring Failures.
+- **Problem:**
+  - `$dataRecord['status']`, `end($dataRecordProviderList)` and `$codeParts[0]` are used without existence checks. A malformed or empty row triggers PHP warnings or notices, which may leak internal details depending on `display_errors`, or cause a failed response for the whole search.
+  - `array_search(...) !== false` is used without strict mode (`in_array(..., true)` is preferable).
+  - `createProvenanceResource()` throws an uncaught `BadMethodCallException` for the wrong type. `getAll` does not catch it, so a `_revinclude=Provenance:target` request can produce a 500 with potentially verbose errors.
+- **Fix:** Validate inputs, use strict comparison, and handle exceptions at the service boundary with logging.
+
+### Notes
+- No SQL injection is introduced in this diff. Search fields go through the `FhirSearchParameterDefinition` and `ServiceField` abstractions, and the `uuid` and `puuid` fields are typed as UUIDs. I did not review the underlying `CareTeamService` queries.
+- The main blocker for merge is issue 1.

@@ -1,0 +1,175 @@
+# Security Review: `portal/portal_payment.php`
+
+## Critical / High Severity
+
+### 1. IDOR via new `recid` parameter
+**Location:** 
+```php
+$recid = isset($_REQUEST['recid']) ? (int) $_REQUEST['recid'] : 0;
+...
+if ($recid) {
+    $edata = $appsql->getPortalAuditRec($recid);
+}
+```
+**OWASP Category:** A01:2021 – Broken Access Control (IDOR)
+
+**Problem:** The new code path fetches a payment-audit record by a bare, attacker-supplied numeric ID with no check that the record belongs to the patient currently logged into the portal (`$_SESSION['pid']`). Casting to `(int)` prevents SQL injection, but does nothing to prevent horizontal privilege escalation. A portal patient can simply enumerate `recid` values to pull up other patients' pending-payment records, which include name, partial/zip, card holder name, and (depending on `$edata`) potentially full invoice data (`$invdata`) for another patient. Combined with the `getPortalAuditRec()` helper (not shown) apparently not scoping by `pid`, this is a serious cross-patient data leak.
+
+**Severity:** Critical
+
+---
+
+### 2. Trusting client-supplied `pid` for financial mutations
+**Location:**
+```php
+$pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : $pid;
+$pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;
+...
+$form_pid = $_POST['form_pid'];
+```
+used throughout to insert into `ar_session`/`ar_activity`, update `billing`/`form_encounter`.
+
+**OWASP Category:** A01:2021 – Broken Access Control (IDOR)
+
+**Problem:** Despite `$ignoreAuth = true` being set specifically because the identity is supposed to be bound to `$_SESSION['pid']`, the code lets the request body override which patient's billing/payment records are modified. A malicious portal user (or a forged request) can post payments, change `billed`/`last_level_closed` flags, or create `ar_activity` postings against an arbitrary `pid`. This pre-existing flaw is directly exercised by the new/changed payment-posting code in this diff.
+
+**Severity:** Critical (financial record tampering across patients)
+
+---
+
+### 3. Storage/display of full PAN and CVV
+**Location:**
+```php
+echo $ccdata["cardNumber"] . "</span><br>";
+...
+<span id="cvvpin"><?php echo text($ccdata["cardCode"]) ?></span>
+```
+**OWASP Category:** A02:2021 – Cryptographic Failures (Sensitive Data Exposure)
+
+**Problem:** The card verification code (CVV/CVC) is retrieved from stored data and rendered to the page. Per PCI-DSS, CVV must never be persisted after authorization — its presence here implies it is being stored (encrypted or not) and later retrieved for display, which is itself a compliance/security failure independent of the UI bug. Full card numbers are also shown in the clear to authenticated/"admin" users. This is a pre-existing design issue that this diff continues to build on (adding zip, transId, authCode fields to the same insecure data flow).
+
+**Severity:** Critical
+
+---
+
+### 4. Stored XSS via unescaped card number output
+**Location:**
+```php
+if (isset($_SESSION['authUserID']) || isset($ccdata["transId"])) {
+    echo $ccdata["cardNumber"] . "</span><br>";
+} else {
+    echo "**********  " . substr($ccdata["cardNumber"], -4) . "</span><br>";
+}
+```
+**OWASP Category:** A03:2021 – Injection (Cross-Site Scripting)
+
+**Problem:** Unlike the surrounding fields which use `text()`/`htmlspecialchars()`, the full card number is echoed raw. Since the `cardNumber` field originates from client-supplied form input (HTML5 `pattern` is not a security control and is trivially bypassed via direct POST), an attacker can submit `cardNumber` containing HTML/JS, which will later execute in the admin's browser when the record is reviewed/authorized — a stored XSS leading to admin session compromise.
+
+**Severity:** High
+
+---
+
+## Medium Severity
+
+### 5. Missing CSRF protection on payment-posting forms
+**Location:** `invoiceForm` / `paymentForm` submissions to `portal_payment.php` and `lib/paylib.php`.
+
+**OWASP Category:** A01:2021 – Broken Access Control (CSRF)
+
+**Problem:** No CSRF token is included in the forms that trigger financial operations (`form_save`, `radio_type_of_payment`, copay/invoice postings). Combined with issue #2 (trusted `form_pid`), a CSRF attack could post payments or alter billing state for an arbitrary patient.
+
+**Severity:** Medium–High
+
+---
+
+### 6. No server-side validation of payment amounts
+**Location:**
+```php
+$_REQUEST['form_prepayment']
+...
+if ($amount = 0 + $payment) { ... }
+```
+**OWASP Category:** A04:2021 – Insecure Design
+
+**Problem:** Negative-amount checking (`calctotal()`) is only enforced client-side in JavaScript. Server-side, `form_prepayment` and `form_upay[...]` values are cast with `0 + $x` but not bounds-checked (e.g., negative numbers, absurdly large numbers, non-numeric injection into financial fields). A tampered request can bypass the UI and submit negative/invalid payments directly to `ar_session`/`ar_activity`.
+
+**Severity:** Medium
+
+---
+
+### 7. Payment gateway keys exposed to the client
+**Location:**
+```php
+var publicKey = <?php echo json_encode($GLOBALS['gateway_public_key']); ?>;
+var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+```
+**OWASP Category:** A02:2021 – Cryptographic Failures / A05 Security Misconfiguration
+
+**Problem:** Depending on what `gateway_api_key` actually represents (Authorize.Net's `apiLoginID` is expected to be client-visible for Accept.js, but if this global is reused elsewhere as a transaction/secret key, this would leak it to every browser). This needs verification — if it is anything beyond the public login ID, it is a serious key-leak.
+
+**Severity:** Medium (pending confirmation of key sensitivity)
+
+---
+
+## Low Severity / Hardening
+
+### 8. Race condition in sequence number generation
+**Location:**
+```php
+sqlBeginTrans();
+$sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 ... ");
+sqlStatement("insert into ar_activity ... sequence_no = ?", ...);
+sqlCommitTrans();
+```
+**OWASP Category:** A08:2021 – Software and Data Integrity Failures
+
+**Problem:** `SELECT MAX()+1` followed by `INSERT` without row locking (`FOR UPDATE`) or a unique constraint is subject to a classic TOCTOU race under concurrent requests, potentially producing duplicate `sequence_no` values in financial ledger records.
+
+**Severity:** Low–Medium
+
+---
+
+### 9. Inconsistent audit identity for copay postings
+**Location:**
+```php
+array($_SESSION['authId'], $form_source, $amount, $form_pid, $form_method)
+```
+vs. elsewhere `$_SESSION['authUserID']`.
+
+**OWASP Category:** A09:2021 – Security Logging and Monitoring Failures
+
+**Problem:** `$_SESSION['authId']` does not appear to be set anywhere else in this flow (the rest of the file uses `authUserID`); this likely records a null/incorrect `post_user` for copay transactions, undermining the audit trail for financial postings.
+
+**Severity:** Low
+
+---
+
+### 10. `sqlQueryNoLog` used for privileged lookup
+**Location:**
+```php
+$adminUser = sqlQueryNoLog($query, $_SESSION['authUserID']);
+```
+**OWASP Category:** A09:2021 – Security Logging and Monitoring Failures
+
+**Problem:** Pre-existing use of the "no log" query variant for fetching admin identity in a payment-processing context reduces traceability of who accessed/authorized financial transactions.
+
+**Severity:** Low
+
+---
+
+### 11. Unverifiable third-party asset version
+**Location:**
+```php
+<script src="<?php echo $GLOBALS['assets_static_relative']; ?>/jquery/dist/jquery.min.js"></script>
+```
+**OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+
+**Problem:** The explicit pinned version path (`jquery-1-11-3`) was replaced with a generic `jquery` path. Cannot confirm from the diff which jQuery version is now served; if it resolves to an old/vulnerable build this is a supply-chain risk. Recommend confirming the resolved version is current and patched.
+
+**Severity:** Low (informational — verify)
+
+---
+
+## Summary
+
+The most severe issues are the new **`recid` IDOR** (arbitrary cross-patient payment/card data disclosure) and the pre-existing but still-active **trust of client-supplied `pid`/`form_pid`** allowing cross-patient financial record manipulation. These should block merge until access control is enforced server-side (verify `recid`/`pid` ownership against `$_SESSION['pid']` for portal users). The continued storage/display of full card numbers and CVV, plus the stored-XSS via unescaped card number output, are also serious and should be remediated regardless of this diff's original intent, since this PR touches and extends that code path.

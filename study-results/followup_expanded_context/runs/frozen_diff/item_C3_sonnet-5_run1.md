@@ -1,0 +1,81 @@
+## Summary of Issues Found
+
+### 1. IDOR via new `recid` parameter — **Critical**
+```php
+$recid = isset($_REQUEST['recid']) ? (int) $_REQUEST['recid'] : 0;
+...
+if ($recid) {
+    $edata = $appsql->getPortalAuditRec($recid);
+}
+```
+`getPortalAuditRec($recid)` fetches an audit record purely by its primary key with no check that it belongs to the current `$pid`/session patient. Since `$ccdata` (decoded from this record) can contain the full card number, expiry, and CVV, any authenticated portal user (or anyone who can guess/increment an id) could pull another patient's stored card data by passing an arbitrary `recid`. This must be scoped by `pid` (and/or owner check) at the query level.
+
+### 2. `$pid` can be overridden by request params while `$ignoreAuth` is set — **High**
+```php
+$pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : $pid;
+$pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;
+```
+This is pre-existing, but combined with issue #1 it compounds the risk: a portal session (`$ignoreAuth = true`) trusts a client-supplied `pid`/`hidden_patient_code` instead of strictly using `$_SESSION['pid']`. A malicious portal user could view/post payments for another patient's encounters.
+
+### 3. Full card number / CVV exposed to non-admin (portal) context — **High**
+```php
+if (isset($_SESSION['authUserID']) || isset($ccdata["transId"])) {
+    echo $ccdata["cardNumber"] . "</span><br>";
+}
+...
+<strong>CVV:</strong><span id="cvvpin"><?php echo text($ccdata["cardCode"]) ?></span>
+```
+Previously the full PAN was only shown to authenticated staff. The new `|| isset($ccdata["transId"])` condition also reveals the full card number to the unauthenticated portal patient once a transaction id exists. Storing and displaying the CVV at all (`cardCode`) is a PCI-DSS violation — CVV must never be retained after authorization.
+
+### 4. Inconsistent session key for user attribution — **Medium**
+```php
+$session_id = sqlInsert(
+    "INSERT INTO ar_session (...) VALUES ('0',?,?,now(),now(),?,'','patient','COPAY',?,?,'patient_payment',now())",
+    array($_SESSION['authId'], $form_source, $amount, $form_pid, $form_method)
+);
+...
+array($form_pid, $enc, $sequence_no['increment'], $Codetype, $Code, $Modifier, $_SESSION['authId'], $session_id, $amount)
+```
+Every other insert in this file uses `$_SESSION['authUserID']`. `$_SESSION['authId']` does not appear to be set anywhere, so `user_id`/`post_user` for copay transactions will likely be NULL, breaking audit trail/attribution.
+
+### 5. Sequence number race condition / no rollback — **Medium**
+```php
+sqlBeginTrans();
+$sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", ...);
+sqlStatement("insert into ar_activity set ...");
+sqlCommitTrans();
+```
+This pattern (repeated 3 times) computes `MAX+1` without a locking read (`FOR UPDATE`), so concurrent requests for the same pid/encounter can compute the same sequence number. There's also no `sqlRollbackTrans()` on failure, leaving the transaction state inconsistent if the insert throws.
+
+### 6. Dead/unused variable `$isPortal` — **Low**
+```php
+$isPortal = false;
+...
+$isPortal = true;
+```
+Introduced but never referenced afterward in this diff. Either it's meant to gate some of the sensitive display logic discussed above (and wiring was forgotten), or it's leftover debugging — either way it should be used or removed.
+
+### 7. Malformed HTML markup — **Low**
+```php
+echo '<tr height="5"><td colspan="3"></td></tr><tr">';
+```
+Stray `"` produces an invalid `<tr">` tag. Browsers will likely recover, but this is sloppy/incorrect markup that should be fixed.
+
+### 8. Gateway API key echoed unconditionally into page JS — **Medium (verify)**
+```php
+var publicKey = <?php echo json_encode($GLOBALS['gateway_public_key']); ?>;
+var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;
+```
+These are emitted regardless of which `payment_gateway` is actually configured. Need to confirm `gateway_api_key` is the safe-to-expose client/public identifier (e.g., Authorize.Net API Login ID for Accept.js) and not a secret/transaction key — if it's the latter, this is a critical key-leak vulnerability.
+
+### 9. Repeated boilerplate for ar_activity sequence insert — **Low (maintainability)**
+The `sqlBeginTrans()` / `SELECT MAX(sequence_no)+1` / insert / `sqlCommitTrans()` block is duplicated three times nearly verbatim. Should be extracted into a helper function to reduce duplication and centralize the race-condition fix.
+
+### 10. Hardcoded expiry year list — **Low**
+```html
+<option value="2019">2019</option> ... <option value="2028">2028</option>
+```
+Will require manual updates annually; consider generating the range dynamically from current year.
+
+---
+No blocking correctness issues were found in the UI/JS refactors (form id renames, Stripe/AuthorizeNet tokenization flow) beyond what's noted above — those look consistent. The primary concerns are the **IDOR on `recid`**, the **pid trust issue**, and the **card/CVV exposure logic**, which should be addressed before merge.

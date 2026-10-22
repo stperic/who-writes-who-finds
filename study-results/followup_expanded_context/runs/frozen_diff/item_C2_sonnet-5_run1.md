@@ -1,0 +1,68 @@
+## Review Comments
+
+**1. `parseOpenEMRRecord()` – provider/facility selection uses `end()` but comment says "first facility"**
+```php
+// provider can have more than facility matching... we are only going to grab the first facility for now
+$dataRecordProvider = end($dataRecordProviderList);
+```
+`end()` returns the *last* element of the array, not the first — this contradicts the comment and likely produces the wrong facility/role association for providers with multiple facility assignments. Also, if `$dataRecordProviderList` is empty, `end()` returns `false`, and the subsequent `$dataRecordProvider['role_code']` access will emit warnings/notices (or fatal errors under strict typing).
+**Severity: Medium (correctness bug)**
+
+---
+
+**2. `setDisplay($description)` may receive `null`**
+```php
+$description = lookup_code_descriptions($dataRecordFacility['facility_taxonomy']);
+if (empty($description)) {
+    $description = null;
+}
+...
+$roleCoding->setDisplay($description);
+```
+If `FHIRCoding::setDisplay()` has a `string` (non-nullable) type hint, passing `null` will throw a `TypeError`. At minimum this should fall back to an empty string or a sensible default instead of `null`.
+**Severity: Medium (potential runtime error)**
+
+---
+
+**3. `searchForOpenEMRRecords()` – behavior change not explained**
+```php
+-        return $this->careTeamService->getAll($openEMRSearchParameters, false, $puuidBind);
++        return $this->careTeamService->getAll($openEMRSearchParameters, true, $puuidBind);
+```
+The boolean flag was flipped with no comment/explanation of what it controls (e.g., strict search, pagination, join behavior). Since this directly affects data returned from search queries, reviewers/maintainers can't verify correctness without inspecting `CareTeamService::getAll`. At minimum this deserves a comment, and ideally a named constant/parameter instead of a bare boolean.
+**Severity: Low–Medium (maintainability / verify correctness)**
+
+---
+
+**4. Removal of `getOne()` override**
+The previous `getOne()` override (which converted the raw record into a FHIR resource and bound by `puuidBind`) was deleted entirely without any replacement or explanation. If the parent `FhirServiceBase::getOne()` doesn't already perform the equivalent `parseOpenEMRRecord()` conversion/puuid binding, this is a functional regression (e.g., `GET /CareTeam/{id}` could return raw internal records rather than FHIR resources, or the patient context binding could be lost).
+**Severity: Medium–High (verify correctness — could be a regression)**
+
+---
+
+**5. Leftover TODO comment**
+```php
+// TODO: @adunsulag check with @brady.miller @sjpadgett on how facility_taxonomy has a limit on the column size.
+```
+Leaving an open question/TODO addressed to specific people in merged code is a maintainability smell — either resolve it before merge or track it in an issue tracker rather than in-line.
+**Severity: Low**
+
+---
+
+**6. Minor style: `array_search(...) !== false` instead of `in_array(...)`**
+```php
+if (array_search($dataRecord['status'], self::CARE_TEAM_STATII) !== false) {
+```
+`in_array($dataRecord['status'], self::CARE_TEAM_STATII, true)` is clearer intent and avoids any confusion with falsy array keys (not a bug here since it's a list, but `in_array` is the idiomatic pattern for membership checks).
+**Severity: Low (style/nit)**
+
+---
+
+**7. Duplicate/stray blank lines**
+Several hunks introduce extraneous blank lines (e.g., around the `provider` constants, around `setSubject`, and at the end of `parseOpenEMRRecord`). Not functionally harmful, but adds noise and inconsistent formatting.
+**Severity: Low (nit)**
+
+---
+
+### Summary
+The PR adds useful functionality (US Core profile support, search parameters, participant roles, Provenance resource), but there are a couple of correctness concerns worth addressing before merge: the `end()` vs "first facility" mismatch (#1), the possible `null` passed to `setDisplay` (#2), the unexplained boolean flip in `getAll()` (#3), and confirming that removing the `getOne()` override doesn't regress behavior (#4). The rest are minor style/maintainability notes.

@@ -1,0 +1,88 @@
+# Security review: `portal/portal_payment.php`
+
+I found several serious issues. The most serious are the new `recid` IDOR, which leaks card data, and a leak of the payment gateway key to every portal user. Several pre-existing flaws are also in code this diff touches or depends on.
+
+---
+
+### 1. IDOR on the new `recid` parameter exposes other patients' card data
+- **Location:** `$recid = (int)$_REQUEST['recid']` → `$appsql->getPortalAuditRec($recid)` → `$ccdata = json_decode(decryptStandard($edata['checksum']))`
+- **OWASP:** A01 Broken Access Control (also A02)
+- **Problem:** The record is fetched by a sequential integer ID. Nothing checks that it belongs to `$pid` or that the caller is staff. A logged-in portal patient can enumerate `recid` values and have the server decrypt and render other patients' stored payment data (name, ZIP, card number tail, expiry, CVV, amount). If the record has a `transId`, the full PAN is shown.
+- **Severity:** Critical
+
+### 2. Patient identity is taken from client input
+- **Location:** `$pid = $_REQUEST['pid'] ?? $pid; $pid = $_REQUEST['hidden_patient_code'] > 0 ? ... : $pid;` and `$form_pid = $_POST['form_pid']`
+- **OWASP:** A01 Broken Access Control
+- **Problem:** The session `pid` is overridden by request parameters, so any portal user can view another patient's name, ZIP, encounters, balances and pending payment. They can also post payments against another patient with `form_pid`. This is pre-existing, but the diff builds on it by adding `postal_code` to the query and rendering it.
+- **Severity:** High
+- **Fix:** Use only `$_SESSION['pid']` when `$isPortal` is true.
+
+### 3. Portal users can reach the payment-posting code path
+- **Location:** `if ($_POST['form_save']) { ... ar_session / ar_activity inserts, update form_encounter/billing }`
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design
+- **Problem:** The `isPortal` flag is introduced but never used to gate posting. The only requirement is a portal session. A patient can POST `form_save` with `radio_type_of_payment=cash|invoice_balance|copay|pre_payment` and arbitrary `form_upay[...]` amounts. This writes payments, closes encounters (`last_level_closed=4`, `billed=1`) and credits accounts without any money moving. The "Post Payment" button is only hidden in the UI.
+- **Severity:** High
+- **Fix:** Require `$_SESSION['authUserID']` and an ACL check before the save block.
+
+### 4. Gateway API key is sent to every browser
+- **Location:** `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`
+- **OWASP:** A02 Cryptographic Failures / A05 Security Misconfiguration
+- **Problem:** The key is emitted unconditionally, including for the InHouse and Stripe gateways. In OpenEMR, `gateway_api_key` is the Stripe secret key, and for Authorize.Net it is the API login ID. Any portal user can read it from the page source and use it against the merchant account.
+- **Severity:** High
+- **Fix:** Emit only the public or client key, and only for the gateway that needs it.
+
+### 5. Stored XSS: raw card number output
+- **Location:** `echo $ccdata["cardNumber"] . "</span><br>";` and `substr($ccdata["cardNumber"], -4)`
+- **OWASP:** A03 Injection (XSS)
+- **Problem:** The value comes from patient-submitted `extra_values` stored in the audit table, and it is printed with no escaping. The change also moved the other fields from `attr()` to `text()` but left this one raw. A patient can submit `<script>…` as the card number, which then runs in a staff member's session when they review or authorize the payment.
+- **Severity:** High
+- **Fix:** Use `text()` here, and validate the PAN as digits-only on the server.
+
+### 6. CVV and full PAN are stored and displayed
+- **Location:** `text($ccdata["cardCode"])` is shown to any viewer when `transId` is unset. `$ccdata["cardNumber"]` is shown in full to staff, and to anyone once a `transId` exists. Both come from the in-house path that posts PAN and CVV to `paylib.php`.
+- **OWASP:** A02 Cryptographic Failures / A04 Insecure Design
+- **Problem:** Storing the CVV after authorization violates PCI-DSS. Showing the full PAN to patients and staff is excessive. Even encrypted at rest, the data is decrypted into HTML, and a PAN is retained after the gateway has already charged the card.
+- **Severity:** High
+- **Fix:** Prefer tokenization (the Authorize.Net and Stripe paths). Never persist the CVV. Mask the PAN and purge it once the transaction is complete.
+
+### 7. No CSRF protection
+- **Location:** `invoiceForm`, `paymentForm`, the `fetch`/`$.ajax` calls to `paylib.php`, and the `form_save` handler
+- **OWASP:** A01 / A04
+- **Problem:** No anti-CSRF token is sent or validated. Combined with finding 3, a malicious page can make a logged-in user post payments.
+- **Severity:** Medium–High
+
+### 8. Client-controlled payment amounts and no server-side validation
+- **Location:** `$('#paymentAmount').val(total)`, `invValues` JSON, `form_prepayment`, `$amount = 0 + $payment`
+- **OWASP:** A04 Insecure Design
+- **Problem:** The charge total and invoice values are computed in JS and sent back. The "negative payments not accepted" check exists only client-side. On the server, `form_prepayment` and `form_upay` amounts are unvalidated, so negative or oversized values are accepted. `paylib.php` is not in this diff, but it must recompute the amount from server-side balances.
+- **Severity:** Medium
+
+### 9. Weak audit trail and inconsistent user attribution
+- **Location:** `post_user` / `user_id` use `$_SESSION['authUserID']` in some inserts and `$_SESSION['authId']` in the copay path. Lookups use `sqlQueryNoLog`. Gateway errors go only to `console.log`.
+- **OWASP:** A09 Logging & Monitoring Failures
+- **Problem:** For portal-originated postings these session values may be unset, so financial records get a null or incorrect actor. Failed or denied payment attempts are not logged server-side.
+- **Severity:** Low–Medium
+
+### 10. Server error text shown to users
+- **Location:** `if (data !== 'ok') { alert(data); }` and `alert(error)`
+- **OWASP:** A05 Security Misconfiguration
+- **Problem:** Raw gateway or server responses are displayed, which can leak internals.
+- **Severity:** Low
+
+### 11. Third-party scripts and components
+- **Location:** Stripe.js and Accept.js (loaded elsewhere), `jquery-creditcardvalidator`, `$.parseJSON`
+- **OWASP:** A06 Vulnerable Components / A08 Integrity Failures
+- **Problem:** There is no visible Subresource Integrity or version pinning, and the credit card validator library is old and unmaintained. The jQuery path change does not pin a version.
+- **Severity:** Low
+
+### 12. `formRepopulate` builds selectors from data
+- **Location:** `$('[name="' + name + '"]')` with keys from stored JSON
+- **OWASP:** A03
+- **Problem:** Stored keys are concatenated into a jQuery selector, which can cause selector injection or errors. Keys come from patient-supplied form data.
+- **Severity:** Low
+
+---
+
+**Positives:** The SQL uses bound parameters, `json_encode` is used for JS values, and several outputs moved to `text()`/`attr()`.
+
+**Recommendation:** Do not merge until findings 1–6 are fixed.

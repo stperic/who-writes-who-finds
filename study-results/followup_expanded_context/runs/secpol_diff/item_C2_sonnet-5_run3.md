@@ -1,0 +1,66 @@
+## Security Review – `FhirCareTeamService.php`
+
+### 1. Broken Access Control – Removal of explicit `getOne()` patient‑scoping
+**Location:** Removed `getOne($fhirResourceId, $puuidBind = null)` method (replaced by inherited `FhirServiceBase::getOne()` + new `_id`/`patient` search parameters)
+**OWASP Category:** A01:2021 – Broken Access Control
+**Problem:** The previous implementation explicitly called `$this->careTeamService->getOne($fhirResourceId, $puuidBind)`, making the patient‑scoping enforcement obvious and auditable at this layer. The new code relies entirely on the generic `FhirServiceBase::getOne()` (not shown in this diff) correctly translating the `_id` token search and `puuidBind` into a scoped `searchForOpenEMRRecords()` call. If the base implementation does not strictly enforce `puuidBind` when resolving by `_id`, a user could retrieve CareTeam resources belonging to a different patient by ID. This needs to be verified in `FhirServiceBase`, since the security behavior has been moved out of this file silently.
+**Severity:** Medium (High if `puuidBind` enforcement in the base class is incomplete)
+
+### 2. Possible Weakened Query Scoping – `getAll()` flag changed from `false` to `true`
+**Location:**
+```php
+return $this->careTeamService->getAll($openEMRSearchParameters, true, $puuidBind);
+```
+**OWASP Category:** A01:2021 – Broken Access Control
+**Problem:** The second parameter to `CareTeamService::getAll()` was changed from `false` to `true`. Its semantics are not visible in this diff (likely “strict”/“isAndCondition” or similar). If this flag affects how search filters are combined (e.g., changes AND to OR semantics, or affects how `puuidBind` is merged with other filters), it could unintentionally broaden result sets across patients. This should be verified against `CareTeamService::getAll()` to confirm patient isolation is preserved under all parameter combinations.
+**Severity:** Medium (unverified — needs confirmation in `CareTeamService`)
+
+### 3. Potential Injection via `lookup_code_descriptions()`
+**Location:**
+```php
+$description = lookup_code_descriptions($dataRecordProvider['role_code']);
+...
+$description = lookup_code_descriptions($dataRecordFacility['facility_taxonomy']);
+```
+**OWASP Category:** A03:2021 – Injection
+**Problem:** These values (`role_code`, `facility_taxonomy`) are passed directly into a legacy global helper function without visible sanitization in this diff. If `lookup_code_descriptions()` builds SQL via string concatenation (common in older OpenEMR code), and if these fields can contain attacker-influenced content (e.g., code values entered through a facility/provider UI without strict validation), this is a SQL injection vector. Even though this is pre-existing code, the diff introduces **new call sites** that feed potentially more codes (and splits by `:`), increasing the attack surface. Recommend confirming `lookup_code_descriptions()` uses parameterized queries.
+**Severity:** Medium (dependent on implementation of `lookup_code_descriptions()`)
+
+### 4. Unvalidated / Unencoded Display Text in FHIR Output
+**Location:**
+```php
+$roleCoding->setDisplay($description);
+```
+(for both provider and facility `FHIRCoding`)
+**OWASP Category:** A03:2021 – Injection (Stored XSS potential)
+**Problem:** `$description` returned by `lookup_code_descriptions()` is used directly as a coding “display” value, with no explicit output encoding shown here (unlike the `xlt()` calls used elsewhere in this file for "Unknown" strings). If this text originates from a database field that a user can edit (e.g., taxonomy description) and is later rendered in an HTML UI without contextual encoding, this becomes a stored XSS vector. Since the output here is JSON (FHIR), the immediate risk is low, but any downstream HTML consumer displaying this field without escaping is at risk.
+**Severity:** Low–Medium
+
+### 5. Data Integrity – Silent Fallback on Invalid Status
+**Location:**
+```php
+if (array_search($dataRecord['status'], self::CARE_TEAM_STATII) !== false) {
+    $careTeamResource->setStatus($dataRecord['status']);
+} else {
+    $careTeamResource->setStatus(self::CARE_TEAM_STATUS_ACTIVE);
+}
+```
+**OWASP Category:** A08:2021 – Software and Data Integrity Failures (minor)
+**Problem:** Not a vulnerability per se (strict `!==` comparison correctly handles the “index 0” edge case), but silently defaulting an unrecognized/corrupted status to `"active"` could mask a data integrity problem (e.g., a tampered or malformed record would be presented as an active care team rather than flagged). Consider logging unexpected status values for monitoring (ties into A09 – Security Logging and Monitoring Failures).
+**Severity:** Low (informational)
+
+### 6. No New Logging for Access to Sensitive Clinical Data
+**Location:** Entire `parseOpenEMRRecord` / search path
+**OWASP Category:** A09:2021 – Security Logging and Monitoring Failures
+**Problem:** This endpoint exposes PHI (care team roles, provider/facility relationships, patient references) and performs no audit logging of access in this diff. This is consistent with the rest of the FHIR services in this codebase, but worth flagging since this PR expands the data exposed (roles, organizations, taxonomies) without corresponding audit trail enhancements.
+**Severity:** Low (pre-existing pattern, but scope of exposed data has increased)
+
+---
+
+### Summary
+No critical, immediately exploitable vulnerability is introduced by this diff in isolation, but it does:
+- Move patient-scoping (`puuidBind`) enforcement from an explicit, auditable override into an inherited base-class code path whose behavior isn't visible here — **this needs verification** to ensure no access-control regression (#1, #2).
+- Introduce new call sites to a legacy function (`lookup_code_descriptions`) with inputs that should be checked for injection safety (#3).
+- Pass possibly-unsanitized display strings into FHIR output with no explicit encoding (#4).
+
+Recommend verifying `FhirServiceBase::getOne()` and `CareTeamService::getAll()` semantics for patient isolation, and auditing `lookup_code_descriptions()` for safe query construction, before merging.

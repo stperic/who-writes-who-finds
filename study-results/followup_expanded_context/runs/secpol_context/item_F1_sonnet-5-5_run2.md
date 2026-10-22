@@ -1,0 +1,62 @@
+# Security review: `Controller::dispatch()` / `act()` refactor
+
+Overall, the whitelist of controller names is a real improvement. It replaces string-built class and file names, and it closes the old case-variant bypass of the `practice_settings` and `prescription` ACL checks. The refactor also drops or weakens several protections, and it leaves some older flaws in place.
+
+## 1. Action name is no longer sanitized, and the `method_exists()` guard was removed
+- **Location:** `dispatch()`, the `$action` / `$actionMethod` / `$callMethod` block and the `$isProcessing || is_callable(...)` condition.
+- **OWASP:** A04 Insecure Design / A05 Security Misconfiguration (also touches A03).
+- **Problem:**
+  - The old code stripped the action name with `preg_replace('/[^A-Za-z0-9_]/', '', ...)`. The new code uses the raw `$_GET['action']` value to build a method name and call it dynamically.
+  - The old code had an explicit comment that `is_callable()` is always true on Smarty 4 because of `__call`, so it also required `method_exists()`. The new code uses `is_callable()` alone, so that protection is gone.
+  - Any value for `action` therefore passes the check and is routed into Smarty's `__call` machinery. That throws an unhandled `BadMethodCallException`, so the intended 404 `NotFoundHttpException` branch is effectively dead code.
+  - When `process=true`, the action is invoked unconditionally (`$isProcessing || ...`), with no existence check at all.
+  - An attacker can choose which `*_action` and `*_action_process` method runs, including non-public ones that are callable from `Controller` scope. They can also trigger 500 errors and stack traces.
+- **Severity:** Medium.
+- **Fix:** Restore `method_exists()` and a strict `^[A-Za-z0-9_]+$` check on the action. Ideally also check that the method is public, for example with `ReflectionMethod`. Do not call the action unconditionally in process mode.
+
+## 2. Unescaped user input in exception messages
+- **Location:** `throw new NotFoundHttpException("Action '$action' does not exist on controller: $className")`.
+- **OWASP:** A03 Injection (XSS) / A05 Security Misconfiguration.
+- **Problem:** The raw, unsanitized `action` value is embedded in the message. The old code echoed a sanitized value. If the application's exception handler renders messages as HTML without escaping, this is reflected XSS. The messages also disclose internal class names.
+- **Severity:** Low to Medium, depending on the error renderer. It is currently masked by finding 1.
+- **Fix:** Use a generic message, or sanitize the value and escape it on output.
+
+## 3. Missing authorization for most dispatchable controllers (pre-existing)
+- **Location:** `CONTROLLER_ACL_MAP` and `checkControllerAcl()`. The map covers only `practice_settings` and `prescription`, but `VALID_CONTROLLERS` exposes 10 controllers.
+- **OWASP:** A01 Broken Access Control.
+- **Problem:**
+  - `hl7`, `x12_partner`, `insurance_company`, `insurance_numbers`, `pharmacy`, `document`, `document_category` and `patient_finder` are reachable directly via `controller.php?controller=pharmacy&action=...`. They get no ACL check in the dispatcher.
+  - `C_PracticeSettings` enforces `admin/practice` only in its own constructor. Those sub-controllers are meant to be admin-only pages but can be called directly, bypassing that parent check.
+  - Document and patient-finder access involves PHI. Unless each `C_*` class checks ACLs itself, this is an authorization bypass. I could not verify that from the files provided.
+- **Severity:** High if the controllers lack their own checks, otherwise Medium (defense in depth).
+- **Fix:** Make ACL entries mandatory for every whitelisted controller. A missing entry should deny access (fail closed) rather than allow it, as `checkControllerAcl()` does now.
+
+## 4. `process` GET parameter forces POST-processing mode, and there is no CSRF protection (pre-existing)
+- **Location:** `dispatch()`, `if (isset($params['process'])) { ... $_POST['process'] = "true"; }`, and `$isProcessing`.
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design (CSRF).
+- **Problem:** Any request, including a GET link, can switch the controller into state-changing `*_action_process` mode. The dispatcher also verifies no CSRF token before running these handlers. Unless each handler checks a token, cross-site requests can trigger state changes. This is especially risky for admin actions such as deleting pharmacies or insurance companies, or for prescriptions.
+- **Severity:** Medium.
+- **Fix:** Require a real POST and validate a CSRF token centrally in `dispatch()` before any `_process` method runs.
+
+## 5. Parameter pollution in `act()`
+- **Location:** `act()`, the `foreach ($qarray ...)` loop.
+- **OWASP:** A04 Insecure Design.
+- **Problem:**
+  - The skip test compares the key with the controller and action values (`$key === $controller`) instead of with the reserved key names. A user-supplied `controller=` or `process=` query parameter therefore overwrites the routing value in `$params`. For example, `?practice_settings&pharmacy&controller=hl7` ends up dispatching `hl7`.
+  - The ACL check runs on the final value, so there is no direct bypass. But it lets an attacker retarget routing and sidestep any upstream URL-based filtering or logging that keys on the first parameter.
+  - Integer keys never strictly equal the string `$controller` or `$positionalAction`.
+- **Severity:** Low to Medium.
+- **Fix:** Skip keys by position, and never let user input set `controller`, `action` or `process`.
+
+## 6. Insufficient logging of rejected requests
+- **Location:** The `BadRequestHttpException` and `NotFoundHttpException` throws in `dispatch()`.
+- **OWASP:** A09 Security Logging and Monitoring Failures.
+- **Problem:** Invalid controller or action probes are not logged, so enumeration attempts leave no audit trail. Only ACL denials may be logged, via `denyWithTemplate`.
+- **Severity:** Low.
+
+## 7. Minor notes
+- Request values are passed to action methods without type validation. Array-valued parameters such as `?id[]=1` can cause `TypeError`s or unexpected behavior in untyped action methods. The values are not sanitized here, so each action must validate its own inputs. Using `array_values()` before the spread correctly prevents named-argument injection.
+- In `C_PracticeSettings`, `FORM_ACTION` embeds `attr($_SERVER['QUERY_STRING'])`. That is acceptable for attribute context, but this is a reflection point worth keeping in mind.
+
+## Summary
+Fix finding 1 before merge, because it removes a guard the old code explicitly documented. Findings 3 and 4 are older design flaws that this PR touches and should either be fixed now or tracked explicitly.

@@ -1,0 +1,24 @@
+# Security Review: `FhirCareTeamService.php`
+
+**No security vulnerabilities found in this diff.** I checked the change and the code it relies on against each OWASP Top 10 (2021) category.
+
+## Category-by-category assessment
+
+| OWASP Category | Assessment |
+|---|---|
+| **A01 Broken Access Control** | **No issue.** The custom `getOne()` override is removed, so lookups now use `FhirServiceBase::getOne()`. That method searches by `_id` and passes `$puuidBind` through, so patient-scoped tokens still only see their own patient's care teams. The new `getPatientContextSearchField()` maps `patient` to `puuid` (UUID type). This is what the base class uses to enforce patient compartment restrictions, so it strengthens scoping rather than weakening it. `searchForOpenEMRRecords()` still forwards `$puuidBind`. |
+| **A03 Injection (SQL)** | **No issue.** The new search parameters (`patient`, `status`, `_id`) go through `FhirSearchParameterDefinition` and the typed `ServiceField` / `SearchFieldType` framework, which builds parameterized queries. Switching `getAll(..., false, ...)` to `true` changes the OR/AND join of conditions. AND is the stricter, correct FHIR semantics, and it does not create an injection path. `lookup_code_descriptions()` (pre-existing) uses bound parameters for its lookups. |
+| **A03 Injection (XSS)** | **No issue.** The output is JSON, serialized with `json_encode`. `status` is validated against a fixed allow-list (`CARE_TEAM_STATII`) before it is emitted, which is a defensive improvement. |
+| **A02, A05, A06, A07, A10** | Not applicable. The diff contains no cryptography, configuration, new dependencies, authentication logic, or outbound requests. |
+| **A08 Software/Data Integrity** | **No issue.** The new `createProvenanceResource()` checks the input type and builds Provenance from the domain resource. It does not deserialize untrusted input. |
+| **A09 Logging/Monitoring** | No change. API access logging is handled upstream in the REST layer. |
+
+## Non-security observations (worth fixing, but not vulnerabilities)
+
+1. **`end()` contradicts the comment** (around line 98). The comment says "grab the first facility", but `end($dataRecordProviderList)` returns the *last* element. Use `reset()` or `$list[0]` if "first" is what you intend.
+2. **`xlt()` in JSON output.** `xlt()` translates *and* HTML-escapes. In a JSON/FHIR context, this can double-encode display strings, for example turning `&` into `&amp;`. `xl()` (translate only) is the appropriate function here. This is a data-correctness issue, not a security one, because nothing is under-escaped.
+3. **Facility `onBehalfOf` comment.** The comment says US Core only allows `onBehalfOf` for practitioners. The code is correct, since it is only set inside the provider loop, but the comment wording could be clarified.
+4. **Whitespace.** There are leftover blank lines (several before `if ($encode)`) and a stray double blank line before `USCGI_PROFILE_URI`. Also consider fixing the constant's spelling (USCGI → USCDI/USCORE) for consistency.
+
+## Verdict
+Approve from a security standpoint. Consider addressing the `end()`/`reset()` bug and the `xlt()` → `xl()` change before merge for correctness.

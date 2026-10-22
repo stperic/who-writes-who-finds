@@ -1,0 +1,63 @@
+# Security Review: `interface/forms/eye_mag/report.php` (new file)
+
+**Verdict: Do not merge as-is.** The file has a request-driven SQL injection, missing authorization on patient data (PHI), several stored XSS sinks, and a reflected XSS. The issues are ordered by severity below.
+
+---
+
+## 1. SQL Injection in `display_draw_image()`
+- **Location:** `display_draw_image()`, `$sql = "SELECT * from documents where documents.url like '%".$filename."'";`
+- **OWASP:** A03:2021 Injection
+- **Severity:** **Critical**
+- **Problem:**
+  - `$filename` is built from `$pid` and `$encounter`.
+  - At the top of the file, both values are overwritten straight from the request: `$pid = $_REQUEST['ptid']` and `$encounter = $_REQUEST['encid']`.
+  - Both reach `display_draw_image()` with no validation or casting.
+  - `$sanitize_all_escapes=true` turns off OpenEMR's legacy auto-escaping, so this string concatenation is directly injectable. For example: `ptid=1' UNION SELECT ... -- -`.
+  - Any user who can load this script can read any table, including `users` password hashes and all patient data.
+- **Fix:**
+  - Cast `$pid` and `$encounter` to integers.
+  - Use a bound parameter, e.g. `sqlQuery("SELECT * FROM documents WHERE url LIKE ? AND foreign_id = ?", array('%/'.$filename, $pid))`.
+
+## 2. SQL Injection via session value (`facility` lookup)
+- **Location:** `narrative()`, `$sql = "select * from facility where id=" . $_SESSION['pc_facility'];`
+- **OWASP:** A03:2021 Injection
+- **Severity:** **Medium**
+- **Problem:**
+  - `pc_facility` is written into the session from user-supplied form input elsewhere in OpenEMR (the calendar/facility selectors).
+  - Concatenating it into SQL is unsafe even though it comes from the session.
+- **Fix:** `sqlQuery("SELECT * FROM facility WHERE id = ?", array($_SESSION['pc_facility']))`.
+
+## 3. Missing authorization / IDOR on patient, encounter and form identifiers
+- **Location:** Top of file:
+  ```php
+  if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+  if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+  if ($_REQUEST['formid']) $form_id = $_REQUEST['formid'];
+  ```
+- **OWASP:** A01:2021 Broken Access Control
+- **Severity:** **High**
+- **Problem:**
+  - The script overrides the session's active patient (`$pid` from `globals.php`) with request values.
+  - `acl.inc` is included, but `acl_check()` is never called. There is no check that the user may view `patients/med` or this specific patient.
+  - Any authenticated user (front desk, billing, etc.) can enumerate `ptid`/`encid` and render full eye exams, photos, prescriptions and plans for any patient.
+  - The `narrative()` query also checks neither `forms.formdir='eye_mag'` nor `forms.pid`. It can therefore join an unrelated form row whose `form_id` happens to match.
+- **Fix:**
+  - Enforce `acl_check('patients','med')` and any facility/provider restrictions before rendering.
+  - Ignore request-supplied `ptid` unless it is validated against the user's permissions; otherwise use the session pid.
+  - Cast all IDs to `int`.
+  - Constrain the joins with `forms.formdir = 'eye_mag' AND forms.pid = ?`.
+
+## 4. Cross-patient document/image disclosure via `LIKE '%…'`
+- **Location:** `display_draw_image()` document lookup, and the resulting `controller.php?document&retrieve&patient_id=$pid&document_id=...` URL.
+- **OWASP:** A01:2021 Broken Access Control
+- **Severity:** **Medium**
+- **Problem:**
+  - Even without injection, the pattern `'%' . "{pid}_{enc}_OU_{zone}_VIEW.jpg"` is unanchored. Patient `1` / encounter `5` matches files belonging to patients `11`, `21`, `101`, and so on.
+  - The query does not filter on `documents.foreign_id`.
+  - Document notes (`Note::notes_factory`) for the wrong patient are printed too.
+  - This relies on `controller.php` document retrieval to re-check ownership, which it has historically not strictly done.
+- **Fix:** Match the exact URL or path segment and add `AND foreign_id = ?`.
+
+## 5. Stored XSS: unescaped clinical fields
+- **OWASP:** A03:2021 Injection (XSS)
+- **Severity:** **High**. These fields are clinician- or import-entered, and the output is rendered for other sta

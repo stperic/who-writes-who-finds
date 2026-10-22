@@ -1,0 +1,228 @@
+# Security Review: portal_payment.php
+
+I found **multiple critical and high-severity security vulnerabilities** in this pull request:
+
+---
+
+## 1. **Broken Access Control - Critical**
+**Location:** Lines 59-64
+```php
+$recid = isset($_REQUEST['recid']) ? (int) $_REQUEST['recid'] : 0;
+...
+if ($recid) {
+    $edata = $appsql->getPortalAuditRec($recid);
+}
+```
+**Issue:** The code accepts `$recid` from `$_REQUEST` without verifying that the current patient (`$pid`) owns or is authorized to access this audit record. An attacker could access payment records for other patients by manipulating the `recid` parameter.
+
+**OWASP Category:** A01:2021 – Broken Access Control
+
+**Severity:** CRITICAL
+
+**Fix:** Validate that `$recid` belongs to the current patient before retrieving it.
+
+---
+
+## 2. **Broken Access Control - High**
+**Location:** Lines 26-30
+```php
+if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite_two'])) {
+    $pid = $_SESSION['pid'];
+    $ignoreAuth = true;
+    $isPortal = true;
+    require_once(dirname(__FILE__) . "/../interface/globals.php");
+} else {
+    session_destroy();
+```
+**Issue:** Setting `$ignoreAuth = true` disables authorization checks for portal users. However, the subsequent code at line 59 accepts `$recid` from user input without validating ownership. Combined with the above issue, this is a critical authorization bypass.
+
+**OWASP Category:** A01:2021 – Broken Access Control
+
+**Severity:** CRITICAL
+
+**Fix:** Do not blindly disable auth checks. Implement explicit permission validation instead.
+
+---
+
+## 3. **Cryptographic Failures - High**
+**Location:** Line 80
+```php
+$ccdata = json_decode(decryptStandard($edata['checksum']), true);
+```
+**Issue:** The code decrypts and uses stored credit card data (`checksum` field). The security of this depends on:
+- The strength of `decryptStandard()` encryption (unknown)
+- Whether the encryption key is properly managed
+- Whether the decrypted data is properly sanitized before use
+
+Later at lines 1239-1243, full credit card numbers are conditionally displayed:
+```php
+if (isset($_SESSION['authUserID']) || isset($ccdata["transId"])) {
+    echo $ccdata["cardNumber"] . "</span><br>";
+} else {
+    echo "**********  " . substr($ccdata["cardNumber"], -4) . "</span><br>";
+}
+```
+This violates PCI-DSS requirements by storing and displaying full credit card numbers.
+
+**OWASP Category:** A02:2021 – Cryptographic Failures
+
+**Severity:** HIGH
+
+**Fix:** 
+- Never store full credit card numbers; use tokenization instead
+- Use only payment gateways that handle PCI compliance
+- If using stored cards, encrypt at rest with proven algorithms (AES-256)
+
+---
+
+## 4. **Injection / XSS - Medium**
+**Location:** Lines 1241, 1243-1244
+```php
+echo text($ccdata["cardHolderName"]) . "</span><br>";
+echo text($ccdata["zip"]) . "</span><br>";
+```
+**Issue:** While `text()` appears to be an output encoding function, the `$ccdata` array is populated from decrypted data. If the decryption process is compromised or the data originates from untrusted sources, XSS is possible. Additionally, look at line 1113:
+```php
+echo htmlspecialchars($patdata['fname'], ENT_QUOTES) . " " .
+```
+The code uses both `htmlspecialchars()` and `text()` inconsistently. If `text()` is not properly implementing output encoding, XSS vulnerabilities exist.
+
+**OWASP Category:** A03:2021 – Injection
+
+**Severity:** MEDIUM
+
+**Fix:** 
+- Ensure all output functions properly encode all context (HTML, JavaScript, URL, CSS)
+- Use a consistent encoding library throughout
+- Test encoding with payloads like `<script>alert('xss')</script>`
+
+---
+
+## 5. **Insecure Design - High**
+**Location:** Lines 269-271, 1438-1450 (payment form)
+```php
+if ($GLOBALS['payment_gateway'] != 'Stripe') { ?>
+    <form id='paymentForm' method='post' action='<?php echo $GLOBALS["webroot"] ?>/portal/lib/paylib.php'>
+```
+**Issue:** The form submits payment data via POST to `paylib.php` without CSRF protection tokens visible in this code. Additionally, payment processing occurs in a separate file (`paylib.php`) not shown here, creating a security risk if not properly implemented.
+
+The code also conditionally includes different payment gateway implementations (InHouse, AuthorizeNet, Stripe) at lines 1438-1450, 1505-1679, and 1684+, which increases the attack surface.
+
+**OWASP Category:** A04:2021 – Insecure Design
+
+**Severity:** HIGH
+
+**Fix:**
+- Implement CSRF tokens for payment forms
+- Validate all payment gateway implementations independently
+- Use established, PCI-compliant payment gateways
+- Never process raw credit card data on your servers
+
+---
+
+## 6. **Security Logging and Monitoring Failures - Medium**
+**Location:** Throughout the payment processing code
+**Issue:** There's no evidence of:
+- Logging of payment attempts or failures
+- Monitoring of suspicious payment patterns
+- Audit trails for payment modifications
+- Rate limiting on payment submissions
+
+The code at line 68-70 uses `sqlQueryNoLog()`, which explicitly disables logging:
+```php
+$query = "SELECT id, fname, lname, username " .
+    "FROM users WHERE id = ?";
+$adminUser = sqlQueryNoLog($query, $_SESSION['authUserID']);
+```
+This prevents audit trails for administrative actions.
+
+**OWASP Category:** A09:2021 – Security Logging and Monitoring Failures
+
+**Severity:** MEDIUM
+
+**Fix:**
+- Log all payment transactions with user ID, amount, timestamp, and gateway response
+- Monitor for duplicate submissions or unusual patterns
+- Remove `sqlQueryNoLog()` and enable audit logging for sensitive operations
+- Alert on failed authorization attempts
+
+---
+
+## 7. **Vulnerable and Outdated Components - Medium**
+**Location:** Lines 555-558, 1328-1331
+```php
+<script type="text/javascript" src="<?php echo $GLOBALS['assets_static_relative']; ?>/jquery-creditcardvalidator/jquery.creditCardValidator.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['assets_static_relative']; ?>/jquery/dist/jquery.min.js"></script>
+```
+**Issue:** 
+- The `jquery-creditcardvalidator` plugin is known to have vulnerabilities
+- jQuery versions used are not specified; many versions have known security flaws
+- Client-side validation (JavaScript) cannot be trusted for payment security
+
+**OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+
+**Severity:** MEDIUM
+
+**Fix:**
+- Remove client-side credit card validation
+- Use server-side validation only
+- Keep all dependencies updated with known-good versions
+- Consider using only certified payment gateway SDKs
+
+---
+
+## 8. **Server-Side Request Forgery (SSRF) - Low**
+**Location:** Lines 1505-1679 (AuthorizeNet integration)
+**Issue:** The code constructs URLs for external services:
+```javascript
+const authData = {};
+authData.clientKey = publicKey;
+authData.apiLoginID = apiKey;
+```
+While this code appears to use HTTPS endpoints, there's no validation that `$GLOBALS['gateway_public_key']` and `$GLOBALS['gateway_api_key']` haven't been tampered with. If configuration globals can be modified, an attacker could redirect payment data to their own server.
+
+**OWASP Category:** A10:2021 – Server-Side Request Forgery
+
+**Severity:** LOW (mitigated by HTTPS, but risky if config is mutable)
+
+**Fix:**
+- Validate that payment gateway endpoints are hardcoded or from a trusted configuration source
+- Use certificate pinning for external payment service connections
+- Implement network segmentation to restrict outbound payment traffic
+
+---
+
+## 9. **Additional Issue: Missing Input Validation**
+**Location:** Line 210
+```php
+$form_pid = $_POST['form_pid'];
+```
+**Issue:** `$form_pid` is taken from POST without validation that it matches the session PID. Combined with issue #1, this allows unauthorized access.
+
+**Severity:** CRITICAL
+
+**Fix:** Validate `$form_pid === $pid` before processing.
+
+---
+
+## Summary Table
+
+| Issue | OWASP Category | Severity | Line(s) |
+|-------|-----------------|----------|---------|
+| Unvalidated `recid` parameter | A01 | CRITICAL | 59-64 |
+| Missing PID ownership validation | A01 | CRITICAL | 210 |
+| Full credit card storage/display | A02 | HIGH | 1239-1243 |
+| Inconsistent output encoding | A03 | MEDIUM | 1241+ |
+| Missing CSRF tokens | A04 | HIGH | 1438+ |
+| No audit logging for payments | A09 | MEDIUM | 68+ |
+| Vulnerable JS libraries | A06 | MEDIUM | 555-558 |
+| Potential SSRF via config | A10 | LOW | 1505+ |
+
+---
+
+## Recommendations
+
+1. **Immediately:** Implement access control validation for `recid` and `form_pid`
+2. **High Priority:** Remove all credit card storage and use tokenization/payment gateway APIs only
+3. **Before Merge:** Add CSRF tokens, implement comprehensive logging, and audit all payment gateway integrations
+4. **Architecture Change:** Never store or process raw payment card data; use PCI-compliant payment processors exclusively

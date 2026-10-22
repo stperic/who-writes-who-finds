@@ -1,0 +1,4 @@
+## Review Comments
+
+### 1. **Critical: `method_exists()` check dropped, reintroducing a previously-fixed bug**
+**Location:** `Controller::dispatch()`, the `is_callable([$controllerObj, $processMethod])` and `is_callable([$

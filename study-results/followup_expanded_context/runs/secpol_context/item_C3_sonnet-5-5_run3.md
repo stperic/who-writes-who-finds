@@ -1,0 +1,74 @@
+# Security review: `portal/portal_payment.php`
+
+Most SQL is parameterized and `recid` is cast to `(int)`, so I found no SQL injection. The findings below are the issues in the changed code and in code it relies on, ordered by severity.
+
+## Critical
+
+### 1. Gateway API secret exposed to every portal user
+- **Location:** the new inline script, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` (also `publicKey`)
+- **OWASP:** A02 Cryptographic Failures / A05 Security Misconfiguration
+- **Problem:** The code emits `gateway_api_key` into page JavaScript unconditionally, for every gateway and every viewer, including patients. The setting is described in `globals.inc.php` as "Auth Name for Authorize.Net and **API Secret for Stripe**". With Stripe, any patient who views the page source gets the live Stripe secret key. That allows refunds, charges and reading customer data on the practice's account. Only the publishable key and the Authorize.Net login ID belong client-side.
+- **Fix:** Emit only the public key, and only for the active gateway. Never send the Stripe secret to the browser.
+
+## High
+
+### 2. IDOR on the new `recid` parameter
+- **Location:** `$recid = ... $_REQUEST['recid']` and `$edata = $appsql->getPortalAuditRec($recid);`
+- **OWASP:** A01 Broken Access Control
+- **Problem:** `getPortalAuditRec()` loads a portal audit record by raw ID, with no check that it belongs to the session's patient. For portal users the code then decrypts and displays the stored payment data, including cardholder name, zip, expiry, **CVV** (`cardCode`), and the **full card number** whenever `ccdata['transId']` is set. A logged-in patient can enumerate `recid` to read other patients' card data.
+- **Fix:** Restrict `recid` to staff sessions, or verify that the record's `pid` matches the session pid.
+
+### 3. Portal users can submit the "Post Payment" save handler directly
+- **Location:** `if ($_POST['form_save']) { ... }`. `$isPortal` is added but never used.
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design
+- **Problem:** The page is reachable with only a portal session. The save block has no staff or `authUserID` check. A patient can POST `form_save`, `form_pid`, `form_method`, `form_source`, `form_upay[...]` and `radio_type_of_payment` to write `ar_session`, `ar_activity` and `payments` rows. Those rows credit payments against any patient's encounters, including their own, without paying. They can also post `cash`, which closes the encounter (`last_level_closed=4`, `billed=1`). `form_pid` is never compared to the session pid. Amounts are not validated server-side; negative values are only blocked in client JS. The new `sequence_no` code also inserts `post_user` as `$_SESSION['authUserID']`, which is null for portal users.
+- **Fix:** Require a staff session (`isset($_SESSION['authUserID'])`) for the save, and force `$form_pid` to the authorized pid. Validate amounts server-side (positive, not above the balance).
+
+### 4. Patient ID taken from the request (pre-existing, still relied on)
+- **Location:** `$pid = isset($_REQUEST['pid']) ? ... ; $pid = $_REQUEST['hidden_patient_code'] > 0 ? ...`
+- **OWASP:** A01 Broken Access Control
+- **Problem:** A portal user can override the session `pid` with `pid` or `hidden_patient_code`. The page then shows another patient's name, postal code (newly added to the query), encounters, charges and balances, and the pending payment audit record.
+- **Fix:** For portal sessions, use `$_SESSION['pid']` only.
+
+### 5. Stored XSS: unescaped card number output
+- **Location:** `echo $ccdata["cardNumber"] . "</span><br>";`, which replaced the equivalent unescaped `cc_number` output. The `substr(...)` branch is also unescaped.
+- **OWASP:** A03 Injection (XSS)
+- **Problem:** `ccdata` is the JSON the patient submitted, decrypted from the audit table. A malicious patient can put script in `cardNumber`. It runs in a staff member's session when they open the "Audit Payment" screen, which also has the full card data and the Authorize button. The surrounding fields were switched to `text()`, but this one was left raw.
+- **Fix:** Use `text()` on both branches.
+
+## Medium
+
+### 6. Cardholder data (PAN and CVV) stored and displayed
+- **Location:** the in-house payment flow and the "Payment Information" panel, which shows `cardNumber` and `cardCode`
+- **OWASP:** A02 Cryptographic Failures / A04 Insecure Design
+- **Problem:** The in-house gateway posts the full PAN and CVV to the server, stores them in `onsite_portal_activity` (encrypted at rest but retrievable), and renders them in clear text to staff. Storing the CVV after authorization violates PCI DSS. The Authorize.Net path also leaves a form whose `action` is `paylib.php` and whose inputs carry the raw card data. Pressing Enter in those fields can submit the form natively, bypassing tokenization.
+- **Fix:** Don't store the CVV. Mask the PAN (last 4 digits). Remove `action` and `name` from the card inputs for tokenized gateways, or use `type=button` with a submit handler.
+
+### 7. Client-controlled payment amount and invoice data
+- **Location:** `$('#openPayModal').on('show.bs.modal'...)` sets `paymentAmount`. `invValues` and `inv_values` are built client-side and posted to `paylib.php`.
+- **OWASP:** A04 Insecure Design / A08 Software and Data Integrity Failures
+- **Problem:** The charge amount and invoice contents come from browser-editable fields. Unless `paylib.php` recomputes the total from server-side balances, a patient can pay less than owed, or send inconsistent invoice data that staff then approve.
+- **Fix:** Recompute amounts on the server and compare them to the amount sent for charging.
+
+### 8. No CSRF protection
+- **Location:** `invoiceForm`, `paymentForm`, and the AJAX and fetch posts to `paylib.php`
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design
+- **Problem:** The state-changing payment submit and save endpoints rely only on the session cookie and have no anti-CSRF token.
+- **Fix:** Add and verify a CSRF token.
+
+## Low
+
+### 9. Integrity race on `sequence_no`
+- **Location:** `sqlBeginTrans(); SELECT MAX(sequence_no)+1 ...; INSERT`
+- **OWASP:** A04 Insecure Design
+- **Problem:** Without row locking (`FOR UPDATE`), concurrent posts can get duplicate sequence numbers. The same pattern is repeated inside the loop.
+
+### 10. Logging and monitoring gaps, and verbose errors
+- **Location:** the save handler, the `recid` review path, and `console.log` / `alert(data)` / `alert(error)` of server responses
+- **OWASP:** A09 Security Logging and Monitoring Failures
+- **Problem:** Portal-initiated payment posting and card-data views are not audit-logged. The server's error text is shown to users.
+
+### 11. Third-party scripts without integrity checks
+- **Location:** jQuery, the credit-card validator, and the Stripe and Accept.js includes
+- **OWASP:** A06 Vulnerable and Outdated Components / A08 Software and Data Integrity Failures
+- **Problem:** Scripts that run on the page handling card data have no SRI, and `jquery-creditcardvalidator` is old and unmaintained. The hard-coded expiry years also go stale.

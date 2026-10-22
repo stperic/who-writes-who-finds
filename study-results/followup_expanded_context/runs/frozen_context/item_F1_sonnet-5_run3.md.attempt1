@@ -1,0 +1,13 @@
+## Summary
+
+This refactor is a nice improvement in many respects (whitelisting controllers, order‑independent `dispatch()`, exceptions instead of `echo`/`exit`), but it reintroduces a bug that the original code explicitly guarded against, and it carries some risk of silently breaking existing routes. Details below.
+
+---
+
+### 1. Loss of the `method_exists()` guard reintroduces the Smarty4 `is_callable()` bug — **High / Critical**
+
+**Location:** `Controller::dispatch()`
+
+```php
+if ($isProcessing && is_callable([$controllerObj, $processMethod])) { ... }
+if ($isProcessing || is_callable([$controllerObj, $actionMethod])) {

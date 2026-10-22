@@ -1,0 +1,11 @@
+# Security Review: `C_Document::retrieve_action()` adds a `$disable_exit` parameter
+
+The change is meant to let server-side code (for example, CCDA/Direct/zip export) get document bytes back as a return value instead of streaming them. However, `retrieve_action()` is a public controller action, so `Controller::act()` exposes every parameter to the query string. The result is a new remotely triggerable code path and a regression in the normal download path. It also inherits authorization weaknesses that already existed.
+
+---
+
+## 1. `$disable_exit` can be set from the URL, so document content is rendered inline as HTML (Stored XSS)
+- **Location:** `C_Document.class.php`, `retrieve_action()` signature (line ~387) and the new `return base64_decode($content)` / `return $filetext` blocks. The dispatcher is `Controller::act()`.
+- **OWASP:** A03:2021 Injection (XSS), A04:2021 Insecure Design
+- **Problem:**
+  - `act()` takes every query-string key after the controller and action names and passes them positionally to `call_user_func_array(...)`. The only filtering is a sanitized key name, and values are passed through unchanged. A URL such as `controller.php?document&retrieve&patient_id=1&document_id=5&as_file=&original_file=1&disable_exit=1` therefore reaches the new bran

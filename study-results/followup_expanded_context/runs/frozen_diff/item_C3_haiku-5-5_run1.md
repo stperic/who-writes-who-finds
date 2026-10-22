@@ -1,0 +1,54 @@
+## Review: portal_payment.php (portal payment audit and posting refactor)
+
+The PR mixes a security-relevant feature change (audit-record review, card data display) with a large formatting pass and some behavioral changes. Several issues need fixing before merge. The most serious is that the portal can post payments for an arbitrary patient.
+
+### High severity
+
+**1. Cross-patient audit record access via `recid` (lines ~70–78).**
+`$recid` comes straight from `$_REQUEST`, and `getPortalAuditRec($recid)` is called without checking that the record belongs to `$pid`. The record is then decrypted and rendered, including card holder name, card number, CVV, and transaction data. Any authenticated user who can reach this page can read another patient's payment record by guessing or iterating IDs. The lookup must be scoped to the current patient (e.g., `WHERE id = ? AND pid = ?`), or the result must be checked against `$pid` before use.
+
+**2. Portal patient can override `$pid` and post payments for others (lines ~58–59, and `form_pid` in the save path).**
+`$pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;` lets request input replace the session patient ID. The save path then uses `$_POST['form_pid']` for `ar_session`, `ar_activity`, and `frontPayment`. In portal mode, the session `pid` should be authoritative, and any request-supplied pid should be rejected or ignored. This line predates the PR, but the PR touches this area and adds `recid` alongside it.
+
+**3. Sensitive card data stored and displayed (lines ~ `ccdata` display block).**
+The page now renders `cardNumber` in full for staff, and `cardCode` (CVV) for staff in the non-transaction branch. Storing CVV at rest is prohibited under PCI DSS, even if it was already stored before. The PR expands the display surface and should not ship without removing CVV persistence entirely, masking the PAN, and documenting the data-retention change.
+
+### Medium severity
+
+**4. Removed encounter fallback (`calendar_arrived`) (save path, ~line 220).**
+The block that resolved an empty `$enc` through `calendar_arrived($form_pid)` was deleted for copay, cash, and pre-payment flows. Payments with `$enc == 0` will now post against encounter 0 with no fallback. If this is intentional, say so in the PR description. Otherwise restore the logic.
+
+**5. Race in `sequence_no` assignment (several places).**
+`SELECT IFNULL(MAX(sequence_no),0)+1` followed by an insert is not safe under concurrency. Wrapping it in `sqlBeginTrans()`/`sqlCommitTrans()` does not prevent two transactions from reading the same max value unless the rows are locked (e.g., `SELECT ... FOR UPDATE`) or the column has a unique constraint with retry. Duplicate sequence numbers are likely with concurrent posts for the same encounter.
+
+**6. Totals computed from formatted strings (`echoLine`).**
+`$balance = bucks(...)` returns a formatted string (currency symbol and/or thousands separators). `$sum_balance += $balance * 1` then coerces that string to a number incorrectly, so the "Total" row can be wrong, e.g., `"$1,234.00" * 1` yields `1`. Accumulate the numeric value before formatting.
+
+**7. Inconsistent user ID for `post_user` (copay and other branches).**
+The copay branch uses `$_SESSION['authId']` (the patient portal session may not set this), while the other branches use `$_SESSION['authUserID']`. The original code also changed `post_user` from the hard-coded `3` to a session value. If `authId` is unset in portal mode, this yields a notice and a NULL or wrong `post_user`. Use one session key consistently, and confirm which one is set in portal context.
+
+**8. Malformed HTML and fragile row structure (Patient Coverage row).**
+`echo '<tr height="5"><td colspan="3"></td></tr><tr">';` contains a stray `"` in the tag. The `<tr>` for "Patient Coverage" is opened in one `if`/`else` block and its `<td>` content is emitted after it, which is hard to follow and easy to break.
+
+**9. Broken `pattern` attributes.**
+`pattern="\d"` matches exactly one digit. It is applied to the card number and to the zip code field, so native constraint validation will reject any real card number or 5-digit zip. Use `\d{5}` for zip and remove or correct the card number pattern.
+
+**10. Unescaped JSON in `<script>` blocks.**
+`<?php echo json_encode($GLOBALS['gateway_public_key']); ?>` and the `apiKey` equivalent do not escape `</script>` sequences. Use `json_encode(..., JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)`.
+
+### Low severity
+
+**11. Undefined index notices.**
+`$ccdata['authCode']` is read when `$edata` is false (so `$ccdata` is an empty array). `$_REQUEST['hidden_patient_code']` is read unguarded on first GET. `$tmprow['facility_id']` is read without a null check. Guard these.
+
+**12. Hard-coded year list.** The expiry year options (2019–2028) will be stale. Generate them from the current year.
+
+**13. Silent behavior change in invoice display.** The "bring today's encounter to the top" logic and the `$dispdate = date("Y-m-d")` override were removed. This may be intentional, but it is not mentioned and changes what users see.
+
+**14. Unused variable.** `$isPortal` is set but I don't see it used in the shown diff. Remove it or document its purpose.
+
+**15. Scope of the change.** The diff combines a feature (audit review), a security-sensitive posting change, and a large whitespace/reformat pass. Reviewing the actual logic changes is harder than it should be. Split the reformatting into its own commit.
+
+### Summary
+
+Do not merge until items 1–3 are addressed. Item 1 allows reading other patients' card data, item 2 allows posting payments against another patient's account, and item 3 stores and displays CVV. Items 4–10 should also be fixed or explicitly justified.

@@ -1,0 +1,114 @@
+# Security Review: `C_Document::retrieve_action()` and the `$disable_exit` change
+
+**Summary:** The diff adds an in-memory "return the document bytes" mode to `retrieve_action()`. The path into this function is reachable from the web, and the parameter check is loose. As a result, the new mode creates new exposure, and it relies on authorization and crypto code that is already weak.
+
+Line references are to the new file. Items marked "verify" depend on code outside the diff.
+
+---
+
+## Findings in the new code
+
+### 1. `$disable_exit` is web-controllable, and `== true` is always true for strings
+- **Location:** lines ~433, ~515, ~554 (`if($disable_exit == true)`)
+- **OWASP:** A04 Insecure Design, A03 Injection (XSS)
+- **Problem:**
+  - OpenEMR's `Controller::act()` maps query-string keys to action arguments in order. For example: `controller.php?document&retrieve&patient_id=..&document_id=..&as_file=..&original_file=..&disable_exit=..`.
+  - A web request therefore supplies `$disable_exit` as a **string**.
+  - In PHP, `"false" == true` and `"0 " == true` are both true. Any non-empty value turns the mode on, even when the caller means "off".
+  - When the mode is on, the raw document bytes are returned without the `Content-Type`, `Content-Disposition: attachment`, or `X-Content-Type-Options` headers that the normal download path sets.
+  - If the dispatcher echoes the return value, an uploaded HTML or SVG "document" renders inline in the OpenEMR origin. That is stored XSS against any clinician who opens the link, and it could lead to session hijack.
+- **Severity:** High (verify how `Controller::act` handles the return value)
+- **Fix:**
+  - Make this an internal-only option. Use a separate private method such as `getDocumentContent()` that the dispatcher cannot reach.
+  - If it must stay a parameter, use a strict check: `$disable_exit === true`.
+  - Apply the same strict comparison to `$as_file` and `$original_file`, which have the same loose-comparison problem today.
+
+### 2. Return mode skips the encryption the user asked for, and skips logging
+- **Location:** lines ~513–517. The return happens before `if ($doEncryption)`.
+- **OWASP:** A02 Cryptographic Failures, A09 Logging & Monitoring Failures
+- **Problem:**
+  - When `encrypted=true` and a passphrase are POSTed, the new path still returns **plaintext**.
+  - It also returns before any `document_upload_download_log()` call. PHI can leave the system with no audit-trail entry, which matters for HIPAA access logging.
+  - The CouchDB branch (line ~433) has the same issue: it logs only on failure.
+- **Severity:** Medium
+- **Fix:**
+  - Log every content retrieval, whatever the output mode.
+  - Either refuse to combine `disable_exit` with encryption, or honor encryption in both modes.
+
+### 3. Whole file is now always read into memory, with no error checks
+- **Location:** lines ~513–514 (`fopen` / `fread(filesize($url))`), which moved above the encryption check
+- **OWASP:** A04 Insecure Design (resource exhaustion)
+- **Problem:**
+  - Previously, the non-encrypted path streamed the file. Now every download of an original file loads the entire file into memory.
+  - Large documents (for example, scanned charts or DICOM files) can exhaust `memory_limit`, so repeated requests cause DoS.
+  - `fopen` and `filesize` failures are not checked. `fread` on `false` raises warnings, which may disclose filesystem paths if `display_errors` is on.
+  - The file handle is never closed on the return path.
+- **Severity:** Low–Medium
+- **Fix:**
+  - Read the whole file only when `$disable_exit` or `$doEncryption` requires it. Otherwise keep streaming with `fpassthru` or `readfile`.
+  - Check for errors and call `fclose`.
+
+---
+
+## Findings in pre-existing code this change relies on
+
+### 4. No object-level authorization (IDOR)
+- **Location:** `retrieve_action()` as a whole
+- **OWASP:** A01 Broken Access Control
+- **Problem:**
+  - The document is loaded by `$document_id` alone.
+  - Nothing checks that `$d->get_foreign_id() == $patient_id`.
+  - Nothing checks that the user has ACL rights to the document's category or to that patient (`acl_check('patients','docs')`, category ACLs, sensitivity).
+  - Any authenticated user can enumerate document IDs and download any patient's records.
+  - The new return mode makes this easier to reuse from other code paths (portal, fax, email, CCDA), which can inherit the missing check.
+- **Severity:** High (PHI disclosure)
+- **Fix:** Enforce the ownership check and ACL checks at the top of the function, before any branch that returns content.
+
+### 5. Weak document encryption
+- **Location:** `$this->encrypt()` / `decrypt()` used on line ~524
+- **OWASP:** A02 Cryptographic Failures, A06 Vulnerable & Outdated Components
+- **Problem:**
+  - Verify, but in this class these helpers use `mcrypt` with TripleDES in **ECB** mode, with the raw passphrase as the key and no KDF or salt.
+  - ECB leaks plaintext structure, 3DES is deprecated, and there is no integrity protection.
+  - `mcrypt` was removed in PHP 7.2.
+- **Severity:** Medium
+- **Fix:**
+  - Use libsodium (`sodium_crypto_secretbox`) or OpenSSL AES-256-GCM.
+  - Derive the key with Argon2 or PBKDF2 and a random salt.
+
+### 6. Predictable temp file for encrypted output
+- **Location:** lines ~525–526 (`$GLOBALS['temporary_files_dir'] . "/encrypted_" . $d->get_url_file()`)
+- **OWASP:** A04 Insecure Design, A05 Security Misconfiguration
+- **Problem:**
+  - The temp filename is predictable and derived from the document name, so concurrent requests can collide or race.
+  - Verify whether the file is reliably `unlink`ed. If the temp directory is shared or web-accessible, the encrypted copies remain there.
+- **Severity:** Low
+- **Fix:** Use `tempnam()` with restrictive permissions and `unlink` in a `finally` block.
+
+### 7. Shell command built from document paths in the conversion branch (verify)
+- **Location:** around lines ~540–555 (`$from_pathname`, `$convertedFile`)
+- **OWASP:** A03 Injection, plus path traversal
+- **Problem:**
+  - In upstream OpenEMR, this branch calls ImageMagick through `exec("convert ... \"$url\" ...")`. The arguments come from the stored document URL or filename, which originates from user upload names.
+  - Without `escapeshellarg()`, a crafted filename could cause command injection.
+  - `$from_pathname` is built from the DB URL with no canonicalization, so `../` traversal outside `OE_SITE_DIR/documents` is possible if the URL can be influenced.
+- **Severity:** High if confirmed
+- **Fix:**
+  - Use `escapeshellarg()` on every argument, or use the Imagick extension instead of a shell call.
+  - Run `realpath()` and confirm the result is under the documents directory.
+
+### 8. Header and filename handling
+- **Location:** the `Content-Disposition` header (outside the diff)
+- **OWASP:** A03 Injection
+- **Problem:** Unsanitized filenames in `Content-Disposition` can break the header or cause the browser to save the file under a misleading name or type.
+- **Severity:** Low
+- **Fix:** Sanitize the filename and use the `filename*=UTF-8''` encoding.
+
+---
+
+## Recommended minimum before merge
+1. Move the "return content" behavior into a private, non-routable method. Do not add a dispatcher-reachable parameter, and fix the loose `==` comparisons.
+2. Add patient-ownership and ACL checks at the top of the function (#4).
+3. Make sure every retrieval path writes an audit log entry and respects the encryption request (#2).
+4. Restore streaming for normal downloads (#3).
+5. Track #5 and #7 as follow-up issues.

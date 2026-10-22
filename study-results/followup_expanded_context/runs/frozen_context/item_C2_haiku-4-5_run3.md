@@ -1,0 +1,93 @@
+# Pull Request Review
+
+## Issues Found
+
+### 1. **Deleted `getOne()` method breaks base class contract** (HIGH SEVERITY)
+**Location:** Lines 177-195 (deleted method)
+
+**Problem:** The `getOne()` method was removed from `FhirCareTeamService`, but `FhirServiceBase` declares it as an abstract method that implementations "are required to override" (per the docblock). While `FhirServiceBase` does provide a concrete implementation of `getOne()`, removing the override from this subclass could cause unexpected behavior if the base implementation doesn't properly handle `FhirCareTeamService`-specific logic.
+
+**Severity:** HIGH - This breaks the expected override pattern and could cause bugs if base class behavior differs from what this service needs.
+
+---
+
+### 2. **Changed boolean parameter semantics without clear intent** (MEDIUM SEVERITY)
+**Location:** Line 189
+```php
+// Before: return $this->careTeamService->getAll($openEMRSearchParameters, false, $puuidBind);
+// After:  return $this->careTeamService->getAll($openEMRSearchParameters, true, $puuidBind);
+```
+
+**Problem:** The second parameter was changed from `false` to `true` with no explanation or comment. Without knowing what this parameter does in `CareTeamService::getAll()`, this is a semantic change that could significantly alter behavior. There's no TODO or explanation for why this is now `true`.
+
+**Severity:** MEDIUM - Logic change lacks justification and may cause unintended data filtering/retrieval behavior.
+
+---
+
+### 3. **Potential null reference in role assignment** (MEDIUM SEVERITY)
+**Location:** Lines 83-87
+
+**Problem:** The code does `$dataRecordProvider = end($dataRecordProviderList);` but never validates that `$dataRecordProviderList` is not empty. If the array is empty, `end()` returns `false`, and subsequent operations like `$dataRecordProvider['role_code']` will cause warnings/errors.
+
+**Severity:** MEDIUM - Edge case but could cause runtime errors with malformed data.
+
+---
+
+### 4. **Missing null check on description** (LOW SEVERITY)
+**Location:** Lines 99-101
+```php
+$description = lookup_code_descriptions($dataRecordFacility['facility_taxonomy']);
+if (empty($description)) {
+    $description = null;
+}
+```
+
+**Problem:** This explicitly sets `$description` to `null`, but then passes it to `$roleCoding->setDisplay($description)` without checking if the method accepts null values. If `setDisplay()` requires a string, this will cause issues.
+
+**Severity:** LOW - Depends on method implementation, but the explicit `null` assignment is suspicious.
+
+---
+
+### 5. **Inconsistent reference creation syntax** (LOW SEVERITY)
+**Location:** Lines 92, 123 (and throughout)
+
+**Problem:** The code now uses `UtilsService::createRelativeReference()` helper method instead of string concatenation. However, the exact behavior differs from the old `"Practitioner/" . $pruuid` approach. If `createRelativeReference()` formats references differently (e.g., with trailing slashes or other transformations), this could break FHIR compliance.
+
+**Severity:** LOW - Assumption that the helper produces equivalent output, but should be verified.
+
+---
+
+### 6. **Unused imports** (LOW SEVERITY)
+**Location:** Line 13-24
+
+**Problem:** Several imports are added but `FhirCodeSystemUris` is used in the code (lines 43, 72, 94) but not imported at the top of the file.
+
+**Severity:** LOW - This will cause a runtime error when the code is executed.
+
+---
+
+### 7. **Missing interface implementation** (MEDIUM SEVERITY)
+**Location:** Line 18
+```php
+class FhirCareTeamService extends FhirServiceBase implements IResourceUSCIGProfileService
+```
+
+**Problem:** The class now implements `IResourceUSCIGProfileService` interface, but this interface definition is not provided in the context. The two new methods `getProfileURIs()` and `getPatientContextSearchField()` are added to satisfy this, but without seeing the interface contract, we can't verify the signatures are correct.
+
+**Severity:** MEDIUM - Interface contract cannot be verified from provided context.
+
+---
+
+### 8. **Trailing whitespace and formatting** (LOW SEVERITY)
+**Location:** Lines 92, 109, 175-177
+
+**Problem:** Multiple unnecessary blank lines added (e.g., three blank lines at 175-177, two at 92).
+
+**Severity:** LOW - Code style issue, but should be cleaned up.
+
+---
+
+## Summary
+- **1 HIGH severity issue:** Deleted `getOne()` method
+- **2 MEDIUM severity issues:** Changed boolean parameter, missing null check on array, missing interface validation
+- **2 LOW severity issues:** Null handling in display, missing import `FhirCodeSystemUris`

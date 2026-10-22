@@ -1,0 +1,184 @@
+# Security Review: `interface/forms/eye_mag/report.php` (new file) and related `custom_report.php`
+
+**Verdict: Do not merge as-is.** The most serious issue is a SQL injection in `display_draw_image()`. The file also has request-controlled top-level variable overrides that can change which patient is reported, and many unescaped outputs that enable stored XSS.
+
+Findings are grouped by severity. Items 1–12 are in the new file. Items 13–18 are in `custom_report.php`, which this form depends on because it includes every form's `report.php` at top level.
+
+---
+
+## Findings in the new file
+
+### 1. SQL injection in `display_draw_image()`
+- **Location:** `report.php`, `display_draw_image()`:
+  ```php
+  $sql = "SELECT * from documents where documents.url like '%".$filename."'";
+  $doc = sqlQuery($sql);
+  ```
+  `$filename` is built from `$pid`, `$encounter`, and `$zone`. `$pid` comes from `$_REQUEST['ptid']` (top level) and `$encounter` from `$_REQUEST['encid']` or from the `$val` POST value in `custom_report.php`. Neither is validated or escaped.
+- **OWASP:** A03 Injection
+- **Severity:** High
+- **Impact:** An authenticated user can inject into this query, which is called on every report render. The injection can be used for boolean or time-based blind extraction from any table the DB user can read (users, patient data, password hashes).
+- **Fix:** Use a bound parameter (`sqlQuery($sql, array('%'.$filename)`), cast `$pid` and `$encounter` to integers, and reject non-numeric input. The commented-out DRAW block has the same concatenation pattern and should be removed rather than revived.
+
+### 2. Request parameters overwrite the session-established patient and encounter context
+- **Location:** `report.php`, top-level code:
+  ```php
+  if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+  if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+  if ($_REQUEST['formid']) $form_id = $_REQUEST['formid'];
+  if ($_REQUEST['formname']) $form_name=$_REQUEST['formname'];
+  ```
+  `custom_report.php` includes this file at global scope inside its loop (`include_once(... "/forms/$formdir/report.php")`). That executes these assignments in the middle of a report generated for a different patient, so the request can change `$pid` for the rest of the page.
+- **OWASP:** A01 Broken Access Control, A04 Insecure Design
+- **Severity:** High
+- **Impact:** A user who can view one patient's custom report can supply `ptid=<other patient>` and get the remaining sections (demographics, billing, notes, documents) rendered for the other patient. Whether the ACL check passed for the original patient no longer matters.
+- **Fix:** Remove top-level side effects. Put the logic in a function that receives explicit parameters, and take the patient from `$_SESSION['pid']` or verify it against an authorized encounter.
+
+### 3. No authorization checks, and no check that the encounter belongs to the patient
+- **Location:** `report.php`, `narrative()` and `eye_mag_report()`. Neither calls `acl_check()`. The queries join `form_encounter` on `encounter` and filter only by `form_eye_mag.pid`. They never check `form_encounter.pid = ?`.
+- **OWASP:** A01 Broken Access Control
+- **Severity:** Medium–High
+- **Impact:** Clinical data (demographics, history, visual acuity, prescriptions, the patient photo) is exposed without a check on the `patients`/`encounters` ACL. Any encounter-to-patient mismatch in the data is also rendered.
+- **Fix:** Require `acl_check('patients','med')` or the equivalent for the clinical sections, and add `AND form_encounter.pid = ?` to every encounter query.
+
+### 4. Variable variables and `extract()` from database values
+- **Location:**
+  ```php
+  while ($prefs= sqlFetchArray($result)) {
+    $LOCATION = $prefs['LOCATION'];
+    $$LOCATION = text($prefs['GOVALUE']);
+  }
+  ...
+  @extract($objQuery);
+  @extract($encounter_data);
+  ```
+- **OWASP:** A03 Injection (variable injection), A09 Logging and Monitoring (errors suppressed)
+- **Severity:** Medium
+- **Impact:** A stored `LOCATION` value (from the prefs table) can overwrite any global, including `$pid`, `$encounter`, `$webroot`, `$css_header`, and `$display_Add`, which is then used in a `class` attribute. `extract()` of a row from `form_encounter.*` plus `form_eye_mag.*` can overwrite `$pid`, `$form_id`, and `$form_folder` (which is used to build include paths). The `@` operator hides the resulting warnings.
+- **Fix:** Use an explicit whitelist of allowed keys. Do not `extract()` query results. Pull named fields explicitly.
+
+### 5. Stored XSS: unescaped clinical text
+- **Location:** Many lines in `narrative()` and `display_draw_image()`. Examples:
+  - `echo $HPI1;`, `echo $HPI2`, `echo $HPI3` (no `text()`)
+  - `echo "&nbsp;".$CHRONIC2."<br />";`, `$CHRONIC3`
+  - `echo $item['codetext']`, `echo $item['code']`, `echo $item['plan']` (only newline replacement, no escaping)
+  - `echo $item` and `echo $PLAN2` (orders)
+  - `echo $note->get_note()` in `display_draw_image()`
+  - `class="refraction <?php echo $display_Add; ?>"`
+  - `style="background: <?php echo $background; ?> ..."`
+  - `echo $from_file` and `echo $filetoshow` (includes `$pid` unescaped)
+  - `echo $MOTILITY_*` (unescaped values)
+- **OWASP:** A03 Injection (XSS)
+- **Severity:** High
+- **Impact:** A clinician or patient-facing text field containing `<script>` or an attribute breakout executes in the context of any user who views the report, including in the PDF/fax path. HPI and plan text are common targets.
+- **Fix:** Apply `text()` (or `attr()` in attributes) to every value, or sanitize rich text with an allow-list if HTML is intended. Escape the `$pid` and file paths when they are placed in attributes.
+
+### 6. Undefined and dead code that is dangerous if reused
+- **Location:** `left_overs()` references undefined `$table_name` and `$id`. `full_report()` contains a `return;` at the top but then uses `print` with raw key names. The commented-out DRAW block uses SQL concatenation.
+- **OWASP:** A04 Insecure Design
+- **Severity:** Low
+- **Fix:** Delete the dead functions. Clearly-marked dead code is a common source of later reactivation.
+
+### 7. Sanitization flags set after `globals.php` has loaded
+- **Location:**
+  ```php
+  $fake_register_globals=false;
+  $sanitize_all_escapes=true;
+  require_once("../../globals.php");
+  ```
+  These flags are set in a file that is included after `globals.php` has already run in the include path from `custom_report.php`, so the settings have no effect there.
+- **OWASP:** A05 Security Misconfiguration
+- **Severity:** Low
+- **Fix:** Remove these lines. Do not rely on them for input handling. Validate and escape at the point of use.
+
+### 8. Inconsistent and unvalidated request input
+- **Location:** `if ($_REQUEST['CHOICE']) $choice = $_REQUEST['choice'];`. The condition and assignment use different keys, so `$choice` is unset in some requests. All inputs come from `$_REQUEST` (GET and POST) without type checks.
+- **OWASP:** A03 Injection (input validation)
+- **Severity:** Low
+- **Fix:** Use a fixed set of values for `$choice`, read from one source, and validate against it.
+
+### 9. Absolute server paths in HTML output
+- **Location:** `narrative()` and `display_draw_image()`, PDF branch: `echo "<img src='". $from_file."'..."`, where `$from_file` is `$GLOBALS["fileroot"] . "/sites/" . ...`.
+- **OWASP:** A05 Security Misconfiguration (information disclosure)
+- **Severity:** Low
+- **Impact:** Server paths are rendered into HTML that html2pdf fetches. If a document URL in the DB is manipulated, html2pdf may read arbitrary local files into the PDF.
+- **Fix:** Use the document ID through the controller instead of local paths, or constrain paths to the documents directory with `realpath()`.
+
+### 10. Signature file lookup from `providerID`
+- **Location:** `file_exists($GLOBALS["webserver_root"]."/interface/forms/".$form_folder."/images/sign_".$providerID.".jpg")`.
+- **OWASP:** A01
+- **Severity:** Low
+- **Impact:** Only `file_exists` is performed, and `$providerID` comes from the DB (an integer). Low risk, but a cast to `int` would make that explicit.
+
+### 11. Missing audit logging of PHI access
+- **Location:** The report renders clinical and demographic data with no access log entry.
+- **OWASP:** A09 Security Logging and Monitoring
+- **Severity:** Low
+- **Fix:** Log report access (user, patient, encounter, form) through OpenEMR's audit mechanism.
+
+### 12. Other notes
+- `$bad` is used before initialization (`$bad++`). This produces warnings, not a vulnerability.
+- The `<?` short tags depend on `short_open_tag` being enabled, which is a portability and deployment risk.
+- `title="<?php xla(...); ?>"` does not echo, so the tooltip is empty. Functional bug.
+
+---
+
+## Findings in related code (`custom_report.php`)
+
+### 13. SQL injection via `$pid` in raw queries
+- **Location:**
+  ```php
+  where i1.patient_id = '$pid' and ...          // immunizations
+  WHERE batchcom.patient_id='$pid'              // batchcom
+  "SELECT * FROM lists WHERE id = '$rowid'"     // issues (rowid is \d+, so safe)
+  ```
+- **OWASP:** A03 Injection
+- **Severity:** High
+- **Impact:** `$pid` can be overwritten from the request by item 2, so these queries become injectable.
+- **Fix:** Use bound parameters everywhere and fix item 2.
+
+### 14. Command injection in `exec()`
+- **Location:** `exec("convert -density 200 \"$from_file\" -append -resize 850 \"$to_file\"");`
+- **OWASP:** A03 Injection
+- **Severity:** Medium (depends on whether filenames can contain `"`, `$`, or backticks; they are derived from document URLs and uploads)
+- **Fix:** Use `escapeshellarg()` for each argument, or use a library instead of the shell.
+
+### 15. Stored XSS in issues, diagnoses, and communications
+- **Location:**
+  - `echo $irow['title']`, `$irow['comments']`, `$dcode` (issues)
+  - `echo $row{'batchcom_data'}` and `$row{'user_name'}`. The curly-brace string offset syntax is a parse error in PHP 8, and `$row{'msg_txt'}` refers to a column that does not exist (`msg_text`).
+  - `echo $facility['name']` and similar, unescaped
+- **OWASP:** A03 Injection (XSS), A06 Vulnerable Components (PHP version compatibility)
+- **Severity:** High for stored data; Low for the facility fields
+- **Fix:** Apply `text()` to output, and replace `{}` with `[]`.
+
+### 16. Outdated client-side library
+- **Location:** `<script src=".../jquery-min-1-5/index.js">`
+- **OWASP:** A06 Vulnerable and Outdated Components
+- **Severity:** Medium
+- **Impact:** jQuery 1.5 has multiple known XSS CVEs (for example CVE-2011-4969 and CVE-2012-6708).
+- **Fix:** Upgrade to a supported jQuery release.
+
+### 17. PDF output sent to the patient portal without a CSRF token
+- **Location:** `if ($PDF_OUTPUT == 2)` path calls `cms_portal_call('putmessage', ...)`. `$PDF_OUTPUT` comes from `$_POST['pdf']`, with no CSRF token.
+- **OWASP:** A01 Broken Access Control
+- **Severity:** Low–Medium
+- **Impact:** A cross-site POST can trigger sending a clinical report to the patient's portal account.
+- **Fix:** Require a CSRF token on state-changing POST actions.
+
+### 18. Unvalidated `$_GET`/`$_POST` array iteration
+- **Location:** `$ar = $_GET` or `$_POST`, and the loop `foreach ($ar as $key => $val)`. Keys are parsed with regex and values drive `include` and function calls such as `call_user_func($res[1] . "_report", ...)`.
+- **OWASP:** A03 Injection, A04 Insecure Design
+- **Severity:** Medium
+- **Impact:** `$res[1]` controls the function name. It is constrained to `\w+` by the regex, but any function named `*_report` will be called. Dynamic dispatch on request data should use a whitelist of known form directories.
+- **Fix:** Check `$res[1]` against the list of installed form directories before calling.
+
+---
+
+## Summary
+
+| # | Location | Category | Severity |
+|---|----------|----------|----------|
+| 1 | report.php `display_draw_image` | A03 SQLi | High |
+| 2 | report.php top-level `$_REQUEST` overrides | A01, A04 | High |
+| 3 | report.php `narrative`, no ACL/

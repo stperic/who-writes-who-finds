@@ -1,0 +1,112 @@
+## Summary
+
+This is a large, legacy-style report file. It mostly works by using global state and loose output, which raises several correctness, security, and maintainability concerns. Below are the issues I'd flag before merge.
+
+---
+
+### High severity
+
+**1. No authorization/ACL check on patient data access**
+- Location: top of `report.php`, where `$pid`, `$encounter`, `$form_id` are taken straight from `$_REQUEST['ptid']`/`encid`/`formid`.
+- Problem: Unlike `custom_report.php` (which gates sections behind `acl_check('patients','med')`, etc.), this file never verifies the current user is authorized to view the given patient/encounter. Any authenticated user who can guess/enumerate `ptid`/`encid` values can pull another patient's eye exam report (chief complaint, HPI, exam findings, photo). This is a classic IDOR / broken access control issue.
+- Severity: **High** (PHI exposure).
+
+**2. SQL injection via string concatenation in `display_draw_image()`**
+```php
+$sql = "SELECT * from documents where documents.url like '%".$filename."'";
+```
+- `$filename` is built from `$pid` and `$encounter`, both taken unsanitized/uncast from `$_REQUEST`. All other queries in this file correctly use `sqlQuery($query, array(...))` placeholders — this one does not.
+- Severity: **High** (SQL injection).
+
+**3. Inconsistent output escaping → stored XSS**
+- Examples:
+  - `&nbsp;<?php echo $HPI1; ?>` — not wrapped in `text()`, while the parallel `HPI2`/`HPI3` fields a few lines later *are* wrapped (`echo text($HPI2)`).
+  - In the Impression/Plan loop: `echo $item['codetext']."<br />";`, `echo $item['code']."<br />";`, `echo $item['plan']."</div><br />";` — only newline-to-`<br>` substitution is done, no HTML-escaping.
+  - `foreach ($PLAN_items as $item) { echo $item."<br />"; }` and `echo $PLAN2."<br />";` — raw DB content echoed unescaped.
+- Problem: These fields are free-text DB content (clinician/staff entered); if they ever contain `<script>`/HTML, it will render unescaped — classic stored XSS, especially since this report can be viewed in-browser (not just PDF).
+- Severity: **High**.
+
+---
+
+### Medium severity
+
+**4. Heavy use of `extract()` / dynamic variables (`$$var`) on DB rows**
+```php
+@extract($objQuery);
+@extract($encounter_data);
+...
+$$LOCATION = text($prefs['GOVALUE']);
+```
+- Problem: Imports arbitrary DB column/pref names directly into local/global variable scope. This is hard to trace, easy to accidentally collide with existing variables (e.g., `$pid`, `$id`, `$encounter`), and masks bugs because of the `@` suppression. If `form_eye_mag_prefs.LOCATION` ever contained a sensitive variable name, it could silently overwrite it.
+- Severity: **Medium** (maintainability + latent security risk).
+
+**5. Unvalidated request parameters used in filesystem/SQL paths**
+```php
+if ($_REQUEST['ptid']) $pid = $_REQUEST['ptid'];
+if ($_REQUEST['encid']) $encounter=$_REQUEST['encid'];
+```
+- Problem: No casting to `int` or validation. These feed directly into file path construction (`$file_location`) and the SQL `LIKE` query noted above. Should be cast (e.g. `(int)$_REQUEST['ptid']`) at minimum.
+- Severity: **Medium**.
+
+**6. Case-mismatched request key check (likely bug)**
+```php
+if ($_REQUEST['CHOICE']) $choice = $_REQUEST['choice'];
+```
+- Problem: Checks `'CHOICE'` but reads `'choice'`. `$_REQUEST` keys are case-sensitive, so unless both are sent this never sets `$choice` as intended.
+- Severity: **Medium** (functional bug).
+
+**7. Inconsistent global variable name: `webroot` vs `web_root`**
+- `display_draw_image()` and the patient-photo block use `$GLOBALS['webroot']`, while other parts of the same functions use `$GLOBALS['web_root']`.
+- Problem: If only one of these globals is actually defined by `globals.php`, image URLs built with the other will be broken (missing/empty prefix).
+- Severity: **Medium** (functional bug — worth verifying against globals.php).
+
+**8. Facility query built by string concatenation of session value**
+```php
+$sql = "select * from facility where id=" . $_SESSION['pc_facility'];
+```
+- Problem: Not parameterized. Even though `pc_facility` is session data rather than direct user input, this is inconsistent with the parameterized style used elsewhere and is poor defense-in-depth practice.
+- Severity: **Medium/Low**.
+
+---
+
+### Low severity / maintainability
+
+**9. Large blocks of dead/commented-out code**
+- The entire alternate `DRAW` implementation (including a SQL-injectable query and an `<img ... heght=75>` typo) is left commented inside `eye_mag_report()`, and `full_report()` immediately `return`s before doing anything.
+- Problem: Dead code adds confusion and risk if someone later uncomments the vulnerable block.
+- Severity: Low (should be removed).
+
+**10. Widespread `@` error suppression**
+- `@extract(...)` masks notices/errors that could reveal real bugs (e.g., empty query results).
+- Severity: Low/Medium (reliability/debuggability).
+
+**11. Short open tag usage**
+```php
+</div> <?
+```
+- Problem: Bare `<?` instead of `<?php`; breaks if `short_open_tag` is off.
+- Severity: Low.
+
+**12. Unused globals**
+- `global $formres; global $dateres; global $printable;` declared in `narrative()` but never used in the function body.
+- Severity: Low (dead code).
+
+**13. Missing trailing newline / closing `?>` left in file**
+- Minor style issue; OpenEMR convention (and general PHP best practice) is to omit the closing tag to avoid accidental whitespace/output.
+- Severity: Low.
+
+**14. Fragile mixed echo/closing-tag style**
+```php
+echo "<i>".xlt('Timing'); ?>:</i>  &nbsp;<?php echo text($TIMING1)."<br />";
+```
+- Problem: Splitting a logical line across `echo`, `?>`, literal HTML, and `<?php` again is confusing and easy to break when edited. A plain `echo` with full markup would be clearer and less error-prone.
+- Severity: Low (readability/maintainability).
+
+**15. No defensive check on empty query results**
+- `sqlQuery()` results are extracted without checking they returned a row; if `$pid`/`$encounter` don't match any record, the rest of the function silently renders with undefined variables rather than showing an error.
+- Severity: Low/Medium (reliability).
+
+---
+
+### Recommendation
+Before merging, at minimum: add an explicit ACL/ownership check for the requested `pid`/`encounter`/`form_id`, convert the `display_draw_image()` query to a parameterized statement, audit all `echo $field;` calls to ensure consistent use of `text()`, and cast/validate `$_REQUEST` inputs. The `extract()`/dynamic-variable patterns and dead code are worth cleaning up but are not blocking in the same way as the security items.

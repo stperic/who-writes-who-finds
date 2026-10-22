@@ -1,0 +1,123 @@
+# Security Review: Controller.class.php routing refactor
+
+## 1. Removed `method_exists()` guard reintroduces a previously-fixed bypass
+**Location:** `Controller::dispatch()` — the `is_callable([$controllerObj, $processMethod])` and `is_callable([$controllerObj, $actionMethod])` checks.
+
+**OWASP Category:** A04:2021 Insecure Design (and indirectly A01 Broken Access Control)
+
+**Problem:** The old code had an explicit comment and corresponding check:
+```php
+// can no longer rely on is_callable since smarty 4 invokes a __call function deep within
+// its classes, thus is_callable() is always true. so need to do both the is_callable
+// and a method_exists() check.
+is_callable([...]) && method_exists($c_obj, ...)
+```
+The new `dispatch()` drops the `method_exists()` half of this check entirely. Per the original author's own comment, `is_callable()` alone is **not reliable** on these Smarty-derived controller objects because `__call()` makes it always return true. This means the “does this action exist” validation that this code previously depended on is now effectively disabled, and arbitrary/garbage action names can reach `$controllerObj->$method(...)`, falling through to Smarty's internal `__call()` magic method with attacker-influenced input.
+
+**Severity:** High — this is a direct regression of a security-relevant check that was intentionally added, and the resulting behavior is undefined/unverified.
+
+---
+
+## 2. Unconditional action invocation when `process=true`
+**Location:** `Controller::dispatch()`:
+```php
+if ($isProcessing || is_callable([$controllerObj, $actionMethod])) {
+    $output .= $callMethod($actionMethod);
+} else {
+    throw new NotFoundHttpException(...);
+}
+```
+
+**OWASP Category:** A04:2021 Insecure Design
+
+**Problem:** When `$isProcessing` is true, the action method is called **regardless** of whether `is_callable()` (weak as it is) even returns true. This removes the "unknown action → reject" behavior for any POST request that sets `process=true`, routing unconditionally into `__call()`/magic dispatch with an attacker-supplied action name. Combined with finding #1, this expands the attack surface for unintended method invocation.
+
+**Severity:** Medium–High.
+
+---
+
+## 3. Unsanitized `action` parameter, including in error messages
+**Location:** `dispatch()`:
+```php
+$action = is_string($params['action'] ?? null) ? $params['action'] : 'default';
+...
+throw new NotFoundHttpException("Action '$action' does not exist on controller: $className");
+```
+
+**OWASP Category:** A03:2021 Injection (Reflected XSS) / A05 Security Misconfiguration
+
+**Problem:** Previously, `$c_action` was sanitized with `preg_replace("/[^A-Za-z0-9_]/", "", ...)` before being used anywhere, including in the "action does not exist" message. The new code uses the raw, attacker-controlled `$action` value both to build the method name and inside an exception message. If this exception's `getMessage()` is ever rendered to the browser (common with custom Symfony exception listeners / debug pages), this is a reflected XSS vector since no output encoding is applied. At minimum, it reintroduces unvalidated user input into a code path that used to sanitize it.
+
+**Severity:** Medium (depends on whether the exception message is rendered to the client — needs verification, but the lost sanitization itself is the concrete regression).
+
+---
+
+## 4. Incomplete ACL centralization — sub-controllers may be directly reachable
+**Location:** `self::VALID_CONTROLLERS` / `self::CONTROLLER_ACL_MAP` in `Controller.class.php`, combined with `C_PracticeSettings.class.php`.
+
+**OWASP Category:** A01:2021 Broken Access Control
+
+**Problem:** `VALID_CONTROLLERS` now exposes `document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `pharmacy`, `x12_partner`, `prescription`, and `practice_settings` as **top-level, directly dispatchable** controllers (e.g. `controller.php?controller=pharmacy&action=list`). However `CONTROLLER_ACL_MAP` only enforces ACLs for `practice_settings` and `prescription`.
+
+Looking at `C_PracticeSettings`, the `admin/practice` ACL check lives in **its own constructor**, and is only invoked when a request is routed through `practice_settings` (e.g. `practice_settings→pharmacy_action`). If `C_Pharmacy`, `C_InsuranceCompany`, `C_InsuranceNumbers`, `C_Document`, `C_DocumentCategory`, `C_X12Partner`, or `C_Hl7` do **not** perform their own independent ACL check in their constructors, then an attacker who calls them directly via `controller=pharmacy` (etc.) completely bypasses the `admin/practice` gate that is supposed to protect practice-configuration and PHI-adjacent data (insurance numbers, HL7 messages, documents).
+
+This refactor makes these controllers *more* directly reachable than before (explicit whitelist entries) while only centralizing ACL enforcement for two of them, which is likely to create a false sense of "ACL is handled centrally now."
+
+**Severity:** High (pending verification of the other controller classes' own ACL checks — this should be confirmed before merge).
+
+---
+
+## 5. Positional-argument mapping based on array iteration order
+**Location:** `dispatch()`:
+```php
+foreach ($params as $key => $value) { ... $args[$key] = ...; }
+...
+$controllerObj->$method(...array_values($args));
+```
+
+**OWASP Category:** A04:2021 Insecure Design
+
+**Problem:** Action method arguments are still passed **positionally**, derived from the iteration order of the `$params`/`$_GET` array rather than by name. This is fragile and was already risky in the old code (`array_reverse`/`array_pop` based), but the refactor preserves it. Any ambiguity in parameter ordering (e.g., via proxies, multiple frameworks constructing `$params` differently, or developer error in future call sites) can cause the wrong value to be passed into security-sensitive positional parameters (e.g., a patient ID landing in a slot meant for a document ID), creating an IDOR-adjacent risk. This is an existing design smell carried forward rather than newly introduced, but worth flagging since the function signature was being reworked anyway.
+
+**Severity:** Medium.
+
+---
+
+## 6. Pre-existing: GET parameter can trigger POST "process" semantics
+**Location:** `dispatch()`:
+```php
+if (isset($params['process'])) {
+    unset($_GET['process']);
+    unset($params['process']);
+    $_POST['process'] = "true";
+}
+```
+
+**OWASP Category:** A01:2021 Broken Access Control / CSRF-adjacent design flaw
+
+**Problem:** This logic (carried over unmodified from `act()`) allows a simple `GET` request containing `process` in the query string to flip global processing state to `"true"`, causing `_action_process()` handlers (which typically perform state-changing operations, e.g., saving practice settings, prescriptions, document metadata) to run. Combined with weak CSRF protections (not shown in this diff, but this pattern is CSRF-friendly since it can be triggered merely by a crafted `<img src=...>` / link), this is worth flagging as a pre-existing high-impact design issue that this diff continues to rely on unchanged.
+
+**Severity:** Medium (pre-existing, unchanged by this diff, but directly relied upon by the new code).
+
+---
+
+## 7. No logging on authorization failures / invalid routing attempts
+**Location:** `checkControllerAcl()`, `dispatch()` exception paths.
+
+**OWASP Category:** A09:2021 Security Logging and Monitoring Failures
+
+**Problem:** Neither ACL denials (`AccessDeniedHelper::denyWithTemplate`) nor invalid controller/action attempts (`BadRequestHttpException` / `NotFoundHttpException`) appear to generate any audit/security log entry in this code path. Repeated probing for valid controller/action names or repeated ACL failures (potential privilege escalation attempts) would go undetected.
+
+**Severity:** Low.
+
+---
+
+## Summary
+The whitelist-based `controller`/`action` dispatch and explicit `CONTROLLER_ACL_MAP` are a structural improvement over the old free-form class-name construction. However, the refactor:
+- Drops a `method_exists()` safety check that was explicitly added to defend against a known Smarty `__call` quirk (#1, #2) — **High**.
+- Allows action invocation to proceed even when the method doesn't validate as callable, when `process=true` (#4/#2 combined) — **Medium/High**.
+- Removes sanitization on the `action` parameter that previously existed, with possible reflected-XSS exposure via exception messages (#3) — **Medium**.
+- Exposes several sub-controllers as directly dispatchable top-level controllers without centralized ACL coverage, risking an authorization bypass if those controllers don't self-enforce ACLs (#4 above) — **High, needs verification**.
+- Carries forward pre-existing fragile positional-argument passing and GET-triggered state-changing "process" semantics (#5, #6).
+
+I'd recommend blocking merge until (a) the `method_exists()` check is restored, (b) the action-exists validation is enforced unconditionally regardless of `process`, and (c) it's confirmed that every controller reachable through `VALID_CONTROLLERS` enforces its own appropriate ACL independent of `CONTROLLER_ACL_MAP`.

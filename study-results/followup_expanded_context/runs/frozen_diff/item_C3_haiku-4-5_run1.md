@@ -1,0 +1,151 @@
+# Code Review - portal_payment.php
+
+## Issues Found
+
+### 1. **CRITICAL - SQL Injection Vulnerability**
+**Location:** Line 59
+```php
+$pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;
+```
+**Problem:** Direct use of `$_REQUEST` without sanitization in arithmetic comparison. While the comparison itself is safer than string concatenation, the value should still be explicitly cast.
+**Severity:** HIGH
+**Fix:** Use `(int)` cast: `$pid = (int)$_REQUEST['hidden_patient_code'] > 0 ? (int)$_REQUEST['hidden_patient_code'] : $pid;`
+
+---
+
+### 2. **CRITICAL - Authentication Bypass**
+**Location:** Lines 26-31
+```php
+$isPortal = false;
+if (isset($_SESSION['pid']) && isset($_SESSION['patient_portal_onsite_two'])) {
+    $pid = $_SESSION['pid'];
+    $ignoreAuth = true;
+    $isPortal = true;
+```
+**Problem:** Setting `$ignoreAuth = true` disables authentication checks. The variable `$isPortal` is set but never used to enforce portal-specific restrictions later in the code.
+**Severity:** HIGH
+**Recommendation:** Use `$isPortal` flag throughout to enforce proper authorization checks and restrict access to sensitive functions like `getAuth()` and payment posting.
+
+---
+
+### 3. **MEDIUM - Logic Error in Condition**
+**Location:** Line 976
+```php
+if ($brow1112['option_id'] != 'credit_card' || $brow1112['option_id'] == 'debit' || $brow1112['option_id'] == 'bank_draft')
+```
+**Problem:** The condition logic is confusing. It skips if option_id is NOT 'credit_card' OR if it's 'debit'/'bank_draft'. This will skip most valid entries. Likely intended: `if ($brow1112['option_id'] == 'credit_card' || $brow1112['option_id'] == 'debit' || $brow1112['option_id'] == 'bank_draft')`
+**Severity:** MEDIUM
+**Impact:** Payment methods may not display correctly.
+
+---
+
+### 4. **MEDIUM - Removed Validation Logic**
+**Location:** Lines 233-238 (removed code from original)
+```php
+// Removed:
+// if ($_REQUEST['radio_type_of_payment'] == 'invoice_balance') {
+//     ;
+// } else {
+//     if (!$enc) {
+//         $enc = calendar_arrived($form_pid);
+//     }
+// }
+```
+**Problem:** Encounter validation logic was removed. When no encounter is specified for non-invoice_balance payments, the code doesn't fallback to finding an appropriate encounter.
+**Severity:** MEDIUM
+**Impact:** Payments may be posted to incorrect or undefined encounters.
+
+---
+
+### 5. **MEDIUM - Race Condition in Transaction Handling**
+**Location:** Lines 262-275, 361-381, 388-405
+```php
+sqlBeginTrans();
+$sequence_no = sqlQuery("SELECT IFNULL(MAX(sequence_no),0) + 1 AS increment FROM ar_activity WHERE pid = ? AND encounter = ?", ...);
+sqlStatement("insert into ar_activity set ... sequence_no = ?" ...);
+sqlCommitTrans();
+```
+**Problem:** Multiple separate SQL operations within transaction. Between `SELECT MAX(sequence_no)` and `INSERT`, another process could insert a record, causing duplicate sequence numbers.
+**Severity:** MEDIUM
+**Fix:** Use `INSERT ... ON DUPLICATE KEY UPDATE` or database-level sequence generation (AUTO_INCREMENT with proper constraints).
+
+---
+
+### 6. **MEDIUM - Inconsistent Function Calls**
+**Location:** Lines 254-258
+```php
+$session_id = sqlInsert(
+    "INSERT INTO ar_session ...",
+    array(...)
+);
+// But other places use:
+$payment_id = idSqlStatement("insert into ar_session set ...", array(...));
+```
+**Problem:** Mixing `sqlInsert()` and `idSqlStatement()` for similar operations. These may have different return values or error handling.
+**Severity:** MEDIUM
+**Impact:** Inconsistent error handling and return value processing.
+
+---
+
+### 7. **MEDIUM - XSS Vulnerability in JavaScript**
+**Location:** Lines 553-559
+```php
+var chargeMsg = <?php $amsg = xl('Payment was successfully authorized...') . "\n" . 
+    xl("..."); 
+    echo json_encode($amsg); 
+?>;
+```
+**Problem:** While `json_encode()` provides some protection, messages contain user-controlled data from `$patdata` concatenated into the JS context.
+**Severity:** MEDIUM
+**Recommendation:** Ensure all variables used in messages are properly escaped before use.
+
+---
+
+### 8. **LOW - Missing CSRF Protection**
+**Location:** Lines 206-212 (form submission handling)
+**Problem:** No CSRF token validation on `POST` requests in `$_POST['form_save']` handling.
+**Severity:** MEDIUM
+**Fix:** Add CSRF token generation and validation using library functions.
+
+---
+
+### 9. **LOW - Inconsistent HTML/JavaScript ID Changes**
+**Location:** Form IDs changed from `payfrm` to `invoiceForm` and `paycredit` to `paymentForm`
+**Problem:** While this is a refactoring improvement, there's a new form introduced (payment-form for Stripe) that uses different naming conventions.
+**Severity:** LOW
+**Impact:** Code maintainability - inconsistent naming across payment gateway implementations.
+
+---
+
+### 10. **LOW - Incomplete Error Handling**
+**Location:** Line 1000+
+```php
+if (!isset($ccdata["cardHolderName"])) {
+    echo '<button...Pay Invoice...';
+} else {
+    echo '<h4>...Locked Payment Pending...';
+}
+```
+**Problem:** No validation that `$ccdata` is actually an array before accessing elements. The decryption at line 80 could return false/null.
+**Severity:** LOW
+**Fix:** Add `if ($edata && is_array($ccdata) && !empty($ccdata))` checks.
+
+---
+
+### 11. **LOW - Deprecated jQuery Methods**
+**Location:** Line 929
+```php
+data = $.parseJSON(jsondata);
+```
+**Problem:** `$.parseJSON()` is deprecated as of jQuery 3.0. Should use native `JSON.parse()`.
+**Severity:** LOW
+**Impact:** Future jQuery compatibility issues.
+
+---
+
+## Summary
+- **Critical Issues:** 2 (SQL injection potential, auth bypass)
+- **Medium Issues:** 5 (logic errors, race condition, CSRF)
+- **Low Issues:** 4 (error handling, deprecated methods)
+
+**Recommendation:** Address critical authentication and SQL injection issues before merging. The logic error in payment method filtering should also be reviewed.

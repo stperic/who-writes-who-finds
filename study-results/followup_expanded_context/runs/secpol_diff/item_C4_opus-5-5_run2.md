@@ -1,0 +1,158 @@
+# Security Review: `interface/forms/eye_mag/report.php`
+
+**Summary:** This change should not be merged as-is. The most serious problems are:
+
+- Request parameters can redirect the report to any patient, and there is no ACL check.
+- A request-controlled value is concatenated into a SQL statement.
+- The report prints many stored clinical fields, and one request parameter, as raw HTML.
+
+Note that `$sanitize_all_escapes=true` turns off OpenEMR's legacy auto-escaping of request input. Any value from `$_REQUEST` therefore reaches the code unmodified.
+
+---
+
+## Critical / High
+
+### 1. Request parameters override patient/encounter context, and there is no authorization check
+- **Location:** Top of file, the lines that set `$pid` from `ptid`, `$encounter` from `encid`, `$form_id` from `formid` and `$form_name` from `formname`.
+- **OWASP:** A01 Broken Access Control (IDOR)
+- **Problem:**
+  - Any logged-in user can supply `ptid`, `encid` and `formid` to replace the session's patient and encounter.
+  - `acl.inc` is included, but `acl_check()` is never called. No check confirms the user may view this patient's chart or this encounter.
+  - Encounter numbers are sequential, so an attacker can enumerate them and read every patient's full eye exam, history, photo and plan.
+- **Severity:** **High** (mass exposure of medical records).
+- **Fix:**
+  - Do not accept `pid` from the request. Use the session `$pid`, or validate the supplied ID against it.
+  - Call `acl_check('patients','med')` (or the appropriate form ACL).
+  - Confirm that the encounter and form belong to that patient.
+
+### 2. SQL injection in `display_draw_image()`
+- **Location:** `display_draw_image()`, the query `"SELECT * from documents where documents.url like '%".$filename."'"`.
+- **OWASP:** A03 Injection (SQLi)
+- **Problem:**
+  - `$filename` is built from `$pid` and `$encounter`.
+  - Both can come straight from `$_REQUEST['ptid']` and `$_REQUEST['encid']`, and neither is cast or escaped.
+  - A value such as `encid=1' UNION SELECT ... -- ` gives full read access to the database, including the `users` table, password hashes and all PHI.
+- **Additional problem:** Even without malicious input, the query is wrong.
+  - The leading `%` wildcard means patient `1` also matches files belonging to patient `11`, `21`, and so on.
+  - `_` is itself a LIKE wildcard.
+  - The query is not limited by `foreign_id`.
+  - As a result, another patient's drawings can appear in this patient's report, and this file is used for faxes and PDFs.
+- **Severity:** **Critical**
+- **Fix:**
+  - Use a bound parameter, e.g. `sqlQuery("SELECT id FROM documents WHERE url LIKE ? AND foreign_id = ?", array('%/'.$filename, $pid))`.
+  - Escape LIKE wildcards, cast `$pid` and `$encounter` to int, and match on an exact path.
+
+### 3. Reflected XSS through `$pid` in image URLs
+- **Location:** Two places:
+  - Patient photo block: `$filetoshow = ...patient_id=$pid...` followed by `echo "<img src='".$filetoshow."'..."`.
+  - The equivalent line in `display_draw_image()`.
+- **OWASP:** A03 Injection (XSS)
+- **Problem:**
+  - `$pid` comes from `$_REQUEST['ptid']` and is printed inside a single-quoted `src` attribute with no escaping.
+  - The photo lookup binds `$pid` as a parameter. MySQL then converts the string to a number, so `ptid=1' onerror='alert(document.cookie)` still matches patient 1's photo.
+  - The page then prints the injected payload unescaped.
+  - The PDF branch also prints the raw `$from_file` path.
+- **Severity:** **High** (session theft or actions taken as a clinician).
+- **Fix:** Cast `$pid` to int, and wrap every URL in `attr()`.
+
+### 4. Stored XSS: clinical fields printed without encoding
+- **OWASP:** A03 Injection (XSS)
+- **Locations:** Each of these is printed raw. Other fields in the same file correctly use `text()`, which shows the omission is inconsistent rather than intentional.
+
+  | Field(s) | Where printed |
+  |---|---|
+  | `$HPI1` | `&nbsp;<?php echo $HPI1; ?>` (but `$HPI2` and `$HPI3` use `text()`) |
+  | `$CHRONIC2`, `$CHRONIC3` | Chronic problems section |
+  | `$CTLOSVA` | Contact lens OS acuity |
+  | `$MOTILITY_*` values | Motility grid (DB value with a `-` prefixed, not encoded) |
+  | IMPPLAN `codetext`, `code`, `codetype`, `plan` | `echo $item['codetext']`, `echo $item['code']`, `echo $item['plan']` (the plan has newlines turned into `<br />` with no prior escaping) |
+  | `$PLAN` items, `$PLAN2` | Orders/Next Visit section |
+  | `$note->get_note()` | Document notes in `display_draw_image()` |
+  | `$providerNAME` | PDF signature block |
+  | `$display_Add` | Class attribute (value is never defined locally, but comes from `extract()`) |
+
+- **Problem:** Any user who can edit an encounter, notes or IMPPLAN text can store a script. It runs for every clinician or biller who later opens the report or the encounter-history mouseover.
+- **Severity:** **High**
+- **Fix:**
+  - Use `text()` for HTML body content and `attr()` for attributes.
+  - For the plan, apply `nl2br(text(...))` instead of replacing newlines in raw text.
+
+---
+
+## Medium
+
+### 5. SQL injection via a session value
+- **Location:** `$sql = "select * from facility where id=" . $_SESSION['pc_facility'];`
+- **OWASP:** A03 Injection
+- **Problem:** The value is concatenated into the query. Calendar code in OpenEMR fills `pc_facility` from request input, so this is a second-order injection path.
+- **Severity:** **Medium**
+- **Fix:** Use `sqlQuery("SELECT * FROM facility WHERE id = ?", array($_SESSION['pc_facility']))`.
+
+### 6. Variable-variable and `extract()` overwriting of program state
+- **Locations:**
+  - `$$LOCATION = text($prefs['GOVALUE']);` where `LOCATION` is a DB column.
+  - `@extract($objQuery)` and `@extract($encounter_data)`.
+  - `left_overs()` uses `$$key=$value`.
+- **OWASP:** A04 Insecure Design / A08 Software and Data Integrity Failures
+- **Problem:**
+  - A preference row with `LOCATION='pid'` (or `form_folder`, `PDF_OUTPUT`, etc.) can overwrite security-relevant variables. The prefs are writable through the form's save endpoints.
+  - `extract()` of `form_encounter.*` and `form_eye_mag.*` silently overwrites `$pid`, `$encounter`, `$form_id` and other locals with DB values.
+  - The `@` operator hides any errors this causes.
+- **Severity:** **Medium**
+- **Fix:**
+  - Use an explicit array, e.g. `$prefs[$LOCATION]`.
+  - Read row fields by key, or call `extract($row, EXTR_SKIP)` with a whitelist.
+
+### 7. Provider signatures stored in a web-accessible directory; "electronic signature" is only an image
+- **Location:** `/interface/forms/eye_mag/images/sign_<providerID>.jpg`, served directly by the web server.
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design
+- **Problem:**
+  - Anyone can fetch any provider's signature by enumerating IDs, and may not even need to log in.
+  - The report prints "electronically signed on <today>" whenever the file exists. There is no cryptographic binding, no check of who signed, and no signing timestamp.
+  - Every rendered or faxed report therefore looks signed, which enables forgery and repudiation.
+- **Severity:** **Medium**
+- **Fix:**
+  - Store signatures outside the webroot, behind the document controller with ACLs.
+  - Tie the signature to OpenEMR's real e-sign or lock mechanism, using the actual signing date.
+
+---
+
+## Low
+
+### 8. Deleted forms still shown
+- **Location:** `eye_mag_report()`
+- **OWASP:** A01
+- **Problem:** The query does not filter on `forms.deleted`, unlike the query in `narrative()`. Records that were deleted or retracted can still be displayed.
+- **Severity:** **Low**
+
+### 9. Server path disclosure
+- **Location:** PDF branches that print `$from_file` (the full filesystem path) into `<img src>`.
+- **OWASP:** A05 Security Misconfiguration
+- **Problem:** The full filesystem path appears in the HTML. If that HTML is ever shown instead of rendered to PDF, it reveals the server's directory layout.
+- **Severity:** **Low**
+
+### 10. Errors suppressed
+- **Location:** The `@extract` calls.
+- **OWASP:** A09 Logging and Monitoring Failures
+- **Problem:** Suppressing errors hides failures. Combined with item 1, cross-patient access through `ptid` happens with no specific audit event. A view in another patient's context should be logged, or better, blocked.
+- **Severity:** **Low**
+
+### 11. Bundled third-party code
+- **OWASP:** A06 Vulnerable and Outdated Components
+- **Problem:** The file relies on the 2011 HTML5 Sketch plugin and an html2pdf pipeline. html2pdf follows local file paths in `src` attributes, so if an attacker can influence a document URL, it could pull local files into the PDF.
+- **Fix:** Confirm both components are current, and restrict html2pdf to allowed image directories.
+- **Severity:** **Low**
+
+---
+
+## Non-security bug worth fixing
+`if ($_REQUEST['CHOICE']) $choice = $_REQUEST['choice'];` checks `CHOICE` but reads `choice`, so the mode switch never works as intended.
+
+---
+
+## Recommended minimum before merge
+1. Remove the request overrides of `pid`, `encid` and `formid` (or validate them strictly), and add `acl_check()`.
+2. Parameterize all SQL in `display_draw_image()` and the facility query, and add a `foreign_id` filter to the document lookup.
+3. Encode every dynamic output with `text()` or `attr()`, including URLs.
+4. Replace `$$var` and `extract()` with explicit field access.
+5. Move signatures out of the webroot and tie them to real e-signing.

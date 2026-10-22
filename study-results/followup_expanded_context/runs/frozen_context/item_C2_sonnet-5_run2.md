@@ -1,0 +1,86 @@
+## Review Comments
+
+### 1. Missing `IPatientCompartmentResourceService` implementation — **High (correctness/security)**
+**Location:** class declaration, `getPatientContextSearchField()`
+
+The class adds a `patient` search parameter and a `getPatientContextSearchField()` method (which is the exact contract of `IPatientCompartmentResourceService`), but the class only declares `implements IResourceUSCIGProfileService`.
+
+`FhirServiceBase::createOpenEMRSearchParameters()` only applies the `$puuidBind` restriction when `$this instanceof IPatientCompartmentResourceService`:
+```php
+if (!empty($puuidBind) && $this instanceof IPatientCompartmentResourceService) { ... }
+```
+Since that interface is not implemented here, the automatic patient-scoping of queries silently never happens. Combined with the fact that the previous explicit `getOne()` override (which manually forwarded `$puuidBind` to `careTeamService->getOne()`) has been **removed**, there is no longer any code path that reliably restricts CareTeam results to the bound patient. This risks exposing another patient's CareTeam data in a patient-context request (e.g. `/Patient/{id}/CareTeam`).
+
+Recommend adding `implements IPatientCompartmentResourceService` (in addition to `IResourceUSCIGProfileService`) and verifying with a test that `puuidBind` is enforced end-to-end.
+
+---
+
+### 2. Comment/code mismatch when selecting provider's facility — **Medium (correctness)**
+**Location:** `parseOpenEMRRecord()`, providers loop
+```php
+// provider can have more than facility matching... we are only going to grab the first facility for now
+$dataRecordProvider = end($dataRecordProviderList);
+```
+`end()` returns the **last** element, not the first, contradicting the comment. If this is meant to pick the first match, it should use `reset()`. If "last" is actually intended, the comment is misleading and should be corrected. Either way this needs clarifying/fixing since it affects which facility association gets reported in `onBehalfOf`.
+
+---
+
+### 3. Potential undefined index / unguarded access — **Medium (reliability)**
+**Location:** status check
+```php
+if (array_search($dataRecord['status'], self::CARE_TEAM_STATII) !== false) {
+```
+No `isset()`/`??` guard on `$dataRecord['status']`; if the key is absent this emits a PHP notice/warning. Prefer:
+```php
+if (in_array($dataRecord['status'] ?? null, self::CARE_TEAM_STATII, true)) {
+```
+(`in_array` with strict mode is also clearer than `array_search(...) !== false`.)
+
+**Location:** providers/facilities loops
+
+`end($dataRecordProviderList)` on an empty list returns `false`; subsequent `$dataRecordProvider['role_code']` access on a boolean will warn/error. No empty-array guard exists for either the providers or facilities loop.
+
+---
+
+### 4. Leftover TODO / unresolved design question — **Low (maintainability)**
+**Location:** facility taxonomy block
+```php
+// TODO: @adunsulag check with @brady.miller @sjpadgett on how facility_taxonomy has a limit on the column size.
+```
+An open question directed at specific reviewers shouldn't be merged as a TODO in production code — either resolve it or track it in an issue tracker rather than in-code.
+
+---
+
+### 5. Behavior change in `searchForOpenEMRRecords` — **Low/Needs verification**
+**Location:**
+```php
+return $this->careTeamService->getAll($openEMRSearchParameters, true, $puuidBind);
+```
+The second argument changed from `false` to `true` (presumably AND vs OR combination of search filters). This is a meaningful semantic change to all CareTeam searches and should be called out explicitly in the PR description with test coverage, since it's easy to overlook in a diff full of unrelated additions.
+
+Also note: the override's signature `searchForOpenEMRRecords($openEMRSearchParameters, $puuidBind = null)` takes two parameters, but `FhirServiceBase::getAll()` only ever calls `$this->searchForOpenEMRRecords($oeSearchParameters)` (one argument) — so `$puuidBind` here is always `null` regardless of what's passed into `getAll()`. This reinforces issue #1: puuid binding is not actually enforced through this path.
+
+---
+
+### 6. Minor naming inconsistency — **Low (cosmetic)**
+```php
+const USCGI_PROFILE_URI = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-careteam';
+```
+The constant is named `USCGI` while the interface is `IResourceUSCIGProfileService` (`USCIG`). The letters are transposed. Not functionally broken, but confusing — worth a consistent naming convention across all Fhir*Service classes implementing this interface.
+
+---
+
+### 7. Fragile code parsing via `explode(':', ...)` — **Low**
+**Location:** role/taxonomy code parsing in both loops
+
+Code assumes a single, well-formed `system:code` structure (e.g. `"SNOMED-CT:1234"`), then blindly uses `end($codeParts)`/`$codeParts[0]`. Any unexpected formatting (multiple colons, missing prefix) will silently produce wrong codes/systems rather than failing loudly. Consider validating the format or using `explode(':', $value, 2)` and checking count.
+
+---
+
+### 8. Stylistic cleanup — **Low**
+Multiple superfluous blank lines introduced (e.g., around `setStatus`, between loops, before the final `if ($encode)` block, after constant declarations). Not functionally important but worth tidying for readability before merge.
+
+---
+
+### Summary
+The most important issue is **#1** — the class exposes patient-scoped search capability and a `getPatientContextSearchField()` method without actually implementing `IPatientCompartmentResourceService`, while simultaneously removing the previous explicit `puuidBind` enforcement in `getOne()`. This looks like an unintentional regression that could leak CareTeam data across patient contexts and should block merge until fixed and covered by a test. The remaining issues are correctness/robustness nits and maintainability suggestions.

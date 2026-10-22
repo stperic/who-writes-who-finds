@@ -44,6 +44,11 @@ Status values: **Open** (not yet tested), **Supported**, **Partly supported**,
     the generic prompt.
 - Status: **Open**. Evidence will be `followup_expanded_context/`.
 - Not measured in step 4: false alarms with added context.
+- Judge (decided 2026-10-21, after the six abnormal runs were rerun and before
+  any step 4 review was judged): Claude Opus 5.5, the study author's choice.
+  Unlike the Fable 5.1 judge of the earlier follow-ups, it is also one of the
+  reviewers. The 30 reused F1 diff-only reviews are re-judged with Opus 5.5 so
+  every H3 comparison uses one judge.
 
 ### H4. Static scanners do well on injection-style bugs and poorly on missing-permission bugs
 - Recorded: 2026-10-21, before any scanner comparison run. (The demo's earlier Snyk run on CVE-2026-25146 is already known: same 20 findings on vulnerable and fixed versions.)

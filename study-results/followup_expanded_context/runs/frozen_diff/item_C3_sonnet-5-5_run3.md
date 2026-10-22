@@ -1,0 +1,67 @@
+## Review of `portal/portal_payment.php`
+
+### High severity
+
+1. **IDOR on the new `recid` parameter (around line 60 and the `getPortalAuditRec($recid)` call).**
+   - `recid` comes straight from `$_REQUEST` and loads an audit record with no check that it belongs to the session patient (`$pid`) or that the caller is staff.
+   - Any logged-in portal patient can request `?recid=N` and read another patient's decrypted payment data (name, card number, expiry, CVV, invoice details).
+   - Restrict `recid` to staff (`isset($_SESSION['authUserID'])`), or verify `$edata['pid'] == $pid`.
+
+2. **`$isPortal` is set but never used, so the posting path is not guarded.**
+   - `if ($_POST['form_save'])` runs for any session that passed the portal check.
+   - It uses `$_POST['form_pid']`, so a portal patient can post payments to `ar_session` and `ar_activity` directly, for any pid, without paying.
+   - It can also close encounters through the `cash` option (`last_level_closed=4`, `billed=1`).
+   - The posting block should require a staff session (`authUserID`, or `!$isPortal`) and should not trust `form_pid` over the session pid.
+
+3. **The gateway API key is emitted to every client (`var apiKey = json_encode($GLOBALS['gateway_api_key'])`).**
+   - It is output regardless of which gateway is configured.
+   - For Authorize.Net the API login ID is acceptable client-side. For Stripe, or any gateway where this holds a secret key, it leaks credentials.
+   - Only emit it when the gateway is AuthorizeNet, and never emit secret keys.
+
+### Medium severity
+
+4. **Stored XSS and full card data display.**
+   - `echo $ccdata["cardNumber"]` is unescaped in the staff view, and so is the `substr(...)` branch. The value is patient-supplied, so this is XSS against staff. Use `text()`.
+   - Full PAN and CVV (`cardCode`) are stored and displayed.
+   - The condition `isset($_SESSION['authUserID']) || isset($ccdata["transId"])` shows the full card number to the patient once a `transId` exists. That is a PCI problem and probably an inverted intent.
+   - Mask the PAN and never persist the CVV.
+
+5. **Race in `sequence_no` allocation.**
+   - `sqlBeginTrans()` followed by `SELECT MAX(sequence_no)+1` has no `FOR UPDATE` or lock, so concurrent postings can produce duplicate sequence numbers.
+   - The same block is copy-pasted three times; extract a helper.
+   - If an insert fails, the transaction is never rolled back.
+
+6. **Silent behaviour change: the `calendar_arrived($form_pid)` fallback was removed.** When `$enc` is 0, queries and inserts now run with encounter 0. `$zero_enc` is now unused. Confirm this is intended.
+
+7. **The Stripe and Authorize.Net JS libraries (`Stripe()`, `Accept.dispatchData`) are not included anywhere in this diff.**
+   - The comment says "Include Authorize.Net dependency", but no script tag follows it.
+   - If they are not loaded elsewhere, both flows throw a ReferenceError.
+   - The Stripe code runs at top level, so it would break the page.
+
+8. **The payment amount is taken from client-side fields (`payment`, `invValues`, `form_paytotal`).** Make sure `paylib.php` recomputes and validates the amount server-side.
+
+### Low severity
+
+9. **Dead and incorrect logic in the payment-method filter.** `option_id != 'credit_card' || ... == 'debit' || ...` always skips everything except `credit_card`, so the other clauses are dead code. The change from `electronic` to `debit` has no effect.
+
+10. **Malformed HTML.** `<tr">` in the `echo '<tr height="5">...<tr">'` line.
+
+11. **Native validation patterns are wrong.** `pattern="\d"` on the card number and zip matches only a single digit, and `required` was dropped. This would break native validation, and now nothing validates zip or CVV.
+
+12. **Hardcoded expiry years (2019–2028).** They will go stale; generate them from `date('Y')`.
+
+13. **Notices and odd output.**
+    - `$ccdata['authCode']` and `$ccdata['transId']` are read without `isset`, which gives PHP notices when `$ccdata` is empty.
+    - The `transId . "/" . year` display is odd.
+
+14. **The Authorize.Net error handler only does `console.log`.** The user gets no feedback, and the modal stays in an unclear state.
+
+15. **Duplicate element IDs.**
+    - `mode` appears in both `invoiceForm` and `paymentForm`, and `cc_type` and `paymentAmount` are duplicated across the gateway branches.
+    - `$("#mode")` only reaches the first one.
+
+16. **Handlers may not bind.** Handlers such as `$('#openPayModal').on(...)` and `$("#invoiceForm").on('submit', ...)` are bound in a script that may run before the elements exist. Confirm it is wrapped in a ready handler or placed after the markup.
+
+17. **Unverified jQuery path.** The receipt page's jQuery path changed to `/jquery/dist/jquery.min.js`. Confirm it exists in this version's assets.
+
+18. **Reformatting noise.** The large reformatting of unrelated SQL and comments makes the security-relevant changes harder to review. Splitting it into a separate commit would help.

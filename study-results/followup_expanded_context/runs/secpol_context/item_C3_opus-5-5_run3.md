@@ -1,0 +1,111 @@
+# Security Review: `portal/portal_payment.php`
+
+## Summary
+
+This PR adds Authorize.Net and Stripe gateways to the patient portal payment page. It has two blocking problems:
+
+- **It leaks the payment gateway secret.** The page sends `gateway_api_key` to every portal user's browser. For Stripe, that value is the account's secret key.
+- **It adds a new IDOR on stored card data.** The new `recid` parameter loads any payment audit record without an ownership check.
+
+Several serious pre-existing flaws in the code this change touches also remain. These include patient-controlled `pid`, unauthenticated payment posting, stored card numbers and CVVs, and XSS.
+
+---
+
+## Findings
+
+### 1. Gateway secret key exposed to the browser — **Critical** (new)
+- **Location:** JS block in the display branch: `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` (also `publicKey`).
+- **OWASP:** A02 Cryptographic Failures / A05 Security Misconfiguration.
+- **Problem:** `globals.inc.php` describes `gateway_api_key` as *"Auth Name for Authorize.Net and API Secret for Stripe"*. It is stored as an `encrypted` global, and this code writes it into every page render.
+  - The Stripe JS path only needs `publicKey` (`Stripe(publicKey)`), but `apiKey` is emitted unconditionally.
+  - Any logged-in portal patient can therefore read the clinic's Stripe secret key from page source. With it they can issue refunds, create charges, read customer and payment data, and so on.
+  - For Authorize.Net, only the API Login ID should go to the client, and only together with the Public Client Key. Exposing the login ID is lower risk but still unnecessary.
+- **Fix:**
+  - Never send `gateway_api_key` or `gateway_transaction_key` to the client.
+  - For Authorize.Net, emit only the login ID and public client key, and only when `payment_gateway == 'AuthorizeNet'`.
+  - For Stripe, emit only the publishable key.
+  - Rotate any Stripe secret that has been deployed with this code.
+
+### 2. IDOR on payment audit records via `recid` — **High** (new)
+- **Location:** `$recid = (int)$_REQUEST['recid']` and `$edata = $appsql->getPortalAuditRec($recid);`
+- **OWASP:** A01 Broken Access Control.
+- **Problem:**
+  - The record is fetched by ID alone, with no check that it belongs to `$_SESSION['pid']` or that the caller is staff.
+  - Its `checksum` is then decrypted (`decryptStandard`) and rendered. That data includes card holder name, zip, card number, expiry and CVV.
+  - The display logic shows the **full** card number whenever `isset($ccdata["transId"])`, even to portal users.
+  - A portal patient can therefore iterate `recid` to harvest other patients' card and payment data.
+- **Fix:**
+  - Allow `recid` only for authenticated staff with billing ACL, or verify `$edata['patient_id'] == $_SESSION['pid']`.
+  - Never render full PAN or CVV.
+
+### 3. Patient-controlled `pid` overrides the session identity — **High** (pre-existing, relied upon)
+- **Location:**
+  ```php
+  $pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : $pid;
+  $pid = $_REQUEST['hidden_patient_code'] > 0 ? $_REQUEST['hidden_patient_code'] : $pid;
+  ```
+- **OWASP:** A01 Broken Access Control.
+- **Problem:**
+  - A portal user (`$isPortal = true`) can set `pid` or `hidden_patient_code` to any patient ID.
+  - They can then view that patient's name, encounters, balances, insurance copay and postal code (newly added to the query).
+  - They can also load that patient's pending card data through `getPortalAudit($pid, ...)`.
+- **Context:** The PR introduces `$isPortal` but never uses it to lock the value down.
+- **Fix:** `if ($isPortal) { $pid = $_SESSION['pid']; }` after request parsing.
+
+### 4. Payment and billing state modifiable by portal users; no CSRF protection — **High** (pre-existing, touched)
+- **Location:** The `if ($_POST['form_save'])` block and its `ar_session`, `ar_activity`, `form_encounter` and `billing` updates.
+- **OWASP:** A01 Broken Access Control / A04 Insecure Design.
+- **Problem:**
+  - The block never checks `$_SESSION['authUserID']` or an ACL.
+  - A portal patient can POST `form_save` with arbitrary `form_pid`, `form_upay[enc]`, `form_source` and `radio_type_of_payment=cash`. This would:
+    - post fake payments, or pre-payments with no money collected;
+    - close encounters (`last_level_closed=4`);
+    - mark billing as billed, for any patient.
+  - The "Post Payment" button is only hidden in the UI for non-staff, which does not restrict the request itself.
+  - `$_REQUEST['form_prepayment']` and the amounts are not validated as positive numbers. Negative values are blocked only in client JS.
+  - There is no CSRF token, so a staff member can also be tricked into posting payments.
+- **Fix:**
+  - Require an authenticated staff session plus billing ACL for `form_save`.
+  - Validate amounts server-side.
+  - Add CSRF tokens.
+
+### 5. Storage and display of full PAN and CVV (InHouse mode) — **High** (pre-existing, extended)
+- **Location:** Display of `$ccdata["cardNumber"]` and `$ccdata["cardCode"]` (CVV). The InHouse form posts raw card data to `paylib.php`.
+- **OWASP:** A02 Cryptographic Failures.
+- **Problem:**
+  - Storing the CVV after authorization is prohibited by PCI DSS (3.2), even when encrypted.
+  - The full PAN is shown to staff and, newly, to anyone whenever a `transId` exists.
+  - The decryption key is application-wide, so findings 2 and 3 expose decrypted data.
+- **Fix:**
+  - Deprecate InHouse card capture, or at minimum stop storing CVV.
+  - Store only the last 4 digits and the token or transaction ID.
+  - Mask the PAN everywhere.
+
+### 6. Stored XSS via unescaped card number — **Medium** (pre-existing line, modified by this PR)
+- **Location:** `echo $ccdata["cardNumber"] . "</span><br>";`
+- **OWASP:** A03 Injection (XSS).
+- **Problem:**
+  - `cardNumber` comes from patient-submitted form data (InHouse mode). The `pattern`, `maxlength` and validator are client-side only.
+  - The value is echoed raw in the staff view, so a malicious patient can store script that runs in a staff user's session.
+- **Fix:** Use `text($ccdata["cardNumber"])`.
+
+### 7. Lesser output-encoding issues — **Low**
+- **Location:**
+  - `<?php echo $GLOBALS['webroot'] ?>` and `$GLOBALS['assets_static_relative']` in attributes and JS strings.
+  - `addslashes(xl(...))` inside JS string literals.
+  - `xlt()` used inside the `value='...'` attribute (should be `xla`).
+- **OWASP:** A03 Injection.
+- **Problem:** These values are admin- or translation-controlled, so exploitability is low, but `addslashes` is not a correct JS-context encoder.
+- **Fix:** Use `attr()` and `json_encode()` / `js_escape()` consistently.
+
+### 8. Sensitive gateway errors and logging — **Low**
+- **Location:** `acceptResponseHandler` logs gateway errors only to the console. `alert(data)` shows raw server responses from `paylib.php`.
+- **OWASP:** A09 Security Logging and Monitoring Failures.
+- **Problem:** Failed or declined payments are not reliably logged server-side for audit, and raw server output may disclose internal details to patients.
+- **Fix:** Log payment outcomes server-side and show patients generic error messages.
+
+---
+
+## Recommendation
+
+**Do not merge** until findings 1 and 2 are fixed and the exposed key is rotated. Findings 3–6 are pre-existing, but this PR builds directly on them and they enable cross-patient card data disclosure and financial tampering. They should be addressed in the same change or immediately after.
