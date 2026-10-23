@@ -1,3 +1,0 @@
-The review explicitly identifies the vulnerability in issue #2: "`$disable_exit` is attacker-controllable through the URL... `Controller::act()` maps query-string keys to action arguments, so `...&disable_exit=1` reaches this parameter," and the raw document body would be "echoed by the page as HTML. That allows stored XSS." It names the correct class (stored XSS), the correct location (`retrieve_action`'s new parameter), and the correct mechanism (positional mapping in the legacy Controller plus the skipped Content-Type header). Its example is an uploaded HTML/JS document rather than an image with EXIF payload, but the root cause and fix are right, so a reviewer would block the merge for this reason.
-
-LABEL: Caught

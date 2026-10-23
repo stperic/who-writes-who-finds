@@ -1,3 +1,0 @@
-The review identifies exactly this flaw as its blocking High-severity issue, calling it A01 Broken Access Control in FhirCareTeamService.php. It notes that "the class implements only `IResourceUSCIGProfileService`. It does not implement `IPatientCompartmentResourceService`" and that "`FhirServiceBase` applies the patient binding only when `$this instanceof IPatientCompartmentResourceService`." It also states that removing the `getOne()` override means "a patient-scoped token ... can read `CareTeam/{id}` or search `/CareTeam` and get other patients' care teams," which matches the known vulnerability's class, location and impact.
-
-LABEL: Caught

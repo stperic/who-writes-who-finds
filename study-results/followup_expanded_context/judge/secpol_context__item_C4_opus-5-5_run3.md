@@ -1,3 +1,0 @@
-The review flags the right root cause and location in its issue #3, "Stored XSS: many clinical fields echoed without escaping." It lists `echo $HPI1;`, `$MOTILITY_*`, `$item['plan']` and the `$PLAN` items, and recommends wrapping every value in `text()`. It frames the impact only as browser-side script execution and never notes that `custom_report.php` renders this output through an HTML-to-PDF renderer that fetches injected URLs, including the CSS `background:` value. That makes it the right area and fix but the wrong vulnerability class (XSS rather than server-side request forgery).
-
-LABEL: Partial

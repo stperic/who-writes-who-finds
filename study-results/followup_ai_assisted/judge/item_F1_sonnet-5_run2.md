@@ -1,3 +1,0 @@
-The review never addresses the ACL gap: it does not mention `checkControllerAcl()`, `CONTROLLER_ACL_MAP`, or the fact that whitelisted sub-controllers like `x12_partner` or `patient_finder` are reachable without a permission check. Instead it praises the "whitelist-based controller resolution" as "a good improvement for security," and its substantive findings concern `is_callable`/`method_exists` regressions, action-name sanitization, and exception handling—none of which touch the missing authorization enforcement.
-
-LABEL: Missed

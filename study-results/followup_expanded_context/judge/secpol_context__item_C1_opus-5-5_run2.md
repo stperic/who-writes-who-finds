@@ -1,3 +1,0 @@
-The review's Finding 1 pinpoints the bug: `disable_exit` can be set from the URL via `Controller::act()`, which maps query keys positionally. It states that "The raw file content is then sent **without**... the correct `Content-Type`... PHP's default `Content-Type: text/html` applies instead." It concludes this gives "stored XSS against clinicians", located in `retrieve_action()` in `controllers/C_Document.class.php`. That matches the known vulnerability's class, location and mechanism, and the review recommends blocking the merge for it.
-
-LABEL: Caught

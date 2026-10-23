@@ -1,4 +1,0 @@
-FINDING | Original unescaped JS string injection enabled XSS | severity=High | class=PLAUSIBLE | The diff shows raw concatenation of table_args/checksum inside a quoted script string, a credible XSS that js_escape() correctly fixes.
-FINDING | Verify js_escape() lacks JSON_UNESCAPED_SLASHES flag | severity=none | class=SPECULATIVE | js_escape() is defined elsewhere, so the slash-escaping behavior cannot be confirmed from the diff and no flaw is asserted.
-FINDING | Check client never returns checksum as trusted payment data | severity=none | class=SPECULATIVE | Server-side handling of the ciphertext is outside the diff and the review explicitly frames it as a pre-existing item to verify, not a vulnerability.
-SUMMARY: findings=3 false=0 speculative=2 plausible=1

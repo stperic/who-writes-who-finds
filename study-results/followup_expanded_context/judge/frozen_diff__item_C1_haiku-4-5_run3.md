@@ -1,3 +1,0 @@
-The review never mentions cross-site scripting, the Controller mapping URL query parameters onto action arguments, or raw file bytes being echoed as text/html. Its only nod toward the right spot is Issue #5, which says the new `$disable_exit` parameter "has no validation or type checking... This could be exploited or misused," rated "Low." That points at the right parameter with a vague exploitability hint but the wrong framing and severity, so it would draw a comment without necessarily stopping the stored XSS.
-
-LABEL: Partial

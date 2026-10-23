@@ -1,4 +1,0 @@
-FINDING | Pre-existing ORDER BY SQL injection, fixed by allowlist | severity=High | class=PLAUSIBLE | The removed line concatenates `getField()` unvalidated into ORDER BY, and the added strict `in_array` allowlist is a correct, diff-visible remediation.
-FINDING | Verify callers pass hard-coded, trusted `$allowedColumns` | severity=none | class=SPECULATIVE | Callers and their allowlist sources are outside the diff, and the review asks for verification without asserting a vulnerability.
-FINDING | Rejected sort fields silently dropped, no logging | severity=informational | class=PLAUSIBLE | The diff shows `continue` with no logging on rejection, a minor but real monitoring gap the review correctly flags as optional hardening.
-SUMMARY: findings=3 false=0 speculative=1 plausible=2

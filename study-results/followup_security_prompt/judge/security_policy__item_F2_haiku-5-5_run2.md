@@ -1,3 +1,0 @@
-The review's first finding directly identifies the vulnerability class and location: "Path traversal via unvalidated `$eraname`... `$nameprefix = \"$eraDir/$eraname\";`... values such as `../../../../some/path` could redirect writes or reads outside `documents/era/`", recommending `basename()`/allowlist/`realpath()` checks. It hedges on severity ("High if user-controlled and unvalidated, otherwise Low. Verify before merging") because the `$_REQUEST` source is outside the diff, but it still blocks the merge on this exact issue ("The change should not be merged as-is. The main concern is issue 1"). This is the right class, right line, and a blocking verdict, so it meets the Caught bar despite the conditional phrasing.
-
-LABEL: Caught

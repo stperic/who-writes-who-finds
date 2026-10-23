@@ -1,3 +1,0 @@
-Item 4 points at the right spot. It notes that "`VALID_CONTROLLERS` has 9 entries but `CONTROLLER_ACL_MAP` only has 2" and that this "could indicate missing security controls." However, it files this as a "MAINTAINABILITY" issue of medium severity and mainly asks to "Document why other controllers don't require ACL checks." It never says that `checkControllerAcl()` skips unmapped controllers, which lets any authenticated user reach sub-controllers like x12_partner or patient_finder and bypass the admin/practice requirement, so it would prompt a comment but not block the merge for the authorization bypass.
-
-LABEL: Partial

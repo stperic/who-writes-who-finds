@@ -1,3 +1,0 @@
-Item 6 of the review points at the right code, quoting `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and noting that "API keys and public keys are embedded in client-side JavaScript" and are visible in page source. However, it never says that `gateway_api_key` is the gateway's private secret key, which any portal user could take and use against the practice's payment account. Instead it treats the issue as a generic MEDIUM "Insecure Design" exposure alongside the public key, and its fix ("Load gateway keys via secure API endpoint only") would still deliver the secret to the client, so the merge block rests on other findings rather than this one.
-
-LABEL: Partial

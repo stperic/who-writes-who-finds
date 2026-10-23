@@ -1,3 +1,0 @@
-The review's only reference to the vulnerable code is item 6, which notes that `var publicKey` and `var apiKey` are rendered from `$GLOBALS['gateway_public_key']` and `$GLOBALS['gateway_api_key']`. Its concern is only that these globals "may not exist, causing silent failures," and it rates this MEDIUM. So it points at the exact lines but never recognizes that echoing the gateway's private secret key into client-side JavaScript exposes it to every portal user, which means the area is right but the class and severity are wrong.
-
-LABEL: Partial

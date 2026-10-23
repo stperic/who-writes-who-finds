@@ -1,3 +1,0 @@
-The review never says that `checkControllerAcl()` returns without checking anything for controllers missing from `CONTROLLER_ACL_MAP`, or that sub-controllers like `x12_partner` and `patient_finder` are directly reachable without authorization. The closest passage is issue #5, which notes that "C_PracticeSettings... perform[s] their own ACL checks in the constructor." It treats this only as "Inconsistent error handling strategy," not as missing access control. The other findings (the `||` vs `&&` condition, parameter ordering, key sanitization) are unrelated to the authorization bypass.
-
-LABEL: Missed

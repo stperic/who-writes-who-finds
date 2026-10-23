@@ -1,7 +1,0 @@
-runs/secpol_context/item_C1_opus-5-5_run2.md ok end_turn 3601 3877
-runs/secpol_diff/item_C4_opus-5-5_run2.md ok end_turn 45046 5572
-runs/frozen_context/item_F1_sonnet-5_run2.md ok end_turn 5850 14054
-runs/frozen_context/item_F1_sonnet-5_run3.md ok end_turn 5850 12758
-runs/frozen_diff/item_C4_sonnet-5_run2.md ok end_turn 44911 13680
-runs/secpol_context/item_C4_haiku-5-5_run1.md ok end_turn 58847 13738
-reruns: 6

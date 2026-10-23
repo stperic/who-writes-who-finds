@@ -1,3 +1,0 @@
-The closest passage is item 7: "`getOne` override removed without replacement rationale (Low-Medium, behaviour)… This changes the lookup path, the patient-binding behaviour, and error handling. It may be fine, but the PR should state it and tests should cover patient-bound `getOne`." This points at the right area, the removed patient-scoped `getOne` and patient binding. But the review never says that the service no longer implements `IPatientCompartmentResourceService` or that patient-context requests will return care teams for every patient, and it rates the change as possibly fine at low-medium severity. So it would prompt a comment but would not block the merge as an access-control flaw.
-
-LABEL: Partial

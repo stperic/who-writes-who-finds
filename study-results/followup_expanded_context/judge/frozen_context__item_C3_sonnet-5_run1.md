@@ -1,3 +1,0 @@
-Issue #4 of the review states that `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` echoes a value "documented in globals as 'Auth Name **or API Secret** for Stripe'". It adds that this is "echoed unconditionally into client-side JS" and "risks leaking a merchant secret key to every page view," and rates the issue Critical. That names the right class (secret credential exposure), the exact location in portal/portal_payment.php, and the right severity, so a reviewer would block the merge for this reason.
-
-LABEL: Caught

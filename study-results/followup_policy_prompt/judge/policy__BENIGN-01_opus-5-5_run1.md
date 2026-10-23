@@ -1,3 +1,0 @@
-FINDING | Callers must pass server-side static whitelist | severity=Critical | class=SPECULATIVE | Call sites are outside the diff, so whether the whitelist source is static cannot be judged; no vulnerability in shown code is asserted.
-FINDING | Whitelisted identifier not quoted/escaped (defense in depth) | severity=Low | class=PLAUSIBLE | Field is interpolated unquoted after the whitelist check, so a careless or dotted whitelist entry would not be protected; a credible low-impact hardening gap.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

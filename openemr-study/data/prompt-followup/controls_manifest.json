@@ -1,0 +1,52 @@
+[
+  {
+    "item": "BENIGN-01",
+    "source": "benign_controls/BENIGN-01.diff",
+    "sha256": "ebe19bd6cf44fc01316836e898bdbeb3acfc211569dd507af21e779dbca7e624"
+  },
+  {
+    "item": "BENIGN-02",
+    "source": "benign_controls/BENIGN-02.diff",
+    "sha256": "d193cb7c58ac810b114cef589397892dfeceb312afe48cd5e1673d6be4438384"
+  },
+  {
+    "item": "BENIGN-03",
+    "source": "benign_controls/BENIGN-03.diff",
+    "sha256": "7abb0c7fcd1484b6a98acdf29493360b5a75bd5f312433154b21a5ad80f5708b"
+  },
+  {
+    "item": "BENIGN-04",
+    "source": "benign_controls/BENIGN-04.diff",
+    "sha256": "bc058395f7c787db2494f8bfd8dfe9c5a4eb9c2bfcbe3e28d874e84cecdad5fe"
+  },
+  {
+    "item": "BENIGN-05",
+    "source": "benign_controls/BENIGN-05.diff",
+    "sha256": "c786a1761ad2d9c6fb87c0941fa716713b63737bfcbc855e64a21c69aa2d336d"
+  },
+  {
+    "item": "BENIGN-06",
+    "source": "benign_controls/BENIGN-06.diff",
+    "sha256": "1a4c20137eb8d376eb6f5b386ad835fd570234c91b31e3c4c136b99cc4ed4849"
+  },
+  {
+    "item": "BENIGN-07",
+    "source": "benign_controls/BENIGN-07.diff",
+    "sha256": "1704d8efca94776dd5a7e7be599abdc1ae6c1899c2a374c61017febb7c529b95"
+  },
+  {
+    "item": "BENIGN-08",
+    "source": "benign_controls/BENIGN-08.diff",
+    "sha256": "cbf16feb41ce8518132a921626615d5aa46902badba9cf7bc64136f9504f5ad3"
+  },
+  {
+    "item": "BENIGN-09",
+    "source": "benign_controls/BENIGN-09.diff",
+    "sha256": "6aa6bdd17b860919ff1f3ed79c15fb63f29ae24b2cbdc318d28a3ba8244b3500"
+  },
+  {
+    "item": "BENIGN-10",
+    "source": "benign_controls/BENIGN-10.diff",
+    "sha256": "10d64a3283a0224013cf3c022f6b51e885d7dde3bc83256367e6d007ec1f1c58"
+  }
+]

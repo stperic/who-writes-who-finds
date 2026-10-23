@@ -1,3 +1,0 @@
-The review's finding #6 correctly identifies the root cause in report.php: free-text fields like "`$HPI1`, `$item['codetext']`, `$item['code']`, `$item['plan']`, and `$PLAN`/`$PLAN2`/`$PLAN_items` are echoed **without** `text()`/`htmlspecialchars()` encoding". However, it frames this only as "Stored XSS in a clinical record viewer". It never links the unescaped markup to the HTML-to-PDF renderer fetching injected URLs (server-side request forgery), and it does not mention the unescaped CSS `background` value. Even finding #8, which discusses the PDF renderer, is limited to path disclosure, so the area and root cause are right but the vulnerability class is wrong.
-
-LABEL: Partial

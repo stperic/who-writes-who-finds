@@ -1,3 +1,0 @@
-FINDING | Interface method getPatientContextSearchField must exist and be correct | severity=High | class=SPECULATIVE | The method and search parameter definitions live outside the diff, and the review only asks to verify them without asserting a vulnerability.
-FINDING | Pre-existing missing compartment enforcement exposed other patients' CareTeams | severity=High | class=PLAUSIBLE | The diff adds IPatientCompartmentResourceService, consistent with the review's explanation that patient-bound filtering was previously not applied to this resource, a credible IDOR/PHI exposure this PR fixes.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

@@ -1,3 +1,0 @@
-The review explicitly identifies "Path traversal via `$eraname` — **High**" at "`$nameprefix = \"$eraDir/$eraname\";`", noting that "`$eraname` comes from the request... then concatenated straight into a filesystem path" and that a value like "`../../../../var/www/html/x` escapes `documents/era`", enabling both reads of `.edi` files and writes of `.html` files outside the directory. It recommends whitelisting/basename validation and states the PR "should not merge without validating `$eraname`," matching the advisory's class, location, and severity.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review's Finding 5 targets the right root cause and location: "Stored XSS: unescaped database content… `echo $HPI1;`… IMPPLAN… `plan`… `$MOTILITY_*` values… `$RX_TYPE`". However, it treats this only as browser-side XSS. It never ties the unescaped markup to the HTML-to-PDF renderer fetching injected URLs (server-side request forgery). Finding 8's mention of html2pdf concerns local path disclosure, and the CSS `background` url() sink is not raised, so the review has the right area but the wrong vulnerability class.
-
-LABEL: Partial

@@ -1,2 +1,0 @@
-FINDING | XSS via CountIndex and innerHTML assignment | severity=Medium | class=FALSE | The innerHTML receives only a Math.round() numeric result, and CountIndex is used solely in getElementById lookups, so neither is an XSS vector.
-SUMMARY: findings=1 false=1 speculative=0 plausible=0

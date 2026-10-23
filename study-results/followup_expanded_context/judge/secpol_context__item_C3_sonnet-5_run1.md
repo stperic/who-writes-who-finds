@@ -1,3 +1,0 @@
-The review's item #5 quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and explains that the field holds the "API Secret for Stripe." It then states this "is a serious secret-exposure issue — Stripe secret keys must never be client-side," tagged A05, and correctly notes that only Authorize.Net's value is quasi-public. Although it hedges the severity ("Medium-High (potentially Critical)"), it names the right class and location and lists it among the "Top priorities to fix before merge," so a reader would block the merge for the right reason.
-
-LABEL: Caught

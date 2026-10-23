@@ -1,2 +1,0 @@
-FINDING | Removed guard may trigger undefined-variable warnings leaking paths | severity=Informational/Low | class=PLAUSIBLE | The diff removes the isset guard while $result is only set on search, so warnings are credible and the path-leak is explicitly conditioned on display_errors misconfiguration, not asserted as a flaw.
-SUMMARY: findings=1 false=0 speculative=0 plausible=1

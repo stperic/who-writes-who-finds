@@ -1,3 +1,0 @@
-The review targets the right spot: the `$disable_exit` return path in `retrieve_action()`. It warns this lets callers "return them through unintended channels" and "Circumvent intended response handling." But it frames the problem as broken access control and missing logging. It never notes that the Controller maps URL parameters onto the argument and echoes the raw file bytes as text/html, so it misses the stored XSS.
-
-LABEL: Partial

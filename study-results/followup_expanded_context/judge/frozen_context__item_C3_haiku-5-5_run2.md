@@ -1,3 +1,0 @@
-The review's first critical item names the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, and says it "runs unconditionally." It notes that the setting holds the "Stripe API Secret" and that "any portal patient can read it in page source." It also points out that "only the publishable key should ever reach the client," which matches the vulnerability class (secret credential exposure), the location, and the severity. A reviewer reading this would block the merge for the right reason.
-
-LABEL: Caught

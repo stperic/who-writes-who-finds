@@ -1,3 +1,0 @@
-The review's High item #3 directly identifies the vulnerability: "`pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `document_category`, and `hl7` are normally reached via `practice_settings`, which is gated by `admin/practice`... All of them are whitelisted as top-level controllers with no ACL entry. So `controller.php?pharmacy&edit&process=true`... skips the `admin/practice` check entirely. `document` and `patient_finder` likewise have no dispatcher-level ACL." It names the right location (`VALID_CONTROLLERS` and `CONTROLLER_ACL_MAP`), the right class (missing authorization on sub-controllers), rates it High, and proposes the correct fix ("default-deny any controller missing from `CONTROLLER_ACL_MAP`").
-
-LABEL: Caught

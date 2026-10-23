@@ -1,3 +1,0 @@
-The review's point 5 says "`$eraname` is concatenated into a filesystem path... If any part of it comes from user input (upload name or request parameter), confirm it is sanitised, for example with `basename` and a character whitelist," which identifies the exact location and the path-traversal risk, but hedges it as "Informational" with "none of them blocking" and does not confirm that $eraname actually comes from $_REQUEST. This flags the right area and the right mitigation but at the wrong severity and as a conditional "confirm" rather than a detected vulnerability, so it would not block the merge.
-
-LABEL: Partial

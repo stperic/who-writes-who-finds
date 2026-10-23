@@ -1,3 +1,0 @@
-The review's item #4 notes that "The previous `getOne()` enforced `puuidBind` scoping explicitly… It's now removed" and warns that "a regression here would be a security issue (cross-patient data exposure)." However, it calls the change "should be fine functionally" and asks only for verification. It never spots the actual cause: the missing `IPatientCompartmentResourceService` interface means `getAll()` skips patient-context filtering. It also leaves #4 off its list of must-fix items, so it points at the right area without confirming the bug or blocking on it.
-
-LABEL: Partial

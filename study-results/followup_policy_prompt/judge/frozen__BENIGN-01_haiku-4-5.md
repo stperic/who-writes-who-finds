@@ -1,3 +1,0 @@
-FINDING | Callers must pass allowedColumns for whitelist to work | severity=Medium | class=SPECULATIVE | Asks to verify call sites outside the diff were updated; asserts no vulnerability in the shown code, which correctly whitelists columns.
-FINDING | Empty allowedColumns yields no ORDER BY clause | severity=Low | class=SPECULATIVE | Requests confirmation of caller intent; the deny-by-default behavior shown is safe, not a weakness.
-SUMMARY: findings=2 false=0 speculative=2 plausible=0

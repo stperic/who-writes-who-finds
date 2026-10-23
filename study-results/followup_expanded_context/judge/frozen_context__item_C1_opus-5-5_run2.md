@@ -1,3 +1,0 @@
-The review pinpoints the exact mechanism: "`Controller::act()` builds `$args_array` from the query string... The new parameter is therefore reachable from the web" and "The method then returns the raw file, and `act()` returns it as `$output`, which the front controller emits." It even notes that "The early return also skips the Content-* headers." However, it frames the impact as encryption bypass and an audit-trail gap, and never says that serving raw file bytes as text/html enables script execution (XSS). That is the right location and attack surface but the wrong vulnerability class.
-
-LABEL: Partial

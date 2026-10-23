@@ -1,3 +1,0 @@
-The review never mentions SSRF, the HTML-to-PDF renderer, the `background:` CSS url() context, or the unescaped free-text fields (HPI, motility, plan/orders). It does flag the same root-cause weakness in report.php under a different class: "Reflected XSS via Unescaped Output… there are instances where HTML attributes contain user data without proper escaping" (focused on `$filetoshow`/`$from_file` in img src), plus a recommendation to "Audit all HTML output for proper escaping (`text()`, `attr()`, `xlt()`)". That is the related missing-escaping flaw, but it is framed as browser XSS on different variables, not server-side fetching, so it would not necessarily stop the SSRF.
-
-LABEL: Partial

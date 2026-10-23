@@ -1,5 +1,0 @@
-FINDING | denyWithTemplate may not terminate script | severity=low | class=SPECULATIVE | Asks to confirm behavior of a helper defined outside the diff without asserting it actually fails to exit.
-FINDING | Write ACL chosen for read-only download | severity=low | class=SPECULATIVE | Requests confirmation that the ACL matches linking pages, which cannot be judged from the diff and asserts no vulnerability.
-FINDING | CSRF check reads unset GET key | severity=low | class=SPECULATIVE | Notes a possible warning/TypeError depending on verifyCsrfToken's signature (not shown) while acknowledging it fails closed and is pre-existing.
-FINDING | Filename sanitization not visible in diff | severity=none | class=SPECULATIVE | Asks to verify path-traversal protections in unshown code without claiming they are absent.
-SUMMARY: findings=4 false=0 speculative=4 plausible=0

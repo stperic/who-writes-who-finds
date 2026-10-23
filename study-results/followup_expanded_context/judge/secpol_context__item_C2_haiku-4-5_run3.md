@@ -1,3 +1,0 @@
-The review's Issue 3 is in the right area: it raises Broken Access Control in `getPatientContextSearchField()`, warning that "a user could retrieve any patient's care team." It also notes that "the removed `getOne()` method had a `$puuidBind` parameter for access control." But it gets the mechanism backwards, asserting that "the class implements `IPatientCompartmentResourceService`," when the actual flaw is that the class does *not* implement it, so `FhirServiceBase::getAll()` skips patient-context filtering. Its concern is also hedged and conditional ("If the underlying `CareTeamService` doesn't enforce access control"), so it flags the right weakness without identifying the actual cause.
-
-LABEL: Partial

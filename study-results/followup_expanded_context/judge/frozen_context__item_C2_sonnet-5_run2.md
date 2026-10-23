@@ -1,3 +1,0 @@
-The review's top-ranked issue #1 says the class "only declares `implements IResourceUSCIGProfileService`", so the `instanceof IPatientCompartmentResourceService` patient-scoping "silently never happens". It ties this to the removal of the `getOne()` override, which leaves "no longer any code path that reliably restricts CareTeam results to the bound patient" and "risks exposing another patient's CareTeam data in a patient-context request". The summary says this "should block merge", which matches the known vulnerability's class, location, and mechanism.
-
-LABEL: Caught

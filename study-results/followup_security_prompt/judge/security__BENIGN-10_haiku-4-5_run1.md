@@ -1,2 +1,0 @@
-FINDING | parseInt change prevents type confusion attacks via "1x" | severity=none | class=FALSE | parseInt("1x",10) returns 1 so it would match, the original `===` was already strict (not loose), and the change is a numeric-comparison bug fix with no attack-prevention effect.
-SUMMARY: findings=1 false=1 speculative=0 plausible=0

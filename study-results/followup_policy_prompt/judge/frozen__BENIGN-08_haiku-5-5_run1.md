@@ -1,3 +1,0 @@
-FINDING | Read-then-insert race on sequence number persists | severity=Low | class=PLAUSIBLE | The diff's own comment and the MAX()+1 pattern confirm concurrent writers can obtain duplicate sequence numbers, an integrity weakness the change does not address.
-FINDING | is_numeric accepts floats/exponents before int cast | severity=Low | class=PLAUSIBLE | is_numeric does accept "1.5"/"1e3" and (int) silently truncates, though the reviewer correctly notes a DB-derived integer MAX makes this a hardening nit rather than an exploit path.
-SUMMARY: findings=2 false=0 speculative=0 plausible=2

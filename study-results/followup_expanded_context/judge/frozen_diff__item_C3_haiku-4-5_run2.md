@@ -1,3 +1,0 @@
-The review never mentions the `apiKey` variable or the `json_encode($GLOBALS['gateway_api_key'])` output in the page's JavaScript. The closest item is about `console.log("There was an error:" + errorThrow)` possibly exposing "sensitive information." That concerns error logging, not a secret credential rendered into the page source. None of its other findings (SQL injection, audit record access, CSRF, XSS) address the gateway secret key being sent to every portal user.
-
-LABEL: Missed

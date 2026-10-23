@@ -1,6 +1,0 @@
-item	cve_or_advisory	introducing_commit	context_file
-item_C1	CVE-2025-31121	81d00d00b96e	library/classes/Controller.class.php
-item_C2	CVE-2026-24487	3cbe16d02116	src/Services/FHIR/FhirServiceBase.php
-item_C3	CVE-2026-25146	2ab074e827b9	library/globals.inc.php
-item_C4	CVE-2026-33321	00aa8a6f2cd1	interface/patient_file/report/custom_report.php
-item_F1	GHSA-9rj4-fxmj-c4r7	0381a2dbc1	controllers/C_PracticeSettings.class.php

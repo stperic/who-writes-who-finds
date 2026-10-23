@@ -1,3 +1,0 @@
-The review's Finding 1 directly identifies the vulnerability: "Only `practice_settings` (admin/practice) and `prescription` (patients/rx) have ACL entries. `pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `document_category`, and `hl7` are normally reached as sub-controllers of `practice_settings`. They are also whitelisted as top-level controllers with no ACL." It names the location (`CONTROLLER_ACL_MAP` and `checkControllerAcl()`), the class (Broken Access Control), rates it High, cites `x12_partner` and `patient_finder` (PHI) as concrete impacts, and recommends deny-by-default — matching the advisory precisely.
-
-LABEL: Caught

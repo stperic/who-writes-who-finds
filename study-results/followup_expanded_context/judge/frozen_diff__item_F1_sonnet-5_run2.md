@@ -1,3 +1,0 @@
-The review never mentions `checkControllerAcl()`, `CONTROLLER_ACL_MAP`, or the fact that sub-controllers in `VALID_CONTROLLERS` such as x12_partner and patient_finder skip the permission check entirely. Its findings cover `is_callable`/`method_exists`, action-name sanitization, exception handling and argument semantics, none of which concern authorization. It even praises the change, saying "whitelist-based controller resolution ... is a good improvement for security and clarity," and so misses the access-control bypass.
-
-LABEL: Missed

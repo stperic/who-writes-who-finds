@@ -1,2 +1,0 @@
-FINDING | CareTeam compartment exposure may lack patient filtering | severity=Medium (provisional) | class=SPECULATIVE | The review asks to verify interface methods and query scoping defined outside the diff without asserting an actual vulnerability.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

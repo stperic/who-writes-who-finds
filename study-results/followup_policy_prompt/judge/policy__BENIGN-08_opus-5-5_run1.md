@@ -1,3 +1,0 @@
-FINDING | Pre-existing MAX+1 read-then-write race in sequence allocation | severity=Medium | class=PLAUSIBLE | The diff shows the separate SELECT MAX(sequence_no)+1 query and the existing comment itself acknowledges the race, making duplicate/failed payment-record inserts under concurrency a credible integrity weakness.
-FINDING | Confirm RuntimeException handled with rollback, avoid partial payment | severity=Low | class=SPECULATIVE | Whether callers catch the new exception or roll back a transaction cannot be determined from the diff, and the review only asks to verify rather than asserting a flaw.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

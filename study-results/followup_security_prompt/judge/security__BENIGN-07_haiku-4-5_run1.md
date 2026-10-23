@@ -1,2 +1,0 @@
-FINDING | Catch block swallows JsonException without logging | severity=Low | class=PLAUSIBLE | The diff shows the catch discards the exception with no logging, so loss of error visibility is a real, if minor, observation about the touched code.
-SUMMARY: findings=1 false=0 speculative=0 plausible=1

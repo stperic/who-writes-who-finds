@@ -1,3 +1,0 @@
-The review's item #7, "Inconsistent Output Escaping," notes that "`echo $HPI1;` // Line 285 - NOT escaped!" in report.php. That points at the root cause, unescaped user-supplied fields such as HPI. However, the review rates it MEDIUM and leaves it out of the merge-blocking recommendation. It never mentions the CSS `url()`/background injection, HTML injection, or that the HTML-to-PDF renderer would fetch injected URLs server-side (SSRF), so it flags the right area with the wrong class and severity.
-
-LABEL: Partial

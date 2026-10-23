@@ -1,3 +1,0 @@
-The review identifies the root cause in the right file: "Database output is echoed without proper escaping," citing `echo $HPI1;`, `echo $PLAN2;`, and `echo $item['plan'];`, and it recommends wrapping them in `text()`. However, it treats this only as browser XSS. It never mentions the server-side HTML-to-PDF rendering, URL fetching (e.g., via CSS `url()` / `$background`), or server-side request forgery. So it flags the right flaw but under the wrong vulnerability class and impact.
-
-LABEL: Partial

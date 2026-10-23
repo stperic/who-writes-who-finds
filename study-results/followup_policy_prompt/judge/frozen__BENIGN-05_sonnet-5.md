@@ -1,2 +1,0 @@
-FINDING | skip_timeout_reset previously bypassed expiration enforcement entirely | severity=Medium | class=PLAUSIBLE | The diff confirms the old code never ran isSessionExpired() when skip_timeout_reset was set, so polling requests escaped forced logout, and the review correctly notes the change closes that loophole without asserting a new vulnerability.
-SUMMARY: findings=1 false=0 speculative=0 plausible=1

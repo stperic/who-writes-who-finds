@@ -1,3 +1,0 @@
-The review's item 6 identifies the right location and class: "`var apiKey = json_encode($GLOBALS['gateway_api_key']);` (output unconditionally, for all gateways, to every visitor of this page)". It also notes that "for other gateways it may be a secret key". However, it hedges, saying the values are "intended for Accept.js", and rates the issue only Medium. It also explicitly leaves it out of the merge blockers ("Do not merge until items 1–5 are fixed"), so it understates a confirmed exposure of Stripe's secret key as a possible misconfiguration.
-
-LABEL: Partial

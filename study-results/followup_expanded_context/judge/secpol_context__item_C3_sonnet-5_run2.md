@@ -1,3 +1,0 @@
-Finding #4 quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and notes that the global is documented as "API Secret for Stripe." It warns that it "is sent to every page viewer and exposed in the browser's global scope/page source — any such secret would be fully compromised," rates it High, and recommends that the key never contain a secret. The "if this ever holds a genuine secret key" wording is hedged, but the review still names the right class (secret credential exposed client-side), the right location and the right impact, which is enough to block the merge for the correct reason.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review's first finding directly identifies the vulnerability: "Path Traversal via unsanitized `$eraname` used to build filesystem paths" at `$nameprefix = "$eraDir/$eraname";`, noting "an attacker could supply a value containing `../` sequences or absolute paths to read or write files outside the intended `documents/era` directory" and recommending `basename()` plus a strict whitelist. It correctly rates this High, notes it is pre-existing but left unresolved by the PR, and even flags the missing ACL check as an amplifier, matching the advisory's class, location, and severity.
-
-LABEL: Caught

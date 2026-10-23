@@ -1,3 +1,0 @@
-The review never mentions checkControllerAcl, CONTROLLER_ACL_MAP, or the fact that sub-controllers like x12_partner and patient_finder are reachable without an ACL check; its concerns are routing correctness ("Arguments are passed positionally"), the dropped `method_exists()` check, sanitization, and exception handling. The closest it comes is "centralizes ACL checks" in the opening summary, which is an endorsement rather than a flag, and item 9 only asks for an "ACL denial" test generically. None of the nine issues identifies the missing authorization gap for whitelisted controllers.
-
-LABEL: Missed

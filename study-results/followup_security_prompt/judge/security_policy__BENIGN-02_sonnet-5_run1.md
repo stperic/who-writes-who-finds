@@ -1,6 +1,0 @@
-FINDING | XInclude removal fixes XXE/SSRF; verify no other path | severity=none | class=PLAUSIBLE | Correctly identifies that LIBXML_XINCLUDE allowed file/URL inclusion from untrusted XML and that removing it closes that vector.
-FINDING | LIBXML_PARSEHUGE retained enables resource-exhaustion DoS | severity=Medium | class=PLAUSIBLE | PARSEHUGE genuinely lifts libxml depth/size limits on the touched lines, a credible DoS exposure if CDA input is untrusted.
-FINDING | No explicit entity/DTD hardening, fragile posture | severity=Low | class=SPECULATIVE | The finding concedes nothing is exploitable with the shown flags and only recommends defense-in-depth against hypothetical future changes.
-FINDING | $filename lacks path validation, possible traversal | severity=Medium | class=SPECULATIVE | Explicitly out of diff scope and contingent on unseen callers; it asks to confirm upstream sanitization rather than showing user-controlled input.
-FINDING | Error handler may silently swallow malicious parse failures | severity=Low | class=SPECULATIVE | Handler body is not shown, so the review assumes behavior and asks to ensure logging without demonstrating a weakness.
-SUMMARY: findings=5 false=0 speculative=3 plausible=2

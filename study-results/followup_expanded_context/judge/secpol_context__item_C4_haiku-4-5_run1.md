@@ -1,3 +1,0 @@
-The review's item #3 points at the root cause and location: "The `text()` function is used in many places but NOT in critical areas like `$item['plan']`, `$item['code']`, and `$item['codetext']`". It recommends "Escape all output consistently". However, it frames this only as browser-side XSS. It never mentions the HTML-to-PDF rendering path, the CSS `url()`/`$background` context, or the server fetching injected URLs (SSRF). So it flags the right area and missing escaping, but with the wrong vulnerability class and impact.
-
-LABEL: Partial

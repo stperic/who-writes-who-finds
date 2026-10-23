@@ -1,3 +1,0 @@
-Finding #3 identifies the exact flaw: "Only `practice_settings` and `prescription` have ACL checks... Those sub-controllers are also reachable directly via `controller.php?controller=hl7`, `?document`, `?x12_partner`, and so on, without the `admin/practice` gate." It concludes that "a low-privileged logged-in user can reach administrative functions such as X12 partner... as well as patient and document data," and recommends that "a missing entry denies access by default." This names the broken-access-control class, the location (`CONTROLLER_ACL_MAP`/`checkControllerAcl()`) and the impact, rated Medium to High. The summary does rank it below items 1–2, but the detection itself is correct and specific.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review's Finding 1 identifies the exact line and class: "Line ~753, `$nameprefix = \"$eraDir/$eraname\";`... `$eraname` is concatenated into a filesystem path without validation... a value such as `../../../config`... could redirect the `.edi` write (and any later read or unlink) outside `documents/era/`," recommending `basename()`, an allowlist pattern, and `realpath()` containment. It rates it high severity conditioned on user control (which it did not confirm from the diff, though it correctly flags `$_GET`/`$_POST` as the likely source) and blocks the merge: "Do not merge until Finding 1 is resolved." This matches the advisory's path traversal via `$eraname` in `$nameprefix` and would stop the bug for the right reason.
-
-LABEL: Caught

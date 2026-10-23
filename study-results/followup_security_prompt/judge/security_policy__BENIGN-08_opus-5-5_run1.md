@@ -1,2 +1,0 @@
-FINDING | Race condition on MAX(sequence_no) read-then-insert, duplicate sequence numbers | severity=none | class=PLAUSIBLE | The diff's own code comment confirms the non-atomic MAX+1 pattern, so concurrent inserts can genuinely produce duplicate AR sequence numbers (the review correctly frames it as integrity, not exploitable).
-SUMMARY: findings=1 false=0 speculative=0 plausible=1

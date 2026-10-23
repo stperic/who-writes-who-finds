@@ -1,3 +1,0 @@
-The review explicitly identifies the known vulnerability at the correct location and class: "Path traversal through `$eraname`... `$nameprefix = \"$eraDir/$eraname\";`... `$eraname` comes from the request... It is placed directly into a filesystem path... used to read `$eraname.edi`... and to write a report file (`$nameprefix$namesuffix.html` via `fopen(..., 'w')`)... A value like `../../../../some/dir/file` lets an authenticated user read `.edi` files outside `documents/era`... write `.html` files anywhere the web server can write." It rates it High, recommends "Request changes," and proposes basename()/regex/realpath fixes, matching the advisory precisely.
-
-LABEL: Caught

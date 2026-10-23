@@ -1,3 +1,0 @@
-The review's Finding 1 pins down the right location and trigger: "a user could pass `disable_exit=true` in the URL or POST body. The file would then be returned into a code path that may echo or render it." However, it frames the risk as Broken Access Control / Insecure Design (document exposure). It never notes that the echoed bytes are served as text/html, so HTML or JavaScript embedded in an uploaded image would execute as stored XSS. The area and mechanism are correct but the vulnerability class is wrong, which makes this Partial.
-
-LABEL: Partial

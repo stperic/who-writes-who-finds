@@ -1,3 +1,0 @@
-The review identifies the exact line and class: "`$nameprefix = "$eraDir/$eraname";` ... path traversal ... If it comes from request input without validation (e.g., `../`, path separators, null bytes), it could allow reading or writing files outside the ERA directory." However, it frames this as a conditional, pre-existing concern ("Not introduced by this PR. It would be High if `$eraname` is unsanitized... Confirm that `$eraname` is validated upstream"), incorrectly says the line was "not changed by this diff," and gives a "Verdict: Approve." This flags the right area and class but hedges on severity and does not block the merge, so it would raise a comment rather than stop the bug.
-
-LABEL: Partial

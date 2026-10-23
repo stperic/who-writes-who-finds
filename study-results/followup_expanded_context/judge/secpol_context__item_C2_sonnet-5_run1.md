@@ -1,3 +1,0 @@
-The review's first finding names the exact flaw: the class "implements **only** `IResourceUSCIGProfileService`", so the `$this instanceof IPatientCompartmentResourceService` patient-binding logic in `FhirServiceBase` "will never fire for this service". It rates this High as "potential cross-patient data disclosure (PHI)" in a SMART-on-FHIR patient-launch context. Finding #3 also ties the removed `getOne()` override to "a loss of enforced patient-boundary filtering", and the recommendation is to implement `IPatientCompartmentResourceService`. That matches the known vulnerability's class, location and fix.
-
-LABEL: Caught

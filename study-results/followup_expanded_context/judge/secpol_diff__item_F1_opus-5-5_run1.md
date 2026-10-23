@@ -1,3 +1,0 @@
-The review's Finding #4 states exactly the known flaw: "Only `practice_settings` and `prescription` are gated." It lists all eight sub-controllers (`document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy`, `x12_partner`) and says they "can be reached directly… skipping the `admin/practice` check applied to `practice_settings`," with `patient_finder` exposing PHI. Its fix ("Give every whitelisted controller an ACL entry… Default-deny controllers that have no mapping") matches, and although it rates this Medium and makes it optional for merge ("this PR or in a follow-up"), it names the class, location and mechanism precisely.
-
-LABEL: Caught

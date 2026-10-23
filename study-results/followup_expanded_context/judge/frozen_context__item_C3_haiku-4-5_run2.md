@@ -1,3 +1,0 @@
-The review never mentions the gateway API key being rendered into client-side JavaScript, or any secret or credential exposure. The closest passage, item 7, refers to JS-context output at "line 1461-1463" and says it "is done correctly" with `json_encode()`. That treats the output purely as an XSS-escaping question and implicitly approves it, rather than flagging that a private secret key is sent to every portal user.
-
-LABEL: Missed

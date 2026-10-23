@@ -1,3 +1,0 @@
-The review does identify the right location in item #8: "`gateway_api_key` is embedded directly in client-side JS." However, it treats the value as normally safe ("expected to be the public API Login ID"), frames the risk only as a hypothetical misconfiguration, and rates it "Medium (verify configuration; High if it can ever hold a true secret)." It misses that this global actually holds the gateway's private secret key (e.g., Stripe's) and is exposed to every portal user, and it buries the finding below other issues it says should block merge.
-
-LABEL: Partial

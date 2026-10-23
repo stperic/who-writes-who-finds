@@ -1,3 +1,0 @@
-The review explicitly identifies "Path Traversal via Unsanitized `$eraname` Variable" at lines 753/757, noting that `$eraname` "is concatenated directly into file paths without validation" allowing "../" injection "to write files outside the intended directory," and recommends `basename()` — matching the advisory's class, location, and fix. Issue 5 further notes `$eraname` comes "from `$_REQUEST` or `$_GET`" and lacks validation across multiple file operations; the mistaken attribution to `$_GET['debug']` in issue 2 is a minor sourcing error that doesn't undermine the correct detection of the vulnerable concatenation and its consequences.
-
-LABEL: Caught

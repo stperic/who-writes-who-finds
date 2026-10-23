@@ -1,3 +1,0 @@
-The review identifies the exact line and vulnerability class: "`$nameprefix = \"$eraDir/$eraname\";` ... If it comes from user input ... without reduction to a safe basename, the value is used to build file paths for read and write, which would allow `../` traversal." However, it hedges the finding as conditional and out of scope ("Severity: Not applicable to this diff"), explicitly concludes "Safe to merge," and only asks to "confirm `$eraname` handling elsewhere," rather than blocking the merge or asserting the vulnerability is present. This is the right location and class but the wrong severity/disposition, so it would raise a comment without stopping the bug.
-
-LABEL: Partial

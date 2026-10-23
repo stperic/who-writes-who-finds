@@ -1,0 +1,25 @@
+case_id,item,group,owasp,vulnerability,historical_haiku,historical_sonnet,new_haiku_generic,new_haiku_security_touched,change,generic_runs,security_touched_runs
+CVE-2022-2824,item_01,B,A01,AuthZ,Partial,Caught,Partial,Caught,gained,Partial/Partial/Partial,Caught/Caught/Caught
+CVE-2026-23627,item_02,A,A03,SQLi,Caught,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2026-24487,item_03,A,A01,IDOR,Missed,Partial,Partial,Partial,not caught in either,Partial/Partial/Partial,Partial/Caught/Partial
+CVE-2026-24847,item_04,A,A01,OpenRedirect,Caught,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2026-24849,item_05,A,A01,FileRead,Missed,Caught,Missed,Partial,not caught in either,Missed/Missed/Missed,Missed/Partial/Partial
+CVE-2026-24890,item_06,A,A01,AuthZ,Caught,Caught,Caught,Caught,retained,Caught/Caught/Partial,Caught/Caught/Caught
+CVE-2026-24898,item_07,A,A07,AuthZ,Partial,Caught,Partial,Caught,gained,Partial/Partial/Partial,Caught/Caught/Caught
+CVE-2026-24908,item_08,A,A03,SQLi,Caught,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2026-25146,item_09,A,A05,Secrets,Missed,Partial,Missed,Missed,not caught in either,Missed/Missed/Missed,Missed/Missed/Partial
+CVE-2026-25476,item_10,A,A07,SessionMgmt,Partial,Caught,Partial,Caught,gained,Partial/Partial/Partial,Caught/Caught/Caught
+CVE-2026-25746,item_11,A,A03,SQLi,Partial,Caught,Caught,Caught,retained,Partial/Caught/Caught,Caught/Caught/Caught
+CVE-2026-29187,item_12,A,A03,SQLi,Partial,Caught,Partial,Caught,gained,Partial/Missed/Partial,Caught/Caught/Caught
+CVE-2026-32238,item_13,A,A03,RCE,Partial,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2026-33321,item_14,A,A10,SSRF,Partial,Partial,Partial,Partial,not caught in either,Partial/Partial/Partial,Partial/Partial/Partial
+CVE-2026-33346,item_15,A,A03,XSS,Caught,Caught,Caught,Caught,retained,Caught/Caught/Partial,Caught/Caught/Caught
+CVE-2026-33913,item_16,A,A03,XInclude,Missed,Caught,Partial,Caught,gained,Partial/Partial/Missed,Caught/Caught/Caught
+CVE-2026-33918,item_17,A,A01,AuthZ,Missed,Caught,Partial,Caught,gained,Partial/Missed/Caught,Caught/Caught/Caught
+CVE-2018-15145,item_18,B,A03,SQLi,Caught,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2018-15152,item_19,B,A07,AuthBypass,Missed,Caught,Partial,Caught,gained,Partial/Partial/Partial,Caught/Caught/Caught
+CVE-2020-29140,item_20,B,A03,SQLi,Caught,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2021-40352,item_21,B,A01,IDOR,Missed,Caught,Partial,Caught,gained,Partial/Partial/Caught,Caught/Caught/Caught
+CVE-2023-22973,item_22,B,A01,LFI,Caught,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught
+CVE-2025-31121,item_23,B,A03,XSS,Missed,Missed,Partial,Partial,not caught in either,Partial/Partial/Partial,Partial/Partial/Partial
+CVE-2025-43860,item_24,B,A03,XSS,Missed,Caught,Caught,Caught,retained,Caught/Caught/Caught,Caught/Caught/Caught

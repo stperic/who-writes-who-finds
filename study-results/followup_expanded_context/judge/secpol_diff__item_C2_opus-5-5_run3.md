@@ -1,3 +1,0 @@
-The review looks directly at the affected area but clears it. It says: "**No issue.** The custom `getOne()` override is removed... patient-scoped tokens still only see their own patient's care teams," and that `getPatientContextSearchField()` "strengthens scoping rather than weakening it." It never notices that the service no longer implements `IPatientCompartmentResourceService`, which is the condition `getAll()` checks before filtering by patient, and it recommends approval, so the cross-patient exposure is not flagged at all.
-
-LABEL: Missed

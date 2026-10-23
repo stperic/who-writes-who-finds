@@ -1,3 +1,0 @@
-Item 8 explicitly identifies the gap: "Only `practice_settings` and `prescription` have ACL entries. `pharmacy`, `insurance_company`, `x12_partner`, `insurance_numbers`, and `document_category` are normally reached through Practice Settings, but they remain directly callable without the `admin/practice` check." This is the correct location and the correct class (missing authorization on directly reachable sub-controllers), but the reviewer rates it "Low (observation)", labels it pre-existing and non-blocking ("consider adding them"), and omits patient_finder/hl7/document. A real reviewer would raise a comment but would not block the merge for this reason, so the severity is wrong.
-
-LABEL: Partial

@@ -1,3 +1,0 @@
-The review's first item flags the right spot: "The code returns decoded content *before* setting HTTP headers... the response won't have proper `Content-Type`, `Content-Disposition`." However, it frames this purely as a download-handling logic bug ("won't download it as a file"). It never notes that `disable_exit` can be set from a URL query parameter, or that the raw file bytes would be echoed as text/html and enable stored XSS. It points at the right area but misses the security class and severity.
-
-LABEL: Partial

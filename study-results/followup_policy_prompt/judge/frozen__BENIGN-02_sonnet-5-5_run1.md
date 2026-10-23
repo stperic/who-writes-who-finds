@@ -1,5 +1,0 @@
-FINDING | XInclude removal fixes local file disclosure/SSRF | severity=Info | class=PLAUSIBLE | The diff shows LIBXML_XINCLUDE was previously passed to the reader, which does let untrusted documents pull in local files or URLs, so the described weakness and fix are credible.
-FINDING | LIBXML_PARSEHUGE lifts parser limits on untrusted input | severity=Medium | class=PLAUSIBLE | The flag remains in the touched calls and genuinely relaxes libxml's depth/size and entity-expansion safeguards, a credible DoS risk for externally supplied CDA input.
-FINDING | Parent reader may still process xi:include via $directory | severity=Low/Medium | class=SPECULATIVE | It is a verification request about Laminas\Config\Reader\Xml behavior not visible in the diff, with no vulnerability asserted.
-FINDING | Error handler restoration on exception paths | severity=Low | class=SPECULATIVE | Whether restore_error_handler runs on all paths is outside the shown hunk, and the review only asks to confirm it.
-SUMMARY: findings=4 false=0 speculative=2 plausible=2

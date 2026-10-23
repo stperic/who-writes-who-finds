@@ -1,3 +1,0 @@
-The review does identify the exact gap in item 8: "Only `practice_settings` and `prescription` have ACL entries. `pharmacy`, `insurance_company`, `x12_partner`, `insurance_numbers`, and `document_category` are normally reached through Practice Settings, but they remain directly callable without the `admin/practice` check." However, it rates this "**Severity:** Low (observation)", calls it "not a regression", and lists only items 1–3 as merge-blocking. It also never notes the impact (claim-routing credential rewrite, patient enumeration via `patient_finder`). The class and location are right but the severity is wrong, so a reader would not block the merge for this reason.
-
-LABEL: Partial

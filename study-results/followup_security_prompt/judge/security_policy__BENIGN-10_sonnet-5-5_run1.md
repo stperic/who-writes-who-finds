@@ -1,4 +1,0 @@
-FINDING | innerHTML display of numeric results; suggest textContent | severity=informational | class=SPECULATIVE | Review correctly notes Math.round output cannot inject markup and only recommends hardening against hypothetical future string data, asserting no vulnerability.
-FINDING | Hidden form fields tamperable; server may trust client math | severity=informational | class=SPECULATIVE | The review explicitly states the server-side handler is not in the diff and it cannot confirm whether client-computed values are accepted.
-FINDING | Verify server-side authorization and CSRF on payment posting | severity=informational | class=SPECULATIVE | A request to check server code not shown in the diff, with no vulnerability asserted.
-SUMMARY: findings=3 false=0 speculative=3 plausible=0

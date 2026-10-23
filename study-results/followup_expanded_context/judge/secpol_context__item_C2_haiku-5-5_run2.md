@@ -1,3 +1,0 @@
-The review's Finding 1 names the exact flaw. It says the class "implements `IResourceUSCIGProfileService` instead of `IPatientCompartmentResourceService`", so "the filter is never added". It also says that with the removed `getOne()` override "the bind is lost", and that "a request scoped to one patient ... returns CareTeam records for all patients". It classifies this as A01 Broken Access Control with High severity and says "Do not merge until Finding 1 is fixed", which matches the known vulnerability's class, location and mechanism.
-
-LABEL: Caught

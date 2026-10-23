@@ -1,0 +1,2 @@
+# Evidence includes verbatim historical files and CSVs with original line endings.
+* whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

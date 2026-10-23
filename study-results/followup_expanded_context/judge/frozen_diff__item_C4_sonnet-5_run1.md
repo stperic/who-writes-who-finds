@@ -1,3 +1,0 @@
-The review's issue #3 flags the right root cause and location: "Inconsistent/missing output escaping → stored XSS" in `narrative()`, citing raw echoes of `$HPI1`, `$item['plan']`, `$PLAN2`, and other free-text clinical fields, and recommending that all DB-sourced output be wrapped in `text()`. However, it frames the impact only as browser-side stored XSS. It never notices that the report is rendered server-side by an HTML-to-PDF engine that fetches URLs (SSRF), and it doesn't mention the unescaped CSS `background:` / `url()` context. That is the right area and fix but the wrong vulnerability class.
-
-LABEL: Partial

@@ -1,3 +1,0 @@
-The review identifies the exact vulnerability class and location: "Path Traversal via `$eraname`... `$nameprefix = "$eraDir/$eraname";`... concatenates `$eraname` directly into a filesystem path without any sanitization (no `basename()`, no whitelist regex...)" and rates it High, recommending `basename()` plus an allow-list. Although it hedges on the source ("Should be confirmed by checking upstream source of `$eraname`"), it explicitly assumes user influence is typical, names the write-outside-directory consequence, and makes sanitization a merge-blocking action item, which matches the advisory's issue.
-
-LABEL: Caught

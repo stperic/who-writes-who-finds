@@ -1,3 +1,0 @@
-The review never says that `checkControllerAcl()` returns without a check for controllers missing from `CONTROLLER_ACL_MAP`, or that sub-controllers like `x12_partner` and `patient_finder` become directly reachable by low-privilege users. Instead it calls "The whitelist and the ACL check are good improvements." Its only comment on `VALID_CONTROLLERS` (item 4) raises the opposite worry, that the whitelist "may remove previously reachable controllers," not that it exposes controllers with no permission check.
-
-LABEL: Missed

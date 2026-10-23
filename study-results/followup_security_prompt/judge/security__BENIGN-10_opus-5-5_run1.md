@@ -1,3 +1,0 @@
-FINDING | innerHTML for remainder; suggest textContent hardening | severity=none (non-blocking) | class=PLAUSIBLE | The sink is innerHTML on code the diff touches, but the review correctly notes only numeric values reach it, so this is a defensive hardening point rather than an exploitable flaw.
-FINDING | Server must enforce ACL and validate posted amounts | severity=none (outside diff) | class=SPECULATIVE | The review asks to confirm server-side authorization and amount validation in a handler not shown in the diff, without asserting a vulnerability.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

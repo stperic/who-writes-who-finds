@@ -1,3 +1,0 @@
-Finding 6 lands on the right mechanism: "action arguments typically come from URL path segments or query parameters... a remote user could pass `disable_exit` themselves." But it misreads the impact as "a blank page" that skips headers and logging, rated "Low (security hardening)". It never sees that the raw file bytes would be echoed as text/html and run as stored XSS. The review flags the correct area and exposure path but gets the class and severity wrong, so it would draw a comment rather than block the merge for the right reason.
-
-LABEL: Partial

@@ -1,3 +1,0 @@
-The review discusses the new `$disable_exit` early-return paths only in terms of functional correctness: "returns `null` instead of returning the file content", the fread/fpassthru pointer bug, and memory use. It never notes that the legacy Controller maps URL query parameters onto this argument, nor that the returned raw file bytes get echoed as text/html. Nothing in the review raises XSS or Content-Type handling, so it does not identify the stored cross-site scripting risk.
-
-LABEL: Missed

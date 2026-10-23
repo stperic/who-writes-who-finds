@@ -1,3 +1,0 @@
-FINDING | Server may trust client-calculated payment/adjustment amounts | severity=none | class=SPECULATIVE | The review only asks to verify server-side recomputation/validation of submitted amounts, which the diff cannot show, and explicitly calls it pre-existing and unverified.
-FINDING | Hidden inputs may be rendered unescaped by PHP (XSS) | severity=none | class=SPECULATIVE | The review requests confirmation that `HiddenIns*` and related inputs are escaped server-side, code outside the diff, without asserting they are actually unescaped.
-SUMMARY: findings=2 false=0 speculative=2 plausible=0

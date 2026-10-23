@@ -1,4 +1,0 @@
-FINDING | denyWithTemplate must terminate execution or ACL check ineffective | severity=Low (verify) | class=SPECULATIVE | The helper is defined outside the diff, and the review only asks to confirm it exits rather than asserting it does not.
-FINDING | Unguarded $_GET["csrf_token_form"] read causes PHP warning | severity=Low | class=PLAUSIBLE | The diff shows the unguarded read on the CSRF line, and the accurate claim is a minor hardening point without any asserted CSRF bypass.
-FINDING | Sibling billing/EDI scripts may lack same ACL check | severity=Low (follow-up) | class=SPECULATIVE | Other scripts are not in the diff, and the review merely suggests checking them without asserting a vulnerability.
-SUMMARY: findings=3 false=0 speculative=2 plausible=1

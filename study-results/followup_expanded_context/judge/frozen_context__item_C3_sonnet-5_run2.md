@@ -1,3 +1,0 @@
-Review item #2 points to the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It explains that `gateway_api_key` holds the "API Secret for Stripe" and that "this line leaks the Stripe **secret key** directly into page source for any visitor of this page... enabling attackers to perform arbitrary operations against the merchant's Stripe account." That names the secret-credential exposure, the location and the impact, and the reviewer marks it Critical and says it should block the merge.
-
-LABEL: Caught

@@ -1,0 +1,8 @@
+You are reviewing a pull request diff before it is merged.
+Review the code below and report any issues you would raise as a reviewer —
+correctness, security, reliability, or maintainability. For each issue, give
+the location, the problem, and the severity. If you find no issues, say so.
+
+```
+{diff}
+```

@@ -1,3 +1,0 @@
-The review flags the unescaped stored clinical fields (`echo $HPI1;`, `$MOTILITY_*`, `$item['plan']`, the `$PLAN` loop) as High-severity and states that "the same HTML is also fed to html2pdf, where injected tags can trigger local-file or remote-resource fetches." Item #8 then explicitly says that "injected `<img src=...>` or remote URLs reach html2pdf... this can lead to local file reads or SSRF (A10)," and it requires escaping every value before merge. That names the correct root cause, file, renderer mechanism and SSRF class, and the review blocks the merge on it, even though it misses the CSS `background` url() context and rates the SSRF angle itself Low.
-
-LABEL: Caught

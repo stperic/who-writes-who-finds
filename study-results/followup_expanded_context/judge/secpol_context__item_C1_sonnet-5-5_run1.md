@@ -1,3 +1,0 @@
-The review's first finding matches the known vulnerability. It explains that "`Controller::act()` builds the action's arguments from the request's query-string keys", so `disable_exit=true` can be supplied by the user. It then says that when the flag is set the function "returns the raw file bytes before any `Content-Type`... header is sent" and that "the response defaults to `text/html`... That gives stored XSS". It uses .html/.svg uploads as the example rather than images with embedded EXIF HTML, but it names the right class, location and mechanism, rates it High, and recommends blocking the merge.
-
-LABEL: Caught

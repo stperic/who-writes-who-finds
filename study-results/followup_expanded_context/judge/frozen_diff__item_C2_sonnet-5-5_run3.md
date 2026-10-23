@@ -1,3 +1,0 @@
-The review's item 6 notes the "Removal of the `getOne()` override" and asks the author to "Confirm patient-bound access (`puuidBind`) is still enforced." That points at the right area and the right concern. However, it is phrased as a hedged verification request at medium severity. It never identifies that the missing `IPatientCompartmentResourceService` implementation causes `getAll()` to skip patient filtering and expose every patient's care teams, so a reviewer would raise a comment but likely not block the merge for this reason.
-
-LABEL: Partial

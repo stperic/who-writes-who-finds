@@ -1,4 +1,0 @@
-FINDING | Client-controlled skip_timeout_reset bypassed whole expiry check pre-fix | severity=High | class=PLAUSIBLE | The removed code shows `$_REQUEST['skip_timeout_reset']` gating the entire block including the expiry check and forced logout, so a client could keep an expired session alive and suppress the timeout audit event.
-FINDING | Verify authLoginScreen(true) terminates execution after redirect | severity=none | class=SPECULATIVE | The function is defined outside the diff and the review only asks to confirm it exits, without asserting a flaw.
-FINDING | Verify $skipSessionExpirationCheck not derived from request input | severity=none | class=SPECULATIVE | Where that variable is assigned is not visible in the diff and the review merely requests a grep, asserting no vulnerability.
-SUMMARY: findings=3 false=0 speculative=2 plausible=1

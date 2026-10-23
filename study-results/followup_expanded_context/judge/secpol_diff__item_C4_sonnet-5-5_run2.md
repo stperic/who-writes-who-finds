@@ -1,3 +1,0 @@
-The review's item 5 flags the right root cause and location: unescaped stored fields in `narrative()`, including `echo $HPI1;`, `$MOTILITY_*`, `$RX_TYPE`, `$item['plan']` and `$PLAN_items`. It also explicitly names the SSRF mechanism: "In the PDF flow, the same HTML is fed to the PDF renderer, which could allow local file inclusion or SSRF through injected `<img>` or `<link>` tags." The finding is framed mainly as stored XSS and omits the CSS `background` url() example, but it names the SSRF class and the HTML-to-PDF fetch path, rates it High, and blocks the merge pending consistent escaping, so a reader would stop the bug for the right reason.
-
-LABEL: Caught

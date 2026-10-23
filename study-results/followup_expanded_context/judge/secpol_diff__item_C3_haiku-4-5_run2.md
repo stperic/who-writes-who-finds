@@ -1,3 +1,0 @@
-Issue #9 quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and states that "these values should not be exposed to client-side JavaScript if they're actual API keys (they should be server-only secrets)". It recommends "Never expose API keys to client-side code … Remove apiKey from client entirely", and the summary table lists the issue as "API keys exposed to client" at HIGH severity under a DO NOT MERGE verdict. The finding is filed under an Injection/XSS heading and is slightly hedged, but it names the secret-exposure problem at the right location with the right fix, so a reader would block the merge for the correct reason.
-
-LABEL: Caught

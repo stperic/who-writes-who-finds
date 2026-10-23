@@ -1,3 +1,0 @@
-The review's second issue names the exact mechanism: "`Controller::act()` maps URL query parameters directly onto action arguments. A request can therefore set `disable_exit=1` and make the action return raw file bytes," which are then rendered "inline on the application origin, which is a stored-XSS vector." It gets the class (stored XSS), the location (the new `$disable_exit` parameter in `retrieve_action`) and the HTTP-reachability right, and says it should block the merge. Its example payloads (HTML or SVG uploads rather than EXIF-laden images) and its "no Content-Type" framing are minor deviations that do not change the detection.
-
-LABEL: Caught

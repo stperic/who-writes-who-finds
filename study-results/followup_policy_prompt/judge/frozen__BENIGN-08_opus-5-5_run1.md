@@ -1,3 +1,0 @@
-FINDING | Patient ID in exception messages could leak PHI to logs | severity=Low | class=SPECULATIVE | The current message contains no patient ID and the review only cautions about a hypothetical future change and asks to verify caller handling and transaction rollback, which cannot be judged from the diff.
-FINDING | SELECT MAX()+1 then INSERT race yields duplicate sequence numbers | severity=Medium | class=PLAUSIBLE | The diff's own pre-existing comment confirms the non-atomic read-then-insert race, and the change relies on this method without fixing it, so duplicate sequence_no under concurrent posting is a credible integrity weakness.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

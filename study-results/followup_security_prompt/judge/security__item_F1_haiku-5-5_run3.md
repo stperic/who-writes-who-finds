@@ -1,3 +1,0 @@
-The review's item 3 identifies the exact location and class: "The ACL map defines entries only for `practice_settings` and `prescription`. Eight other whitelisted controllers (`document`, `hl7`, `insurance_company`, `pharmacy`, `x12_partner`, and others) pass through with no check at this layer," under OWASP A01 Broken Access Control, with a default-deny fix. However, it rates this "Low (informational for this PR; verify each whitelisted controller enforces its own ACL)" and the verdict states "No critical or high-severity issues," so it would not block the merge for this reason and does not recognize the concrete impact (x12_partner credential rewrite, patient enumeration).
-
-LABEL: Partial

@@ -1,2 +1,0 @@
-FINDING | Verify patient-compartment interface wiring, search field, controller enforcement | severity=Informational | class=SPECULATIVE | The review flags the interface addition as positive and only asks to confirm `getPatientContextSearchField()`, its field mapping, and controller enforcement, none of which appear in the diff and no vulnerability is asserted.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

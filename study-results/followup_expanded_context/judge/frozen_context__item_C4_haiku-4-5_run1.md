@@ -1,3 +1,0 @@
-The review does flag the root cause, missing output escaping in report.php: "**Potential XSS via Unsanitized Output** ... Line 1547: `echo $item['plan'];` - Direct output without escaping" and "Inconsistent Escaping ... Some fields use proper escaping, others don't." However, it frames this only as medium-severity browser XSS. It never connects the unescaped values (e.g., the CSS `background` url context) to the server-side HTML-to-PDF renderer fetching injected URLs, so it misses the SSRF class and its severity.
-
-LABEL: Partial

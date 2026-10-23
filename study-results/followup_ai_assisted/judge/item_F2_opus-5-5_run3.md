@@ -1,3 +1,0 @@
-The review's point #6 precisely identifies the vulnerable line and class: "`$nameprefix = "$eraDir/$eraname";` ... `$eraname` comes from request input. If it isn't sanitized earlier in the file ... a value like `../../...` allows path traversal for both reading and writing the `.edi`/`.html` files," and suggests "`basename()` plus a whitelist regex." However, it is framed conditionally ("worth checking (not introduced here)", "confirm or add sanitization") and explicitly demoted to a non-blocking follow-up: "I would approve after addressing #1 and #3... The rest are nits or follow-ups." The right vulnerability and location are named, but the reviewer would not block the merge for it, so the severity assessment is wrong.
-
-LABEL: Partial

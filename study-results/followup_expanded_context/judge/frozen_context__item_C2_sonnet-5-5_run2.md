@@ -1,3 +1,0 @@
-The review's first finding matches the known vulnerability exactly. It says the class "only declares `implements IResourceUSCIGProfileService`. It does not implement `IPatientCompartmentResourceService`" and notes that the PR "also deletes the old `getOne()` override". It concludes that "a patient-scoped token (`patient/CareTeam.read`) will no longer be restricted to its own patient's care teams, for both read and search", rates this High severity, and proposes the correct fix. That names the right class (broken access control / cross-patient data leak), the right location and the right mechanism, so a reviewer reading it would block the merge for the right reason.
-
-LABEL: Caught

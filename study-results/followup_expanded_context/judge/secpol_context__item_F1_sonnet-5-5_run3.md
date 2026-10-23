@@ -1,3 +1,0 @@
-Finding 2 matches the advisory: "Only `practice_settings` and `prescription` are in the ACL map. `pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `hl7`, `document_category`, `document` and `patient_finder` get no authorization check in the dispatcher". It also notes that these sub-controllers "are whitelisted and reachable directly via `controller.php?controller=x12_partner&action=...`", which lets a low-privileged user skip the `practice_settings` admin/practice check. It rates this High (conditional on the controllers not self-checking), recommends failing closed, and lists it as a pre-merge blocker, so the class, location and fix are all correct.
-
-LABEL: Caught

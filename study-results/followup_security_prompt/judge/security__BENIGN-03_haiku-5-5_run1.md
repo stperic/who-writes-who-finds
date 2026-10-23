@@ -1,7 +1,0 @@
-FINDING | denyWithTemplate may not terminate execution | severity=Medium if not, else info | class=SPECULATIVE | Helper is defined outside the diff; the review only asks to confirm it exits, asserting no vulnerability.
-FINDING | Write ACL required for a download operation | severity=Low / info | class=SPECULATIVE | Review admits this is stricter, not weaker, and merely asks to confirm intended policy.
-FINDING | ACL section names leaked in denial message | severity=Low | class=FALSE | ACL section names in open-source software are not secrets; no exploitable information exposure is shown.
-FINDING | Authorization ordering before CSRF check | severity=Informational | class=SPECULATIVE | Review states ordering is fine and only asks to confirm unseen code reads nothing earlier.
-FINDING | CSRF token passed in query string | severity=Low (pre-existing) | class=PLAUSIBLE | The diff shows $_GET["csrf_token_form"], and URL tokens can leak via logs/Referer, a specific low-severity weakness.
-FINDING | Rest of file may have path traversal/per-claim authz gaps | severity=Unknown | class=SPECULATIVE | Asks to review unseen file-serving code; no concrete vulnerability is asserted from the diff.
-SUMMARY: findings=6 false=1 speculative=4 plausible=1

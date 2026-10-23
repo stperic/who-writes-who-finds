@@ -1,2 +1,0 @@
-FINDING | skip_timeout_reset no longer bypasses expiration check, behavior change | severity=Medium | class=SPECULATIVE | The description of the old-vs-new logic is accurate and it asks for intent/justification rather than asserting a vulnerability; the new code actually tightens session enforcement (the old bypass let polling requests dodge expiry), so no weakness in the shown code is claimed.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

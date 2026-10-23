@@ -1,3 +1,0 @@
-The review's item 5, "Unescaped output of free-text fields (XSS)", flags the root cause in report.php: free-text fields such as `$HPI1` and `$item['plan']` are echoed without `text()`, and it recommends escaping all of them. It frames the impact only as browser-side script execution. It never mentions the HTML-to-PDF rendering path, server-side URL fetching, or the unescaped `$background` in CSS `url()` contexts, so it identifies the right flaw and location but the wrong vulnerability class (XSS rather than SSRF).
-
-LABEL: Partial

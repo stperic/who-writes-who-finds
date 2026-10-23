@@ -1,3 +1,0 @@
-FINDING | Race condition yields duplicate sequence_no in ar_activity | severity=Low to medium | class=PLAUSIBLE | The diff shows an unlocked MAX()+1 read-then-insert pattern (acknowledged in the code comment), so concurrent callers can genuinely produce duplicate ledger sequence numbers.
-FINDING | Confirm caller surfaces new exception, not swallowed | severity=none | class=SPECULATIVE | The caller's error handling is outside the diff and the review only asks for verification without asserting a vulnerability.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

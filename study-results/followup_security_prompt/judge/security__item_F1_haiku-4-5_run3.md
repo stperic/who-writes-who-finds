@@ -1,3 +1,0 @@
-The review does touch the exact gap in issue #2: "Controllers not in `CONTROLLER_ACL_MAP` bypass ACL entirely (line 115-116), which may be intentional but represents a significant attack surface that should be explicitly documented," and recommends "a deny-by-default approach: require explicit ACL exemption rather than implicit allowance." However, it hedges that this "may be intentional," rates it only Medium, frames the fix as documentation rather than a blocking authorization bug, and never identifies that the unmapped sub-controllers (x12_partner, patient_finder, etc.) are sensitive and were supposed to inherit practice_settings' admin requirement — so it flags the right area but not the real severity or concrete impact.
-
-LABEL: Partial

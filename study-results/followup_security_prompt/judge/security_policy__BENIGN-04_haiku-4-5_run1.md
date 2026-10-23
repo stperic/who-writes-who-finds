@@ -1,4 +1,0 @@
-FINDING | XSS via undefined/unverified js_escape(), fix "introduces critical vulnerability" | severity=HIGH | class=FALSE | js_escape is a standard helper that emits a quoted JS literal, so removing manual quotes is correct and the diff is a fix, not a new vulnerability.
-FINDING | decryptStandard implies weak custom cryptography | severity=MEDIUM | class=FALSE | Asserts weak crypto solely from a function name on an untouched context line, with no evidence in the diff.
-FINDING | No security logging of decryption/XSS events | severity=MEDIUM | class=FALSE | Generic absence-of-logging claim about a four-line output snippet is not a credible weakness shown by the diff.
-SUMMARY: findings=3 false=3 speculative=0 plausible=0

@@ -1,3 +1,0 @@
-FINDING | Old code let skip_timeout_reset bypass session expiration enforcement | severity=High | class=PLAUSIBLE | The removed condition gated the entire isSessionExpired/logout block on an attacker-controlled $_REQUEST parameter, which the diff clearly shows and fixes.
-FINDING | $_REQUEST skip_timeout_reset lets attacker suppress timer refresh | severity=Low | class=PLAUSIBLE | The new code still reads the flag from $_REQUEST, so a crafted link can stop expiration renewal; the review correctly scopes this as a minor nuisance, not an auth bypass.
-SUMMARY: findings=2 false=0 speculative=0 plausible=2

@@ -1,3 +1,0 @@
-The review pinpoints the root cause: "Unescaped output of database values (XSS)". It lists the right fields, including "`echo $HPI1;`", "the `$MOTILITY_*` values", "`echo $item['plan']`", and "`$background` inside a `style` attribute", and recommends wrapping them in `text()`/`attr()`. However, it frames the impact only as browser-side stored XSS and never mentions that the report is rendered server-side to PDF, where injected URLs would be fetched by the server (SSRF). That is the right location and flaw, but the wrong vulnerability class.
-
-LABEL: Partial

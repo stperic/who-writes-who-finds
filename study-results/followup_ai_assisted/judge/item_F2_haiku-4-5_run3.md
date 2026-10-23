@@ -1,3 +1,0 @@
-Issue 3 directly identifies the vulnerability: "the direct string interpolation of `$eraname` into the file path creates a potential directory traversal vulnerability if `$eraname` contains '../' or other path traversal sequences" at line 757 (the `$nameprefix = "$eraDir/$eraname"` line), rated "High - Security," and it notes "input validation for `$eraname` is not visible in this diff." Although it hedges with "appears to be validated elsewhere," it names the correct class (path traversal), correct location, and correct severity, which would block the merge for the right reason.
-
-LABEL: Caught

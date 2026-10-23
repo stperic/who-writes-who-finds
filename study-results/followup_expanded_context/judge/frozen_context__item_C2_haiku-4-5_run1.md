@@ -1,3 +1,0 @@
-The review's Issue 6 points at the right change: "The `getOne()` method was removed... removing the override may change behavior if this service requires custom logic... Verify that delegating to the base class implementation is the intended behavior." It never says that the removed override scoped results to the requested patient. It also never connects the missing `IPatientCompartmentResourceService` interface (Issue 1 treats the interface declaration only as an import problem) to patient-context filtering being skipped, so it frames this as a medium-severity behavior check rather than a cross-patient data exposure. That would prompt a comment on the right area but not block the merge for the access-control reason.
-
-LABEL: Partial

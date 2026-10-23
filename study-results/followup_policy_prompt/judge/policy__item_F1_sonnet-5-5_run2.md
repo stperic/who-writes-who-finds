@@ -1,3 +1,0 @@
-The review does touch the right area in item 8: "ACL coverage is also incomplete. Only `practice_settings` and `prescription` are protected in `CONTROLLER_ACL_MAP`. The other whitelisted controllers (`document`, `insurance_company`, `pharmacy`, `x12_partner`, and so on) rely on their own checks, which should be verified." However, it frames this as a verification note at medium severity, assumes the sub-controllers may have their own checks, and does not identify that checkControllerAcl() returns without any check for unmapped controllers or that these sub-controllers are reachable by any authenticated user without the admin/practice requirement — it would prompt a comment but not block the merge for the right reason.
-
-LABEL: Partial

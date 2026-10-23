@@ -1,2 +1,0 @@
-FINDING | Disallowed sort fields silently dropped, no logging of probes | severity=Medium | class=PLAUSIBLE | The diff does show `continue` with no logging, so filtered-out fields (including injection attempts) are indeed unobservable; a minor but accurate hardening point, not a vulnerability.
-SUMMARY: findings=1 false=0 speculative=0 plausible=1

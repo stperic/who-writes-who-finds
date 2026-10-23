@@ -1,3 +1,0 @@
-The review explicitly flags the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, as "Gateway API key exposed to every page viewer" (A05). It explains that "If `gateway_api_key` holds the Stripe **secret** key... attackers get full gateway API access: charges, refunds, customer data." It also cites this exposure in the do-not-merge verdict, rates it High, and recommends keeping secret keys server-side. The wording is hedged on what the global holds, but it names the right class, location and impact, so a reviewer would block the merge for the correct reason.
-
-LABEL: Caught

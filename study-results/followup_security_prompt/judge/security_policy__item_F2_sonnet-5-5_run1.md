@@ -1,3 +1,0 @@
-The review's item 2 directly identifies the vulnerability: "`$eraname` is used to build a filesystem path, and sanitization is not visible ... `$nameprefix = \"$eraDir/$eraname\"` ... If it is unsanitized, `../` sequences allow writing `.edi` or report files outside the ERA directory (arbitrary file write...)". It names path traversal, the exact line, the request-input source, rates it "High if unsanitized", and recommends `basename()`/allowlist plus `realpath()` containment. Although it hedges ("Please confirm how `$eraname` is derived") rather than asserting the lack of sanitization outright, it identifies the correct class, location, and severity and asks for confirmation before merge, which matches the known vulnerability.
-
-LABEL: Caught

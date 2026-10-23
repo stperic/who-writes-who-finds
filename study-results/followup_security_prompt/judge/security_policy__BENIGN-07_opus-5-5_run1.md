@@ -1,5 +1,0 @@
-FINDING | Exception swallowed without logging; monitoring gap | severity=Informational/Low | class=PLAUSIBLE | The diff's catch block indeed discards the exception silently, and the review suggests a concrete non-PHI logging fix without overclaiming a vulnerability.
-FINDING | Verify `$where` not built from unsanitized input (path traversal) | severity=none | class=SPECULATIVE | The construction of `$where` is outside the diff, and the review explicitly says it cannot confirm or rule out an issue.
-FINDING | Verify ACL and CSRF checks protect the fax endpoint | severity=none | class=SPECULATIVE | The method's entry and access-control logic are not shown, and the review frames this as a check request, not a confirmed finding.
-FINDING | Verify fax file not web-accessible/guessable, cleaned up | severity=none | class=SPECULATIVE | How the file is stored and served is not visible in the diff, and the review presents this only as a suggestion for further review.
-SUMMARY: findings=4 false=0 speculative=3 plausible=1

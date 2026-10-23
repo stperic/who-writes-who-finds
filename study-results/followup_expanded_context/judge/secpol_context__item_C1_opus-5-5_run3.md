@@ -1,3 +1,0 @@
-The review's Finding 1, "Stored XSS by serving uploaded files as the page body," names the right file and the new return statements. It explains that `Controller::act()` maps query parameters positionally, so `disable_exit=1` can be set from the URL, and that "the file content is returned without `Content-Type`... which the browser treats as `text/html` on the OpenEMR origin." It rates this High and lists polyglot uploads that run script in another user's session, which matches the known vulnerability in class, location and mechanism.
-
-LABEL: Caught

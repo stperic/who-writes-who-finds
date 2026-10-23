@@ -1,3 +1,0 @@
-The review's item 4 identifies the exact gap: "Only 2 controllers have ACL mappings (`practice_settings`, `prescription`), but 9 are whitelisted in `VALID_CONTROLLERS`. The other 7 controllers bypass ACL checks entirely," pointing at CONTROLLER_ACL_MAP as the location. However, it rates this only MEDIUM, suggests a comment "explaining why some are intentionally unguarded" as an acceptable fix, and does not articulate the concrete impact (unauthorized access to x12_partner credentials or patient_finder), so it would raise a comment rather than firmly block the merge.
-
-LABEL: Partial

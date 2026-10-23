@@ -1,3 +1,0 @@
-The review gets the mechanism right in issue 2: "`Controller::act()` builds `$args_array` from the query string... So a request like this sets the new parameter," and "The raw file contents are returned and echoed through the controller output path without download headers." But it never says the bytes are served as text/html, or that HTML/JavaScript embedded in an uploaded file would run in the viewer's browser. It frames the impact as encryption bypass and behaviour change rather than stored XSS. It flags the right location and attack vector, and its suggested fix would close the hole, but it misses the vulnerability class.
-
-LABEL: Partial

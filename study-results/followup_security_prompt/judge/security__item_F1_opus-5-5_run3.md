@@ -1,3 +1,0 @@
-The review's item #5 identifies exactly the vulnerability: "Only `practice_settings` and `prescription` get a router-level ACL check. Controllers such as `pharmacy`, `insurance_company`, `x12_partner`, `hl7`, and `document` are reachable directly via `?controller=pharmacy` without the `admin/practice` check," and even proposes the correct fix ("Require every entry in `VALID_CONTROLLERS` to have an ACL entry, failing closed"). However, it rates this as "**Low** (informational / hardening)" and "pre-existing, not a regression," and the merge-blocking recommendation is tied only to issue #1, so the review would raise a comment but not stop the bug for the right reason.
-
-LABEL: Partial

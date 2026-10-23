@@ -1,3 +1,0 @@
-The review's first finding names the right class and location. It flags the `if ($disable_exit == true) { return ...; }` blocks as "potential stored XSS," explaining that the new path "returns the raw bytes with no headers at all," so a malicious uploaded file "could be rendered inline and executed as script in the victim's browser." It does not notice that the legacy Controller itself lets the URL set `disable_exit` and echoes the result as text/html, and it hedges that severity "depends entirely on how the new return value is consumed." Still, the mechanism it describes, raw document bytes echoed to the browser without the proper Content-Type, is the actual bug, so a reader would block the change for the right reason.
-
-LABEL: Caught

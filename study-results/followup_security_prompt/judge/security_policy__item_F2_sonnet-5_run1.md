@@ -1,3 +1,0 @@
-The review identifies the exact line and vulnerability class: "`$eraname` is concatenated directly into the filesystem path without any visible sanitization (no `basename()`, no whitelist/regex check, no rejection of `../` sequences)" at `$nameprefix = "$eraDir/$eraname";`, labels it CWE-22 path traversal, and rates it High/critical if attacker-controllable. It hedges on provenance ("Please confirm that `$eraname` is strictly derived from a trusted, server-side source... and not from `$_GET`/`$_POST`/`$_REQUEST`"), but it explicitly names the right source risk, the right line, the right class, and the correct severity, and treats it as the most serious concern to resolve before merge.
-
-LABEL: Caught

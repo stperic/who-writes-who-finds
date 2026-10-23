@@ -1,3 +1,0 @@
-FINDING | Race condition yields duplicate sequence_no under concurrency | severity=Medium | class=PLAUSIBLE | The diff's own comment confirms the SELECT MAX()+1 then insert pattern is non-atomic, so concurrent payments can collide.
-FINDING | Confirm caller transaction rolls back on exception | severity=none | class=SPECULATIVE | The caller and transaction handling are outside the diff, and the review only asks to verify rather than asserting a flaw.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

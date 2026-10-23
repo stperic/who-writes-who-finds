@@ -1,3 +1,0 @@
-The review discusses action-name sanitization, dropped `method_exists()`, positional args, and in item 6 notes "The hard-coded `VALID_CONTROLLERS` list silently drops any controller not in it," but it never observes that `checkControllerAcl()` returns without checking when a controller lacks a `CONTROLLER_ACL_MAP` entry, nor that sub-controllers like x12_partner or patient_finder are reachable by any authenticated user. The only mention of the ACL map is "There is no test coverage for the new routing, ACL map or error paths," which is not a detection of the missing authorization check.
-
-LABEL: Missed

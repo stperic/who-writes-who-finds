@@ -1,3 +1,0 @@
-The review directly identifies the vulnerability class and location: "`$eraname` variable is not validated before being used in the path construction at line 758: `$nameprefix = "$eraDir/$eraname";`. If `$eraname` contains path traversal sequences (e.g., `../../../etc/passwd`), an attacker could write files outside the intended ERA directory," rated High with a recommendation to use `basename()` and whitelist validation. This matches the advisory's path traversal via unsanitized `$eraname` concatenation and would block the merge for the right reason, even though it emphasizes the write side and does not explicitly mention the `.edi` read or that `$eraname` comes from `$_REQUEST`.
-
-LABEL: Caught

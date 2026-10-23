@@ -1,3 +1,0 @@
-The review never mentions `$eraname`, `$_REQUEST`, `$nameprefix`, or any path traversal / input sanitization concern; its points concern directory permissions ("Mode 0755 lets any local user..."), empty `OE_SITE_DIR`, debug-mode side effects, and `die()` disclosing the server path. None of these touch the unsanitized concatenation of user-controlled `$eraname` into the file path, so the known vulnerability is not flagged.
-
-LABEL: Missed

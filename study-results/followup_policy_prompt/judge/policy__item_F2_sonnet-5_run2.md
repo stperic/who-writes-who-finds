@@ -1,3 +1,0 @@
-The review explicitly identifies the vulnerability class and location: "Potential path traversal via `$eraname`... `$nameprefix = \"$eraDir/$eraname\"` is built directly from `$eraname`, which earlier in the file is apparently user/externally supplied... Nothing in this diff shows that `$eraname` is validated against `../` sequences," and recommends `basename($eraname)` or regex validation "to prevent writing/reading ERA files outside the intended `documents/era` directory." This matches the advisory's class (path traversal), exact line, consequence (read/write outside the directory), and remediation, with severity rated Medium/High and noted as pre-existing but touched by the change.
-
-LABEL: Caught

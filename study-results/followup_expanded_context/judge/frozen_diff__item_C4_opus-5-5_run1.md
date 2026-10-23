@@ -1,3 +1,0 @@
-The review pins down the root cause and location: under "Stored XSS: database fields echoed without escaping," it lists `$HPI1`, the `$MOTILITY_*` cells, IMPPLAN `plan`, `$PLAN` items, and `$pid` inside `<img src='...'>`, and recommends `text()`/`attr()`. However, it frames the risk only as browser-side XSS. It never connects the unescaped markup to the html2pdf renderer fetching injected URLs server-side. Issue 12 mentions "html2pdf filesystem access" only as a path-exposure concern, not as SSRF. The right area and the right fix are flagged, but under the wrong vulnerability class.
-
-LABEL: Partial

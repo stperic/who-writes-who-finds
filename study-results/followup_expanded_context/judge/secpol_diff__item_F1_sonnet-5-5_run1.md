@@ -1,3 +1,0 @@
-Finding 3 names the exact flaw: "Only `practice_settings` and `prescription` are checked. `document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy`, `x12_partner` and others get no ACL check in the dispatcher." It also notes that the sub-controllers "can now be requested directly with `controller=pharmacy` and skip the `admin/practice` check." The review files this as A01 Broken Access Control at `CONTROLLER_ACL_MAP`/`checkControllerAcl()`, rates it High, and recommends a default-deny ACL, so it matches the advisory's class, location, severity and fix despite the "unless each controller enforces its own" hedge.
-
-LABEL: Caught

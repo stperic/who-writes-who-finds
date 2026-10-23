@@ -1,3 +1,0 @@
-Under item 10, which it files as "Server-Side Request Forgery (SSRF)", the review quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and notes "If the API key is a secret key (not just public), it's exposed to the client." That points at the right location and mechanism. However, the finding is hedged as conditional, filed under the wrong vulnerability class, and buried among SSRF speculation and many unrelated issues. It never states that `gateway_api_key` is the gateway's private secret (e.g., the Stripe secret key) that any portal user could read and abuse, so a reader would not clearly block the merge for credential exposure.
-
-LABEL: Partial

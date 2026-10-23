@@ -1,3 +1,0 @@
-The review does flag the exact area in Finding #5: "`document`, `insurance_company`, `pharmacy`, `x12_partner`, `hl7`, `patient_finder` and others have no central ACL check... a default-deny design is safer. Confirm that each of these controllers enforces its own ACL checks." However, it labels this "Low (informational)," treats it as acceptable pre-existing behavior, and does not recognize that these sub-controllers rely on practice_settings' admin check and are therefore reachable without any permission check, so it would not block the merge for this reason.
-
-LABEL: Partial

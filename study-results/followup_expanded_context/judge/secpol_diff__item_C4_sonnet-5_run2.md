@@ -1,3 +1,0 @@
-The review flags the same root cause in the same file. It notes that "`&nbsp;<?php echo $HPI1; ?>` (HPI1 is echoed raw...)" and that `plan`, `codetext` and `PLAN2` are "rendered without HTML-encoding... allowing stored XSS." However, it treats this only as browser-side stored XSS. It never connects the unescaped markup to the server-side HTML-to-PDF rendering or the resulting SSRF, and it misses the CSS `background` url() sink. So it hits the right area and weakness but the wrong vulnerability class.
-
-LABEL: Partial

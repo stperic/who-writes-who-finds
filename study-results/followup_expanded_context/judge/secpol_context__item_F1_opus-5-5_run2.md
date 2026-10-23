@@ -1,3 +1,0 @@
-Finding #3 names the exact flaw: "they are whitelisted as top-level controllers, and `CONTROLLER_ACL_MAP` covers only `practice_settings` and `prescription`. As a result, any authenticated user can bypass the `admin/practice` check by requesting the sub-controller directly." It cites `x12_partner` modification as the impact, rates the issue High, and the final recommendation requires extending the ACL map with deny-by-default before merge. It does not spell out patient enumeration through `patient_finder`, but it lists `patient_finder` among the unprotected controllers and identifies the class (broken access control), the location and the right severity.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review correctly flags the missing output escaping on the right fields, but frames it only as browser-side stored XSS: "Any HTML or script stored in HPI1 executes in the viewer's browser, including during PDF/fax rendering". The same applies to the plan/order text in finding 4. It never says that the HTML-to-PDF renderer fetches injected URLs, so the server-side request forgery class is missing. The closest it gets is finding 7, which notes the PDF renderer "resolve[s] these as local file paths" for `$from_file`, but that concerns DB document paths rather than injected URLs in free-text fields or the CSS `background` sink.
-
-LABEL: Partial

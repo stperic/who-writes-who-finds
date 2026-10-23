@@ -1,2 +1,0 @@
-FINDING | Patient-compartment search field may be missing or mis-scoped | severity=High | class=SPECULATIVE | The review asks to confirm `getPatientContextSearchField()` exists and maps to the patient column, which cannot be judged from the diff and no vulnerability is asserted.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

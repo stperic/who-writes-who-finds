@@ -1,3 +1,0 @@
-The review explicitly identifies the right location and class: "`$eraname` is not validated in this diff... If `$eraname` comes from request input earlier in the file, it must be sanitized, for example with `basename()`... to prevent path traversal like `../../`." However, it hedges ("I could not see that code in the diff, so please confirm"), marks it as pre-existing and non-blocking, and concludes "safe to merge from a security standpoint," so it would not stop the merge for this reason.
-
-LABEL: Partial

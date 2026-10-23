@@ -1,3 +1,0 @@
-The review identifies the vulnerability exactly. It flags Broken Access Control (A01) in FhirCareTeamService and notes that the class "only implements `IResourceUSCIGProfileService`. It defines `getPatientContextSearchField()` but never declares `IPatientCompartmentResourceService`. As a result, both `instanceof` checks are false and `$puuidBind` is silently ignored." It also gives the impact: a patient-scoped caller can "list every care team in the system." It rates the issue High, cites the removed getOne() override, and recommends blocking the merge for that reason.
-
-LABEL: Caught

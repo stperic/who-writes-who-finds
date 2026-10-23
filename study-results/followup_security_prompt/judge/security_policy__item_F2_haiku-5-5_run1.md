@@ -1,3 +1,0 @@
-The review's Finding 1 explicitly identifies "Path traversal through `$eraname`" at `$nameprefix = "$eraDir/$eraname";`, categorizes it as CWE-22, notes it is unvalidated in the code shown, rates it "High if `$eraname` is user-controlled," recommends `basename()` plus an allow-list, and states "I would not merge until `$eraname` is validated." This matches the advisory's class, location, and severity, with the only hedge being that the source (`$_REQUEST`) is outside the diff, which the reviewer correctly flags for verification rather than dismissing.
-
-LABEL: Caught

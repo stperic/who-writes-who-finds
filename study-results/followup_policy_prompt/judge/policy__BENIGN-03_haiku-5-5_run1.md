@@ -1,7 +1,0 @@
-FINDING | 'write' may be wrong level, should be 'read' | severity=Medium | class=SPECULATIVE | Asks to confirm intended permission against calling pages and ACL definitions not in the diff, without asserting a vulnerability.
-FINDING | OR across eob/bill sections needs justification | severity=Low | class=SPECULATIVE | Requests confirmation of the broader grant with security owners; no vulnerability is asserted and intent cannot be judged from the diff.
-FINDING | denyWithTemplate must halt execution or ACL bypassed | severity=High if false, otherwise none | class=SPECULATIVE | Depends on the helper's implementation defined elsewhere; the review explicitly frames it as a verification request.
-FINDING | Unshown file-handling may allow path traversal | severity=High | class=SPECULATIVE | The file-serving code is outside the diff and the review only asks to confirm input validation and headers.
-FINDING | CSRF token in GET query string can leak | severity=Low | class=PLAUSIBLE | The diff shows the token read from `$_GET`, and query-string tokens leaking via logs/referrers/history is a specific credible weakness.
-FINDING | Denial message may reveal internal ACL structure | severity=Low | class=SPECULATIVE | Whether the first argument is shown to users depends on the helper's behavior, which the review itself conditions on and cannot see.
-SUMMARY: findings=6 false=0 speculative=5 plausible=1

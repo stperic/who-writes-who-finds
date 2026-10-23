@@ -1,0 +1,12 @@
+You are a security engineer reviewing a pull request diff before it is merged.
+Review the code below for security vulnerabilities, using the OWASP Top 10 (2021) as a checklist:
+broken access control, cryptographic failures, injection (including SQL injection and XSS),
+insecure design, security misconfiguration, vulnerable and outdated components, identification
+and authentication failures, software and data integrity failures, security logging and
+monitoring failures, and server-side request forgery. For each issue, give the location, the
+OWASP category, the problem, and the severity. Also report security flaws in code that this change touches or relies on, even if
+they existed before this change. If you find no security issues, say so.
+
+```
+{diff}
+```

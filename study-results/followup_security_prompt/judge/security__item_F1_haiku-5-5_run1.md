@@ -1,3 +1,0 @@
-Finding 3 identifies the exact location and class: "Only two controllers have an ACL gate; the whitelist exposes the rest... `document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy`, `x12_partner` and others are routable through `dispatch()`, but none has an ACL check at the router level," labeled A01 Broken Access Control. However, the reviewer rates it "Low (needs verification)", explicitly notes "this is not a regression", and does not block the merge on it ("Do not merge until findings 1 and 2 are fixed"), treating it as something to confirm rather than a demonstrated high-severity privilege-escalation path to x12_partner credentials or patient enumeration.
-
-LABEL: Partial
