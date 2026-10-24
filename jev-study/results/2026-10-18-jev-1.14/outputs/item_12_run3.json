@@ -1,0 +1,55 @@
+{
+  "item_id": "item_12",
+  "run": 3,
+  "provider": "openrouter",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "manifest_sha256": "f44c2c7a8355a62ae3a8055c4df9a2d3e959ff368a43e3cbbe6b532ae43f47a2",
+  "max_output_tokens": null,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "decision_threshold": 0.5,
+  "response_format": "noul_per_route",
+  "input_sha256": "c180356e2be6c82d59522d9bb7f3d03a98b826c7842b80a65b1ad90d86a30ea6",
+  "started_at_utc": "2026-10-19T01:48:06.897217+00:00",
+  "raw": "{\"model\": \"typesafe/jev-1.14-20261014\", \"answers\": {\"auth_boundary\": {\"type\": \"noul\", \"noul\": 0.03}, \"sensitive_data\": {\"type\": \"noul\", \"noul\": 0.09}, \"construction\": {\"type\": \"noul\", \"noul\": 0.63}, \"security_config\": {\"type\": \"noul\", \"noul\": 0.02}, \"low_impact\": {\"type\": \"noul\", \"noul\": 0.64}}, \"usage\": {\"input_tokens\": 2281, \"output_tokens\": 90, \"cost\": 9.5802e-05}, \"id\": \"gen-dec-1792374486-xNhJmrsLcNCR6aUTJFsF\", \"provider\": \"TypeSafe\"}",
+  "resolved_model": "typesafe/jev-1.14-20261014",
+  "finish_reason": "typed_decisions",
+  "status": "ok",
+  "fallback": "human_triage_required_no_approval",
+  "usage": {
+    "input_tokens": 2281,
+    "output_tokens": 90,
+    "cost": 9.5802e-05
+  },
+  "prediction": {
+    "routes": [
+      "construction"
+    ],
+    "route_probabilities": {
+      "auth_boundary": 0.03,
+      "sensitive_data": 0.09,
+      "construction": 0.63,
+      "security_config": 0.02,
+      "low_impact": 0.64
+    },
+    "abstained": false,
+    "conflicting_low_impact": true,
+    "evidence_available": false
+  },
+  "disposition": {
+    "reviewer_roles": [
+      "pr_reviewer"
+    ],
+    "human_approval_required": true,
+    "merge_approved": false,
+    "ai_authority": "may_block_confident_finding_pending_human_triage",
+    "escalation_rules": [
+      "A finding is disputed or a custom escaping helper needs verification."
+    ]
+  },
+  "response_id": "gen-dec-1792374486-xNhJmrsLcNCR6aUTJFsF",
+  "upstream_provider": "TypeSafe",
+  "wall_seconds": 0.157
+}

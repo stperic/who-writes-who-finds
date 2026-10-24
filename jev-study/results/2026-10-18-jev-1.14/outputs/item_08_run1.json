@@ -1,0 +1,55 @@
+{
+  "item_id": "item_08",
+  "run": 1,
+  "provider": "openrouter",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "manifest_sha256": "f44c2c7a8355a62ae3a8055c4df9a2d3e959ff368a43e3cbbe6b532ae43f47a2",
+  "max_output_tokens": null,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "decision_threshold": 0.5,
+  "response_format": "noul_per_route",
+  "input_sha256": "ef091dcff971e47f6657822ea7165375c7b5f2d0b91acbd562af6159b6ab00c9",
+  "started_at_utc": "2026-10-19T01:48:04.576365+00:00",
+  "raw": "{\"model\": \"typesafe/jev-1.14-20261014\", \"answers\": {\"auth_boundary\": {\"type\": \"noul\", \"noul\": 0.14}, \"sensitive_data\": {\"type\": \"noul\", \"noul\": 0.47}, \"construction\": {\"type\": \"noul\", \"noul\": 0.05}, \"security_config\": {\"type\": \"noul\", \"noul\": 0.97}, \"low_impact\": {\"type\": \"noul\", \"noul\": 0.03}}, \"usage\": {\"input_tokens\": 1704, \"output_tokens\": 90, \"cost\": 7.1568e-05}, \"id\": \"gen-dec-1792374484-RBjX39sSF0SCcOq4sVoF\", \"provider\": \"TypeSafe\"}",
+  "resolved_model": "typesafe/jev-1.14-20261014",
+  "finish_reason": "typed_decisions",
+  "status": "ok",
+  "fallback": "human_triage_required_no_approval",
+  "usage": {
+    "input_tokens": 1704,
+    "output_tokens": 90,
+    "cost": 7.1568e-05
+  },
+  "prediction": {
+    "routes": [
+      "security_config"
+    ],
+    "route_probabilities": {
+      "auth_boundary": 0.14,
+      "sensitive_data": 0.47,
+      "construction": 0.05,
+      "security_config": 0.97,
+      "low_impact": 0.03
+    },
+    "abstained": false,
+    "conflicting_low_impact": false,
+    "evidence_available": false
+  },
+  "disposition": {
+    "reviewer_roles": [
+      "platform_security_owner"
+    ],
+    "human_approval_required": true,
+    "merge_approved": false,
+    "ai_authority": "advisory",
+    "escalation_rules": [
+      "AI and deterministic tools disagree."
+    ]
+  },
+  "response_id": "gen-dec-1792374484-RBjX39sSF0SCcOq4sVoF",
+  "upstream_provider": "TypeSafe",
+  "wall_seconds": 0.199
+}

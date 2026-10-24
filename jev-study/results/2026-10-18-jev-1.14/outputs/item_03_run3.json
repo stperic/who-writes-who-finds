@@ -1,0 +1,58 @@
+{
+  "item_id": "item_03",
+  "run": 3,
+  "provider": "openrouter",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "manifest_sha256": "f44c2c7a8355a62ae3a8055c4df9a2d3e959ff368a43e3cbbe6b532ae43f47a2",
+  "max_output_tokens": null,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "decision_threshold": 0.5,
+  "response_format": "noul_per_route",
+  "input_sha256": "1d36a1f6cbfbf1cd4f31252bc3568d835cdb925350987c9b945c664964241971",
+  "started_at_utc": "2026-10-19T01:48:02.217757+00:00",
+  "raw": "{\"model\": \"typesafe/jev-1.14-20261014\", \"answers\": {\"auth_boundary\": {\"type\": \"noul\", \"noul\": 0.7}, \"sensitive_data\": {\"type\": \"noul\", \"noul\": 0.74}, \"construction\": {\"type\": \"noul\", \"noul\": 0.36}, \"security_config\": {\"type\": \"noul\", \"noul\": 0.05}, \"low_impact\": {\"type\": \"noul\", \"noul\": 0.03}}, \"usage\": {\"input_tokens\": 4613, \"output_tokens\": 90, \"cost\": 0.000193746}, \"id\": \"gen-dec-1792374482-xZtk6QzYjGfhgeH1neHK\", \"provider\": \"TypeSafe\"}",
+  "resolved_model": "typesafe/jev-1.14-20261014",
+  "finish_reason": "typed_decisions",
+  "status": "ok",
+  "fallback": "human_triage_required_no_approval",
+  "usage": {
+    "input_tokens": 4613,
+    "output_tokens": 90,
+    "cost": 0.000193746
+  },
+  "prediction": {
+    "routes": [
+      "auth_boundary",
+      "sensitive_data"
+    ],
+    "route_probabilities": {
+      "auth_boundary": 0.7,
+      "sensitive_data": 0.74,
+      "construction": 0.36,
+      "security_config": 0.05,
+      "low_impact": 0.03
+    },
+    "abstained": false,
+    "conflicting_low_impact": false,
+    "evidence_available": false
+  },
+  "disposition": {
+    "reviewer_roles": [
+      "boundary_owner",
+      "data_privacy_owner"
+    ],
+    "human_approval_required": true,
+    "merge_approved": false,
+    "ai_authority": "advisory",
+    "escalation_rules": [
+      "A new access path, removed guard, or AI silence on a boundary change.",
+      "Data crosses a trust boundary or reaches webroot, logs or client JavaScript."
+    ]
+  },
+  "response_id": "gen-dec-1792374482-xZtk6QzYjGfhgeH1neHK",
+  "upstream_provider": "TypeSafe",
+  "wall_seconds": 0.159
+}

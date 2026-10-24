@@ -1,0 +1,42 @@
+{
+  "item_id": "item_06",
+  "run": 1,
+  "provider": "openrouter",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "manifest_sha256": "f44c2c7a8355a62ae3a8055c4df9a2d3e959ff368a43e3cbbe6b532ae43f47a2",
+  "max_output_tokens": null,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "decision_threshold": 0.5,
+  "response_format": "noul_per_route",
+  "input_sha256": "9b13b92eff058ca88e72937759fe674ea179e1cb84db7da97561b7c9117d2f35",
+  "started_at_utc": "2026-10-19T01:48:03.650358+00:00",
+  "raw": "{\"model\": \"typesafe/jev-1.14-20261014\", \"answers\": {\"auth_boundary\": {\"type\": \"noul\", \"noul\": 0.03}, \"sensitive_data\": {\"type\": \"noul\", \"noul\": 0.09}, \"construction\": {\"type\": \"noul\", \"noul\": 0.26}, \"security_config\": {\"type\": \"noul\", \"noul\": 0.02}, \"low_impact\": {\"type\": \"noul\", \"noul\": 0.48}}, \"usage\": {\"input_tokens\": 1829, \"output_tokens\": 90, \"cost\": 7.6818e-05}, \"id\": \"gen-dec-1792374483-u0tPCFiKEGsucPnBwIFo\", \"provider\": \"TypeSafe\"}",
+  "resolved_model": "typesafe/jev-1.14-20261014",
+  "finish_reason": "typed_decisions",
+  "status": "abstain",
+  "fallback": "human_triage_required_no_approval",
+  "usage": {
+    "input_tokens": 1829,
+    "output_tokens": 90,
+    "cost": 7.6818e-05
+  },
+  "prediction": {
+    "routes": [],
+    "route_probabilities": {
+      "auth_boundary": 0.03,
+      "sensitive_data": 0.09,
+      "construction": 0.26,
+      "security_config": 0.02,
+      "low_impact": 0.48
+    },
+    "abstained": true,
+    "conflicting_low_impact": false,
+    "evidence_available": false
+  },
+  "response_id": "gen-dec-1792374483-u0tPCFiKEGsucPnBwIFo",
+  "upstream_provider": "TypeSafe",
+  "wall_seconds": 0.163
+}

@@ -1,0 +1,55 @@
+{
+  "item_id": "item_04",
+  "run": 2,
+  "provider": "openrouter",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "manifest_sha256": "f44c2c7a8355a62ae3a8055c4df9a2d3e959ff368a43e3cbbe6b532ae43f47a2",
+  "max_output_tokens": null,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "decision_threshold": 0.5,
+  "response_format": "noul_per_route",
+  "input_sha256": "a38fab6a2e2f19925a51568027b325888181514ae153d0a2a3bb73dfdefc9b0a",
+  "started_at_utc": "2026-10-19T01:48:02.529752+00:00",
+  "raw": "{\"model\": \"typesafe/jev-1.14-20261014\", \"answers\": {\"auth_boundary\": {\"type\": \"noul\", \"noul\": 0.01}, \"sensitive_data\": {\"type\": \"noul\", \"noul\": 0.02}, \"construction\": {\"type\": \"noul\", \"noul\": 0.02}, \"security_config\": {\"type\": \"noul\", \"noul\": 0.01}, \"low_impact\": {\"type\": \"noul\", \"noul\": 0.98}}, \"usage\": {\"input_tokens\": 1690, \"output_tokens\": 90, \"cost\": 7.098e-05}, \"id\": \"gen-dec-1792374482-NhsmiGp00om3CuB2YAbS\", \"provider\": \"TypeSafe\"}",
+  "resolved_model": "typesafe/jev-1.14-20261014",
+  "finish_reason": "typed_decisions",
+  "status": "ok",
+  "fallback": "human_triage_required_no_approval",
+  "usage": {
+    "input_tokens": 1690,
+    "output_tokens": 90,
+    "cost": 7.098e-05
+  },
+  "prediction": {
+    "routes": [
+      "low_impact"
+    ],
+    "route_probabilities": {
+      "auth_boundary": 0.01,
+      "sensitive_data": 0.02,
+      "construction": 0.02,
+      "security_config": 0.01,
+      "low_impact": 0.98
+    },
+    "abstained": false,
+    "conflicting_low_impact": false,
+    "evidence_available": false
+  },
+  "disposition": {
+    "reviewer_roles": [
+      "peer_reviewer"
+    ],
+    "human_approval_required": true,
+    "merge_approved": false,
+    "ai_authority": "first_pass",
+    "escalation_rules": [
+      "AI execution fails, times out, returns empty output, or context is insufficient."
+    ]
+  },
+  "response_id": "gen-dec-1792374482-NhsmiGp00om3CuB2YAbS",
+  "upstream_provider": "TypeSafe",
+  "wall_seconds": 0.176
+}
