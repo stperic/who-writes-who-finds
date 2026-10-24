@@ -1,6 +1,6 @@
 # Jev follow-up v2.0
 
-**Prepared, tested, and exploratory. The nine-case holdout has not been queried. Independent human adjudication is still outstanding.** The original archive and PowerPoint snapshots are preserved byte for byte, with hashes in [protected-files.json](protected-files.json). During the authorized presentation revision on October 18, the working v5 deck's preservation entry was pointed to [its existing archived backup](../../Archive/ISC2-deck-v5-before-jev-pilot-20261018.pptx), retaining exactly the same expected hash. The working deck can continue to change without replacing that study-era snapshot. No original experimental evidence or expected labels changed.
+**Prepared, tested, and exploratory. The nine-case holdout has not been queried. Independent human adjudication is still outstanding.** The published original evidence is checked byte for byte against [protected-files.json](protected-files.json). That manifest also records hashes for local PowerPoint backups, which are intentionally outside this repository and are checked only when present. No original experimental evidence or expected labels changed.
 
 The question is how policy decides the review obligations for a change. This experiment measures category routing and tests workflow logic. It does not measure the best downstream AI model, vulnerability detection by reviewers, human detection success, or production merge enforcement.
 

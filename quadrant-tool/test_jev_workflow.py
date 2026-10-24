@@ -314,7 +314,10 @@ class HarnessTests(unittest.TestCase):
 
     def test_existing_evidence_unchanged(self):
         for name, sha in w.read_json(w.STUDY / "preserved-files.json").items():
-            self.assertEqual(w.digest((w.ROOT / name).read_bytes()), sha, name)
+            path = w.ROOT / name
+            if name.endswith(".pptx") and not path.exists():
+                continue  # Local presentation backups are excluded from GitHub.
+            self.assertEqual(w.digest(path.read_bytes()), sha, name)
 
 
 if __name__ == "__main__":

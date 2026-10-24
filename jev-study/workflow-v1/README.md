@@ -2,7 +2,7 @@
 
 **Implemented and tested; independent human workflow adjudication remains pending. No live requests have been made with these questions.** The 14 development cases and nine unqueried holdout cases reuse the existing dataset and family grouping. Original results, prior follow-up artifacts and presentation snapshots remain unchanged. The PowerPoint was not edited.
 
-The subsequent authorized presentation revision on October 18 uses this workflow example. Its preservation entry now points to [the deck snapshot taken before that revision](../../Archive/ISC2-deck-v5-before-workflow-20261018.pptx), retaining the same expected hash in `preserved-files.json`. This preserves the study-era presentation while allowing the working deck to evolve. Experimental inputs, labels, raw results and prepared freezes remain unchanged.
+The subsequent authorized presentation revision on October 18 uses this workflow example. `preserved-files.json` retains the hash of the local deck snapshot from before that revision. PowerPoint backups are outside this repository, so the public check verifies the published evidence and checks a deck backup only when it is present. Experimental inputs, labels, raw results and prepared freezes remain unchanged.
 
 Start with [the PR journey and diagram](PR-JOURNEY.md). The scientific claim is limited: the implementation can turn typed category probabilities into review requirements and simulate checking their completion. Workflow-routing accuracy, downstream detection and production enforcement are not yet established.
 
