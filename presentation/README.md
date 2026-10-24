@@ -19,6 +19,8 @@ The slides mix historical scores, later retests, scanner scans, a component repl
 
 The full 24-case Haiku prompt test is [published separately](../openemr-study/RESULTS.md): the new direct API generic arm caught **11/24**, and the stronger prompt caught **19/24**. Its benign-control false-alarm counts were **8/30** and **24/30** reviews. This test does not appear as a round in the main talk. It is relevant to the audience question about whether instructions can close the historical Haiku/Sonnet gap. The [exact prompts](../openemr-study/prompts/), [case pages](../openemr-study/cases/), [control pages](../openemr-study/controls/) and [raw archive](../openemr-study/evidence/study-results.zip) are available.
 
+For audience questions about a specific vulnerability, use the [24-CVE FAQ](../openemr-study/CVE-FAQ.md). It explains the historical bug and the recorded upstream patch for every scored case.
+
 ## Other slide sources
 
 | Slides | Reader's starting point | Status |
