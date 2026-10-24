@@ -1,0 +1,82 @@
+[
+  {
+    "item": "BENIGN-01",
+    "commit": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+    "path": "src/Services/PatientService.php",
+    "github_blob_sha": "2f149a2621d3769ef75ba76b52d4a53d5b3a0afc",
+    "sha256": "62bfdf6ec220f92e336928286cae33d6c17b6a57396fbcc1807094f2b03781e5",
+    "bytes": 40850
+  },
+  {
+    "item": "BENIGN-02",
+    "commit": "67e1702c41cf486af0069bdafce19860e2cd9a11",
+    "path": "src/Services/Cda/CdaValidateDocuments.php",
+    "github_blob_sha": "d8e94e09e6d51bc19a14168771777d73428e504c",
+    "sha256": "1fdd0f480a5dbfeba8e49d370faff50cc786925b01cff9b9dc9f3581481568d5",
+    "bytes": 12093
+  },
+  {
+    "item": "BENIGN-03",
+    "commit": "f6d98d0102df0a8f131be560d9208fb65fba6188",
+    "path": "src/Common/Acl/AclMain.php",
+    "github_blob_sha": "bd9229be6a166173a87a725e5c597f1da4f0cb8b",
+    "sha256": "26288709c427b5d8760e237f2eb437ac763bbd7a3fe072522be27a65e10fbe5d",
+    "bytes": 15588
+  },
+  {
+    "item": "BENIGN-04",
+    "commit": "6e9e1566d6e271a6d839614674b887e3a73d7da1",
+    "path": "library/htmlspecialchars.inc.php",
+    "github_blob_sha": "d550351d712ee084c1517e232d044776e53e7b8d",
+    "sha256": "7e5a2313cd1d462e3e33b71968d8c8af0e51ce0f96c09200bc78500be3847a0c",
+    "bytes": 8877
+  },
+  {
+    "item": "BENIGN-05",
+    "commit": "02a6a7793402b10356a94626d78e0e1069e92a77",
+    "path": "src/Common/Session/SessionTracker.php",
+    "github_blob_sha": "c19efbe10a01ad48eada8c0c54ba965e4bd25871",
+    "sha256": "41948c71a137c0884eba2e0d816d2e155393f8cb1e5a99e8773fdc5d74c41857",
+    "bytes": 5483
+  },
+  {
+    "item": "BENIGN-06",
+    "commit": "7307c1089c0473b8ada993e85e47eb64b724f456",
+    "path": "src/Services/FHIR/FhirServiceBase.php",
+    "github_blob_sha": "6613a50ffe6df8eb315837ae3a938fa55fd09b41",
+    "sha256": "a176aad4a5cb3c5a854e3f02da78820e3daefd815db8e7e419ab03af88bf4089",
+    "bytes": 13863
+  },
+  {
+    "item": "BENIGN-07",
+    "commit": "d4091cc07ceccc52010e2872d90991ca01908921",
+    "path": "composer.json",
+    "github_blob_sha": "0f345f5ac4f85a7fb6526085536972fd0f8cdb8f",
+    "sha256": "cee7ba8d4eb7f27b183a57b08aba7ddaaef1586573721cdafb1ac61589c6d32c",
+    "bytes": 12169
+  },
+  {
+    "item": "BENIGN-08",
+    "commit": "f0cba6809da4a6b1c1e51cf47d7622c38c0c390b",
+    "path": "src/PaymentProcessing/Rainforest/Webhooks/RecordPayment.php",
+    "github_blob_sha": "279013eb545d9400560e8d113cfb5b5a6aaafad0",
+    "sha256": "73fe498bad05891594d962e0011527142b7ad7ed69cdae4397959f8eefff3ea1",
+    "bytes": 4889
+  },
+  {
+    "item": "BENIGN-09",
+    "commit": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+    "path": "interface/main/calendar/index.php",
+    "github_blob_sha": "63bd280c5d1d9f479f896eb0ace77675d06cd6f0",
+    "sha256": "d431c30cf29c7c12c71c552cf519c87e3a6808495ff40e5229133264c103afa2",
+    "bytes": 5799
+  },
+  {
+    "item": "BENIGN-10",
+    "commit": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+    "path": "interface/patient_file/front_payment.php",
+    "github_blob_sha": "6aa0e367f3e75dfd95c87d27d653a189faf722fb",
+    "sha256": "79649ab0a0029b5dd0b3c956f9e0ca27a4e1b41d836d80bbb9117dc66b67564e",
+    "bytes": 97525
+  }
+]

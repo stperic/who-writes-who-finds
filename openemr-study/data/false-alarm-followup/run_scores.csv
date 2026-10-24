@@ -1,0 +1,121 @@
+control,arm,run,false_alarm_review,false_findings,false_severities,speculative_findings,plausible_findings,all_security_findings,correctness_warnings,maintainability_warnings,review_words,review_headings,review_input_tokens,review_output_tokens,review_seconds,judge_input_tokens,judge_output_tokens,review_evidence,judge_evidence
+BENIGN-01,context_generic,1,0,0,,0,0,0,3,3,578,1,16491,4152,46.522,18461,833,raw/reviews/BENIGN-01__context_generic__run1,raw/judge/BENIGN-01__context_generic__run1
+BENIGN-01,context_generic,2,0,0,,0,0,0,4,2,523,2,16491,8170,88.198,18264,648,raw/reviews/BENIGN-01__context_generic__run2,raw/judge/BENIGN-01__context_generic__run2
+BENIGN-01,context_generic,3,0,0,,0,1,1,2,3,504,2,16491,6376,70.173,18223,899,raw/reviews/BENIGN-01__context_generic__run3,raw/judge/BENIGN-01__context_generic__run3
+BENIGN-01,context_security,1,0,0,,3,2,5,0,0,790,7,16624,5932,71.087,19068,1805,raw/reviews/BENIGN-01__context_security__run1,raw/judge/BENIGN-01__context_security__run1
+BENIGN-01,context_security,2,1,1,Low/Informational,1,2,4,0,0,936,7,16624,7180,86.73,19437,1770,raw/reviews/BENIGN-01__context_security__run2,raw/judge/BENIGN-01__context_security__run2
+BENIGN-01,context_security,3,0,0,,4,1,5,1,0,867,8,16624,4219,51.699,19299,1712,raw/reviews/BENIGN-01__context_security__run3,raw/judge/BENIGN-01__context_security__run3
+BENIGN-01,pdf_functional,1,0,0,,3,2,5,0,0,746,7,1235,4026,48.78,3423,1351,raw/reviews/BENIGN-01__pdf_functional__run1,raw/judge/BENIGN-01__pdf_functional__run1
+BENIGN-01,pdf_functional,2,0,0,,3,2,5,0,0,738,8,1235,3419,39.045,3412,1843,raw/reviews/BENIGN-01__pdf_functional__run2,raw/judge/BENIGN-01__pdf_functional__run2
+BENIGN-01,pdf_functional,3,0,0,,2,2,4,0,0,631,7,1235,2855,33.555,3155,1179,raw/reviews/BENIGN-01__pdf_functional__run3,raw/judge/BENIGN-01__pdf_functional__run3
+BENIGN-01,pdf_security,1,0,0,,2,1,3,0,0,614,6,1303,3080,37.162,3150,966,raw/reviews/BENIGN-01__pdf_security__run1,raw/judge/BENIGN-01__pdf_security__run1
+BENIGN-01,pdf_security,2,0,0,,2,1,3,1,0,728,5,1303,3378,39.703,3486,863,raw/reviews/BENIGN-01__pdf_security__run2,raw/judge/BENIGN-01__pdf_security__run2
+BENIGN-01,pdf_security,3,0,0,,4,1,5,0,0,857,8,1303,3377,39.508,3761,1459,raw/reviews/BENIGN-01__pdf_security__run3,raw/judge/BENIGN-01__pdf_security__run3
+BENIGN-02,context_generic,1,0,0,,0,1,1,1,2,395,1,5399,909,14.226,6785,773,raw/reviews/BENIGN-02__context_generic__run1,raw/judge/BENIGN-02__context_generic__run1
+BENIGN-02,context_generic,2,0,0,,1,0,1,1,2,401,2,5399,1000,13.312,6876,423,raw/reviews/BENIGN-02__context_generic__run2,raw/judge/BENIGN-02__context_generic__run2
+BENIGN-02,context_generic,3,0,0,,1,1,2,1,2,513,3,5399,1285,17.235,7161,1561,raw/reviews/BENIGN-02__context_generic__run3,raw/judge/BENIGN-02__context_generic__run3
+BENIGN-02,context_security,1,1,1,Medium-High,3,3,7,0,0,1098,10,5532,3336,34.128,9212,2812,raw/reviews/BENIGN-02__context_security__run1,raw/judge/BENIGN-02__context_security__run1
+BENIGN-02,context_security,2,1,2,Low–Medium; Medium,5,2,9,0,0,1118,14,5532,3237,36.568,9113,3266,raw/reviews/BENIGN-02__context_security__run2,raw/judge/BENIGN-02__context_security__run2
+BENIGN-02,context_security,3,0,0,,5,2,7,0,0,1036,11,5532,3133,34.031,9009,2251,raw/reviews/BENIGN-02__context_security__run3,raw/judge/BENIGN-02__context_security__run3
+BENIGN-02,pdf_functional,1,1,1,Medium,2,1,4,0,0,776,7,803,4890,57.66,3277,1758,raw/reviews/BENIGN-02__pdf_functional__run1,raw/judge/BENIGN-02__pdf_functional__run1
+BENIGN-02,pdf_functional,2,1,1,High,3,1,5,0,0,734,7,803,3205,38.071,3178,2102,raw/reviews/BENIGN-02__pdf_functional__run2,raw/judge/BENIGN-02__pdf_functional__run2
+BENIGN-02,pdf_functional,3,1,2,Low–Medium; Medium (functional),2,2,6,0,0,856,9,803,3337,37.464,3551,2247,raw/reviews/BENIGN-02__pdf_functional__run3,raw/judge/BENIGN-02__pdf_functional__run3
+BENIGN-02,pdf_security,1,0,0,,2,2,4,0,0,683,6,871,4024,44.795,3133,1386,raw/reviews/BENIGN-02__pdf_security__run1,raw/judge/BENIGN-02__pdf_security__run1
+BENIGN-02,pdf_security,2,0,0,,3,1,4,0,0,605,5,871,3346,39.89,2901,1163,raw/reviews/BENIGN-02__pdf_security__run2,raw/judge/BENIGN-02__pdf_security__run2
+BENIGN-02,pdf_security,3,0,0,,4,1,5,0,0,712,7,871,3621,42.745,3177,1779,raw/reviews/BENIGN-02__pdf_security__run3,raw/judge/BENIGN-02__pdf_security__run3
+BENIGN-03,context_generic,1,0,0,,2,0,2,0,2,474,0,6189,1147,15.392,7813,559,raw/reviews/BENIGN-03__context_generic__run1,raw/judge/BENIGN-03__context_generic__run1
+BENIGN-03,context_generic,2,1,1,Medium,1,0,2,0,2,469,1,6189,1067,14.852,7733,761,raw/reviews/BENIGN-03__context_generic__run2,raw/judge/BENIGN-03__context_generic__run2
+BENIGN-03,context_generic,3,0,0,,4,0,4,0,0,449,2,6189,1118,14.592,7784,954,raw/reviews/BENIGN-03__context_generic__run3,raw/judge/BENIGN-03__context_generic__run3
+BENIGN-03,context_security,1,0,0,,5,0,5,0,0,880,9,6322,5680,70.349,8801,1703,raw/reviews/BENIGN-03__context_security__run1,raw/judge/BENIGN-03__context_security__run1
+BENIGN-03,context_security,2,1,1,Medium,5,0,6,0,0,984,9,6322,4830,59.843,9144,2085,raw/reviews/BENIGN-03__context_security__run2,raw/judge/BENIGN-03__context_security__run2
+BENIGN-03,context_security,3,1,1,Low–Medium,5,1,7,0,0,867,8,6322,3736,43.0,8913,2147,raw/reviews/BENIGN-03__context_security__run3,raw/judge/BENIGN-03__context_security__run3
+BENIGN-03,pdf_functional,1,0,0,,5,1,6,0,0,846,9,755,4048,46.114,3257,1296,raw/reviews/BENIGN-03__pdf_functional__run1,raw/judge/BENIGN-03__pdf_functional__run1
+BENIGN-03,pdf_functional,2,0,0,,5,1,6,0,0,813,8,755,2805,32.35,3181,1162,raw/reviews/BENIGN-03__pdf_functional__run2,raw/judge/BENIGN-03__pdf_functional__run2
+BENIGN-03,pdf_functional,3,0,0,,5,0,5,0,0,672,7,755,2463,30.083,2719,1094,raw/reviews/BENIGN-03__pdf_functional__run3,raw/judge/BENIGN-03__pdf_functional__run3
+BENIGN-03,pdf_security,1,1,1,Low–Medium,4,0,5,0,0,825,8,823,2921,34.469,3251,1776,raw/reviews/BENIGN-03__pdf_security__run1,raw/judge/BENIGN-03__pdf_security__run1
+BENIGN-03,pdf_security,2,1,2,Medium; Low,2,1,5,0,0,791,9,823,3819,45.998,3178,1551,raw/reviews/BENIGN-03__pdf_security__run2,raw/judge/BENIGN-03__pdf_security__run2
+BENIGN-03,pdf_security,3,1,2,Low–Medium; Low,3,1,6,0,0,733,8,823,4127,47.67,3069,1404,raw/reviews/BENIGN-03__pdf_security__run3,raw/judge/BENIGN-03__pdf_security__run3
+BENIGN-04,context_generic,1,0,0,,1,0,1,2,0,433,5,3885,4193,47.069,5429,579,raw/reviews/BENIGN-04__context_generic__run1,raw/judge/BENIGN-04__context_generic__run1
+BENIGN-04,context_generic,2,0,0,,1,1,2,2,0,379,3,3885,1916,23.027,5348,1278,raw/reviews/BENIGN-04__context_generic__run2,raw/judge/BENIGN-04__context_generic__run2
+BENIGN-04,context_generic,3,0,0,,1,1,2,1,1,399,4,3885,4550,53.003,5432,997,raw/reviews/BENIGN-04__context_generic__run3,raw/judge/BENIGN-04__context_generic__run3
+BENIGN-04,context_security,1,1,1,Medium,2,1,4,0,0,688,7,4018,5096,58.616,6296,1711,raw/reviews/BENIGN-04__context_security__run1,raw/judge/BENIGN-04__context_security__run1
+BENIGN-04,context_security,2,1,1,High,2,1,4,0,0,665,6,4018,3130,37.295,6095,1304,raw/reviews/BENIGN-04__context_security__run2,raw/judge/BENIGN-04__context_security__run2
+BENIGN-04,context_security,3,1,1,Medium,2,0,3,0,0,663,5,4018,2966,34.585,6080,1237,raw/reviews/BENIGN-04__context_security__run3,raw/judge/BENIGN-04__context_security__run3
+BENIGN-04,pdf_functional,1,0,0,,6,0,6,0,0,853,6,630,3357,40.977,3232,2167,raw/reviews/BENIGN-04__pdf_functional__run1,raw/judge/BENIGN-04__pdf_functional__run1
+BENIGN-04,pdf_functional,2,1,1,Low–Medium,3,0,4,0,0,749,6,630,3666,43.222,2920,1489,raw/reviews/BENIGN-04__pdf_functional__run2,raw/judge/BENIGN-04__pdf_functional__run2
+BENIGN-04,pdf_functional,3,1,2,Medium; Low–Medium,2,0,4,0,0,765,6,630,4026,48.805,3051,1222,raw/reviews/BENIGN-04__pdf_functional__run3,raw/judge/BENIGN-04__pdf_functional__run3
+BENIGN-04,pdf_security,1,1,1,Medium,3,1,5,0,0,772,8,698,5092,60.517,3074,1331,raw/reviews/BENIGN-04__pdf_security__run1,raw/judge/BENIGN-04__pdf_security__run1
+BENIGN-04,pdf_security,2,1,1,Medium,5,0,6,0,0,767,7,698,3835,46.937,3142,1898,raw/reviews/BENIGN-04__pdf_security__run2,raw/judge/BENIGN-04__pdf_security__run2
+BENIGN-04,pdf_security,3,1,1,Medium–High,4,0,5,0,0,718,7,698,3604,43.505,3042,1110,raw/reviews/BENIGN-04__pdf_security__run3,raw/judge/BENIGN-04__pdf_security__run3
+BENIGN-05,context_generic,1,0,0,,0,1,1,2,0,297,1,2937,2672,31.368,4170,1252,raw/reviews/BENIGN-05__context_generic__run1,raw/judge/BENIGN-05__context_generic__run1
+BENIGN-05,context_generic,2,0,0,,0,0,0,2,0,402,4,2937,4016,47.24,4446,323,raw/reviews/BENIGN-05__context_generic__run2,raw/judge/BENIGN-05__context_generic__run2
+BENIGN-05,context_generic,3,0,0,,0,0,0,3,1,353,1,2937,3490,40.436,4370,543,raw/reviews/BENIGN-05__context_generic__run3,raw/judge/BENIGN-05__context_generic__run3
+BENIGN-05,context_security,1,0,0,,2,1,3,0,0,629,5,3070,5538,64.579,5193,1187,raw/reviews/BENIGN-05__context_security__run1,raw/judge/BENIGN-05__context_security__run1
+BENIGN-05,context_security,2,0,0,,2,1,3,0,0,547,6,3070,3969,46.421,4963,1001,raw/reviews/BENIGN-05__context_security__run2,raw/judge/BENIGN-05__context_security__run2
+BENIGN-05,context_security,3,1,1,Low/Medium,1,1,3,0,0,595,7,3070,4013,44.852,5129,1801,raw/reviews/BENIGN-05__context_security__run3,raw/judge/BENIGN-05__context_security__run3
+BENIGN-05,pdf_functional,1,0,0,,1,1,2,0,0,443,5,937,4206,49.572,2465,916,raw/reviews/BENIGN-05__pdf_functional__run1,raw/judge/BENIGN-05__pdf_functional__run1
+BENIGN-05,pdf_functional,2,1,2,Low–Medium; Low,2,1,5,0,0,767,7,937,5065,58.41,3315,1768,raw/reviews/BENIGN-05__pdf_functional__run2,raw/judge/BENIGN-05__pdf_functional__run2
+BENIGN-05,pdf_functional,3,0,0,,2,1,3,0,0,680,7,937,4123,47.451,3033,1759,raw/reviews/BENIGN-05__pdf_functional__run3,raw/judge/BENIGN-05__pdf_functional__run3
+BENIGN-05,pdf_security,1,0,0,,2,2,4,0,0,676,6,1005,4299,49.604,3153,1245,raw/reviews/BENIGN-05__pdf_security__run1,raw/judge/BENIGN-05__pdf_security__run1
+BENIGN-05,pdf_security,2,1,1,Low,2,1,4,0,0,726,8,1005,5372,62.241,3370,1676,raw/reviews/BENIGN-05__pdf_security__run2,raw/judge/BENIGN-05__pdf_security__run2
+BENIGN-05,pdf_security,3,0,0,,2,1,3,0,0,525,6,1005,4237,49.226,2838,1093,raw/reviews/BENIGN-05__pdf_security__run3,raw/judge/BENIGN-05__pdf_security__run3
+BENIGN-06,context_generic,1,0,0,,1,0,1,2,1,380,2,5993,2902,34.041,7547,1336,raw/reviews/BENIGN-06__context_generic__run1,raw/judge/BENIGN-06__context_generic__run1
+BENIGN-06,context_generic,2,0,0,,1,0,1,1,2,389,1,5993,5003,56.815,7612,832,raw/reviews/BENIGN-06__context_generic__run2,raw/judge/BENIGN-06__context_generic__run2
+BENIGN-06,context_generic,3,0,0,,0,0,0,2,1,292,1,5993,2641,31.655,7309,207,raw/reviews/BENIGN-06__context_generic__run3,raw/judge/BENIGN-06__context_generic__run3
+BENIGN-06,context_security,1,1,2,Medium; Low,1,0,3,0,0,752,6,6126,3944,45.144,8432,1913,raw/reviews/BENIGN-06__context_security__run1,raw/judge/BENIGN-06__context_security__run1
+BENIGN-06,context_security,2,1,2,High; Medium–High,1,0,3,0,0,656,5,6126,5185,59.447,8309,1387,raw/reviews/BENIGN-06__context_security__run2,raw/judge/BENIGN-06__context_security__run2
+BENIGN-06,context_security,3,0,0,,3,0,3,0,0,749,5,6126,4602,54.445,8485,1481,raw/reviews/BENIGN-06__context_security__run3,raw/judge/BENIGN-06__context_security__run3
+BENIGN-06,pdf_functional,1,0,0,,1,0,1,1,0,466,5,849,2022,24.699,2487,799,raw/reviews/BENIGN-06__pdf_functional__run1,raw/judge/BENIGN-06__pdf_functional__run1
+BENIGN-06,pdf_functional,2,0,0,,2,0,2,0,0,484,6,849,3374,40.569,2509,727,raw/reviews/BENIGN-06__pdf_functional__run2,raw/judge/BENIGN-06__pdf_functional__run2
+BENIGN-06,pdf_functional,3,1,1,Low–Medium,2,0,3,0,0,679,5,849,2978,35.426,2987,1400,raw/reviews/BENIGN-06__pdf_functional__run3,raw/judge/BENIGN-06__pdf_functional__run3
+BENIGN-06,pdf_security,1,0,0,,2,0,2,0,0,623,5,917,4105,47.718,2872,1263,raw/reviews/BENIGN-06__pdf_security__run1,raw/judge/BENIGN-06__pdf_security__run1
+BENIGN-06,pdf_security,2,0,0,,3,0,3,0,0,602,6,917,3804,42.445,2828,1494,raw/reviews/BENIGN-06__pdf_security__run2,raw/judge/BENIGN-06__pdf_security__run2
+BENIGN-06,pdf_security,3,0,0,,2,0,2,0,0,609,6,917,2622,30.62,2791,874,raw/reviews/BENIGN-06__pdf_security__run3,raw/judge/BENIGN-06__pdf_security__run3
+BENIGN-07,context_generic,1,0,0,,0,0,0,1,2,256,0,5870,610,8.564,6957,191,raw/reviews/BENIGN-07__context_generic__run1,raw/judge/BENIGN-07__context_generic__run1
+BENIGN-07,context_generic,2,0,0,,0,0,0,2,1,292,1,5870,718,10.237,7065,231,raw/reviews/BENIGN-07__context_generic__run2,raw/judge/BENIGN-07__context_generic__run2
+BENIGN-07,context_generic,3,0,0,,0,0,0,1,1,276,4,5870,694,9.874,7041,212,raw/reviews/BENIGN-07__context_generic__run3,raw/judge/BENIGN-07__context_generic__run3
+BENIGN-07,context_security,1,1,1,Informational/Low,4,1,6,0,0,651,6,6003,1678,23.4,8025,1479,raw/reviews/BENIGN-07__context_security__run1,raw/judge/BENIGN-07__context_security__run1
+BENIGN-07,context_security,2,0,0,,4,1,5,0,0,837,9,6003,2168,26.608,8515,1459,raw/reviews/BENIGN-07__context_security__run2,raw/judge/BENIGN-07__context_security__run2
+BENIGN-07,context_security,3,0,0,,2,1,3,0,0,435,6,6003,1075,13.254,7422,1011,raw/reviews/BENIGN-07__context_security__run3,raw/judge/BENIGN-07__context_security__run3
+BENIGN-07,pdf_functional,1,0,0,,1,1,2,0,0,520,4,675,1916,24.149,2257,1046,raw/reviews/BENIGN-07__pdf_functional__run1,raw/judge/BENIGN-07__pdf_functional__run1
+BENIGN-07,pdf_functional,2,0,0,,2,1,3,0,0,561,6,675,2175,27.423,2408,989,raw/reviews/BENIGN-07__pdf_functional__run2,raw/judge/BENIGN-07__pdf_functional__run2
+BENIGN-07,pdf_functional,3,1,2,Low–Medium; Low,1,0,3,0,0,511,6,675,2053,25.007,2293,1061,raw/reviews/BENIGN-07__pdf_functional__run3,raw/judge/BENIGN-07__pdf_functional__run3
+BENIGN-07,pdf_security,1,0,0,,2,1,3,0,0,385,3,743,1746,21.341,2079,1624,raw/reviews/BENIGN-07__pdf_security__run1,raw/judge/BENIGN-07__pdf_security__run1
+BENIGN-07,pdf_security,2,1,1,Low,2,0,3,0,0,503,4,743,1461,17.928,2311,1408,raw/reviews/BENIGN-07__pdf_security__run2,raw/judge/BENIGN-07__pdf_security__run2
+BENIGN-07,pdf_security,3,0,0,,3,1,4,0,0,630,8,743,2955,34.401,2631,1035,raw/reviews/BENIGN-07__pdf_security__run3,raw/judge/BENIGN-07__pdf_security__run3
+BENIGN-08,context_generic,1,0,0,,0,0,0,2,2,317,1,2396,1472,18.85,3616,758,raw/reviews/BENIGN-08__context_generic__run1,raw/judge/BENIGN-08__context_generic__run1
+BENIGN-08,context_generic,2,0,0,,0,0,0,2,2,324,1,2396,2117,26.912,3683,379,raw/reviews/BENIGN-08__context_generic__run2,raw/judge/BENIGN-08__context_generic__run2
+BENIGN-08,context_generic,3,0,0,,0,0,0,2,2,333,6,2396,1464,18.612,3639,563,raw/reviews/BENIGN-08__context_generic__run3,raw/judge/BENIGN-08__context_generic__run3
+BENIGN-08,context_security,1,0,0,,3,2,5,0,0,923,8,2529,3628,41.411,5313,918,raw/reviews/BENIGN-08__context_security__run1,raw/judge/BENIGN-08__context_security__run1
+BENIGN-08,context_security,2,1,1,Low–Medium,2,2,5,0,0,803,8,2529,4085,46.832,5032,2128,raw/reviews/BENIGN-08__context_security__run2,raw/judge/BENIGN-08__context_security__run2
+BENIGN-08,context_security,3,1,3,Informational; Medium; Low,3,1,7,0,0,759,10,2529,3665,43.105,4932,3071,raw/reviews/BENIGN-08__context_security__run3,raw/judge/BENIGN-08__context_security__run3
+BENIGN-08,pdf_functional,1,0,0,,1,1,2,0,0,592,7,817,2632,30.014,2654,581,raw/reviews/BENIGN-08__pdf_functional__run1,raw/judge/BENIGN-08__pdf_functional__run1
+BENIGN-08,pdf_functional,2,0,0,,1,1,2,1,0,604,7,817,2212,25.679,2655,1087,raw/reviews/BENIGN-08__pdf_functional__run2,raw/judge/BENIGN-08__pdf_functional__run2
+BENIGN-08,pdf_functional,3,0,0,,1,1,2,0,0,541,7,817,2332,28.984,2446,678,raw/reviews/BENIGN-08__pdf_functional__run3,raw/judge/BENIGN-08__pdf_functional__run3
+BENIGN-08,pdf_security,1,1,1,Low–Medium,0,1,2,0,0,494,5,885,1920,23.518,2427,1163,raw/reviews/BENIGN-08__pdf_security__run1,raw/judge/BENIGN-08__pdf_security__run1
+BENIGN-08,pdf_security,2,1,1,Low,3,1,5,0,0,516,6,885,2355,27.031,2601,1689,raw/reviews/BENIGN-08__pdf_security__run2,raw/judge/BENIGN-08__pdf_security__run2
+BENIGN-08,pdf_security,3,0,0,,1,1,2,0,0,515,5,885,1659,19.683,2531,542,raw/reviews/BENIGN-08__pdf_security__run3,raw/judge/BENIGN-08__pdf_security__run3
+BENIGN-09,context_generic,1,0,0,,0,0,0,3,0,345,1,2987,2151,25.763,4247,278,raw/reviews/BENIGN-09__context_generic__run1,raw/judge/BENIGN-09__context_generic__run1
+BENIGN-09,context_generic,2,0,0,,1,0,1,2,1,362,1,2987,3541,42.434,4215,944,raw/reviews/BENIGN-09__context_generic__run2,raw/judge/BENIGN-09__context_generic__run2
+BENIGN-09,context_generic,3,0,0,,0,0,0,2,0,272,0,2987,1318,16.273,4097,212,raw/reviews/BENIGN-09__context_generic__run3,raw/judge/BENIGN-09__context_generic__run3
+BENIGN-09,context_security,1,1,3,Low; Low–Medium; Low,2,1,6,1,0,813,8,3120,5212,59.137,5720,3239,raw/reviews/BENIGN-09__context_security__run1,raw/judge/BENIGN-09__context_security__run1
+BENIGN-09,context_security,2,1,2,Low–Medium; Low–Medium,3,1,6,1,0,906,8,3120,7245,81.091,6018,3291,raw/reviews/BENIGN-09__context_security__run2,raw/judge/BENIGN-09__context_security__run2
+BENIGN-09,context_security,3,1,1,Medium–High,3,2,6,1,0,874,9,3120,6544,86.611,5880,2803,raw/reviews/BENIGN-09__context_security__run3,raw/judge/BENIGN-09__context_security__run3
+BENIGN-09,pdf_functional,1,1,1,Low–Medium,4,0,5,1,0,703,5,672,2864,35.042,2712,2249,raw/reviews/BENIGN-09__pdf_functional__run1,raw/judge/BENIGN-09__pdf_functional__run1
+BENIGN-09,pdf_functional,2,1,1,Low–Medium,3,0,4,1,0,640,4,672,4032,49.701,2581,1508,raw/reviews/BENIGN-09__pdf_functional__run2,raw/judge/BENIGN-09__pdf_functional__run2
+BENIGN-09,pdf_functional,3,1,2,Low–Medium; Low,2,0,4,0,0,594,6,672,3275,42.168,2458,1592,raw/reviews/BENIGN-09__pdf_functional__run3,raw/judge/BENIGN-09__pdf_functional__run3
+BENIGN-09,pdf_security,1,0,0,,3,0,3,1,0,613,4,740,2827,34.526,2559,1874,raw/reviews/BENIGN-09__pdf_security__run1,raw/judge/BENIGN-09__pdf_security__run1
+BENIGN-09,pdf_security,2,0,0,,5,0,5,1,0,756,9,740,2727,32.943,2966,1729,raw/reviews/BENIGN-09__pdf_security__run2,raw/judge/BENIGN-09__pdf_security__run2
+BENIGN-09,pdf_security,3,1,1,Low–Medium,3,0,4,0,0,745,3,740,4250,59.535,2977,2364,raw/reviews/BENIGN-09__pdf_security__run3,raw/judge/BENIGN-09__pdf_security__run3
+BENIGN-10,context_generic,1,0,0,,0,0,0,3,1,499,1,33233,2295,43.189,34945,235,raw/reviews/BENIGN-10__context_generic__run1,raw/judge/BENIGN-10__context_generic__run1
+BENIGN-10,context_generic,2,0,0,,0,0,0,2,3,404,6,33233,2457,30.165,34694,233,raw/reviews/BENIGN-10__context_generic__run2,raw/judge/BENIGN-10__context_generic__run2
+BENIGN-10,context_generic,3,0,0,,0,0,0,2,1,365,5,33233,2243,29.035,34580,270,raw/reviews/BENIGN-10__context_generic__run3,raw/judge/BENIGN-10__context_generic__run3
+BENIGN-10,context_security,1,1,3,High; Medium-High; Low,3,1,7,0,0,1010,5,33366,5787,65.069,36564,2095,raw/reviews/BENIGN-10__context_security__run1,raw/judge/BENIGN-10__context_security__run1
+BENIGN-10,context_security,2,1,2,Medium–High; Medium,3,2,7,0,0,880,10,33366,7102,85.081,36156,2529,raw/reviews/BENIGN-10__context_security__run2,raw/judge/BENIGN-10__context_security__run2
+BENIGN-10,context_security,3,1,3,Medium; High; Medium,2,1,6,0,0,833,10,33366,6626,80.569,36093,2674,raw/reviews/BENIGN-10__context_security__run3,raw/judge/BENIGN-10__context_security__run3
+BENIGN-10,pdf_functional,1,0,0,,3,0,3,0,0,461,4,1185,1909,22.548,2711,808,raw/reviews/BENIGN-10__pdf_functional__run1,raw/judge/BENIGN-10__pdf_functional__run1
+BENIGN-10,pdf_functional,2,0,0,,3,0,3,0,0,570,5,1185,2058,25.178,3060,1107,raw/reviews/BENIGN-10__pdf_functional__run2,raw/judge/BENIGN-10__pdf_functional__run2
+BENIGN-10,pdf_functional,3,1,1,Low,2,0,3,0,0,502,6,1185,1744,21.035,2849,1113,raw/reviews/BENIGN-10__pdf_functional__run3,raw/judge/BENIGN-10__pdf_functional__run3
+BENIGN-10,pdf_security,1,0,0,,4,0,4,0,0,631,4,1253,2434,29.845,3155,1327,raw/reviews/BENIGN-10__pdf_security__run1,raw/judge/BENIGN-10__pdf_security__run1
+BENIGN-10,pdf_security,2,1,1,Low,2,0,3,0,0,591,5,1253,2009,24.556,3140,1197,raw/reviews/BENIGN-10__pdf_security__run2,raw/judge/BENIGN-10__pdf_security__run2
+BENIGN-10,pdf_security,3,1,1,Low,1,0,2,1,0,709,7,1253,2684,34.216,3398,1341,raw/reviews/BENIGN-10__pdf_security__run3,raw/judge/BENIGN-10__pdf_security__run3

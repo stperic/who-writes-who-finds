@@ -16,6 +16,8 @@ A separate [Snyk Code whole-repository baseline](snyk-baseline/README.md) clearl
 
 A separate [PDF requirement follow-up](data/pdf-requirement-followup/README.md) revisited one original Partial case. With the same historical diff and review prompt, a functional PDF requirement produced **0/3** explicit SSRF findings; a proposed security requirement about resource loading produced **3/3**. That requirement was drafted with hindsight and attached manually. This is a feasibility probe for requirement-informed review, not a new 24-case score or a demonstrated ZZ-Trace route.
 
+A later [benign-control follow-up](data/false-alarm-followup/README.md) measured the false-alarm burden of the added-context and PDF-card setups. With one related file on each of the ten original controls, Sonnet 5 made false security claims in **1/30** generic-prompt reviews and **20/30** security-prompt reviews. On five later Eye Exam report changes, the functional and proposed security PDF cards produced **4/15** and **7/15** false-alarm reviews respectively. These are provisional model-judge classifications, and one High-severity PDF judgment is borderline. The experiment retains all 150 reviews, 150 judgments, input snapshots, reasons and exact requests in a separate archive.
+
 ## Read the study
 
 - [24-CVE audience FAQ](CVE-FAQ.md): the bug, historical source snapshot, recorded upstream patch and evidence link for every scored case.
@@ -27,6 +29,7 @@ A separate [PDF requirement follow-up](data/pdf-requirement-followup/README.md) 
 - [Case matrix](data/case-matrix.csv) and [control run scores](data/prompt-followup/benign_scores.csv): machine-readable results.
 - [Complete evidence archive](evidence/study-results.zip) and [archive manifest](evidence/archive-manifest.csv): exact original and follow-up artifacts.
 - [PDF requirement follow-up](data/pdf-requirement-followup/README.md): exact cards, six prompts, raw responses, review text, results and reproduction script for the one-case probe.
+- [Context and PDF benign controls](data/false-alarm-followup/README.md): 150 new reviews, separate denominators, false-alarm scores, individual findings and complete raw evidence.
 - [Snyk Code baseline](snyk-baseline/README.md): 24 pinned whole-repository scans, full case-by-case score, run metrics, reproducible scripts and verified raw evidence.
 
 ## Verification status

@@ -1,0 +1,31 @@
+control,arm,run,false_alarm_review,false_findings,false_severities,speculative_findings,plausible_findings,all_security_findings,correctness_warnings,maintainability_warnings,review_words,review_seconds,review_input_tokens,review_output_tokens,judge_input_tokens,judge_output_tokens,review_evidence,judge_evidence
+PDF-01,pdf_functional,1,1,2,Low–Medium; Low,3,0,5,0,0,743,69.17,2108,6007,4580,1335,raw/reviews/PDF-01__pdf_functional__run1,raw/judge/PDF-01__pdf_functional__run1
+PDF-01,pdf_functional,2,1,1,Low–Medium,4,0,5,0,0,717,36.714,2108,3334,4541,1828,raw/reviews/PDF-01__pdf_functional__run2,raw/judge/PDF-01__pdf_functional__run2
+PDF-01,pdf_functional,3,1,1,Low,4,0,5,0,0,840,58.377,2108,5040,4904,1697,raw/reviews/PDF-01__pdf_functional__run3,raw/judge/PDF-01__pdf_functional__run3
+PDF-01,pdf_security,1,1,1,Low–Medium,4,1,6,0,0,955,89.461,2176,7667,5276,1983,raw/reviews/PDF-01__pdf_security__run1,raw/judge/PDF-01__pdf_security__run1
+PDF-01,pdf_security,2,1,2,Medium; Low,3,0,5,0,0,907,74.668,2176,6369,5069,1493,raw/reviews/PDF-01__pdf_security__run2,raw/judge/PDF-01__pdf_security__run2
+PDF-01,pdf_security,3,1,1,Medium,3,0,4,0,0,1081,70.167,2176,6006,5422,1882,raw/reviews/PDF-01__pdf_security__run3,raw/judge/PDF-01__pdf_security__run3
+PDF-02,pdf_functional,1,0,0,,5,0,5,0,0,753,66.006,1164,5516,3498,1717,raw/reviews/PDF-02__pdf_functional__run1,raw/judge/PDF-02__pdf_functional__run1
+PDF-02,pdf_functional,2,0,0,,3,0,3,0,0,813,92.494,1164,7780,3541,1292,raw/reviews/PDF-02__pdf_functional__run2,raw/judge/PDF-02__pdf_functional__run2
+PDF-02,pdf_functional,3,0,0,,3,0,3,1,0,744,99.508,1164,8233,3401,1191,raw/reviews/PDF-02__pdf_functional__run3,raw/judge/PDF-02__pdf_functional__run3
+PDF-02,pdf_security,1,0,0,,4,0,4,0,0,807,91.404,1232,7607,3642,1981,raw/reviews/PDF-02__pdf_security__run1,raw/judge/PDF-02__pdf_security__run1
+PDF-02,pdf_security,2,0,0,,4,0,4,0,0,868,104.602,1232,8867,3788,1150,raw/reviews/PDF-02__pdf_security__run2,raw/judge/PDF-02__pdf_security__run2
+PDF-02,pdf_security,3,1,1,Medium,3,0,4,0,0,887,103.409,1232,8866,3912,1430,raw/reviews/PDF-02__pdf_security__run3,raw/judge/PDF-02__pdf_security__run3
+PDF-03,pdf_functional,1,0,0,,5,0,5,0,1,505,27.787,918,2079,2475,1712,raw/reviews/PDF-03__pdf_functional__run1,raw/judge/PDF-03__pdf_functional__run1
+PDF-03,pdf_functional,2,1,1,Medium,2,0,3,0,0,648,39.469,918,3114,2807,1687,raw/reviews/PDF-03__pdf_functional__run2,raw/judge/PDF-03__pdf_functional__run2
+PDF-03,pdf_functional,3,0,0,,4,0,4,0,0,879,49.519,918,3978,3384,1335,raw/reviews/PDF-03__pdf_functional__run3,raw/judge/PDF-03__pdf_functional__run3
+PDF-03,pdf_security,1,1,1,Medium,2,0,3,0,0,785,76.363,986,6144,3212,1437,raw/reviews/PDF-03__pdf_security__run1,raw/judge/PDF-03__pdf_security__run1
+PDF-03,pdf_security,2,1,2,Medium–High; Low,1,0,3,0,0,836,63.773,986,5497,3410,1604,raw/reviews/PDF-03__pdf_security__run2,raw/judge/PDF-03__pdf_security__run2
+PDF-03,pdf_security,3,0,0,,3,0,3,0,1,736,40.866,986,3367,3105,1344,raw/reviews/PDF-03__pdf_security__run3,raw/judge/PDF-03__pdf_security__run3
+PDF-04,pdf_functional,1,0,0,,2,1,3,1,0,665,35.893,605,2842,2590,700,raw/reviews/PDF-04__pdf_functional__run1,raw/judge/PDF-04__pdf_functional__run1
+PDF-04,pdf_functional,2,0,0,,4,1,5,0,0,557,27.785,605,2161,2371,1112,raw/reviews/PDF-04__pdf_functional__run2,raw/judge/PDF-04__pdf_functional__run2
+PDF-04,pdf_functional,3,0,0,,3,1,4,0,0,556,24.324,605,1916,2364,835,raw/reviews/PDF-04__pdf_functional__run3,raw/judge/PDF-04__pdf_functional__run3
+PDF-04,pdf_security,1,0,0,,4,1,5,0,0,793,55.991,673,4613,3122,1014,raw/reviews/PDF-04__pdf_security__run1,raw/judge/PDF-04__pdf_security__run1
+PDF-04,pdf_security,2,1,1,High,2,1,4,0,0,901,59.705,673,4660,3292,1603,raw/reviews/PDF-04__pdf_security__run2,raw/judge/PDF-04__pdf_security__run2
+PDF-04,pdf_security,3,0,0,,4,1,5,0,0,765,52.308,673,4352,3023,928,raw/reviews/PDF-04__pdf_security__run3,raw/judge/PDF-04__pdf_security__run3
+PDF-05,pdf_functional,1,0,0,,3,0,3,0,0,485,27.874,727,2204,2249,770,raw/reviews/PDF-05__pdf_functional__run1,raw/judge/PDF-05__pdf_functional__run1
+PDF-05,pdf_functional,2,0,0,,4,0,4,0,0,666,34.635,727,2818,2797,851,raw/reviews/PDF-05__pdf_functional__run2,raw/judge/PDF-05__pdf_functional__run2
+PDF-05,pdf_functional,3,0,0,,2,0,2,0,0,449,24.9,727,1952,2207,470,raw/reviews/PDF-05__pdf_functional__run3,raw/judge/PDF-05__pdf_functional__run3
+PDF-05,pdf_security,1,0,0,,3,0,3,0,0,747,39.472,795,3095,2980,1066,raw/reviews/PDF-05__pdf_security__run1,raw/judge/PDF-05__pdf_security__run1
+PDF-05,pdf_security,2,0,0,,4,0,4,0,0,703,38.331,795,3222,2994,955,raw/reviews/PDF-05__pdf_security__run2,raw/judge/PDF-05__pdf_security__run2
+PDF-05,pdf_security,3,0,0,,3,0,3,0,0,759,57.668,795,4618,3047,647,raw/reviews/PDF-05__pdf_security__run3,raw/judge/PDF-05__pdf_security__run3
