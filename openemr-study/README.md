@@ -18,6 +18,7 @@ A separate [PDF requirement follow-up](data/pdf-requirement-followup/README.md) 
 
 ## Read the study
 
+- [24-CVE audience FAQ](CVE-FAQ.md): the bug, historical source snapshot, recorded upstream patch and evidence link for every scored case.
 - [Results](RESULTS.md): full 24-case and 10-control tables, variability, cost, latency and limitations.
 - [Methods](METHODS.md): case selection, exact prompts, execution setup, scoring and what can be reproduced.
 - [Appendix slide and spoken answer](APPENDIX.md): presentation-ready wording.
