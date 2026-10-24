@@ -1,0 +1,47 @@
+# Presentation evidence guide
+
+[Download the 42-slide PowerPoint](Who_Writes_the_Bug.pptx). This is the copy supported by this repository. It comes from `Who_Writes_the_Bug_revised.pptx` supplied on October 23, 2026. Two wording corrections were made before publication: slide 8 now distinguishes the 16 CVEs disclosed after both recorded model cutoffs from the 8 older CVEs, and slide 32 calls the fixed-diff, fixed-context comparison a **prompt** comparison. The underlying study artifacts were not changed.
+
+The slides mix historical scores, later retests, scanner scans, a component replay, and proposed review policy. The table below gives each measured number its own denominator and evidence. A reader can check the retained raw outputs before relying on a claim.
+
+## Run ledger
+
+| Slides | What ran | Reported result | Run evidence and method |
+|---|---|---|---|
+| 4, 6, 8, 9, 38 | Original OpenEMR review: 24 selected CVEs, 2 model identities, 3 reviews each, generic prompt. Claude Code; original runs in August with October repairs. | Haiku **8/24 Caught**, 7/24 Partial, 9/24 Missed. Sonnet **20/24 Caught**, 3/24 Partial, 1/24 Missed. | [Original numbers](../openemr-study/data/original/numbers.md), [method](../openemr-study/data/original/METHODS.md), [rubric](../openemr-study/data/original/rubric.md), [case scores](../openemr-study/data/original/scores.csv), [raw archive](../openemr-study/evidence/study-results.zip). |
+| 5 | Snyk Code CLI 1.1308.2, one whole-repository scan at each of the same 24 introducing revisions, October 23 Eastern time. | **6/24 clear Caught**, 1/24 Borderline excluded, 17/24 clear Missed. 26,927 findings across scans, including repeats. | [Method and limits](../openemr-study/snyk-baseline/README.md), [24-case results](../openemr-study/snyk-baseline/RESULTS.md), [revision manifest](../openemr-study/snyk-baseline/manifest.csv), [adjudications](../openemr-study/snyk-baseline/adjudication.csv), [raw SARIF](../openemr-study/snyk-baseline/evidence/snyk-code-raw.zip). |
+| 12, 13, 15, 16, 35 | Expanded-context follow-up. Five cases by five models, three reviews in each of four prompt/context conditions. The main slides use only the four original Sonnet gaps. One related file per case was selected by the researcher. | On the four Sonnet gaps, generic prompt plus file caught **2/4**; security plus touched-code prompt with the same files caught **3/4**. Across five cases and five models, security plus touched-code caught **7/25** diff only and **16/25** with a file. | [Follow-up method](../openemr-study/data/prior-followups/followup_expanded_context/README.md), [case scores](../openemr-study/data/prior-followups/followup_expanded_context/final_detection.csv), [raw prompts and reviews](../openemr-study/evidence/study-results.zip). Slide 12 quotes C3 Sonnet run 1 in `frozen_diff` and `frozen_context` inside the archive. |
+| 13, 16, 19, 29 | Cumulative ledger for the 24 original cases. Later rounds retested selected gaps; the other original catches were carried forward. | **20/24**, then **22/24**, then **23/24** with a Caught finding across separate conditions; final PDF requirement probe yields a target finding for the remaining case. | [Scoring explanation](../openemr-study/data/original/rubric.md), [context retests](../openemr-study/data/prior-followups/followup_expanded_context/final_detection.csv), [PDF probe](../openemr-study/data/pdf-requirement-followup/README.md). The displayed **24/24 is accumulated case coverage**, not a measured 24-case result for one fixed workflow. |
+| 18, 19 | One PDF-rendering SSRF case, same selected diff and Sonnet 5 security prompt, three fresh reviews per requirement card. | Functional card: **0/3** explicit PDF SSRF findings. Proposed security card: **3/3**. | [Exact cards, six prompts, responses and results](../openemr-study/data/pdf-requirement-followup/README.md). The security card was written with hindsight; this was not an accepted historical requirement or automated retrieval result. |
+| 20 | Sonnet prompt controls: same ten benign changes, one review per prompt. | False security alarms in **0/10** generic and **5/10** security plus touched-code reviews; **2/10** stronger-prompt reviews had a Medium-or-higher false alarm. | [Prompt follow-up](../openemr-study/data/prior-followups/followup_security_prompt/README.md), [control scores](../openemr-study/data/prior-followups/followup_security_prompt/benign_summary.csv). These are individual reviews, not case majorities. |
+| 33, 34 | Two inherited-flaw changes by five models, three reviews per model and prompt. The false-alarm comparison used ten benign changes by five models, one review per prompt. | Caught model/change pairs by prompt: **0/10, 2/10, 3/10, 7/10**. False-alarm reviews: **2/50, 8/50, 12/50, 18/50**. | [Generic and touched-code arms](../openemr-study/data/prior-followups/followup_policy_prompt/README.md), [security arms and full table](../openemr-study/data/prior-followups/followup_security_prompt/README.md), [raw archive](../openemr-study/evidence/study-results.zip). Different follow-up judging details are disclosed in those methods. |
+| 36 | Separate Jev reviewer-routing pilot: 14 changes, three calls per change, against draft role labels. | **32/42** matched, 6/42 disagreed, 4/42 abstained. | [Jev method and raw run](../jev-study/README.md), [archived report](../jev-study/results/2026-10-18-jev-1.14/report.json), [raw outputs](../jev-study/results/2026-10-18-jev-1.14/outputs/). The MedHallu figures on the same slide are from a [separate benchmark repository](https://github.com/stperic/jev-medhallu-benchmark), not the OpenEMR runs. |
+
+The full 24-case Haiku prompt test is [published separately](../openemr-study/RESULTS.md): the new direct API generic arm caught **11/24**, and the stronger prompt caught **19/24**. Its benign-control false-alarm counts were **8/30** and **24/30** reviews. This test does not appear as a round in the main talk. It is relevant to the audience question about whether instructions can close the historical Haiku/Sonnet gap. The [exact prompts](../openemr-study/prompts/), [case pages](../openemr-study/cases/), [control pages](../openemr-study/controls/) and [raw archive](../openemr-study/evidence/study-results.zip) are available.
+
+## Other slide sources
+
+| Slides | Reader's starting point | Status |
+|---|---|---|
+| 2 | [OpenEMR source references](../references.md) | Project scale figures are project estimates. |
+| 11, 14, 17, 21, 22, 26-28, 37, 40-42 | [References and proposed workflow](../references.md), [workflow example](../jev-study/workflow-v1/README.md) | Architecture and policy illustrations, not measured OpenEMR detection results. |
+| 23 | [Captured payment component replay](https://github.com/stperic/openemr-review-gate-demo/blob/main/demo/REVIEW-PACKET.md) | Synthetic credentials and an isolated component check. It is not an end-to-end payment test. |
+| 24, 25, 39, 41 | [OpenEMR PR #11958](https://github.com/openemr/openemr/pull/11958), [policy sources](../references.md) | Public PR record. The proposed tests and revision gate were not run for that PR. |
+| 32 | [Exact original and stronger prompt text](../openemr-study/prompts/) | The slide shows the instruction text; supplied code and context followed it in requests. |
+| 36 | [MedHallu protocol and results](https://github.com/stperic/jev-medhallu-benchmark), [benchmark caveats](../references.md) | A different judgment task from PR routing. |
+
+Polls on slides 3, 7, 10, 25 and 30 ask the audience for its views; they are not study results. Slide 31 links back to this repository.
+
+## How to check the retained evidence
+
+From a fresh checkout, run:
+
+```sh
+python3 openemr-study/verify.py
+python3 openemr-study/snyk-baseline/verify.py
+python3 quadrant-tool/jev.py score jev-study/results/2026-10-18-jev-1.14
+```
+
+The first verifier checks the original and prompt-follow-up archive, inputs and scores. The second checks all 24 Snyk SARIF scans and the published adjudication totals. The Jev command re-scores its saved 42 responses. These checks validate retained records and arithmetic; they do not independently verify every security judgment.
+
+**Outstanding review:** The original 24-case scores had human adjudication. Later prompt and context scores, Snyk case matches, and the PDF requirement observation still need independent verification. Snyk ran after disclosure with full-repository context; the AI reviews used selected diffs and different execution dates and settings. The [published Snyk terms](https://snyk.io/policies/terms-of-service/) restrict benchmarking, and the applicable account agreement or exception was not available for verification.
