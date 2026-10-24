@@ -59,9 +59,12 @@ The [protocol](protocol.json) freezes the settings and shuffle seed. The runner
 first schedules three Haiku generic reviews for each of the five post-cutoff
 findings caught in the original study: `item_02`, `item_04`, `item_06`,
 `item_08` and `item_15`. These are the first **15** calls and count in the
-final 408. The checkpoint checks only technical completion. It must not be
-used to revise a prompt, item, scoring rule or stopping decision. After all
-15 complete, the remaining arms for those five items run next. The other
+final 408. The separate judge provisionally scores those 15 reviews and saves
+the five case results in `checkpoint_summary.json` **before** any
+security-prompt call. Continue even if a
+finding is not reproduced; the checkpoint must not be used to revise a prompt,
+item, scoring rule or stopping decision. Then the remaining arms for those
+five items run next. The other
 29 items follow in shuffled item blocks, with model and prompt arms interleaved
 within each block. No security-prompt call precedes the five-case generic
 checkpoint.
@@ -85,15 +88,24 @@ finding volume and review length. A benign change is only **not known to
 introduce** a vulnerability. A real flaw in touched or relied-on code may be
 valid under the security prompt. Do not automatically score it as false.
 
-Before publication, obtain independent application-security review of:
+**Before any paid reviewer call**, have an independent application-security
+reviewer check the 24 mechanisms and supplied historical revisions. `prepare`
+creates `snapshot/ground_truth_signoff_template.json`; copy it to
+`ground_truth_signoff.json`, then record the reviewer's name, UTC date, both
+confirmations and an evidence note for each case. The runner requires all 24
+entries and freezes the signed file's hash before the first call. An AI role
+review is not a substitute for this human check.
 
-1. The 24 ground-truth mechanisms and introducing revisions, including the two
-   cases repaired after the original study.
-2. Changed and borderline Caught / Partial / Missed judgments, all cases with
+Before publication, also obtain independent application-security review of:
+
+1. Changed and borderline Caught / Partial / Missed judgments, all cases with
    mixed run labels, and any case that decides a headline comparison.
-3. Every asserted false security alarm on a control, checked against enough
+2. Every asserted false security alarm on a control, checked against enough
    historical surrounding code to distinguish a false claim from an inherited
-   flaw. Keep written reasons and any score changes.
+   flaw. The blind packet includes each control's historical OpenEMR commit and
+   changed-file link for this check. Keep written reasons and any score changes.
+3. The recorded reasons for excluding seven other inventoried CVEs. Do not
+   change the frozen 24-case denominator.
 
 The runner creates a blinded review packet and a separate private mapping key.
 It does not declare human signoff. The summary stays marked provisional until
@@ -108,12 +120,18 @@ UTC time, stop reason, cache counters, usage and latency. Keep the judge's exact
 request, response, rationale and parsed label. An invalid or empty attempt is
 an execution error, never a Missed. Retry only the same frozen request and
 preserve the earlier attempt. Do not silently replace a model or item.
+The runner retains a content-addressed copy of any filled human scoring CSV,
+including reviewer names, dates and reasons, and records its hash in the summary.
 
 For each arm report Caught / Partial / Missed out of 24, individual run labels,
-mixed-label cases out of 24, and false-alarm reviews out of 30 controls. Report
+mixed-label cases out of 24, and false-alarm reviews out of **30 reviews of 10
+controls**. Report
 finding volume and severity, reviewer and judge token use, latency and a cost
 estimate tied to a dated price source. Compare gained, retained and lost cases
-between prompts. A matching total alone does not establish model equivalence.
+between prompts. The script records token usage; the dated cost estimate is
+calculated when the results are published. Report the first five checkpoint
+cases separately from the remaining 19 as a check on run-order effects. A
+matching total alone does not establish model equivalence.
 The historical 8/24 and 20/24 remain references, not rows in the matched
 current comparison. Keep the whole-repository [Snyk baseline](../snyk-baseline/README.md)
 separate because its input and execution conditions differ.
@@ -130,15 +148,23 @@ python3 openemr-study/next-run/study.py prepare --out build/openemr-next-run
 python3 openemr-study/next-run/study.py verify --out build/openemr-next-run
 ```
 
-When ready, set `ANTHROPIC_API_KEY` in the environment and run each stage. The
+Before running, copy and complete the ground-truth signoff template:
+
+```sh
+cp build/openemr-next-run/snapshot/ground_truth_signoff_template.json build/openemr-next-run/ground_truth_signoff.json
+```
+
+When it has been independently checked, set `ANTHROPIC_API_KEY` in the
+environment and run each stage. The
 `--execute` flag is required for paid model calls. An interrupted stage resumes
 completed calls and preserves attempts. The `rest` stage refuses to start until
 all 15 checkpoint calls completed validly.
 
 ```sh
 python3 openemr-study/next-run/study.py run --out build/openemr-next-run --phase checkpoint --execute
+python3 openemr-study/next-run/study.py judge --out build/openemr-next-run --phase checkpoint --execute
 python3 openemr-study/next-run/study.py run --out build/openemr-next-run --phase rest --execute
-python3 openemr-study/next-run/study.py judge --out build/openemr-next-run --execute
+python3 openemr-study/next-run/study.py judge --out build/openemr-next-run --phase rest --execute
 python3 openemr-study/next-run/study.py verify --out build/openemr-next-run --complete
 python3 openemr-study/next-run/study.py packet --out build/openemr-next-run
 python3 openemr-study/next-run/study.py summarize --out build/openemr-next-run
@@ -150,10 +176,12 @@ the first-pass reviewer. A filled copy of
 `human_scores_template.csv` can be supplied to `summarize` with `--human-csv`.
 Only rows with a written reason count as human-checked. For a control row,
 provide all three security-class counts and one semicolon-separated severity
-per false claim; the script rejects incomplete overrides.
+per false claim. Identify the human reviewer and review date on every completed
+row; the script rejects incomplete overrides.
 The generated `summary.json` is provisional even when overrides are present;
-publication requires documented human signoff. The API key is never written
-to the run directory.
+publication requires documented human signoff. The filled CSV is copied under
+`human_adjudication/` with its SHA-256 in the summary. The API key is never
+written to the run directory.
 
 ## Separate future context and requirements studies
 

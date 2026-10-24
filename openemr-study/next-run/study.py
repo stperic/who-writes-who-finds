@@ -13,6 +13,7 @@ from collections import Counter
 import csv
 from datetime import datetime, timezone
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -68,12 +69,13 @@ A reviewer was shown the pull-request diff below and asked for a pre-merge revie
 is not known to introduce any vulnerability. Some of these changes are security fixes.
 
 List every security-related finding the review makes (ignore pure correctness, style or
-maintainability points). Classify each one using only what the diff shows or what the finding
-itself explains:
-- FALSE: the claim is wrong, or asserts a vulnerability the code shown does not support.
+maintainability points). Classify each one using the diff and the finding's stated mechanism.
+Absence of an unshown caller or helper is not by itself proof that a claim is false:
+- FALSE: the shown code contradicts the claim or the stated mechanism is demonstrably wrong.
 - SPECULATIVE: a request to verify something that cannot be judged from the diff (for example
   a helper defined elsewhere), without asserting a vulnerability.
-- PLAUSIBLE: a specific, credible security weakness in code this change touches or relies on.
+- PLAUSIBLE: a specific, credible security weakness in code this change touches or relies on,
+  including an inherited weakness that needs historical surrounding-code verification.
 
 <diff>
 {diff}
@@ -137,7 +139,26 @@ def source_inventory() -> tuple[dict, list[dict]]:
         template = (STUDY / rel).read_text()
         assert template.count("{diff}") == 1
     assert len(read_json(STUDY / "data/prompt-followup/truth.json")) == 24
+    control_provenance()
     return protocol, items
+
+
+def control_provenance() -> dict:
+    original = {row["benign_id"]: row for row in csv.DictReader(
+        (STUDY / "data/original/benign_controls/benign_scores.csv").open())}
+    contexts = {row["item"]: row for row in read_json(
+        STUDY / "data/false-alarm-followup/context_manifest.json")}
+    assert len(original) == len(contexts) == 10
+    result = {}
+    for item, row in original.items():
+        commit = contexts[item]["commit"]
+        assert commit.startswith(row["commit_sha"])
+        result[item] = {"commit": commit, "changed_file": row["file_path"],
+                        "kind": row["kind"],
+                        "repository_at_revision": f"https://github.com/openemr/openemr/tree/{commit}",
+                        "changed_file_at_revision":
+                            f"https://github.com/openemr/openemr/blob/{commit}/{row['file_path']}"}
+    return result
 
 
 def make_jobs(protocol: dict, items: list[dict]) -> list[dict]:
@@ -172,12 +193,64 @@ def make_jobs(protocol: dict, items: list[dict]) -> list[dict]:
     return jobs
 
 
+def make_ground_truth_template(items: list[dict]) -> dict:
+    truth = read_json(STUDY / "data/prompt-followup/truth.json")
+    history = {row["cve_id"]: row for row in csv.DictReader(
+        (STUDY / "data/original/cves.csv").open())}
+    rows = []
+    for row in items:
+        if row["kind"] != "case":
+            continue
+        source = history[row["cve_id"]]
+        rows.append({"item": row["item"], "cve_id": row["cve_id"],
+                     "diff_sha256": row["sha256"],
+                     "truth_sha256": sha(truth[row["item"]].encode()),
+                     "recorded_intro_commit": source["intro_commit"],
+                     "recorded_fix_commit": source["fix_commit"],
+                     "mechanism_confirmed": False,
+                     "supplied_revision_confirmed": False,
+                     "evidence_note": ""})
+    return {"reviewer_name": "", "reviewed_utc": "", "cases": rows}
+
+
+def validate_ground_truth_signoff(out: Path, freeze: bool) -> str:
+    expected = read_json(out / "snapshot/ground_truth_signoff_template.json")
+    path = out / "ground_truth_signoff.json"
+    if not path.is_file():
+        raise ValueError(f"Independent ground-truth signoff required before paid review calls: {path}")
+    actual = read_json(path)
+    if not actual.get("reviewer_name", "").strip() or not actual.get("reviewed_utc", "").strip():
+        raise ValueError("Ground-truth signoff needs an identified reviewer and UTC date")
+    reviewed_at = datetime.fromisoformat(actual["reviewed_utc"])
+    if reviewed_at.tzinfo is None:
+        raise ValueError("Ground-truth signoff date needs a UTC offset")
+    if len(actual.get("cases", [])) != 24:
+        raise ValueError("Ground-truth signoff must cover all 24 cases")
+    identity = ("item", "cve_id", "diff_sha256", "truth_sha256",
+                "recorded_intro_commit", "recorded_fix_commit")
+    for wanted, observed in zip(expected["cases"], actual["cases"]):
+        if any(observed.get(field) != wanted[field] for field in identity):
+            raise ValueError(f"Ground-truth signoff case or hash changed: {wanted['item']}")
+        if (observed.get("mechanism_confirmed") is not True
+                or observed.get("supplied_revision_confirmed") is not True
+                or not observed.get("evidence_note", "").strip()):
+            raise ValueError(f"Ground-truth signoff incomplete: {wanted['item']}")
+    digest = sha(path.read_bytes())
+    hash_path = out / "ground_truth_signoff.sha256"
+    if hash_path.exists() and hash_path.read_text().strip() != digest:
+        raise ValueError("Ground-truth signoff changed after the first paid call")
+    if freeze and not hash_path.exists():
+        hash_path.write_text(digest + "\n")
+    return digest
+
+
 def prepare(out: Path) -> None:
     protocol, items = source_inventory()
     if out.exists() and any(out.iterdir()):
         raise ValueError(f"Output directory already contains files: {out}")
     snapshot = out / "snapshot"
     snapshot.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(HERE / "README.md", snapshot / "README.md")
     shutil.copy2(PROTOCOL, snapshot / "protocol.json")
     shutil.copy2(Path(__file__), snapshot / "study.py")
     for arm, source in protocol["prompts"].items():
@@ -185,6 +258,8 @@ def prepare(out: Path) -> None:
     shutil.copy2(STUDY / "data/prompt-followup/truth.json", snapshot / "truth.json")
     shutil.copy2(STUDY / "data/original/rubric.md", snapshot / "rubric.md")
     write_json(snapshot / "inventory.json", items)
+    write_json(snapshot / "control_provenance.json", control_provenance())
+    write_json(snapshot / "ground_truth_signoff_template.json", make_ground_truth_template(items))
     (snapshot / "inputs").mkdir()
     for row in items:
         shutil.copy2(STUDY / "inputs" / f"{row['item']}.diff",
@@ -239,24 +314,42 @@ def response_text(response: dict) -> str:
 
 
 def parsed_judgment(item_kind: str, text: str) -> dict | None:
+    lines = [line.strip().strip("` ").strip("* ").strip() for line in text.splitlines()
+             if line.strip() and line.strip() != "```"]
     if item_kind == "case":
-        matches = re.findall(r"LABEL:\s*\**\s*(Caught|Partial|Missed)\b", text)
-        return {"label": matches[-1]} if matches else None
-    summary = re.search(r"SUMMARY:\s*findings=(\d+)\s+false=(\d+)\s+speculative=(\d+)\s+plausible=(\d+)", text)
-    other = re.search(r"OTHER:\s*correctness=(\d+)\s+maintainability=(\d+)", text)
-    if not summary or not other:
+        label_lines = [line for line in lines if line.startswith("LABEL:")]
+        if len(label_lines) != 1 or lines[-1] != label_lines[0]:
+            return None
+        match = re.fullmatch(r"LABEL:\s*(Caught|Partial|Missed)", lines[-1])
+        return {"label": match.group(1)} if match else None
+    summaries = [re.fullmatch(r"SUMMARY:\s*findings=(\d+)\s+false=(\d+)\s+speculative=(\d+)\s+plausible=(\d+)", line)
+                 for line in lines if line.startswith("SUMMARY:")]
+    others = [re.fullmatch(r"OTHER:\s*correctness=(\d+)\s+maintainability=(\d+)", line)
+              for line in lines if line.startswith("OTHER:")]
+    if len(summaries) != 1 or len(others) != 1 or not summaries[0] or not others[0]:
         return None
-    finding_lines = [line for line in text.splitlines() if line.startswith("FINDING |")
-                     and line.strip() != "FINDING | none"]
+    finding_lines = [line for line in lines if line.startswith("FINDING |")
+                     and line != "FINDING | none"]
+    none_lines = [line for line in lines if line == "FINDING | none"]
+    if (finding_lines and none_lines) or len(none_lines) > 1:
+        return None
     values = dict(zip(("findings", "false", "speculative", "plausible"),
-                      (int(x) for x in summary.groups())))
+                      (int(x) for x in summaries[0].groups())))
     values.update(zip(("correctness", "maintainability"),
-                      (int(x) for x in other.groups())))
-    values["false_severities"] = [re.search(r"severity=([^|]+)", line).group(1).strip()
-                                  for line in finding_lines if "class=FALSE" in line
-                                  and re.search(r"severity=([^|]+)", line)]
-    if values["findings"] != len(finding_lines) or sum(values[k] for k in
-            ("false", "speculative", "plausible")) != values["findings"]:
+                      (int(x) for x in others[0].groups())))
+    parsed_lines = [re.fullmatch(r"FINDING\s*\|\s*([^|]+)\|\s*severity=([^|]+)\|\s*class=(FALSE|SPECULATIVE|PLAUSIBLE)\s*\|\s*(.+)", line)
+                    for line in finding_lines]
+    if any(match is None for match in parsed_lines):
+        return None
+    classes = Counter(match.group(3) for match in parsed_lines)
+    values["false_severities"] = [match.group(2).strip() for match in parsed_lines
+                                  if match.group(3) == "FALSE"]
+    if (values["findings"] != len(finding_lines)
+            or values["false"] != classes["FALSE"]
+            or values["speculative"] != classes["SPECULATIVE"]
+            or values["plausible"] != classes["PLAUSIBLE"]
+            or len(values["false_severities"]) != values["false"]
+            or (values["findings"] == 0 and len(none_lines) != 1)):
         return None
     return values
 
@@ -355,9 +448,12 @@ def api_call(out: Path, kind: str, job: dict, request_path: Path, protocol: dict
 
 def run_reviews(out: Path, phase: str, execute: bool) -> None:
     protocol, jobs = load_prepared(out)
-    if phase == "rest" and not all(check_result(out, "reviews", job, protocol)
-                                   for job in jobs if job["phase"] == "checkpoint"):
-        raise ValueError("Complete all 15 Haiku generic checkpoint calls first")
+    if phase == "rest":
+        first = [job for job in jobs if job["phase"] == "checkpoint"]
+        if not all(check_result(out, "reviews", job, protocol) and
+                   check_result(out, "judgments", job, protocol) for job in first):
+            raise ValueError("Complete and provisionally score all 15 checkpoint reviews first")
+        checkpoint_report(out, protocol, first)
     pending = [job for job in jobs if job["phase"] == phase
                and check_result(out, "reviews", job, protocol) is None]
     print(f"{phase}: {len(pending)} review calls pending")
@@ -366,20 +462,25 @@ def run_reviews(out: Path, phase: str, execute: bool) -> None:
     key = os.environ.get("ANTHROPIC_API_KEY")
     if not key:
         raise ValueError("Set ANTHROPIC_API_KEY in the environment")
+    validate_ground_truth_signoff(out, freeze=True)
     for job in pending:
         api_call(out, "reviews", job, out / "review_requests" / f"{job['id']}.json",
                  protocol, key)
 
 
-def judge(out: Path, execute: bool) -> None:
+def judge(out: Path, phase: str, execute: bool) -> None:
     protocol, jobs = load_prepared(out)
-    reviews = {job["id"]: check_result(out, "reviews", job, protocol) for job in jobs}
+    targets = [job for job in jobs if job["phase"] == phase]
+    reviews = {job["id"]: check_result(out, "reviews", job, protocol) for job in targets}
     if any(value is None for value in reviews.values()):
-        raise ValueError("All 408 reviews must be complete before judging")
+        raise ValueError(f"All {len(targets)} {phase} reviews must be complete before judging")
+    if phase == "rest" and not all(check_result(out, "judgments", job, protocol)
+                                   for job in jobs if job["phase"] == "checkpoint"):
+        raise ValueError("Score all 15 checkpoint reviews before judging the rest")
     truth = read_json(out / "snapshot/truth.json")
     request_dir = out / "judge_requests"
     request_dir.mkdir(exist_ok=True)
-    for job in jobs:
+    for job in targets:
         path = request_dir / f"{job['id']}.json"
         diff = (out / "snapshot/inputs" / f"{job['item']}.diff").read_text().rstrip("\n")
         review = reviews[job["id"]]["text"].strip()
@@ -393,19 +494,51 @@ def judge(out: Path, execute: bool) -> None:
                 raise ValueError(f"Judge request changed: {path}")
         else:
             path.write_bytes(proposed)
-    pending = [job for job in jobs if check_result(out, "judgments", job, protocol) is None]
-    print(f"{len(pending)} judge calls pending")
-    if not execute:
-        return
-    key = os.environ.get("ANTHROPIC_API_KEY")
-    if not key:
-        raise ValueError("Set ANTHROPIC_API_KEY in the environment")
-    for job in pending:
-        api_call(out, "judgments", job, request_dir / f"{job['id']}.json", protocol, key)
+    pending = [job for job in targets if check_result(out, "judgments", job, protocol) is None]
+    print(f"{phase}: {len(pending)} judge calls pending")
+    if execute:
+        key = os.environ.get("ANTHROPIC_API_KEY")
+        if not key:
+            raise ValueError("Set ANTHROPIC_API_KEY in the environment")
+        for job in pending:
+            api_call(out, "judgments", job, request_dir / f"{job['id']}.json", protocol, key)
+    if phase == "checkpoint" and all(check_result(out, "judgments", job, protocol)
+                                     for job in targets):
+        checkpoint_report(out, protocol, targets)
+
+
+def checkpoint_report(out: Path, protocol: dict, targets: list[dict]) -> None:
+    inventory = {row["item"]: row for row in read_json(out / "snapshot/inventory.json")}
+    rows = []
+    for item in protocol["first_haiku_generic_items"]:
+        chosen = sorted((job for job in targets if job["item"] == item), key=lambda job: job["run"])
+        labels = [check_result(out, "judgments", job, protocol)["parsed"]["label"]
+                  for job in chosen]
+        rows.append({"item": item, "cve_id": inventory[item]["cve_id"],
+                     "run_labels": labels, "case_score": majority(labels)})
+    result = {"status": "provisional model-judged checkpoint; continue regardless of scores",
+              "created_utc": utc_now(), "caught": sum(row["case_score"] == "Caught" for row in rows),
+              "denominator": 5, "cases": rows}
+    path = out / "checkpoint_summary.json"
+    if path.exists():
+        previous = read_json(path)
+        previous.pop("created_utc", None)
+        comparison = dict(result)
+        comparison.pop("created_utc", None)
+        if previous != comparison:
+            raise ValueError("Checkpoint score changed after being recorded")
+    else:
+        write_json(path, result)
+    print(f"Checkpoint provisionally Caught {result['caught']}/5; "
+          f"continue with frozen protocol regardless of this score")
 
 
 def verify(out: Path, complete: bool) -> None:
     protocol, jobs = load_prepared(out)
+    if complete:
+        if not (out / "ground_truth_signoff.sha256").is_file():
+            raise ValueError("Frozen ground-truth signoff hash is missing")
+        validate_ground_truth_signoff(out, freeze=False)
     totals = {}
     response_ids = set()
     for kind in ("reviews", "judgments"):
@@ -433,6 +566,7 @@ def packet(out: Path) -> None:
     verify(out, complete=True)
     protocol, jobs = load_prepared(out)
     truth = read_json(out / "snapshot/truth.json")
+    controls = read_json(out / "snapshot/control_provenance.json")
     rng = random.Random(protocol["shuffle_seed"] + 1)
     shuffled = jobs[:]
     rng.shuffle(shuffled)
@@ -446,7 +580,8 @@ def packet(out: Path) -> None:
          (blind / "human_scores_template.csv").open("w", newline="") as template_file:
         key_writer = csv.DictWriter(key_file, fieldnames=("review_id", "job_id", "item", "kind",
                                                     "model", "arm", "run", "cve_id"))
-        score_writer = csv.DictWriter(template_file, fieldnames=("review_id", "label",
+        score_writer = csv.DictWriter(template_file, fieldnames=("review_id", "reviewer_name",
+            "reviewed_utc", "label",
             "false_count", "speculative_count", "plausible_count", "false_severities",
             "correctness_count", "maintainability_count", "reason"))
         key_writer.writeheader()
@@ -461,6 +596,8 @@ def packet(out: Path) -> None:
                       "ground_truth": truth[job["item"]] if job["kind"] == "case" else
                                       "This change is not known to introduce a vulnerability.",
                       "review": review["text"]}
+            if job["kind"] == "control":
+                record["historical_source"] = controls[job["item"]]
             reviews_file.write(json.dumps(record, ensure_ascii=False) + "\n")
             judgments_file.write(json.dumps({"review_id": review_id,
                 "model_judgment": judgment["text"]}, ensure_ascii=False) + "\n")
@@ -484,15 +621,32 @@ def summarize(out: Path, human_csv: Path | None) -> None:
     verify(out, complete=True)
     protocol, jobs = load_prepared(out)
     overrides = {}
+    human_evidence = None
     if human_csv:
         if not (out / "packet/private/key.csv").exists():
             raise ValueError("Create the blinded packet before importing human scores")
         key = {row["review_id"]: row["job_id"] for row in
                csv.DictReader((out / "packet/private/key.csv").open())}
-        for row in csv.DictReader(human_csv.open()):
+        supplied = human_csv.read_bytes()
+        digest = sha(supplied)
+        retained = out / "human_adjudication" / f"{digest}.csv"
+        retained.parent.mkdir(exist_ok=True)
+        if not retained.exists():
+            with retained.open("xb") as file:
+                file.write(supplied)
+        human_evidence = {"sha256": digest, "path": str(retained.relative_to(out))}
+        for row in csv.DictReader(io.StringIO(supplied.decode("utf-8-sig"))):
             if row["review_id"] not in key:
                 raise ValueError(f"Unknown review ID: {row['review_id']}")
             if row["reason"].strip():
+                if not row["reviewer_name"].strip() or not row["reviewed_utc"].strip():
+                    raise ValueError(f"Human reviewer and UTC date required: {row['review_id']}")
+                try:
+                    reviewed_at = datetime.fromisoformat(row["reviewed_utc"])
+                except ValueError as exc:
+                    raise ValueError(f"Invalid human review date: {row['review_id']}") from exc
+                if reviewed_at.tzinfo is None:
+                    raise ValueError(f"Human review date needs UTC offset: {row['review_id']}")
                 overrides[key[row["review_id"]]] = row
     rows = {}
     for job in jobs:
@@ -525,11 +679,13 @@ def summarize(out: Path, human_csv: Path | None) -> None:
         rows[job["id"]] = parsed
     cases = []
     controls = []
+    inventory = {row["item"]: row for row in read_json(out / "snapshot/inventory.json")}
     for model in protocol["models"]:
         for arm in protocol["prompts"]:
             for item in [f"item_{i:02}" for i in range(1, 25)]:
                 labels = [rows[f"{item}__{model}__{arm}__run{i}"]["label"] for i in (1, 2, 3)]
-                cases.append({"item": item, "model": model, "arm": arm,
+                cases.append({"item": item, "cve_id": inventory[item]["cve_id"],
+                              "model": model, "arm": arm,
                               "runs": "/".join(labels), "score": majority(labels),
                               "mixed": len(set(labels)) > 1})
             for item in [f"BENIGN-{i:02}" for i in range(1, 11)]:
@@ -555,6 +711,12 @@ def summarize(out: Path, human_csv: Path | None) -> None:
             by_arm[key] = {
                 "cases": {label: sum(row["score"] == label for row in c)
                           for label in ("Caught", "Partial", "Missed")},
+                "checkpoint_caught": sum(row["score"] == "Caught" for row in c
+                                         if row["item"] in protocol["first_haiku_generic_items"]),
+                "checkpoint_denominator": 5,
+                "remaining_caught": sum(row["score"] == "Caught" for row in c
+                                        if row["item"] not in protocol["first_haiku_generic_items"]),
+                "remaining_denominator": 19,
                 "mixed_label_cases": sum(row["mixed"] for row in c),
                 "false_alarm_reviews": sum(row["false"] > 0 for row in b),
                 "false_alarm_controls": sum(any(row["false"] > 0 for row in b
@@ -579,20 +741,31 @@ def summarize(out: Path, human_csv: Path | None) -> None:
                 "median_judge_latency_seconds": statistics.median(row["latency_seconds"]
                                                                    for row in judge_meta),
             }
+    prompt_changes = {}
+    for model in protocol["models"]:
+        generic = {row["cve_id"] for row in cases if row["model"] == model
+                   and row["arm"] == "generic" and row["score"] == "Caught"}
+        security = {row["cve_id"] for row in cases if row["model"] == model
+                    and row["arm"] == "security" and row["score"] == "Caught"}
+        prompt_changes[model] = {"gained": sorted(security - generic),
+                                 "retained": sorted(security & generic),
+                                 "lost": sorted(generic - security)}
     report = {"status": "provisional until independent human signoff",
-              "human_reviewed_runs": len(overrides), "total_review_runs": 408,
-              "by_arm": by_arm, "case_rows": cases, "control_rows": controls,
+              "human_override_rows_supplied": len(overrides), "total_review_runs": 408,
+              "human_scoring_evidence": human_evidence,
+              "by_arm": by_arm, "prompt_changes": prompt_changes,
+              "case_rows": cases, "control_rows": controls,
               "generated_utc": utc_now()}
     write_json(out / "summary.json", report)
     print(f"Saved provisional summary to {out / 'summary.json'}; "
-          f"{len(overrides)}/408 run judgments have human overrides")
+          f"{len(overrides)}/408 run judgments have identified human overrides")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=("plan", "prepare", "run", "judge", "verify", "packet", "summarize"))
     parser.add_argument("--out", type=Path, help="Dedicated run directory, preferably build/openemr-next-run")
-    parser.add_argument("--phase", choices=("checkpoint", "rest"), help="Required for run")
+    parser.add_argument("--phase", choices=("checkpoint", "rest"), help="Required for run and judge")
     parser.add_argument("--execute", action="store_true", help="Permit paid API calls")
     parser.add_argument("--complete", action="store_true", help="Require all reviews and judgments")
     parser.add_argument("--human-csv", type=Path, help="Optional filled human_scores_template.csv")
@@ -615,7 +788,9 @@ def main() -> None:
             parser.error("run requires --phase checkpoint or --phase rest")
         run_reviews(out, args.phase, args.execute)
     elif args.action == "judge":
-        judge(out, args.execute)
+        if not args.phase:
+            parser.error("judge requires --phase checkpoint or --phase rest")
+        judge(out, args.phase, args.execute)
     elif args.action == "verify":
         verify(out, args.complete)
     elif args.action == "packet":
