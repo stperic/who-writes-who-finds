@@ -1,0 +1,25 @@
+case_id,score,rule_id,location,reason,review_status
+CVE-2022-2824,Missed,,,"Only finding touching show-signature.php is php/InsecureHash on SHA1, unrelated to the authorization bypass.",provisional_Codex
+CVE-2026-23627,Missed,,,No finding location or flow touches the vulnerable Immunization controller.,provisional_Codex
+CVE-2026-24487,Missed,,,No finding location or flow touches the vulnerable FhirCareTeamService.php.,provisional_Codex
+CVE-2026-24847,Caught,php/OR,interface/forms/eye_mag/view.php:35,Snyk reports an open redirect from the request url to header at the exact introduced vulnerable line.,provisional_Codex
+CVE-2026-24849,Caught,php/PT,"interface/modules/custom_modules/oe-module-faxsms/src/Controller/EtherFaxActions.php:481,509","Snyk reports request-controlled path traversal into file_put_contents and readfile in disposeDocument/sendFile, matching arbitrary write/read vulnerability.",provisional_Codex
+CVE-2026-24890,Missed,,,"Only finding touching save-signature.php concerns SHA1, not the is_portal authorization bypass.",provisional_Codex
+CVE-2026-24898,Missed,,,No Snyk finding location or flow touches the MedEx callback file or identifies token disclosure through the unauthenticated callback.,provisional_Codex
+CVE-2026-24908,Missed,,,No Snyk finding location or flow touches SearchConfigClauseBuilder or identifies the unsanitized _sort SQL identifier.,provisional_Codex
+CVE-2026-25146,Missed,,,No finding location or flow touches portal_payment.php or identifies the gateway secret rendered into browser JavaScript.,provisional_Codex
+CVE-2026-25476,Missed,,,"Only finding touching the changed auth.inc file reports unrelated XSS, not the request-controlled session timeout bypass.",provisional_Codex
+CVE-2026-25746,Missed,,,No Snyk finding location or flow touches the vulnerable Prescription controller SQL ORDER BY construction.,provisional_Codex
+CVE-2026-29187,Borderline,php/Sqli,"interface/new/new_search_popup.php:162,165","Borderline: Snyk flags SQL injection at the vulnerable query sinks, but its displayed flow starts at the bound request value rather than the unvalidated fldname column identifier. Human verification required.",borderline_human_required
+CVE-2026-32238,Caught,php/CommandInjection,interface/main/backup.php:520,Snyk traces request-controlled form data through the backup command construction to exec at the vulnerable sink.,provisional_Codex
+CVE-2026-33321,Missed,,,No finding location or flow touches eye_mag/report.php or identifies server-side PDF URL fetching from stored fields.,provisional_Codex
+CVE-2026-33346,Missed,,,No Snyk finding location or flow touches portal_payment.php or identifies unescaped audit fields in its JavaScript output.,provisional_Codex
+CVE-2026-33913,Missed,,,No Snyk finding location or flow touches the CCDA import parser or identifies LIBXML_XINCLUDE file reads.,provisional_Codex
+CVE-2026-33918,Missed,,,The only finding in get_claim_file.php is an unrelated XSS warning; none identifies missing billing authorization for file download.,provisional_Codex
+CVE-2018-15145,Caught,php/Sqli,"portal/add_edit_event_user.php:123,317",Snyk reports SQL injection at queries that interpolate the request-controlled event ID directly.,provisional_Codex
+CVE-2018-15152,Missed,,,No finding location or flow touches the registration page or identifies the unauthenticated portal-session initialization.,provisional_Codex
+CVE-2020-29140,Caught,php/Sqli,interface/reports/immunization_report.php:384,Snyk traces posted form_code values through unparameterized query construction to sqlStatement.,provisional_Codex
+CVE-2021-40352,Missed,,,Snyk reports SQL injection at the note lookup but does not identify the missing patient or user ownership check for noteid.,provisional_Codex
+CVE-2023-22973,Caught,php/FileInclusion,interface/forms/LBF/new.php:110,Snyk traces request-controlled formname into the dynamic include_once of a plugin path.,provisional_Codex
+CVE-2025-31121,Missed,,,"Snyk flags other XSS sinks in C_Document.class.php, but none identifies retrieve_action disable_exit returning raw document bytes for Controller::act to echo.",provisional_Codex
+CVE-2025-43860,Missed,,,No Snyk finding location or flow touches the Additional Address innerHTML assignment or identifies stored DOM XSS there.,provisional_Codex
