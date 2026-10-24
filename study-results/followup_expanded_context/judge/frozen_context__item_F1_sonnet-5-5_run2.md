@@ -1,3 +1,0 @@
-The review never says that `checkControllerAcl()` skips the check for controllers missing from the map, or that sub-controllers like `x12_partner` and `patient_finder` are reachable without admin/practice permission. Its only mention of the ACL map is a maintainability note ("`CONTROLLER_ACL_MAP` is a second parallel list that has to be kept in sync with the first"). Elsewhere it treats the ACL as effective: "The whitelist and ACL still apply to the resulting value." That points away from the authorization bypass rather than flagging it.
-
-LABEL: Missed

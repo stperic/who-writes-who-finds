@@ -1,3 +1,0 @@
-The review's item 6 identifies the exact location and class: "`$eraname` is not validated in this diff (the `$nameprefix` line)... It is interpolated straight into a filesystem path. If it derives from user-supplied input... make sure it is sanitized, for example with `basename()` or a whitelist, to rule out path traversal." However, it rates it "Severity: low, pre-existing," hedges on whether the input is user-controlled, and explicitly states "I found no blocking problems," so it would not block the merge for this reason despite naming path traversal at the right line.
-
-LABEL: Partial

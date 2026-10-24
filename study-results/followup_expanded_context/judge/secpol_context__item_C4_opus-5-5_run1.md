@@ -1,3 +1,0 @@
-The review flags the right root cause and location but labels it the wrong class. Finding 3 ("Stored XSS: many PHI and clinical fields echoed without escaping", covering `$HPI1`, `$MOTILITY_*`, `$item['plan']` and `$PLAN`) calls it browser-side XSS, not server-side request forgery. Finding 7 notes that html2pdf processes paths ("A tampered document URL could make html2pdf embed arbitrary local image files"), but it never connects the unescaped user fields or the CSS `background` value to the PDF renderer fetching attacker-injected URLs from the server.
-
-LABEL: Partial

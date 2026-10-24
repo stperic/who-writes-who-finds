@@ -1,3 +1,0 @@
-The review never discusses `checkControllerAcl()`, `CONTROLLER_ACL_MAP`, or the fact that sub-controllers like `x12_partner` and `patient_finder` skip the permission check when they have no ACL map entry. The closest passage, Issue #3 ("Whitelist completeness risk… If any existing controller used elsewhere in the codebase isn't in this list, that feature will break"), worries that the whitelist is too narrow and will break features. It does not raise the opposite problem: whitelisted controllers being reachable without authorization.
-
-LABEL: Missed

@@ -1,3 +1,0 @@
-The review's first Critical item, "Gateway secret key is sent to every portal user's browser," points to the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It explains that with Stripe "the account's secret key is embedded in the page for any logged-in patient," which lets anyone "issue charges and refunds." It also correctly notes the Authorize.Net login-ID nuance and recommends never emitting the Stripe secret, so it names the right class, location and severity, and a reviewer would block the merge on it.
-
-LABEL: Caught

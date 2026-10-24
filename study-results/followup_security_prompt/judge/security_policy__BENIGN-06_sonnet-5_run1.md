@@ -1,4 +1,0 @@
-FINDING | Interface added without visible patient-compartment implementation | severity=High (pending verification) | class=SPECULATIVE | The review only asks to confirm a required method exists in the full file and is wired correctly, which cannot be judged from the diff.
-FINDING | addManagingOrganization now passed single reference not array | severity=Low | class=SPECULATIVE | The review itself says it is not a vulnerability and merely asks to verify the setter's expected input type, which is defined elsewhere.
-FINDING | primary_facility_uuid used in createRelativeReference unvalidated | severity=Low/Informational | class=FALSE | The value is a DB-sourced server UUID in an unchanged call (not a new call site as claimed), and emitting it in a FHIR reference is not an injection sink shown by the diff.
-SUMMARY: findings=3 false=1 speculative=2 plausible=0

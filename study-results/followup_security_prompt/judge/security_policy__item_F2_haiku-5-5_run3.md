@@ -1,3 +1,0 @@
-Finding 1 identifies the exact vulnerability class and location: "`$eraname` is concatenated into a filesystem path without any sanitization in the diff. If it originates from request input (`$_GET`/`$_POST`)... values such as `../../../something` could direct reads or writes outside `documents/era/`," pointing at `$nameprefix = "$eraDir/$eraname";` and the report-file writes. The reviewer hedges on whether the variable is user-controlled (since the source was outside the hunk), but rates it High if so, recommends `basename()`/allowlist, and explicitly says "Do not merge until Finding 1 is verified and fixed," which would block the merge for the right reason.
-
-LABEL: Caught

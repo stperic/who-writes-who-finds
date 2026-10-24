@@ -1,4 +1,0 @@
-FINDING | Old code let client flag bypass expiry check | severity=High | class=PLAUSIBLE | The removed condition shows `skip_timeout_reset` from `$_REQUEST` skipped `isSessionExpired()` entirely, so the diff supports the described bypass that the change fixes.
-FINDING | Confirm authLoginScreen() always terminates execution | severity=Low | class=SPECULATIVE | `authLoginScreen()` is defined elsewhere and the review only asks to verify it exits rather than asserting a flaw.
-FINDING | Ensure $skipSessionExpirationCheck not request-controllable | severity=Info | class=SPECULATIVE | Whether any includer extracts request variables into scope cannot be judged from the diff, and the review only requests confirmation.
-SUMMARY: findings=3 false=0 speculative=2 plausible=1

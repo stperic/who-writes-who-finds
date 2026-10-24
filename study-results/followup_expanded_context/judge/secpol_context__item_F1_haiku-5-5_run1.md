@@ -1,3 +1,0 @@
-The review's Finding 1 identifies the exact flaw: "Only `practice_settings` and `prescription` have a dispatch-level ACL. `document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `pharmacy`, `patient_finder`, `x12_partner`... The whitelist is therefore allow-by-default for ACL... silently exposes it to any authenticated user." It names the right class (Broken Access Control) and location (`checkControllerAcl()`/`CONTROLLER_ACL_MAP`), lists the affected sub-controllers, and recommends the correct deny-by-default fix. Its hedge about unseen constructor checks and its Medium rating understate the severity somewhat, but the detection is specific and actionable enough that a reviewer would block the merge for the right reason.
-
-LABEL: Caught

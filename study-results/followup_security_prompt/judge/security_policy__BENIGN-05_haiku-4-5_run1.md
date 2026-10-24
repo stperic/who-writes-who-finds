@@ -1,4 +1,0 @@
-FINDING | CSRF via skip_timeout_reset extends victim session | severity=HIGH | class=FALSE | The parameter only skips the timer reset (shortening, not extending, session life), and the new code now enforces expiry even when it is set, so forged requests cannot keep a session alive.
-FINDING | No logging of skip_timeout_reset usage | severity=MEDIUM | class=FALSE | The premise that skip_timeout_reset can be abused to prevent expiration is inverted; the flag opts out of extending the session, so there is no abuse to log.
-FINDING | $_REQUEST usage insecure, prefer $_GET/$_POST | severity=none | class=FALSE | The only effect of the flag is declining to refresh the session timer, so its input source cannot create a weakness regardless of whether it comes from GET, POST, or cookie.
-SUMMARY: findings=3 false=3 speculative=0 plausible=0

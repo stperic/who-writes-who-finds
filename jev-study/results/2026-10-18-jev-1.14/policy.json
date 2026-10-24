@@ -1,0 +1,42 @@
+{
+  "version": "jev-routing-v1",
+  "scope": "Route by the behavior changed in the diff, including removed code. A filename, an unchanged nearby call, or a known vulnerability class alone is insufficient. A safe fix can still require a specialist. Choose all applicable routes; low_impact is exclusive. Request missing context instead of inventing it. These are reviewer roles, not named people.",
+  "routes": {
+    "auth_boundary": {
+      "description": "Changes authentication, sessions, authorization, patient or tenant scoping, resource access paths, or their enforcement contracts.",
+      "reviewer": "boundary_owner",
+      "ai_authority": "advisory",
+      "context": "Touched files, callers, base classes and the access-control invariant.",
+      "escalate_when": "A new access path, removed guard, or AI silence on a boundary change."
+    },
+    "sensitive_data": {
+      "description": "Changes collection, exposure, transmission, storage or access to patient data, secrets or payment credentials. Merely formatting an amount or changing arithmetic in a billing file is insufficient.",
+      "reviewer": "data_privacy_owner",
+      "ai_authority": "advisory",
+      "context": "Touched files and data-classification or secret definitions.",
+      "escalate_when": "Data crosses a trust boundary or reaches webroot, logs or client JavaScript."
+    },
+    "construction": {
+      "description": "Changes query construction, parser behavior, shell commands, redirects, or dynamic HTML/JavaScript output. Static wording or layout changes alone are insufficient.",
+      "reviewer": "pr_reviewer",
+      "ai_authority": "may_block_confident_finding_pending_human_triage",
+      "context": "Touched files and sanitizer, parser or query-binding helpers.",
+      "escalate_when": "A finding is disputed or a custom escaping helper needs verification."
+    },
+    "security_config": {
+      "description": "Changes security configuration, cryptographic implementation/settings, or dependency declarations. Calling an existing encryption helper without changing its behavior alone is insufficient.",
+      "reviewer": "platform_security_owner",
+      "ai_authority": "advisory_with_scanners",
+      "context": "Configuration, dependency manifests, SAST and secret-scanner outputs.",
+      "escalate_when": "AI and deterministic tools disagree."
+    },
+    "low_impact": {
+      "description": "A local change with none of the above impacts, such as static wording, layout or local arithmetic. Do not infer this from absence of a detected vulnerability.",
+      "reviewer": "peer_reviewer",
+      "ai_authority": "first_pass",
+      "context": "Diff and touched file.",
+      "escalate_when": "AI execution fails, times out, returns empty output, or context is insufficient."
+    }
+  },
+  "always": "Human approval is required. No findings is not approval. Multiple routes require the union of reviewer roles. Any advisory route limits the combined AI authority to advisory. Routing does not assert that a vulnerability exists or that a human will detect it."
+}

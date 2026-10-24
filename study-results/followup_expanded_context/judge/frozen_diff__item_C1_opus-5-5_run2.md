@@ -1,3 +1,0 @@
-Issue #6 pinpoints the right mechanism: "`retrieve_action` is invoked through `Controller::act()`, which maps query-string values onto action arguments in order. Please confirm a user cannot supply a fifth argument and flip `$disable_exit`." However, it frames the impact only as "an empty 200 response" or a bypass of "download logging or encryption". It never notes that the raw file bytes would be echoed as text/html, enabling stored XSS. It flags the right area and attack path but with the wrong vulnerability class and only medium severity.
-
-LABEL: Partial

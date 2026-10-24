@@ -1,3 +1,0 @@
-The review's Finding 2, "Stored XSS by serving uploaded documents inline," names the right class and location: "With `disable_exit=1`, the raw bytes are echoed by `controller.php` under the default `text/html` content type in the OpenEMR origin." Finding 1 ties this to `Controller::act()` mapping query parameters positionally onto `$disable_exit`, and the review recommends "Do not merge as-is." It uses HTML/SVG uploads as the example rather than an image with embedded EXIF script, but the mechanism and the stored-XSS class are the same as the known vulnerability.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review never mentions `$eraname`, `$_REQUEST`, path traversal, or the `$nameprefix = "$eraDir/$eraname"` concatenation; its only security comment is "The directory is created with permissions `0755`, which makes it world-readable," which concerns filesystem mode bits, not attacker-controlled path construction. The other findings (copyright year, globals pattern, mkdir race) are unrelated to the vulnerability. No passage identifies the unsanitized user input flowing into file read/write paths.
-
-LABEL: Missed

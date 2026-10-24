@@ -1,3 +1,0 @@
-FINDING | Callers may swallow exception, masking failed payment recording | severity=none | class=SPECULATIVE | It asks to verify caller behavior not shown in the diff, without asserting a vulnerability.
-FINDING | Race condition yields duplicate ar_activity sequence numbers | severity=Low to Medium | class=PLAUSIBLE | The non-locking SELECT MAX+1 pattern is in the touched code and the existing comment itself confirms the race.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

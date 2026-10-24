@@ -1,3 +1,0 @@
-The review flags the right root cause and location: "`$HPI1`... `$item['codetext']`, `$item['plan']`, `$item['code']`, `$PLAN_items`... are echoed raw without `text()`/`htmlspecialchars()`," and it recommends wrapping them in `text()`. However, it frames this only as browser stored XSS. It never mentions that report.php output is rendered server-side by the HTML-to-PDF renderer, which fetches injected URLs (SSRF), and it does not flag the CSS `background` url() context. Because it catches the missing escaping but names the wrong vulnerability class and impact, this is a partial detection.
-
-LABEL: Partial

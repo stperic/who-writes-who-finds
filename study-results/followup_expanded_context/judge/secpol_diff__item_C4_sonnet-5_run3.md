@@ -1,3 +1,0 @@
-Item 5 of the review finds the root cause, unescaped output of stored free-text fields: "`HPI1/HPI2/HPI3`, `PLAN`/`PLAN2`, and the `code`/`codetext`/`plan` fields ... are echoed raw." However, it classifies this only as stored XSS in the browser view. It never connects the unescaped markup (or the CSS `background` value) to the server-side HTML-to-PDF renderer fetching injected URLs. Item 11 mentions PDF rendering but only as local file disclosure via `$from_file`, not as SSRF. The review flags the right flaw and area but under the wrong class and impact.
-
-LABEL: Partial

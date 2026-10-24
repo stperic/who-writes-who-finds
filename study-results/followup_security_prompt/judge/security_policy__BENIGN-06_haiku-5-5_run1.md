@@ -1,2 +1,0 @@
-FINDING | New patient-compartment path; enforcement not visible in diff | severity=Informational to Medium (verify) | class=SPECULATIVE | The review only asks to verify compartment filtering, ACL enforcement and parameterization implemented outside the diff, without asserting an actual vulnerability.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

@@ -1,0 +1,20 @@
+{
+  "change": {
+    "diff": "diff --git a/library/MedEx/MedEx.php b/library/MedEx/MedEx.php\nindex e95e7bc5b..86e6f8c18 100644\n--- a/library/MedEx/MedEx.php\n+++ b/library/MedEx/MedEx.php\n@@ -34,29 +34,15 @@\n     require_once(dirname(__FILE__).\"/../patient.inc\");\n     require_once(dirname(__FILE__).\"/../log.inc\");\n     require_once(dirname(__FILE__).\"/API.php\");\n-\n-    $MedEx = new MedExApi\\MedEx('MedExBank.com');\n-    $logged_in = $MedEx->login();\n     \n-if (($logged_in) && (!empty($_POST['callback_key']))) {\n-    $response = array();\n-    $data                   = json_decode($_POST, true);\n-    $token                  = $logged_in['token'];\n-      \n-    $callback               = $MedEx->callback->receive($data);\n-    $practice               = $MedEx->practice->sync($token);\n-    $campaigns              = $MedEx->campaign->events($token);\n-    $generate               = $MedEx->events->generate($token, $campaigns['events']);\n-      \n-    $response['generate']   = $generate;\n-    $response['campaigns']  = $campaigns;\n-    $response['practice']   = $practice;\n-    $response['success']    = \"200\";\n-        \n-    header('Content-type: application/json');\n-    echo json_encode($response);\n-    exit;\n-}\n+    \n+    if (!empty($_POST['callback_key'])) {\n+        $MedEx = new MedExApi\\MedEx('MedExBank.com');\n+        $response = $MedEx->login('1');\n+        header('Content-type: application/json');\n+        echo json_encode($response);\n+        exit;\n+    }\n     echo \"Not logged in: \";\n     echo $MedEx->getLastError();\n     exit;\n",
+    "historical_context": [
+      {
+        "path": "library/MedEx/MedEx.php",
+        "text": "<?php\n    /**\n     * /library/MedEx/MedEx.php\n     *\n     * This file is the callback service for MedEx to update local DB with new responses in real-time.\n     * It must be accessible remotely to receive data synchronously.\n     *\n     * It is not required if a practice is happy syncing using background services only.\n     *\n     * The advantages using this file are:\n     *  1.  Real time updates of patient responses == synchronous receiver\n     *  2.  Reduced need to run the MedEx_background service\n     *          - MedEx_background syncs DB responses asynchronously, ie only when run (default = every 29 minutes)\n     *          - It consumes resources and may affecting performance of the server if run too often.\n     *              (see MedEx_background.php for configuration examples)\n     *\n     * Uses multiple authentication steps for security:\n     *  - local API_key\n     *  - MedEx username\n     *  - session token\n     *  - MedEx generated token\n     *\n     * @package MedEx\n     * @author MedEx <support@MedExBank.com>\n     * @link    http://www.MedExBank.com\n     * @copyright Copyright (c) 2017 MedEx <support@MedExBank.com>\n     * @license https://www.gnu.org/licenses/agpl-3.0.en.html GNU Affero General Public License 3\n     */\n\n    $ignoreAuth=true;\n    $_SERVER['HTTP_HOST']   = 'default'; //change for multi-site\n\n    require_once(dirname(__FILE__).\"/../../interface/globals.php\");\n    require_once(dirname(__FILE__).\"/../patient.inc\");\n    require_once(dirname(__FILE__).\"/../log.inc\");\n    require_once(dirname(__FILE__).\"/API.php\");\n    \n    \n    if (!empty($_POST['callback_key'])) {\n        $MedEx = new MedExApi\\MedEx('MedExBank.com');\n        $response = $MedEx->login('1');\n        header('Content-type: application/json');\n        echo json_encode($response);\n        exit;\n    }\n    echo \"Not logged in: \";\n    echo $MedEx->getLastError();\n    exit;\n"
+      }
+    ],
+    "context_scope": "Full touched postimage files at this change's revision only. Callers and external invariants may be missing."
+  },
+  "trusted_requirements": {
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "owner_availability": "All roles available in the simulated policy. Real staffing not evaluated.",
+    "context_complete": "Determine from historical source; do not assume complete."
+  }
+}

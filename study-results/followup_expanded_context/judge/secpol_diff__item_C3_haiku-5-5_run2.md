@@ -1,3 +1,0 @@
-Finding 10 points to the exact line (`var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`) under A05 and warns that "Any transaction or secret key must never reach this page." However, it treats `apiKey` as probably the client-safe "Authorize.net API login ID" that only "should be confirmed," rates it "LOW / INFO," and leaves it out of the required-before-merge items. It never recognizes that this global holds the private secret key (e.g., Stripe's secret key), so it would raise a comment without blocking the merge for the actual credential leak.
-
-LABEL: Partial

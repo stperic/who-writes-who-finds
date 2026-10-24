@@ -1,2 +1,0 @@
-FINDING | Escaping in result loop not verifiable from diff | severity=none | class=SPECULATIVE | The review only notes it cannot confirm output escaping in the unseen loop body and asserts no vulnerability.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

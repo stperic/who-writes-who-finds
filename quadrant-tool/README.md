@@ -11,6 +11,11 @@ to AI and which to keep with humans.
 Companion tool to the talk *"Who Writes the Bug, Who Finds the Bug?
 Human-AI Security Lessons from Open Source"* (Eric St-Pierre, ISC2).
 
+For the new experiment on **assigning human reviewer roles**, see the
+[JEV pilot](../jev-study/README.md) and [jev.py](jev.py). It reuses the archived
+diffs with a separate policy, prompt and scoring key. Its results do not change
+the original vulnerability-detection study.
+
 ## Why
 
 Most teams calibrated their AI-review trust once and never re-measured.

@@ -1,3 +1,0 @@
-The review explicitly identifies the vulnerability class and location: "Path traversal via `$eraname`" at "`$nameprefix = \"$eraDir/$eraname\";`", noting that "`$eraname` is taken directly from `$_GET['eraname']`" with only a non-empty check, and that the path is used to "read the ERA file" and "write the report (`$nameprefix . '.html'`...)". It rates it High severity, recommends `basename()`/whitelist regex sanitization, and the summary states it "should be fixed before or alongside this merge," matching the advisory's description precisely.
-
-LABEL: Caught

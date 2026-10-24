@@ -1,3 +1,0 @@
-Finding 3 directly identifies the vulnerability: "Only `practice_settings` (`admin/practice`) and `prescription` (`patients/rx`) have ACL checks. `pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `document_category`, and `hl7` ... The allow-list lets anyone call them directly with no ACL at the router level," rated High under A01 Broken Access Control with the correct fix ("Default-deny any controller that has no ACL entry"). It omits `patient_finder` and `document` from the list and defers the fix to "this PR or in a tracked follow-up," but it names the class, location, severity, and the missing-map-entry root cause, which matches the advisory's core finding.
-
-LABEL: Caught

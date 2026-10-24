@@ -1,2 +1,0 @@
-FINDING | Verify getPatientContextSearchField exists and scopes patient data correctly | severity=none | class=SPECULATIVE | The review asks to confirm an interface method defined outside the diff without asserting a vulnerability.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

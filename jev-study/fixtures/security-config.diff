@@ -1,0 +1,12 @@
+diff --git a/config/http.php b/config/http.php
+index 1111111..2222222 100644
+--- a/config/http.php
++++ b/config/http.php
+@@ -1,5 +1,5 @@
+ <?php
+ return [
+-    'verify_peer' => true,
+-    'verify_peer_name' => true,
++    'verify_peer' => false,
++    'verify_peer_name' => false,
+ ];

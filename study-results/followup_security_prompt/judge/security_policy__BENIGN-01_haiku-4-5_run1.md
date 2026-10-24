@@ -1,3 +1,0 @@
-FINDING | Pre-existing ORDER BY injection fixed by whitelist | severity=HIGH | class=PLAUSIBLE | The diff shows unvalidated field names concatenated into ORDER BY, and the whitelist check with strict in_array is a credible fix for a real weakness in this code.
-FINDING | Unvalidated $allowedColumns allows empty or malicious whitelist | severity=MEDIUM | class=FALSE | An empty whitelist fails closed (every field is skipped and "" is returned), and the whitelist is developer-supplied code rather than attacker input, so no vulnerability is supported by the diff.
-SUMMARY: findings=2 false=1 speculative=0 plausible=1

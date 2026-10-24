@@ -1,3 +1,0 @@
-The review's first, Critical finding is titled "Gateway API secret exposed to every portal user". It quotes the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and explains that "With Stripe, any patient who views the page source gets the live Stripe secret key", noting that "Only the publishable key and the Authorize.Net login ID belong client-side." This gives the right vulnerability class (secret credential exposure, A05), the right location, the right severity and the Stripe-versus-Authorize.Net nuance, so a reviewer would block the merge for the correct reason.
-
-LABEL: Caught

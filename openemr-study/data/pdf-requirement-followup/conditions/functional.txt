@@ -1,0 +1,7 @@
+
+
+<approved-pdf-export-requirement>
+Authorized clinical staff can export an Eye Exam report as a PDF. The PDF must
+include the saved clinical narrative and relevant report images and preserve
+the content shown in the printable report.
+</approved-pdf-export-requirement>

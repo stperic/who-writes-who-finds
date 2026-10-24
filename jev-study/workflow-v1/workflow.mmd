@@ -1,0 +1,12 @@
+flowchart TD
+    A[PR created or updated: current revision] --> B[Jev: independent category probabilities]
+    B --> C[Deterministic policy]
+    M[Trusted owners, checks and context requirements] --> C
+    C --> D[Required workflow: AI reviews + human approvals + checks]
+    C --> T[Uncertainty or failure: human triage]
+    T --> D
+    D --> E[Reviews run; findings can add obligations]
+    E --> G{Current-revision merge gate}
+    G -->|Missing evidence, approval or unresolved finding| H[Pending: resolve obligations]
+    H --> E
+    G -->|Every requirement satisfied| I[Eligible for merge]

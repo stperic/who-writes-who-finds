@@ -1,3 +1,0 @@
-FINDING | Adding compartment interface removes patient access control | severity=HIGH | class=FALSE | Implementing IPatientCompartmentResourceService adds compartment scoping (PHP would fatal if methods were missing), so the diff shows a security improvement, not an authorization gap.
-FINDING | Facility UUID from DB record is cryptographic failure | severity=MEDIUM | class=FALSE | The UUID is read from an internal data record to build a reference, with no cryptography, transport, or user input involved, so A02 does not apply.
-SUMMARY: findings=2 false=2 speculative=0 plausible=0

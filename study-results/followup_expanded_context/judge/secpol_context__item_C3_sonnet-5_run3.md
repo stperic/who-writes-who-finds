@@ -1,3 +1,0 @@
-Finding #8 targets the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, and classifies it as A05 Security Misconfiguration at High severity. It notes the global is documented as the "API Secret for Stripe" and says the key "would be fully exposed client-side to any portal user viewing page source." The review wrongly hedges this as dependent on operator misconfiguration, when for Stripe the exposure is inherent. Even so, it names the right class, location and impact of secret-key disclosure, which is enough to block the merge for the right reason.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review's first finding names the exact flaw: "The `CONTROLLER_ACL_MAP` only covers 2 controllers (`practice_settings`, `prescription`), but `VALID_CONTROLLERS` whitelist contains 9 controllers. Controllers not in the ACL map return early from `checkControllerAcl()` without any authorization check, allowing unrestricted access." It labels this as High-severity Broken Access Control, marks it "Must Fix", and recommends deny-by-default. It does not spell out the x12_partner or patient_finder impact, but it gets the class, location and severity right, which is enough to block the merge for the right reason.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-Finding #6 points at the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`. It says that "Even if the public key is intentionally public, API keys should never be client-accessible" and that "Inspect element reveals sensitive gateway credentials." It rates this CRITICAL and lists "Remove API keys from JavaScript" among the blocking fixes. That names the right class (secret credential exposed to clients, A05), the right location, and the right severity, so a reader would block the merge for the correct reason despite the many other findings around it.
-
-LABEL: Caught

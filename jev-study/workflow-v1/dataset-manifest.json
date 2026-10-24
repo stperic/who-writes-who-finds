@@ -1,0 +1,10 @@
+{
+  "source_manifest": "../v2/dataset/manifest.json",
+  "source_manifest_sha256": "cdb1c0182729a5966676e48501728d40f849cf76781f72c36b2df6db68989ab5",
+  "selection_unchanged": true,
+  "development_cases": 14,
+  "holdout_cases": 9,
+  "holdout_families": 6,
+  "holdout_queried": false,
+  "synthetic_cases": "D04 and D08, development only"
+}

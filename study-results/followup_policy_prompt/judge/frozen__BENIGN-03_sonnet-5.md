@@ -1,3 +1,0 @@
-FINDING | Write ACL may be too strict for read endpoint | severity=Medium | class=SPECULATIVE | It asks to confirm OpenEMR ACL conventions rather than asserting a weakness, and a stricter gate is not a vulnerability.
-FINDING | denyWithTemplate might not halt execution, failing open | severity=Medium | class=SPECULATIVE | The helper is defined outside the diff and the review only requests verification of its exit behavior.
-SUMMARY: findings=2 false=0 speculative=2 plausible=0

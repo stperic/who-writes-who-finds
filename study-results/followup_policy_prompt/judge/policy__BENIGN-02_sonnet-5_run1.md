@@ -1,4 +1,0 @@
-FINDING | Missing LIBXML_NONET leaves network fetching possible | severity=Medium | class=SPECULATIVE | Conditioned on DTD/entity processing being enabled elsewhere (e.g., setParserProperty), which the diff does not show.
-FINDING | External entity loading not explicitly disabled, XXE possible | severity=Medium | class=SPECULATIVE | Asks to confirm LOADDTD/VALIDATE/NOENT are off elsewhere rather than asserting a vulnerability visible in the diff.
-FINDING | Other XML readers may still use LIBXML_XINCLUDE | severity=Minor | class=SPECULATIVE | Requests an audit of code outside the diff without claiming a concrete flaw.
-SUMMARY: findings=3 false=0 speculative=3 plausible=0

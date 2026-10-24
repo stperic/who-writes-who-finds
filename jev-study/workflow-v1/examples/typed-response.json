@@ -1,0 +1,61 @@
+{
+  "evidence_type": "ILLUSTRATIVE_SCHEMA_FIXTURE_NOT_PROVIDER_RESPONSE",
+  "notice": "These numbers are invented for an executed policy/gate example, not observations from Jev.",
+  "raw": {
+    "model": "typesafe/jev-1.14",
+    "answers": {
+      "personal_data_access": {
+        "type": "noul",
+        "noul": 0.96
+      },
+      "authorization_boundary": {
+        "type": "noul",
+        "noul": 0.93
+      },
+      "patient_tenant_scoping": {
+        "type": "noul",
+        "noul": 0.91
+      },
+      "sql_construction": {
+        "type": "noul",
+        "noul": 0.94
+      },
+      "command_parser_output": {
+        "type": "noul",
+        "noul": 0.88
+      },
+      "sensitive_data_flow": {
+        "type": "noul",
+        "noul": 0.95
+      },
+      "security_configuration": {
+        "type": "noul",
+        "noul": 0.12
+      },
+      "insufficient_context": {
+        "type": "noul",
+        "noul": 0.1
+      }
+    }
+  },
+  "validated_probabilities": {
+    "personal_data_access": 0.96,
+    "authorization_boundary": 0.93,
+    "patient_tenant_scoping": 0.91,
+    "sql_construction": 0.94,
+    "command_parser_output": 0.88,
+    "sensitive_data_flow": 0.95,
+    "security_configuration": 0.12,
+    "insufficient_context": 0.1
+  },
+  "display_percentages": {
+    "personal_data_access": "96%",
+    "authorization_boundary": "93%",
+    "patient_tenant_scoping": "91%",
+    "sql_construction": "94%",
+    "command_parser_output": "88%",
+    "sensitive_data_flow": "95%",
+    "security_configuration": "12%",
+    "insufficient_context": "10%"
+  }
+}

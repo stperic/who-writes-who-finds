@@ -1,3 +1,0 @@
-The review's issue #3 identifies the exact vulnerability: "the `$eraname` variable used in line 756 (`$nameprefix = "$eraDir/$eraname"`) comes from user input and is not validated for path traversal attacks. An attacker could pass `$eraname = "../../../etc/passwd"` to access files outside the intended directory," rated HIGH severity with a basename()-based fix recommended. This names the correct class (path traversal), the correct location, and the correct variable, matching the advisory.
-
-LABEL: Caught

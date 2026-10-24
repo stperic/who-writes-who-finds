@@ -1,0 +1,96 @@
+[
+  {
+    "item": "item_01",
+    "url": "https://github.com/openemr/openemr/commit/7307c1089c04.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "1a4c20137eb8d376eb6f5b386ad835fd570234c91b31e3c4c136b99cc4ed4849"
+  },
+  {
+    "item": "item_02",
+    "url": "https://github.com/openemr/openemr/commit/6c97865a0472.patch",
+    "public_diff_match_ignoring_index_abbreviation": true,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "92e686cd3785aedccab82c856a2a10ca9175f8cd268f33ca5a6fa9e913785156"
+  },
+  {
+    "item": "item_03",
+    "url": "https://github.com/openemr/openemr/commit/3cbe16d02116.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "e24d27fba7103bc0059a590ada0a0757d17861a9cccb98a48a08a38986643041"
+  },
+  {
+    "item": "item_04",
+    "source": "locally constructed generic fixture",
+    "path": "jev-study/fixtures/local-copy.diff"
+  },
+  {
+    "item": "item_05",
+    "url": "https://github.com/openemr/openemr/commit/2ab074e827b9.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "e250baa4f2dd755449e3dd83b6e2be873b29b661075121d36bf6891f29c0958a"
+  },
+  {
+    "item": "item_06",
+    "url": "https://github.com/openemr/openemr/commit/b39f728e3.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "6aa6bdd17b860919ff1f3ed79c15fb63f29ae24b2cbdc318d28a3ba8244b3500"
+  },
+  {
+    "item": "item_07",
+    "url": "https://github.com/openemr/openemr/commit/0718350fadb4.patch",
+    "public_diff_match_ignoring_index_abbreviation": true,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "1c6af44ff59dd4d06f1cfda554a4e33ec5d6045db067d2f0953f4be617e5027f"
+  },
+  {
+    "item": "item_08",
+    "source": "locally constructed generic fixture",
+    "path": "jev-study/fixtures/security-config.diff"
+  },
+  {
+    "item": "item_09",
+    "url": "https://github.com/openemr/openemr/commit/1024a1a838b2.patch",
+    "public_diff_match_ignoring_index_abbreviation": true,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "44a8a17b82553bc7ac4f821bf08c7d254a2bd0be84afbf4566cb7052feea4e36"
+  },
+  {
+    "item": "item_10",
+    "url": "https://github.com/openemr/openemr/commit/943e23cad6e9.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "ebe19bd6cf44fc01316836e898bdbeb3acfc211569dd507af21e779dbca7e624"
+  },
+  {
+    "item": "item_11",
+    "url": "https://github.com/openemr/openemr/commit/4cafd7df73.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "fe4855c1aab5264896e4d4c6aa733b456688045470f35bb8510467ae4b864280"
+  },
+  {
+    "item": "item_12",
+    "url": "https://github.com/openemr/openemr/commit/7827d3cc9.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "10d64a3283a0224013cf3c022f6b51e885d7dde3bc83256367e6d007ec1f1c58"
+  },
+  {
+    "item": "item_13",
+    "url": "https://github.com/openemr/openemr/commit/81d00d00b96e.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "776e2d44c4977c0974b348bb1b87c2d2705b31bb070e3e74a6b15632cc6df6d7"
+  },
+  {
+    "item": "item_14",
+    "url": "https://github.com/openemr/openemr/commit/fae906cb06f7.patch",
+    "public_diff_match_ignoring_index_abbreviation": false,
+    "all_local_code_lines_present_in_public_patch": true,
+    "sha256": "95164ce74cd458be146806d8bce0d89a04092909f06db77ad7288099927806df"
+  }
+]

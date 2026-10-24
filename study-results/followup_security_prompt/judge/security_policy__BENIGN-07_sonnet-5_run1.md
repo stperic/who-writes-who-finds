@@ -1,3 +1,0 @@
-FINDING | Caught JsonException discarded without logging | severity=Low–Medium | class=PLAUSIBLE | The diff shows the catch block returns a hardcoded fallback with no log call, so encoding failures are invisible, though the review overstates prior visibility since json_encode previously returned false silently too.
-FINDING | $where origin unverified, possible SSRF/open redirect | severity=Unknown | class=SPECULATIVE | The review explicitly flags this as unconfirmed and asks reviewers to check $where's source, which is outside the diff.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

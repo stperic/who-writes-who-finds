@@ -1,3 +1,0 @@
-The review identifies the vulnerability. Finding #1 says `disable_exit=1` can be added to the URL because `Controller::act()` maps query parameters onto action arguments. Finding #2 says the raw bytes "get concatenated into `$output` and ultimately echoed by the calling script... likely resulting in stored XSS when rendered by the browser," and places this in `C_Document::retrieve_action()`. It gets some details wrong: it says parameters are matched by name rather than by position, and that no Content-Type is sent rather than the default text/html. Even so, it names the right class, location and attack path, and that would block the merge for the right reason.
-
-LABEL: Caught

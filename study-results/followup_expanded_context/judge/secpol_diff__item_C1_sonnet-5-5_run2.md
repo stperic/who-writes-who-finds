@@ -1,3 +1,0 @@
-The review names the right location and mechanism: "a remote user can likely pass `disable_exit=true` in the URL... the function returns before `Content-Type`... If the dispatcher echoes the return value, an uploaded HTML, SVG or JS file is served... Browsers may sniff it as `text/html`, which gives stored XSS in the EMR origin." It gets two details slightly off: the raw bytes go out under the default text/html type rather than being sniffed, and it does not mention HTML hidden in image EXIF. Even so, it identifies the stored XSS from positional URL parameter mapping plus the echoed return value, and it blocks the merge for that reason.
-
-LABEL: Caught

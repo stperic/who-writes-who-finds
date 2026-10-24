@@ -1,3 +1,0 @@
-The review's item 10, "Incomplete ACL coverage — High," states that only "practice_settings and prescription are gated" and lists pharmacy, insurance_company, insurance_numbers, x12_partner, hl7, and document_category as "directly reachable by any authenticated user," noting that "Calling them directly bypasses that check" of admin/practice via practice_settings, and recommends "default to deny when an entry is missing." This names the exact class (missing authorization due to the ACL map gap), the exact location (CONTROLLER_ACL_MAP / checkControllerAcl), the affected sub-controllers, and rates it High, matching the advisory; it even mentions document and patient_finder as unprotected.
-
-LABEL: Caught

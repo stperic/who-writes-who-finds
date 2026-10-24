@@ -1,5 +1,0 @@
-FINDING | Pre-existing ORDER BY SQL injection, fixed by whitelist | severity=High | class=PLAUSIBLE | The removed line concatenated getField() unvalidated into SQL, and the diff's new allow-list explicitly remediates that.
-FINDING | Verify callers pass static trusted whitelist | severity=Medium | class=SPECULATIVE | Call sites are not in the diff, and the review only asks for verification without asserting a vulnerability.
-FINDING | Rejected sort fields silently dropped without logging | severity=Low | class=PLAUSIBLE | The diff's `continue` discards disallowed fields with no logging, a minor but accurate detection/monitoring gap.
-FINDING | No identifier backtick quoting as defense-in-depth | severity=Low | class=PLAUSIBLE | The code does concatenate the raw identifier, and the review correctly frames this as non-exploitable hardening rather than a vulnerability.
-SUMMARY: findings=4 false=0 speculative=1 plausible=3

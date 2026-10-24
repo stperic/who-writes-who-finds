@@ -1,2 +1,0 @@
-FINDING | Polling requests now subject to expiry check, confirm intent | severity=medium | class=SPECULATIVE | The review accurately describes the diff's behavior change but asserts no vulnerability, only asking to confirm intent and verify how polling endpoints (defined elsewhere) handle a login-screen response.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

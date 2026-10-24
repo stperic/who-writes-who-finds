@@ -1,3 +1,0 @@
-The review finds the right root cause and fields. Finding 5 flags raw echoes of `$HPI1`, `$MOTILITY_*`, `$RX_TYPE` and the plan items as stored XSS, saying they should be wrapped in `text()`. But it treats this only as browser-side XSS and never ties those fields (or `$background` in CSS `url()`) to server-side fetching by the PDF renderer. Its only SSRF mention, in finding 8, is a hedged low-to-medium note about filesystem paths ("an attacker-influenced path or URL could cause local file inclusion or SSRF in the renderer"), not about the injected user content.
-
-LABEL: Partial

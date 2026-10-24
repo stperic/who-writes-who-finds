@@ -1,3 +1,0 @@
-The review's issue 5 flags the exact root cause and location: unescaped stored fields such as `<?php echo $HPI1; ?>`, the motility cells, and the plan/order items. It also notes the server-side fetch path: "In PDF mode, injected HTML can also add `<img src>` references to local files, which html2pdf will then fetch." The headline class is XSS rather than SSRF, and it misses the CSS `background` url() sink, but it does identify the renderer fetching injected references. It also blocks the merge on issue 5 with the right fix (`text()`/`attr()` escaping), so a reviewer would stop this bug for essentially the right reason.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review's first finding directly identifies the vulnerability: "The `CONTROLLER_ACL_MAP` only includes ACL checks for 2 controllers (`practice_settings`, `prescription`), but `VALID_CONTROLLERS` whitelist contains 9 controllers. The other 7 controllers... have no ACL enforcement. The `checkControllerAcl()` method silently returns if a controller isn't in the map (line 112)." It rates this HIGH, classifies it as Broken Access Control, and explicitly recommends blocking the merge until "All controllers in `VALID_CONTROLLERS` must have corresponding entries in `CONTROLLER_ACL_MAP`," which matches the advisory's class, location, and severity.
-
-LABEL: Caught

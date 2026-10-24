@@ -1,3 +1,0 @@
-The review's item 3, "Stored XSS via unescaped output", points at the right root cause and location: it notes that `HPI1`, the plan text, and `PLAN`/`PLAN2` "are free-text fields pulled straight from the database ... and echoed raw" and should go through `text()`. However, it frames the impact only as browser-side XSS. It never mentions the server-side HTML-to-PDF rendering that fetches injected URLs (SSRF) or the unescaped CSS `url()`/`$background` context. That makes it the right area and a related weakness but the wrong vulnerability class.
-
-LABEL: Partial

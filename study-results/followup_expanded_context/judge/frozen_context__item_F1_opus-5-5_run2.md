@@ -1,3 +1,0 @@
-The review touches the right spot only in low-severity item #11: "Nested dispatches, such as `practice_settings` → `pharmacy`, rely on the outer controller's ACL because sub-controllers have no map entry. This matches the old behavior, but it is worth stating explicitly in the map's docblock." It sees that sub-controllers lack ACL map entries. But it treats this as a maintainability and documentation point. It never says that these whitelisted sub-controllers can be dispatched directly by any authenticated user with no permission check, so it would not block the merge for the access-control bypass.
-
-LABEL: Partial

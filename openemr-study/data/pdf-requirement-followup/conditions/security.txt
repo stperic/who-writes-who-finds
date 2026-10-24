@@ -1,0 +1,10 @@
+
+
+<proposed-pdf-export-security-requirement>
+The Eye Exam PDF shall include the clinical narrative and authorized report
+images. User-controlled narrative shall be rendered as content: HTML, CSS,
+URL, or file-path syntax within it shall not be interpreted as a resource
+reference by the PDF generator. The generator may load images and other
+resources only through application-controlled references to authorized
+clinical media or approved report assets.
+</proposed-pdf-export-security-requirement>

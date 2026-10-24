@@ -1,3 +1,0 @@
-Finding #4 names the exact flaw. It says `VALID_CONTROLLERS` exposes `pharmacy`, `x12_partner`, `hl7`, `insurance_numbers` and the others as "top-level, directly dispatchable" controllers, while "`CONTROLLER_ACL_MAP` only enforces ACLs for `practice_settings` and `prescription`". As a result, a direct call "completely bypasses the `admin/practice` gate". The review rates this High Broken Access Control and makes confirming it a merge-blocking condition, so the class, location and severity all match despite the hedge that the sub-controllers might self-enforce.
-
-LABEL: Caught

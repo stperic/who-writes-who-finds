@@ -1,3 +1,0 @@
-The review identifies the exact mechanism. Point 1 notes that "`Controller::act()` builds the action's arguments from the query string... so a request such as `...&disable_exit=1` sets the flag", and that the raw contents "are appended to `$output` and printed by the caller, without any of the download headers". Point 2 then names the class: "Stored XSS... The file contents are returned and echoed inline with no `Content-Type`... A user who can upload a document... can have it rendered in the application's origin". It gives the correct class, location and root cause at High severity, which would block the merge for the right reason.
-
-LABEL: Caught

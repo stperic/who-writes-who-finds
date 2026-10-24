@@ -1,3 +1,0 @@
-The only passage touching the vulnerable line is item 10: "`<?php echo json_encode($GLOBALS['gateway_public_key']); ?>` and the `apiKey` equivalent do not escape `</script>` sequences." That points at the exact line that renders the API key into the page. But it treats it as a JSON-in-script escaping problem and never says the gateway's private secret key is exposed to every portal user. A reader would get an escaping comment on the right line, not a block for credential exposure.
-
-LABEL: Partial

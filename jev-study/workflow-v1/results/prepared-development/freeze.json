@@ -1,0 +1,36 @@
+{
+  "version": "jev-workflow-freeze-1.0",
+  "partition": "development",
+  "stage": "preparation_only",
+  "created_at": "2026-10-19T02:54:23.695841+00:00",
+  "planned_calls": 42,
+  "code": {
+    "quadrant-tool/jev.py": "76ad660ffaf6eb5dc87ad5a5cac3ac3380abecca70350400bfede6b1749c15bc",
+    "quadrant-tool/jev_followup.py": "dbf9b9965c6db7b49072a4ba3fb251bf2f39664b246a587ee87b2d796ad831fe",
+    "quadrant-tool/jev_policy_v2.py": "d12ac82bf898eda74e005ba46313bc835b9f11086093c11bbe7e4d22b7bf576d",
+    "quadrant-tool/jev_workflow_policy.py": "ba26cdc7087c4e4de7fad3964fa1da0778dc5f0d391f46b515a50d3d6d4aa781",
+    "quadrant-tool/jev_workflow.py": "b71c36ccb90daaf39ed169ec84866b6da7c1782a8cc7e1a730e742e288e37f10"
+  },
+  "files": {
+    "cases.json": "d4a55e29414c8fd053099309219ad6a6932277611eca8ba03a41a9f197ab66b8",
+    "inputs/D01.json": "0d842ce538a9f959ca1157ce786ec58dd53163f53497172550685126da8e50e8",
+    "inputs/D02.json": "57ab0a8d494b12016924d65f1b7aeff8adf5c8481616ffa7391d403fefa7063a",
+    "inputs/D03.json": "82044fd6dca36ea090d2b1264ecd29d8ded5802417170076e4d9106dfcdb52a3",
+    "inputs/D04.json": "8c409a08788254a424c11e5c713a9367e3ae176db6559076862a8d9ab8d07e75",
+    "inputs/D05.json": "069e974cb238af89fb1b0060f29dfd6e617185e52be0b6fd12c75e5bc118f4ff",
+    "inputs/D06.json": "e284871d00ed321b780677eafc96be9b56ae2cfe0bba563be352ffa9fa64b3b7",
+    "inputs/D07.json": "fb169e1bb6b86cd1f931e5154241fe6e483e97860adfe774325ae47a97a9ce8b",
+    "inputs/D08.json": "2695ec3c428c92c8dfc8e0e67ffb9edf480cff1ffb213807ea2bb623f3484d6d",
+    "inputs/D09.json": "29afbc0609e560f49976bcb9eaa0816f37cf5afec6d8d45408eea1c785fc31db",
+    "inputs/D10.json": "209c7dd28a1798c532648f4ab899925116ca51ed32f6cf8c308f899ad7abf4d2",
+    "inputs/D11.json": "7fc9599c263c1bc4ea1ee6b752c798f5e91e71ea252ac6f30a6576ea6468393a",
+    "inputs/D12.json": "3371a6bdc97b5537a75c5f4fb7f969af96cbd1d0a9d6e3a1946e84d9a86ecb9d",
+    "inputs/D13.json": "99b007129bd5c2562363ffa78cf22b75a9591dd01e7118432823731733cbee99",
+    "inputs/D14.json": "c3ca09e304f88d0dc1e9b16e0e64d96df4a90e53ca2cfe221cdff85d510d08c4",
+    "labels.json": "d256d3996df0fb19367bd49070be02509f3446b27792fbae490f6ad388784115",
+    "metadata.json": "df1e4bacb0ff7de9aeadbb2608313cf972d065faa0f849d162f6699b0aa78f27",
+    "policy.json": "9736bbdfbeeb9ccd56f7abf15a7c1fed2ebeeaebaf0a66af13c4fe72e1f3a2b2",
+    "protocol.json": "68f89b18744d1de68e2a78166843c651cd5180a92506bef1c0b36f54273f1e6c",
+    "questions.json": "763bb0d6feab96a1b7c8d84553e30bb5af9c57cc20c518b83fb794ad957c741b"
+  }
+}

@@ -1,3 +1,0 @@
-The review's item 6 names the exact class and mechanism: "Stored HTML such as `<img src="http://169.254.169.254/...">`... is fetched server-side by the HTML2PDF renderer... a clinician can cause the server to fetch arbitrary URLs during PDF generation." It ties this to the root cause, the unescaped `narrative()` free-text fields in `report.php` such as `$HPI1`, `$PLAN` and `$item['plan']` (item 2). It labels the issue A10 SSRF. It does not mention the CSS `background` url() sink and rates the issue Medium, but its blocking fix (escaping in item 2) addresses this exact flaw, so a reviewer would stop the merge for the right reason.
-
-LABEL: Caught

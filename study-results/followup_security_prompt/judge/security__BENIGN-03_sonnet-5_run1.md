@@ -1,5 +1,0 @@
-FINDING | denyWithTemplate may not halt execution, bypassing ACL | severity=High | class=SPECULATIVE | Asks to verify behavior of a helper defined outside the diff without asserting it actually fails to exit.
-FINDING | ACL before CSRF ordering weakens defense-in-depth | severity=Low | class=SPECULATIVE | Concedes the ordering is acceptable and merely conditions on Finding 1's unverifiable helper behavior.
-FINDING | No audit logging on access-denied event | severity=Low–Medium | class=FALSE | Asserts logging is absent, but denyWithTemplate's internals are not shown and no logging gap is demonstrated by the diff.
-FINDING | File parameter may allow IDOR/path traversal | severity=Informational | class=SPECULATIVE | Explicitly states it cannot assess without the full file and only requests confirmation of object-level checks.
-SUMMARY: findings=4 false=1 speculative=3 plausible=0

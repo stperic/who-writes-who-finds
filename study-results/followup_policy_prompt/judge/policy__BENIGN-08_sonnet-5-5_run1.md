@@ -1,3 +1,0 @@
-FINDING | Race in MAX+1 sequence allocation causes duplicate numbers | severity=Medium | class=PLAUSIBLE | The diff shows a non-atomic read-then-insert pattern (and its own comment admits the race), so concurrent postings can collide on sequence_no, a credible ledger-integrity weakness in touched code.
-FINDING | Exception may leave half-recorded payment without rollback | severity=Low | class=SPECULATIVE | The review asks the caller to ensure the new RuntimeException triggers a transaction rollback, which depends on call-site code not shown in the diff and asserts no vulnerability.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

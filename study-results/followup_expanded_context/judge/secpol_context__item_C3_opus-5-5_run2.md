@@ -1,3 +1,0 @@
-Finding #1 of the review names the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` in portal_payment.php. It explains that `gateway_api_key` holds the "API Secret for Stripe" and is "print[ed] ... unconditionally into every page load" for portal patients, so "anyone with portal access... gets the practice's full Stripe secret." It also notes that the Authorize.Net value is a less-sensitive login ID, rates the issue Critical, and says not to merge until it is fixed. That matches the known vulnerability's class, location and impact.
-
-LABEL: Caught

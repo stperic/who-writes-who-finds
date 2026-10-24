@@ -1,3 +1,0 @@
-Finding 1 identifies the exact mechanism. It says "`Controller::act()` builds `$args_array` from URL query parameters and passes them positionally... A request such as `...&disable_exit=1` sets `$disable_exit`", and that the bytes are returned "to the front controller's `echo`... the response defaults to `text/html`". It concludes that an uploaded document "is returned as `text/html` from the application's own origin. That produces stored XSS against authenticated OpenEMR users," rated High with a block recommendation. This names the stored XSS class and the location in C_Document.class.php and Controller.class.php, and its blocking reason matches the known vulnerability.
-
-LABEL: Caught

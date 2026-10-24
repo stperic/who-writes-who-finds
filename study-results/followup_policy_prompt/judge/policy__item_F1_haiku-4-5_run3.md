@@ -1,3 +1,0 @@
-Issue #6 identifies the exact gap: "Only 2 of the 9 controllers in `VALID_CONTROLLERS` have ACL entries. This creates a silent security gap: controllers without ACL mappings skip ACL checks entirely," rated High, with a recommendation to "Default-deny unmapped controllers" or map all controllers. This names the missing-authorization class at the right location (CONTROLLER_ACL_MAP / checkControllerAcl behavior) with blocking severity, though it is labeled "Maintainability" and does not spell out the concrete impact (x12_partner credentials, patient_finder enumeration) or that sub-controllers were intended to be gated via practice_settings.
-
-LABEL: Caught

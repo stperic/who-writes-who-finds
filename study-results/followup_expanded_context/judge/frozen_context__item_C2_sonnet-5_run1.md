@@ -1,3 +1,0 @@
-The review never raises patient-scoped access control. It explicitly says "No security issues were found" and calls "the removal of the redundant `getOne()` override in favor of the base class implementation" reasonable, asking only for tests that `getAll` filters by `uuid`. Item 5 mentions combined `patient` + `status` search parameters, but as a test-coverage concern; it never notes the missing `IPatientCompartmentResourceService` interface or that patient-context tokens could see other patients' care teams.
-
-LABEL: Missed

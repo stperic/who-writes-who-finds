@@ -1,3 +1,0 @@
-The review pinpoints the root cause and location: §3 says free-text fields such as `echo $HPI1;`, the `$MOTILITY_*` values and IMPPLAN `plan` "are echoed without `text()`". However, it classifies this only as browser-side stored XSS. It never links the injected markup to the server-side HTML-to-PDF renderer fetching attacker URLs, and it does not mention the CSS `background` / `url()` sink. Item 9 notes that "HTML2PDF would read an arbitrary local file" if a document URL were attacker-influenced, but it ties this to document paths, not to injected content. So it has the right flaw and area but the wrong vulnerability class (XSS rather than SSRF).
-
-LABEL: Partial

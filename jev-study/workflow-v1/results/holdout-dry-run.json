@@ -1,0 +1,12 @@
+{
+  "status": "dry_run",
+  "partition": "holdout",
+  "planned_calls": 27,
+  "questions_per_call": 8,
+  "model": "typesafe/jev-1.14",
+  "spending_limit_usd": 3.0,
+  "reserved_usd": 1.35,
+  "live_calls": 0,
+  "adjudication": "preparation_only",
+  "downstream_model_calls": 0
+}

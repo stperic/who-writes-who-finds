@@ -1,3 +1,0 @@
-Item #10 pinpoints the exact flaw: "`pharmacy`, `insurance_company`, `x12_partner`, and others are normally reached via `practice_settings`. They remain directly routable without the `admin/practice` check." It also notes that the gap predates the PR and "should be closed." However, the review rates it 🟡 Low and leaves it out of the blocking summary ("Items #1 and #2 are blocking"), so it names the right class and location but at the wrong severity, and would not necessarily stop the merge.
-
-LABEL: Partial

@@ -1,3 +1,0 @@
-Review item #1 states that the class "does **not** implement `IPatientCompartmentResourceService`" and that puuid enforcement is gated on that interface. It concludes that "a patient-scoped client being able to retrieve CareTeam records belonging to other patients — a serious data-leakage/authorization concern," and the reviewer says this is the item they would block on. That matches the known vulnerability's class (broken access control / cross-patient exposure), its location (FhirCareTeamService), and its mechanism (the missing marker interface that FhirServiceBase checks).
-
-LABEL: Caught

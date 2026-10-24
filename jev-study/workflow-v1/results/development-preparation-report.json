@@ -1,0 +1,3735 @@
+{
+  "configuration_sha256": "f39d208fff8792e0b85d1f8c53e89fe4de5eda3f0eb99d096eb95ad2ef3af85d",
+  "evidence": "new_workflow_configuration_no_legacy_probabilities_reused",
+  "partition": "development",
+  "requested_model": "typesafe/jev-1.14",
+  "resolved_models": [],
+  "live_response_records": 0,
+  "headline": {
+    "planned_requests": 42,
+    "unresolved": 42,
+    "execution_statuses": {
+      "not_executed": 42
+    },
+    "allowed_workflow_agreement": null,
+    "incorrect_resolved_workflows": null,
+    "missing_required_actions_on_resolved_requests": null,
+    "additional_actions_on_resolved_requests": null,
+    "missing_appsec_or_owner_approvals_on_resolved_requests": null
+  },
+  "case_summaries": {
+    "D01": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D02": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D03": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D04": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D05": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D06": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D07": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D08": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D09": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D10": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D11": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D12": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D13": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    },
+    "D14": {
+      "planned_requests": 3,
+      "unresolved": 3,
+      "execution_statuses": {
+        "not_executed": 3
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null,
+      "stable_status_and_actions": null
+    }
+  },
+  "real_cases": {
+    "planned_requests": 36,
+    "unresolved": 36,
+    "execution_statuses": {
+      "not_executed": 36
+    },
+    "allowed_workflow_agreement": null,
+    "incorrect_resolved_workflows": null,
+    "missing_required_actions_on_resolved_requests": null,
+    "additional_actions_on_resolved_requests": null,
+    "missing_appsec_or_owner_approvals_on_resolved_requests": null
+  },
+  "synthetic_cases": {
+    "planned_requests": 6,
+    "unresolved": 6,
+    "execution_statuses": {
+      "not_executed": 6
+    },
+    "allowed_workflow_agreement": null,
+    "incorrect_resolved_workflows": null,
+    "missing_required_actions_on_resolved_requests": null,
+    "additional_actions_on_resolved_requests": null,
+    "missing_appsec_or_owner_approvals_on_resolved_requests": null
+  },
+  "usage": {
+    "records": 0,
+    "cost_reporting_records": 0,
+    "reported_cost_usd": null,
+    "summed_request_wall_seconds": 0,
+    "median_request_wall_seconds": null,
+    "max_request_wall_seconds": null,
+    "latency_limits": "Small sequential sample; includes client/network time. Not production throughput or a tail-latency benchmark. Missing costs are unknown, not free."
+  },
+  "details": [
+    {
+      "id": "D01",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "7307c1089c0473b8ada993e85e47eb64b724f456",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "edf5f3d145835e783b33d599ca8bff0a75f2ba269b6075ef62ff3906dc6dd117",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D01",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "7307c1089c0473b8ada993e85e47eb64b724f456",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "edf5f3d145835e783b33d599ca8bff0a75f2ba269b6075ef62ff3906dc6dd117",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D01",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "7307c1089c0473b8ada993e85e47eb64b724f456",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "edf5f3d145835e783b33d599ca8bff0a75f2ba269b6075ef62ff3906dc6dd117",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D02",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "6c97865a0472068a2e116690e0967f0fbb7edc5a",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "e283583fb0c0a26d5a2c7560aac96c445e906b4cd251a7645b1cdab5ef5c6bc3",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D02",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "6c97865a0472068a2e116690e0967f0fbb7edc5a",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "e283583fb0c0a26d5a2c7560aac96c445e906b4cd251a7645b1cdab5ef5c6bc3",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D02",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "6c97865a0472068a2e116690e0967f0fbb7edc5a",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "e283583fb0c0a26d5a2c7560aac96c445e906b4cd251a7645b1cdab5ef5c6bc3",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D03",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "3cbe16d02116fd971e0d28624c10f4b9a3741248",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "86e7eab12f7410e280246a32ec0a25efb55b82998a73a305cb569f31b10266f0",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D03",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "3cbe16d02116fd971e0d28624c10f4b9a3741248",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "86e7eab12f7410e280246a32ec0a25efb55b82998a73a305cb569f31b10266f0",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D03",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "3cbe16d02116fd971e0d28624c10f4b9a3741248",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "86e7eab12f7410e280246a32ec0a25efb55b82998a73a305cb569f31b10266f0",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D04",
+      "run": 1,
+      "synthetic": true,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "4dfe58b42092122504b90ba68427c1c18d3adf4bdc26450cd1126b297d9cf0b4",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D04",
+      "run": 2,
+      "synthetic": true,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "4dfe58b42092122504b90ba68427c1c18d3adf4bdc26450cd1126b297d9cf0b4",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D04",
+      "run": 3,
+      "synthetic": true,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "4dfe58b42092122504b90ba68427c1c18d3adf4bdc26450cd1126b297d9cf0b4",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D05",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "590c8f63c5487d049bcfffad59e723207a967fbb14adbad58f895469880ca890",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D05",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "590c8f63c5487d049bcfffad59e723207a967fbb14adbad58f895469880ca890",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D05",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "590c8f63c5487d049bcfffad59e723207a967fbb14adbad58f895469880ca890",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D06",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "babb2df74eff65fc4cefa6a08af9bc0dfdf3953e9eaed6e77ee1367cfe7d6afb",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D06",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "babb2df74eff65fc4cefa6a08af9bc0dfdf3953e9eaed6e77ee1367cfe7d6afb",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D06",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "babb2df74eff65fc4cefa6a08af9bc0dfdf3953e9eaed6e77ee1367cfe7d6afb",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D07",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "0718350fadb42293a4d4599f087e9cc52d81aca0",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "6a36bef893fa03e4d89b6e6d822c16e5a1d6d892a9e2a9206a94d4aa817de33b",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D07",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "0718350fadb42293a4d4599f087e9cc52d81aca0",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "6a36bef893fa03e4d89b6e6d822c16e5a1d6d892a9e2a9206a94d4aa817de33b",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D07",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "0718350fadb42293a4d4599f087e9cc52d81aca0",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "6a36bef893fa03e4d89b6e6d822c16e5a1d6d892a9e2a9206a94d4aa817de33b",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D08",
+      "run": 1,
+      "synthetic": true,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0d4d5aa2f751245265d0d652e349d25a1e2202c00ab05f1e10479507b15b643e",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D08",
+      "run": 2,
+      "synthetic": true,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0d4d5aa2f751245265d0d652e349d25a1e2202c00ab05f1e10479507b15b643e",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D08",
+      "run": 3,
+      "synthetic": true,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0d4d5aa2f751245265d0d652e349d25a1e2202c00ab05f1e10479507b15b643e",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D09",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "1024a1a838b25677d094d168517dfc6f9372c06e",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0e54cdde9d1d7cf9847cb04686bab705c797c336b6571315b7fb03e55fdf77c0",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D09",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "1024a1a838b25677d094d168517dfc6f9372c06e",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0e54cdde9d1d7cf9847cb04686bab705c797c336b6571315b7fb03e55fdf77c0",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D09",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "1024a1a838b25677d094d168517dfc6f9372c06e",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0e54cdde9d1d7cf9847cb04686bab705c797c336b6571315b7fb03e55fdf77c0",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D10",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "d9322c6efd413629ca89719ba06c989a9318558c54b6513a09f0708e2b1a7919",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D10",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "d9322c6efd413629ca89719ba06c989a9318558c54b6513a09f0708e2b1a7919",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D10",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "d9322c6efd413629ca89719ba06c989a9318558c54b6513a09f0708e2b1a7919",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D11",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "4cafd7df7394ef4c935273a066de924cf96bc035",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "d5fd1ab6c7cc38c5e44577dba870906b56424c3e68ab4df4c4265e92947456c9",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D11",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "4cafd7df7394ef4c935273a066de924cf96bc035",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "d5fd1ab6c7cc38c5e44577dba870906b56424c3e68ab4df4c4265e92947456c9",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D11",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "4cafd7df7394ef4c935273a066de924cf96bc035",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "d5fd1ab6c7cc38c5e44577dba870906b56424c3e68ab4df4c4265e92947456c9",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D12",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "858f1a928de47195fbfa1811d19401ab80c3acadc7aa5e009f92734da634118b",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D12",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "858f1a928de47195fbfa1811d19401ab80c3acadc7aa5e009f92734da634118b",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D12",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "858f1a928de47195fbfa1811d19401ab80c3acadc7aa5e009f92734da634118b",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D13",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "81d00d00b96e00146a0ddbb40ad85fd308ea38d8",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "06c8c4ebdb1c95206e7de45ad57f7fcbc2ad154d27654b306ad317d94d26887a",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D13",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "81d00d00b96e00146a0ddbb40ad85fd308ea38d8",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "06c8c4ebdb1c95206e7de45ad57f7fcbc2ad154d27654b306ad317d94d26887a",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D13",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "81d00d00b96e00146a0ddbb40ad85fd308ea38d8",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "06c8c4ebdb1c95206e7de45ad57f7fcbc2ad154d27654b306ad317d94d26887a",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D14",
+      "run": 1,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "fae906cb06f7d5fcd1b9a79a913eff17f1ac50a1",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "cd34e1ce63826fa0fed0156a1d757f8965e6cfce36d1aa6ef6222da6708abc1d",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D14",
+      "run": 2,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "fae906cb06f7d5fcd1b9a79a913eff17f1ac50a1",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "cd34e1ce63826fa0fed0156a1d757f8965e6cfce36d1aa6ef6222da6708abc1d",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    },
+    {
+      "id": "D14",
+      "run": 3,
+      "synthetic": false,
+      "status": "not_executed",
+      "unresolved": true,
+      "workflow": {
+        "revision": "fae906cb06f7d5fcd1b9a79a913eff17f1ac50a1",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "cd34e1ce63826fa0fed0156a1d757f8965e6cfce36d1aa6ef6222da6708abc1d",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "not_executed"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "not_executed",
+          "trusted_context_incomplete"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "model_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      },
+      "workflow_score": {
+        "agreement": null,
+        "missing_actions": null,
+        "additional_actions": null,
+        "label_status": "pending"
+      }
+    }
+  ],
+  "deterministic_baseline": {
+    "headline": {
+      "planned_requests": 14,
+      "unresolved": 14,
+      "execution_statuses": {
+        "deterministic_baseline": 14
+      },
+      "allowed_workflow_agreement": null,
+      "incorrect_resolved_workflows": null,
+      "missing_required_actions_on_resolved_requests": null,
+      "additional_actions_on_resolved_requests": null,
+      "missing_appsec_or_owner_approvals_on_resolved_requests": null
+    },
+    "details": [
+      {
+        "id": "D01",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "7307c1089c0473b8ada993e85e47eb64b724f456",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "db0980692c4a5aca14939fad571f60ee7b4d24dc114127fa0a77ac2e2716d4b2",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "high",
+            "sql_construction": "low",
+            "command_parser_output": "low",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "approve:boundary",
+            "check:boundary"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "approve:boundary",
+            "check:boundary"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "approve:boundary",
+            "approve:peer",
+            "check:boundary",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 1.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 0.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D02",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "6c97865a0472068a2e116690e0967f0fbb7edc5a",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "9392feb7ddc70c652c971315c5ce7576c40cbd517c34bd841f3ca413c15ddba3",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "high",
+            "command_parser_output": "low",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:sql",
+            "approve:boundary",
+            "check:boundary",
+            "check:sast"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:sql",
+            "approve:boundary",
+            "check:boundary",
+            "check:sast"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:sql",
+            "approve:boundary",
+            "approve:peer",
+            "check:boundary",
+            "check:sast",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 1.0,
+            "command_parser_output": 0.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D03",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "3cbe16d02116fd971e0d28624c10f4b9a3741248",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "631ecd39e7abdb13e8e4d2cb4892fba7fff4f4b5d9c71410e5b6f6d4d222b015",
+          "signal_states": {
+            "personal_data_access": "high",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "high",
+            "sql_construction": "low",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "high",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:peer",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 1.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 1.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 1.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D04",
+        "run": 1,
+        "synthetic": true,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "17e733e588655ea1e339a91f39ffb6fea838fb9b5481d0e0e7c9057f88de2be3",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "low",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "low",
+            "command_parser_output": "low",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [],
+          "review_added_actions": [],
+          "required_actions": [
+            "approve:peer",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 0.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 0.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D05",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "442c8979fe2491faae3666e612ce2ba0175bd3ca57d8d79e7a07d241139dfda4",
+          "signal_states": {
+            "personal_data_access": "high",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "high",
+            "sql_construction": "high",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "high",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "ai:sql",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "ai:sql",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "ai:sql",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:peer",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 1.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 1.0,
+            "sql_construction": 1.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 1.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D06",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "d48bce7c0b7dd3decf2d635c4b5da3d6e2bf555a69d334e2341ba30eea8a1dbc",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "low",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "low",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:construction",
+            "check:sast"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:construction",
+            "check:sast"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:construction",
+            "approve:peer",
+            "check:sast",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 0.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D07",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "0718350fadb42293a4d4599f087e9cc52d81aca0",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "007091532d975c86f16580c968f84df4e68e0b1bd7e4549c8061092044c8f838",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "low",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "low",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:construction",
+            "check:sast"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:construction",
+            "check:sast"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:construction",
+            "approve:peer",
+            "check:sast",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 0.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D08",
+        "run": 1,
+        "synthetic": true,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "4510aa80aa1830c2d5c47f76dddb16a7af867f2c0056034d076ad6c995b0c8fc",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "low",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "low",
+            "command_parser_output": "low",
+            "sensitive_data_flow": "low",
+            "security_configuration": "high",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:configuration",
+            "approve:appsec",
+            "check:dependencies",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:configuration",
+            "approve:appsec",
+            "check:dependencies",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:configuration",
+            "approve:appsec",
+            "approve:peer",
+            "check:dependencies",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 0.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 0.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 1.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D09",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "1024a1a838b25677d094d168517dfc6f9372c06e",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "da8cda4a470daffb1d26c3f5f2dd4a550b7b2fc61ed036bb4857b730a52721dc",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "low",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "approve:boundary",
+            "check:boundary",
+            "check:sast"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "approve:boundary",
+            "check:boundary",
+            "check:sast"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "approve:boundary",
+            "approve:peer",
+            "check:boundary",
+            "check:sast",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D10",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "d45277cc57a54fd4c23f217fc04655a77a59f66de8be9aedb819374b0cc90906",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "high",
+            "command_parser_output": "low",
+            "sensitive_data_flow": "low",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:sql",
+            "approve:boundary",
+            "check:boundary",
+            "check:sast"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:sql",
+            "approve:boundary",
+            "check:boundary",
+            "check:sast"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:sql",
+            "approve:boundary",
+            "approve:peer",
+            "check:boundary",
+            "check:sast",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 1.0,
+            "command_parser_output": 0.0,
+            "sensitive_data_flow": 0.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D11",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "4cafd7df7394ef4c935273a066de924cf96bc035",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "d4ab7792b923f37d07f234a1dd03a4416a533d3aefd3560df23d6ec245bd7fa7",
+          "signal_states": {
+            "personal_data_access": "high",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "high",
+            "sql_construction": "high",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "high",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "ai:sql",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "ai:sql",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "ai:sql",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:peer",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 1.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 1.0,
+            "sql_construction": 1.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 1.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D12",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "61596b79f82ddaaa6e9e5b33fe359c66dba3088382a0fc7bbbfb22f83df36679",
+          "signal_states": {
+            "personal_data_access": "low",
+            "authorization_boundary": "low",
+            "patient_tenant_scoping": "low",
+            "sql_construction": "low",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "high",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:construction",
+            "ai:data",
+            "approve:privacy",
+            "check:sast",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:construction",
+            "ai:data",
+            "approve:privacy",
+            "check:sast",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:construction",
+            "ai:data",
+            "approve:peer",
+            "approve:privacy",
+            "check:sast",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 0.0,
+            "authorization_boundary": 0.0,
+            "patient_tenant_scoping": 0.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 1.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D13",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "81d00d00b96e00146a0ddbb40ad85fd308ea38d8",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "4ae67dc3ce417c38a0260351523453c2d426bd9b77102274488f22b88fef788c",
+          "signal_states": {
+            "personal_data_access": "high",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "high",
+            "sql_construction": "low",
+            "command_parser_output": "low",
+            "sensitive_data_flow": "high",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:peer",
+            "approve:privacy",
+            "check:boundary",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 1.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 1.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 0.0,
+            "sensitive_data_flow": 1.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      },
+      {
+        "id": "D14",
+        "run": 1,
+        "synthetic": false,
+        "status": "deterministic_baseline",
+        "unresolved": true,
+        "workflow": {
+          "revision": "fae906cb06f7d5fcd1b9a79a913eff17f1ac50a1",
+          "policy_version": "jev-workflow-policy-1.0",
+          "routing_token": "0a555e44bb874e8b93d51c5d2b1959018bb1311d0862b81f9b0cc46924872fed",
+          "signal_states": {
+            "personal_data_access": "high",
+            "authorization_boundary": "high",
+            "patient_tenant_scoping": "high",
+            "sql_construction": "low",
+            "command_parser_output": "high",
+            "sensitive_data_flow": "high",
+            "security_configuration": "low",
+            "insufficient_context": "low"
+          },
+          "model_pending_reasons": [],
+          "model_selected_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "mandatory_actions": [
+            "approve:peer",
+            "check:tests"
+          ],
+          "effective_model_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets"
+          ],
+          "review_added_actions": [],
+          "required_actions": [
+            "ai:boundary",
+            "ai:construction",
+            "ai:data",
+            "approve:appsec",
+            "approve:boundary",
+            "approve:peer",
+            "approve:privacy",
+            "check:boundary",
+            "check:sast",
+            "check:secrets",
+            "check:tests",
+            "human:triage"
+          ],
+          "pending_reasons": [
+            "trusted_context_incomplete"
+          ],
+          "unavailable_actions": [],
+          "triage_accepted": false,
+          "triage_record": null,
+          "review_completed": false,
+          "merge_approved": false,
+          "rule_flags_not_model_probabilities": {
+            "personal_data_access": 1.0,
+            "authorization_boundary": 1.0,
+            "patient_tenant_scoping": 1.0,
+            "sql_construction": 0.0,
+            "command_parser_output": 1.0,
+            "sensitive_data_flow": 1.0,
+            "security_configuration": 0.0,
+            "insufficient_context": 0.0
+          }
+        },
+        "model_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        },
+        "workflow_score": {
+          "agreement": null,
+          "missing_actions": null,
+          "additional_actions": null,
+          "label_status": "pending"
+        }
+      }
+    ]
+  },
+  "limits": [
+    "All planned requests remain in the denominator; repeats are correlated.",
+    "Pending human labels mean agreement and missed-action metrics are unknown.",
+    "Model-selected actions are separate from trusted mandatory requirements.",
+    "No downstream detection quality, best-model selection or production enforcement measured."
+  ]
+}

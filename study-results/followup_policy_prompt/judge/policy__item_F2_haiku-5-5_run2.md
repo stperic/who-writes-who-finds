@@ -1,3 +1,0 @@
-The review names the exact vulnerability class and location: "Path traversal via `$eraname` (Security, High, pre-existing but now relied on)" at "`$nameprefix = \"$eraDir/$eraname\";`", explaining that "`$eraname` is concatenated directly into a filesystem path that is then written to... If it can contain `../` or path separators, an attacker can write files outside `documents/era`", and recommends `basename()` or a strict pattern. It correctly infers request origin and lists this as a merge-blocking requirement ("Before merging, I would require validation of `$eraname`"), matching the advisory's class, location, severity, and fix.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review's first issue names "Path traversal via `$eraname`" and identifies the exact location: "`$nameprefix = "$eraDir/$eraname"` and `$eraFilePath = $nameprefix . '.edi'` build file paths from `$eraname`, which comes from request input earlier in the file," noting the absence of sanitization and that "writes of `.edi` and report files can land outside the ERA directory." It recommends `basename()` or a whitelist and asks that it be fixed in this PR, matching the advisory's class, file, and the specific rewritten line, with appropriate severity ("medium to high").
-
-LABEL: Caught

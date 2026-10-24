@@ -1,3 +1,0 @@
-The review flags the exact change behind the vulnerability, "The `getOne($fhirResourceId, $puuidBind = null)` method has been removed... Removing it without deprecation could break existing clients." It also notes the unexplained `getAll()` boolean flip. Both are framed purely as API-compatibility or behavior-change concerns. It never mentions patient scoping, the missing IPatientCompartmentResourceService, or cross-patient data exposure. That is the right area but the wrong class, so the comment might not stop the access-control bug.
-
-LABEL: Partial

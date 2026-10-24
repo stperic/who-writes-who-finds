@@ -1,3 +1,0 @@
-FINDING | Verify server-side recomputes payment/adjustment amounts | severity=Low | class=SPECULATIVE | Asks to confirm server-side validation logic that is not shown in the diff, without asserting a vulnerability.
-FINDING | innerHTML assignment of numeric value, prefer textContent | severity=Informational | class=PLAUSIBLE | Correctly identifies innerHTML use in touched code as a hardening concern while accurately noting the arithmetic-derived value cannot carry markup.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

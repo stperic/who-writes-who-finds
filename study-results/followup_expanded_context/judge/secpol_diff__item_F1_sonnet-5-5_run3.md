@@ -1,3 +1,0 @@
-Issue 3 states the exact flaw: "Only `practice_settings` and `prescription` have a central ACL check. `document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy` and `x12_partner` are all whitelisted and routable with no ACL at this layer." It adds that these Practice Settings sub-pages "can be reached directly, bypassing the `admin/practice` check." It labels this A01 Broken Access Control at High severity and recommends a default-deny map, which matches the advisory's class, location and fix. The summary hedges the severity and gives priority to other issues, but the detection itself is specific and complete.
-
-LABEL: Caught

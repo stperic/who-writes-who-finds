@@ -1,3 +1,0 @@
-Issue #2 states that `disable_exit` can be set from the URL because "`Controller::act()` turns every remaining query-string key into an argument... passed positionally". It adds that the returned string is echoed with "No `Content-Type`... so the browser may render document bytes inline as HTML. That creates a content-sniffing/XSS risk for uploaded HTML/SVG files." This names the right location, the right mechanism (positional URL-to-argument mapping, raw bytes echoed as HTML) and the XSS class, rated High with a request for changes. Leading with encryption bypass and citing HTML/SVG rather than EXIF-laden images does not change the detection.
-
-LABEL: Caught

@@ -1,0 +1,91 @@
+{
+  "prompt_version": "jev-prompt-v2-decisions",
+  "key_sha256": "2c7b26018d09b94def7b80002b8859edb9a3215d140615b0cad3dc7b36bde170",
+  "policy_sha256": "c7ddce8a170b4a8a7f235eac6d893ffbd4a67a0ecc12743dad2c9f0e4d4e28c9",
+  "items": [
+    {
+      "item_id": "item_01",
+      "input_sha256": "e8f7df139f488dc9b81e2218158ca816e574402de60e88bb2ff374b08c3ac969",
+      "diff_sha256": "1a4c20137eb8d376eb6f5b386ad835fd570234c91b31e3c4c136b99cc4ed4849",
+      "diff_chars": 1208
+    },
+    {
+      "item_id": "item_02",
+      "input_sha256": "119e965a891c4ed052b4154dce50951930f4cf26236a87eadd6ee385f504029d",
+      "diff_sha256": "92e686cd3785aedccab82c856a2a10ca9175f8cd268f33ca5a6fa9e913785156",
+      "diff_chars": 1867
+    },
+    {
+      "item_id": "item_03",
+      "input_sha256": "1d36a1f6cbfbf1cd4f31252bc3568d835cdb925350987c9b945c664964241971",
+      "diff_sha256": "e24d27fba7103bc0059a590ada0a0757d17861a9cccb98a48a08a38986643041",
+      "diff_chars": 10310
+    },
+    {
+      "item_id": "item_04",
+      "input_sha256": "a38fab6a2e2f19925a51568027b325888181514ae153d0a2a3bb73dfdefc9b0a",
+      "diff_sha256": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+      "diff_chars": 222
+    },
+    {
+      "item_id": "item_05",
+      "input_sha256": "5165948b86fa49e219ec5d8eab0b1614866f592259a90977b970ce2f79c3c000",
+      "diff_sha256": "e250baa4f2dd755449e3dd83b6e2be873b29b661075121d36bf6891f29c0958a",
+      "diff_chars": 84016
+    },
+    {
+      "item_id": "item_06",
+      "input_sha256": "9b13b92eff058ca88e72937759fe674ea179e1cb84db7da97561b7c9117d2f35",
+      "diff_sha256": "6aa6bdd17b860919ff1f3ed79c15fb63f29ae24b2cbdc318d28a3ba8244b3500",
+      "diff_chars": 706
+    },
+    {
+      "item_id": "item_07",
+      "input_sha256": "3a08dde499499b47653eb777fbca846308d98271133dde2d5181a745eed26ad2",
+      "diff_sha256": "1c6af44ff59dd4d06f1cfda554a4e33ec5d6045db067d2f0953f4be617e5027f",
+      "diff_chars": 1517
+    },
+    {
+      "item_id": "item_08",
+      "input_sha256": "ef091dcff971e47f6657822ea7165375c7b5f2d0b91acbd562af6159b6ab00c9",
+      "diff_sha256": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+      "diff_chars": 282
+    },
+    {
+      "item_id": "item_09",
+      "input_sha256": "239b43ff0cb0114ac9d83915c63898f752d99c1f067455628779b5aeea455463",
+      "diff_sha256": "44a8a17b82553bc7ac4f821bf08c7d254a2bd0be84afbf4566cb7052feea4e36",
+      "diff_chars": 2871
+    },
+    {
+      "item_id": "item_10",
+      "input_sha256": "b0f8d3673e64a5abcee8324d7287a83cdd053c953169ad5ff3184445b4ed0442",
+      "diff_sha256": "ebe19bd6cf44fc01316836e898bdbeb3acfc211569dd507af21e779dbca7e624",
+      "diff_chars": 2171
+    },
+    {
+      "item_id": "item_11",
+      "input_sha256": "76f6524997ba6b740178baf5719559763cb58e086a2b313bc973175897c70996",
+      "diff_sha256": "fe4855c1aab5264896e4d4c6aa733b456688045470f35bb8510467ae4b864280",
+      "diff_chars": 48347
+    },
+    {
+      "item_id": "item_12",
+      "input_sha256": "c180356e2be6c82d59522d9bb7f3d03a98b826c7842b80a65b1ad90d86a30ea6",
+      "diff_sha256": "10d64a3283a0224013cf3c022f6b51e885d7dde3bc83256367e6d007ec1f1c58",
+      "diff_chars": 1985
+    },
+    {
+      "item_id": "item_13",
+      "input_sha256": "6d34764eee1eb6840d77d1c042121ab13f203aaa5ab52efce0fc1292e1e739c6",
+      "diff_sha256": "776e2d44c4977c0974b348bb1b87c2d2705b31bb070e3e74a6b15632cc6df6d7",
+      "diff_chars": 2496
+    },
+    {
+      "item_id": "item_14",
+      "input_sha256": "f0a59ccfccdc6f3ea65dafc79673488be37f554af7d4bdac1a63ca8c9072a231",
+      "diff_sha256": "95164ce74cd458be146806d8bce0d89a04092909f06db77ad7288099927806df",
+      "diff_chars": 3819
+    }
+  ]
+}

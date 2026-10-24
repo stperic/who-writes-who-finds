@@ -1,3 +1,0 @@
-The review flags the right spot: it calls out the deleted `getOne()` override as HIGH severity, saying its removal "could cause unexpected behavior if the base implementation doesn't properly handle `FhirCareTeamService`-specific logic." However, it frames this as a broken override contract, not as loss of patient scoping or cross-patient data exposure. Its interface comment (#7) only questions whether the `IResourceUSCIGProfileService` signatures are correct, and never notices that `IPatientCompartmentResourceService` is missing, so the access-control class is never named.
-
-LABEL: Partial

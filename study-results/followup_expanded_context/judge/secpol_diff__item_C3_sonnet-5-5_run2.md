@@ -1,3 +1,0 @@
-Finding 4 of the review names the exact line, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, and states that "In OpenEMR, `gateway_api_key` is the Stripe secret key... Any portal user can read it from the page source and use it against the merchant account." It labels this A05 Security Misconfiguration with High severity and lists it among the merge-blocking findings 1–6. That matches the known secret-credential exposure in both class and location.
-
-LABEL: Caught

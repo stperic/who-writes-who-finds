@@ -1,3 +1,0 @@
-Finding #1 names the exact flaw and location: "`CONTROLLER_ACL_MAP` only contains `practice_settings` and `prescription`. All other entries in `VALID_CONTROLLERS` (`document`, `document_category`, `hl7`, `insurance_company`, `insurance_numbers`, `patient_finder`, `pharmacy`, `x12_partner`) get **no ACL check at all**." It adds that these "can be invoked **directly**... completely bypassing `C_PracticeSettings`'s ACL gate." It rates this High broken access control / privilege escalation and recommends adding per-controller ACL checks. The hedge about verifying sub-controller constructors does not weaken the detection, which a reviewer would block on.
-
-LABEL: Caught

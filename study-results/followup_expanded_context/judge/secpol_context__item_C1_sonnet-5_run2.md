@@ -1,3 +1,0 @@
-The review identifies the external trigger: issue #1 says `Controller::act()` maps query parameters onto `retrieve_action`, so `disable_exit=1` "can set `$disable_exit` directly." Issue #3 names the payoff: the new path returns "raw file bytes to the caller with **no headers at all**," so "an attacker-uploaded document… could be rendered in the browser context, leading to stored XSS." Together these name the class, file, and mechanism, though the review never states that the dispatcher itself echoes the return value as text/html. Recommendation #1, keeping the flag out of request-driven dispatch, would block the merge for the right reason.
-
-LABEL: Caught

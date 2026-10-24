@@ -1,0 +1,206 @@
+{
+  "status": "legacy_draft_unchanged_not_adjudicated",
+  "cases": [
+    {
+      "id": "D01",
+      "required": [
+        "auth_boundary"
+      ],
+      "optional": [
+        "sensitive_data"
+      ],
+      "prohibited": [
+        "construction",
+        "low_impact",
+        "security_config"
+      ],
+      "rationale": "Adding IPatientCompartmentResourceService changes the patient-scoping contract even though this is a fix. A privacy owner is defensible for the patient-data access contract."
+    },
+    {
+      "id": "D02",
+      "required": [
+        "construction"
+      ],
+      "optional": [],
+      "prohibited": [
+        "auth_boundary",
+        "low_impact",
+        "security_config",
+        "sensitive_data"
+      ],
+      "rationale": "New SearchConfigClauseBuilder builds ORDER BY from configured field names and pagination clauses."
+    },
+    {
+      "id": "D03",
+      "required": [
+        "auth_boundary",
+        "sensitive_data"
+      ],
+      "optional": [],
+      "prohibited": [
+        "construction",
+        "low_impact",
+        "security_config"
+      ],
+      "rationale": "FHIR CareTeam changes patient search parameters and patient/provider resource serialization. Route the access contract even without detecting the missing compartment interface. Uses the repaired study diff."
+    },
+    {
+      "id": "D04",
+      "required": [
+        "low_impact"
+      ],
+      "optional": [],
+      "prohibited": [
+        "auth_boundary",
+        "construction",
+        "security_config",
+        "sensitive_data"
+      ],
+      "rationale": "Static help heading change with no dynamic construction or sensitive data behavior. This is a constructed control, not an observed CVE."
+    },
+    {
+      "id": "D05",
+      "required": [
+        "auth_boundary",
+        "sensitive_data",
+        "construction"
+      ],
+      "optional": [],
+      "prohibited": [
+        "low_impact",
+        "security_config"
+      ],
+      "rationale": "The complete payment diff adds a request-selected getPortalAuditRec access path, changes patient-data queries and dynamic output, and emits gateway_api_key into JavaScript. The new record access path requires boundary-owner review independently of the target secret-exposure CVE."
+    },
+    {
+      "id": "D06",
+      "required": [
+        "low_impact"
+      ],
+      "optional": [],
+      "prohibited": [
+        "auth_boundary",
+        "construction",
+        "security_config",
+        "sensitive_data"
+      ],
+      "rationale": "Removes a redundant result-presence wrapper and static empty-state wording. Does not change dynamic output expressions or query construction. Correctness questions are separate from security routing."
+    },
+    {
+      "id": "D07",
+      "required": [
+        "auth_boundary"
+      ],
+      "optional": [
+        "sensitive_data",
+        "construction"
+      ],
+      "prohibited": [
+        "low_impact",
+        "security_config"
+      ],
+      "rationale": "Changes callback login gating and response handling. Login response contents are outside the diff, so sensitive-data review and output-construction review are defensible."
+    },
+    {
+      "id": "D08",
+      "required": [
+        "security_config"
+      ],
+      "optional": [],
+      "prohibited": [
+        "auth_boundary",
+        "construction",
+        "low_impact",
+        "sensitive_data"
+      ],
+      "rationale": "Disables TLS peer and hostname verification. Constructed policy-coverage fixture, not evidence from the CVE corpus."
+    },
+    {
+      "id": "D09",
+      "required": [
+        "construction"
+      ],
+      "optional": [
+        "security_config"
+      ],
+      "prohibited": [
+        "auth_boundary",
+        "low_impact",
+        "sensitive_data"
+      ],
+      "rationale": "Introduces XMLReader parsing with XInclude and PARSEHUGE flags. Treating these parser flags as security configuration is also defensible."
+    },
+    {
+      "id": "D10",
+      "required": [
+        "construction"
+      ],
+      "optional": [],
+      "prohibited": [
+        "auth_boundary",
+        "low_impact",
+        "security_config",
+        "sensitive_data"
+      ],
+      "rationale": "A safe query-field whitelist still changes SQL construction and needs its designated PR reviewer."
+    },
+    {
+      "id": "D11",
+      "required": [
+        "auth_boundary",
+        "sensitive_data",
+        "construction"
+      ],
+      "optional": [],
+      "prohibited": [
+        "low_impact",
+        "security_config"
+      ],
+      "rationale": "Complete fax-controller diff changes authenticate, document delivery/readfile, outbound email attachments, SQL and HTML generation. Uses the repaired study diff."
+    },
+    {
+      "id": "D12",
+      "required": [
+        "low_impact"
+      ],
+      "optional": [],
+      "prohibited": [
+        "auth_boundary",
+        "construction",
+        "security_config",
+        "sensitive_data"
+      ],
+      "rationale": "Converts a DOM string flag to an integer for local amount arithmetic. The payment filename alone does not establish a changed data boundary."
+    },
+    {
+      "id": "D13",
+      "required": [
+        "sensitive_data"
+      ],
+      "optional": [
+        "auth_boundary",
+        "construction",
+        "security_config"
+      ],
+      "prohibited": [
+        "low_impact"
+      ],
+      "rationale": "Changes document byte retrieval and return behavior, including an early return before the encryption branch. Access-path, dynamic-output and cryptographic-flow review are defensible additions. The caller is absent, so this does not claim the cross-file XSS is visible."
+    },
+    {
+      "id": "D14",
+      "required": [
+        "auth_boundary"
+      ],
+      "optional": [
+        "construction",
+        "security_config"
+      ],
+      "prohibited": [
+        "low_impact",
+        "sensitive_data"
+      ],
+      "rationale": "Changes auth.inc session-expiration enforcement and removes the timeout iframe. Session configuration and changed JavaScript/iframe construction are defensible secondary routes."
+    }
+  ]
+}

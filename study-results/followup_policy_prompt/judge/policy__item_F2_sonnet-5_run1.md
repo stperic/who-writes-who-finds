@@ -1,3 +1,0 @@
-Comment 5 identifies the exact line and vulnerability class: "`$nameprefix = \"$eraDir/$eraname\";` ... `$eraname` is concatenated directly into a filesystem path... if it is derived from user-controllable input ... without sanitization against path traversal (`../`) or null bytes, this could allow writing/reading files outside the intended `documents/era` directory," and recommends `basename()` or a whitelist regex. The reviewer hedges on whether `$eraname` is user-controlled (since the diff didn't show its origin) and labels it "potential pre-existing," but it names the correct class, location, impact, and fix, and explicitly asks for verification/sanitization before merge.
-
-LABEL: Caught

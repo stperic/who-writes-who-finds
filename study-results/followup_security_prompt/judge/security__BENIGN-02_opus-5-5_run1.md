@@ -1,4 +1,0 @@
-FINDING | XInclude removal closes file disclosure and SSRF vector | severity=High | class=PLAUSIBLE | LIBXML_XINCLUDE on attacker-supplied CDA documents does permit xi:include of local files/URLs, so the pre-change weakness the diff fixes is credible and specific.
-FINDING | LIBXML_PARSEHUGE still lifts depth/size limits, DoS risk | severity=Low | class=PLAUSIBLE | The flag remains in the shown code and genuinely relaxes libxml2 nesting and node-size safeguards, a specific resource-exhaustion concern though mitigated by no entity expansion.
-FINDING | Verify $filename in open() isn't user-controlled | severity=informational | class=SPECULATIVE | The review only asks to confirm caller behaviour not visible in the diff and asserts no actual vulnerability.
-SUMMARY: findings=3 false=0 speculative=1 plausible=2

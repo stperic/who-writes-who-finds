@@ -1,3 +1,0 @@
-Item 4 of the review, listed under High severity, flags the exact line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` in portal_payment.php. It cites A05 and states: "For Stripe, `gateway_api_key` is the secret key, so any portal user can read it and fully control the merchant account." This names the right class, location, and impact, and the review recommends blocking the merge until it is fixed.
-
-LABEL: Caught

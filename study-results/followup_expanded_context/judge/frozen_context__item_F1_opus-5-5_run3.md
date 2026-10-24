@@ -1,3 +1,0 @@
-The review never notes that `checkControllerAcl()` returns early for controllers missing from `CONTROLLER_ACL_MAP`, which leaves pharmacy, x12_partner, patient_finder and the other sub-controllers reachable without a permission check. It comes closest in #5, where it shows routing to `pharmacy` but dismisses the risk: "The ACL map is still consulted for the final controller, so this is not a direct ACL bypass." In #11 it treats the map only as duplicating the `admin/practice` check, so it implicitly assumes the map protects these controllers rather than spotting that most of them have no entry.
-
-LABEL: Missed

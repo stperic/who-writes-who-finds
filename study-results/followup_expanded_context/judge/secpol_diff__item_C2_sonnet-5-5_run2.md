@@ -1,3 +1,0 @@
-The review's Finding 4 flags the right area and class: "Removal of the `getOne` override: access-control dependency ... OWASP: A01 Broken Access Control". It also asks for a test that "a patient-scoped token cannot read another patient's CareTeam by `_id`". However, it concludes "That is probably fine" and rates it "Low (verify)", and it never identifies that the service no longer implements IPatientCompartmentResourceService, which is why patient-context filtering is skipped in getAll. A reader would leave a verification comment but would not necessarily block the merge for the actual cross-patient exposure.
-
-LABEL: Partial

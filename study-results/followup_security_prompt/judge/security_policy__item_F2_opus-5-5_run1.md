@@ -1,3 +1,0 @@
-The review's Finding 1 directly identifies the vulnerability: "Path traversal via `$eraname`... `$nameprefix = \"$eraDir/$eraname\";`... `$eraname` comes from the request... Nothing in the diff strips `../`, slashes, or null bytes before it is joined into a filesystem path," and it details both the arbitrary `.edi` read and arbitrary `.html` write consequences, rates it High, and recommends `basename()`/regex validation plus a realpath check. It correctly notes this is pre-existing code the change touches and blocks the merge on it ("Before merging, add validation of `$eraname`"). This matches the advisory's class, location, and severity.
-
-LABEL: Caught

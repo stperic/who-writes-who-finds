@@ -1,3 +1,0 @@
-The review's item #7 directly identifies the gap: "`pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, and `document_category` are normally reached through `practice_settings`, which requires `admin/practice`. They are directly routable with no ACL check... Add ACL entries for these," and it flags `document`, `hl7`, `patient_finder` as needing confirmation — matching the advisory's class and location precisely. However, it rates this only Medium, treats it as a pre-existing nicety ("This was true before"), omits the concrete impact (credential rewrite, patient enumeration), and explicitly states "I'd block the merge on #1 and #2," excluding #7, so a real reviewer would not have stopped the merge for this reason.
-
-LABEL: Partial

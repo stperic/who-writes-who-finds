@@ -1,0 +1,16 @@
+{
+  "test_command": "python3 -m unittest discover -s quadrant-tool -p 'test_jev*.py' -v",
+  "tests_passed": 56,
+  "tests_failed": 0,
+  "preserved_files_checked": 191,
+  "simulated_gate_scenarios": 9,
+  "simulated_blocked": 8,
+  "simulated_eligible": 1,
+  "new_live_jev_calls": 0,
+  "holdout_calls": 0,
+  "downstream_model_calls": 0,
+  "independent_human_workflow_adjudication": "pending",
+  "threshold_calibration": "not_measured_development_candidates",
+  "CI_CD_enforcement": "not_integrated_or_measured",
+  "production_branch_protection_changed": false
+}

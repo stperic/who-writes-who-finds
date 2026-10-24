@@ -1,0 +1,941 @@
+{
+  "evidence_type": "EXECUTED_LOCAL_SIMULATION_WITH_INVENTED_PROBABILITIES_AND_COMPLETION_EVENTS",
+  "source_case": {
+    "id": "D05",
+    "repo": "openemr/openemr",
+    "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+    "historical_input_sha256": "f18a7417f38c0885cf775808f8638ad545a2d717d30bf5473cc376855e755530"
+  },
+  "context_note": "Context completeness is assumed only for these simulated gate scenarios; no human attestation exists for this real case.",
+  "probabilities": {
+    "personal_data_access": 0.96,
+    "authorization_boundary": 0.93,
+    "patient_tenant_scoping": 0.91,
+    "sql_construction": 0.94,
+    "command_parser_output": 0.88,
+    "sensitive_data_flow": 0.95,
+    "security_configuration": 0.12,
+    "insufficient_context": 0.1
+  },
+  "workflow": {
+    "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+    "policy_version": "jev-workflow-policy-1.0",
+    "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+    "probabilities": {
+      "personal_data_access": 0.96,
+      "authorization_boundary": 0.93,
+      "patient_tenant_scoping": 0.91,
+      "sql_construction": 0.94,
+      "command_parser_output": 0.88,
+      "sensitive_data_flow": 0.95,
+      "security_configuration": 0.12,
+      "insufficient_context": 0.1
+    },
+    "percentages": {
+      "personal_data_access": "96%",
+      "authorization_boundary": "93%",
+      "patient_tenant_scoping": "91%",
+      "sql_construction": "94%",
+      "command_parser_output": "88%",
+      "sensitive_data_flow": "95%",
+      "security_configuration": "12%",
+      "insufficient_context": "10%"
+    },
+    "signal_states": {
+      "personal_data_access": "high",
+      "authorization_boundary": "high",
+      "patient_tenant_scoping": "high",
+      "sql_construction": "high",
+      "command_parser_output": "high",
+      "sensitive_data_flow": "high",
+      "security_configuration": "low",
+      "insufficient_context": "low"
+    },
+    "model_pending_reasons": [],
+    "model_selected_actions": [
+      "ai:boundary",
+      "ai:construction",
+      "ai:data",
+      "ai:sql",
+      "approve:appsec",
+      "approve:boundary",
+      "approve:privacy",
+      "check:boundary",
+      "check:sast",
+      "check:secrets"
+    ],
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "effective_model_actions": [
+      "ai:boundary",
+      "ai:construction",
+      "ai:data",
+      "ai:sql",
+      "approve:appsec",
+      "approve:boundary",
+      "approve:privacy",
+      "check:boundary",
+      "check:sast",
+      "check:secrets"
+    ],
+    "review_added_actions": [],
+    "required_actions": [
+      "ai:boundary",
+      "ai:construction",
+      "ai:data",
+      "ai:sql",
+      "approve:appsec",
+      "approve:boundary",
+      "approve:peer",
+      "approve:privacy",
+      "check:boundary",
+      "check:sast",
+      "check:secrets",
+      "check:tests"
+    ],
+    "pending_reasons": [],
+    "unavailable_actions": [],
+    "triage_accepted": false,
+    "triage_record": null,
+    "review_completed": false,
+    "merge_approved": false
+  },
+  "scenarios": {
+    "all_requirements_satisfied": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests"
+        ],
+        "pending_reasons": [],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [],
+      "unresolved_blocking_findings": [],
+      "review_completed": true,
+      "eligible_for_merge": true,
+      "merge_performed": false
+    },
+    "missing_appsec_approval": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests"
+        ],
+        "pending_reasons": [],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "approve:appsec"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "incomplete_ai_review": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [
+          "human:triage"
+        ],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "missing_evidence"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "ai:boundary",
+        "human:triage"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "incomplete_security_check": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests"
+        ],
+        "pending_reasons": [],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "check:boundary"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "earlier_revision_approval": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests"
+        ],
+        "pending_reasons": [],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "approve:appsec"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "unavailable_appsec": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "7ccd821c9b9b6fbf03092db83805949068459e2a0bf9f89b8c3076ea9de1407c",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "unavailable_required_reviewer"
+        ],
+        "unavailable_actions": [
+          "approve:appsec"
+        ],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "approve:appsec",
+        "human:triage"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "uncertain_routing": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "728146f57453c00e70f640ee641545a98e79e36da91577709b955c8ee3b52249",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.5,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "50%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "uncertain",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [
+          "uncertain:sql_construction"
+        ],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "uncertain:sql_construction"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "human:triage"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "failed_routing_request": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "0f61eeeada320bdda97c669bc2b270021585a72aca5f78b0c5604a65a6f280c9",
+        "probabilities": null,
+        "percentages": {},
+        "signal_states": {},
+        "model_pending_reasons": [
+          "api_failure"
+        ],
+        "model_selected_actions": [
+          "human:triage"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "human:triage"
+        ],
+        "review_added_actions": [],
+        "required_actions": [
+          "approve:peer",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "api_failure"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "human:triage"
+      ],
+      "unresolved_blocking_findings": [],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    },
+    "unresolved_blocking_finding": {
+      "evidence_type": "local_workflow_simulation_not_CI_enforcement",
+      "workflow": {
+        "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+        "policy_version": "jev-workflow-policy-1.0",
+        "routing_token": "f43496ec191bbd4cd2580101b349471ba86f35318c964c5f01df8a637ead1f5f",
+        "probabilities": {
+          "personal_data_access": 0.96,
+          "authorization_boundary": 0.93,
+          "patient_tenant_scoping": 0.91,
+          "sql_construction": 0.94,
+          "command_parser_output": 0.88,
+          "sensitive_data_flow": 0.95,
+          "security_configuration": 0.12,
+          "insufficient_context": 0.1
+        },
+        "percentages": {
+          "personal_data_access": "96%",
+          "authorization_boundary": "93%",
+          "patient_tenant_scoping": "91%",
+          "sql_construction": "94%",
+          "command_parser_output": "88%",
+          "sensitive_data_flow": "95%",
+          "security_configuration": "12%",
+          "insufficient_context": "10%"
+        },
+        "signal_states": {
+          "personal_data_access": "high",
+          "authorization_boundary": "high",
+          "patient_tenant_scoping": "high",
+          "sql_construction": "high",
+          "command_parser_output": "high",
+          "sensitive_data_flow": "high",
+          "security_configuration": "low",
+          "insufficient_context": "low"
+        },
+        "model_pending_reasons": [],
+        "model_selected_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "mandatory_actions": [
+          "approve:peer",
+          "check:tests"
+        ],
+        "effective_model_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets"
+        ],
+        "review_added_actions": [
+          "approve:appsec",
+          "human:triage"
+        ],
+        "required_actions": [
+          "ai:boundary",
+          "ai:construction",
+          "ai:data",
+          "ai:sql",
+          "approve:appsec",
+          "approve:boundary",
+          "approve:peer",
+          "approve:privacy",
+          "check:boundary",
+          "check:sast",
+          "check:secrets",
+          "check:tests",
+          "human:triage"
+        ],
+        "pending_reasons": [
+          "blocking_findings"
+        ],
+        "unavailable_actions": [],
+        "triage_accepted": false,
+        "triage_record": null,
+        "review_completed": false,
+        "merge_approved": false
+      },
+      "incomplete_actions": [
+        "human:triage"
+      ],
+      "unresolved_blocking_findings": [
+        {
+          "id": "illustrative-F1",
+          "blocking": true,
+          "summary": "Illustrative unresolved injection finding",
+          "location": "payment.php:100",
+          "producer": "fixture-security-reviewer",
+          "revision": "2ab074e827b9011d054df34723696feb9776e8e4"
+        }
+      ],
+      "review_completed": false,
+      "eligible_for_merge": false,
+      "merge_performed": false
+    }
+  }
+}

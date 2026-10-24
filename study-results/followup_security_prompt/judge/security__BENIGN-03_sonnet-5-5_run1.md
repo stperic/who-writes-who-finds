@@ -1,5 +1,0 @@
-FINDING | Pre-change lacked ACL; any authenticated user could download | severity=none | class=PLAUSIBLE | Diff shows only CSRF check existed before and adds the ACL gate, supporting the broken-access-control description.
-FINDING | Confirm denyWithTemplate terminates, else fails open | severity=none | class=SPECULATIVE | Helper is defined outside the diff and the review asks to confirm rather than asserting a flaw.
-FINDING | CSRF token in GET: no isset, leaks via Referer/logs | severity=Low / informational | class=PLAUSIBLE | Context line shows token read from $_GET without isset, and GET-carried tokens can leak through logs and Referer headers.
-FINDING | Verify file-name-to-path handling against traversal | severity=Needs verification | class=SPECULATIVE | File-path handling is outside the diff and the review only requests confirmation without asserting a vulnerability.
-SUMMARY: findings=4 false=0 speculative=2 plausible=2

@@ -1,2 +1,0 @@
-FINDING | Pre-existing MAX+1 race can duplicate ledger sequence numbers | severity=Low | class=PLAUSIBLE | The diff shows the non-locking SELECT MAX+1 pattern and the in-code comment itself acknowledges the concurrency race, making the data-integrity weakness credible and visible.
-SUMMARY: findings=1 false=0 speculative=0 plausible=1

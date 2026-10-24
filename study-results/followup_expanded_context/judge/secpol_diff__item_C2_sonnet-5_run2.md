@@ -1,3 +1,0 @@
-The review's issue #2 flags the right area: "The explicit override that called `careTeamService->getOne($fhirResourceId, $puuidBind)` was deleted. This relies entirely on `FhirServiceBase`'s generic `getOne()` implementation... to properly enforce `puuidBind`." However, it rates this only "Medium (needs verification)" and says "This is not necessarily a bug." It never names the actual root cause: the service no longer implements `IPatientCompartmentResourceService`, so `FhirServiceBase::getAll()` skips patient-context filtering. Its headline High concern (#1) is a speculative `false`→`true` flag issue rather than the real mechanism, so it points at the right weakness without pinning down why the bug happens.
-
-LABEL: Partial

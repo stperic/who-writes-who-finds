@@ -1,3 +1,0 @@
-The review identifies the right root cause and location in item 3, "Inconsistent output escaping → stored XSS", citing `echo $HPI1`, the unescaped plan/code items and `$PLAN2`. It even notes the report is rendered to PDF, but treats the issue only as browser XSS ("especially since this report can be viewed in-browser (not just PDF)"). It never connects the unescaped markup to the server-side HTML-to-PDF renderer fetching injected URLs (SSRF), and it does not mention the CSS `url()`/`background` context. It flags the right flaw under the wrong vulnerability class, so it falls short of a full catch.
-
-LABEL: Partial

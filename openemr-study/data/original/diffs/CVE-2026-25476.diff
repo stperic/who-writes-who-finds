@@ -1,0 +1,91 @@
+diff --git a/interface/main/tabs/main.php b/interface/main/tabs/main.php
+index 39e2894bb..306e7dc08 100644
+--- a/interface/main/tabs/main.php
++++ b/interface/main/tabs/main.php
+@@ -267,8 +267,6 @@ $esignApi = new Api();
+ </style>
+ </head>
+ <body class="min-vw-100">
+-    <!-- Below iframe is to support auto logout when timeout is reached -->
+-    <iframe name="timeout" style="visibility:hidden; position:absolute; left:0; top:0; height:0; width:0; border:none;" src="timeout_iframe.php"></iframe>
+     <!-- Below iframe is to support logout, which needs to be run in an inner iframe to work as intended -->
+     <iframe name="logoutinnerframe" id="logoutinnerframe" style="visibility:hidden; position:absolute; left:0; top:0; height:0; width:0; border:none;" src="about:blank"></iframe>
+     <?php // mdsupport - app settings
+diff --git a/interface/main/tabs/timeout_iframe.php b/interface/main/tabs/timeout_iframe.php
+deleted file mode 100644
+index 2ee281e6d..000000000
+--- a/interface/main/tabs/timeout_iframe.php
++++ /dev/null
+@@ -1,40 +0,0 @@
+-<?php
+-
+-/**
+- * This script runs in a hidden iframe and reloads itself periodically
+- * to support auto logout timeout.
+- *
+- * @package   OpenEMR
+- * @link      http://www.open-emr.org
+- * @author    Rod Roark <rod@sunsetsystems.com>
+- * @author    Brady Miller <brady.g.miller@gmail.com>
+- * @copyright Copyright (c) 2006 Rod Roark <rod@sunsetsystems.com>
+- * @copyright Copyright (c) 2016 Brady Miller <brady.g.miller@gmail.com>
+- * @license   https://github.com/openemr/openemr/blob/master/LICENSE GNU General Public License 3
+- */
+-
+-// Tell auth.inc that this is the daemon script; this is so that
+-// inactivity timeouts will still work, and to avoid logging an
+-// event every time we run.
+-$GLOBALS['DAEMON_FLAG'] = true;
+-
+-require_once(__DIR__ . "/../../globals.php");
+-
+-$daemon_interval = 120; // Interval in seconds between reloads.
+-?>
+-
+-<html>
+-<body>
+-<script>
+-
+-function timerint() {
+-    top.restoreSession();
+-    location.reload();
+-    return;
+-}
+-
+-setTimeout('timerint()', <?php echo $daemon_interval * 1000; ?>);
+-
+-</script>
+-</body>
+-</html>
+diff --git a/library/auth.inc b/library/auth.inc
+index 4a4d60936..7cfdba3e4 100644
+--- a/library/auth.inc
++++ b/library/auth.inc
+@@ -90,12 +90,7 @@ if (
+     authLoginScreen(true);
+ } else {
+     // Check if session is valid (already logged in user)
+-    if (AuthUtils::authCheckSession()) {
+-        // Session is valid
+-        if (isset($_SESSION['pid']) && empty($GLOBALS['DAEMON_FLAG'])) {
+-            require_once("{$GLOBALS['srcdir']}/patient.inc");
+-        }
+-    } else {
++    if (!AuthUtils::authCheckSession()) {
+         // Session is not valid (this should only happen if a user's password is changed via another session while the user is logged in)
+         EventAuditLogger::instance()->newEvent("logout", $_SESSION['authUser'], $_SESSION['authProvider'], 0, "authCheckSession() check failed, so force logout");
+         authCloseSession();
+@@ -108,11 +103,9 @@ if (
+ //  can be used by scripts that continually request information from the server; for example the Messages
+ //  and Reminders automated intermittent requests.
+ // Also skipping this all on login since entry in session_tracker is not ready yet
+-if (empty($skipSessionExpirationCheck)) {
++if (empty($skipSessionExpirationCheck) && empty($_REQUEST['skip_timeout_reset'])) {
+     if (!SessionTracker::isSessionExpired()) {
+-        if (empty($_REQUEST['skip_timeout_reset']) && empty($GLOBALS['DAEMON_FLAG'])) {
+-            SessionTracker::updateSessionExpiration();
+-        }
++        SessionTracker::updateSessionExpiration();
+     } else {
+         // User has timed out.
+         EventAuditLogger::instance()->newEvent("logout", $_SESSION['authUser'], $_SESSION['authProvider'], 0, "timeout, so force logout");

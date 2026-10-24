@@ -1,3 +1,0 @@
-The review's first finding names the right class (A01 Broken Access Control) and area: "Removal of explicit `getOne()` patient-scoping ... If the base implementation does not strictly enforce `puuidBind` when resolving by `_id`, a user could retrieve CareTeam resources belonging to a different patient." However, it treats this only as something to verify in the base class. It never identifies the actual mechanism, which is the missing `IPatientCompartmentResourceService` interface causing `getAll()` to skip patient filtering. It also concludes that "No critical, immediately exploitable vulnerability is introduced by this diff," so it flags the right area but understates the severity and misses the real cause.
-
-LABEL: Partial

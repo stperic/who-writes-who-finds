@@ -1,3 +1,0 @@
-The review's first finding names the exact flaw: "the new `<script>` block: ... `var apiKey = json_encode($GLOBALS['gateway_api_key']);`". It explains that `gateway_api_key` is the "API Secret for Stripe" and that "any logged-in patient can pull the secret key from page source and issue charges, refunds or customer lookups against the practice's account." It also notes that only Authorize.Net's public login ID is safe to expose, rates the issue Critical under A05, and blocks the merge on it. That matches the known vulnerability's class, location and impact.
-
-LABEL: Caught

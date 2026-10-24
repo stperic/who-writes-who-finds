@@ -1,0 +1,8 @@
+{
+  "status": "not_executed",
+  "planned_cases": 9,
+  "planned_calls": 27,
+  "executed_calls": 0,
+  "reason": "Independent human adjudication is pending. No holdout labels or model outputs have been invented.",
+  "label_packet": "../../dataset/packet/blank-labels.json"
+}

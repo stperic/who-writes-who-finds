@@ -1,3 +1,0 @@
-The review explicitly identifies "Path Traversal via Unsanitized `$eraname`" at "Lines 750-757 (path construction)", stating "`$eraname` is used directly in path construction without validation... an attacker could inject `../` sequences to write files outside `/documents/era`" and rates it High, recommending a whitelist regex. This matches the advisory's class (path traversal via unsanitized `$eraname` in `$nameprefix`) and location, and would block the merge for the right reason; the hedging "if `$eraname` originates from user input" slightly weakens confidence but does not change the class or severity.
-
-LABEL: Caught

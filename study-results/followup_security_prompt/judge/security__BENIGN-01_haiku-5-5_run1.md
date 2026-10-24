@@ -1,4 +1,0 @@
-FINDING | Pre-change ORDER BY field concatenation enabled SQL injection | severity=High | class=PLAUSIBLE | The removed line concatenated getField() directly into SQL with no validation, and column names cannot be parameter-bound, so the fixed weakness is real and visible in the diff.
-FINDING | Allowlist safety depends on callers passing hardcoded columns | severity=High | class=SPECULATIVE | The review asks to confirm call-site allowlist contents, which are not in the diff, and asserts no actual vulnerability.
-FINDING | Check other getField() SQL concatenation sites remain | severity=none | class=SPECULATIVE | A request to grep the wider codebase for similar unvetted concatenation, which cannot be judged from the diff and asserts no specific flaw.
-SUMMARY: findings=3 false=0 speculative=2 plausible=1

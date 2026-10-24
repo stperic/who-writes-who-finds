@@ -1,3 +1,0 @@
-The review flags the root cause in the right file: "**3. Unescaped output (stored XSS risk). Severity: High** Free-text clinical fields are echoed without `text()` or `attr()`," citing `$HPI1`, `$PLAN`, and the plan/order items. However, it frames this only as browser-side stored XSS. It never mentions the `$background` CSS `url()` context or the server-side HTML-to-PDF rendering that makes the server fetch injected URLs (SSRF). That is the right area and root cause but the wrong vulnerability class.
-
-LABEL: Partial

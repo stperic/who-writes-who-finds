@@ -1,3 +1,0 @@
-**Partial.** The review flags the root cause in item 4: "Unescaped output: `<?php echo $HPI1; ?>`, `$HPI2`… `$item['plan']`, `$PLAN`… Wrap every value in `text()`". But it frames this only as browser XSS and never ties those injected values to the server-side HTML-to-PDF fetch. Its SSRF note (item 13, "html2pdf fetches `img src` values") targets a different source, `$from_file` from `documents.url`, is rated Low, and the `$background` CSS url() sink is never mentioned. So the right area and fix are identified, but with the wrong class and severity for this vulnerability.
-
-LABEL: Partial

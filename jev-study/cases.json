@@ -1,0 +1,91 @@
+{
+  "version": "jev-pilot-v1",
+  "label_status": "draft_requires_independent_human_adjudication",
+  "label_basis": "Observable changed behavior under policy.json, not the target CVE class. Required routes are minimum obligations; optional routes are defensible interpretations needing adjudication. Labels cover the supplied diff, not an entire historical PR. Freeze this file before each experiment.",
+  "cases": [
+    {
+      "item_id": "item_01", "source_id": "BENIGN-06", "kind": "benign_fix",
+      "diff": "openemr-study/data/original/benign_controls/BENIGN-06.diff",
+      "required": ["auth_boundary"], "optional": ["sensitive_data"],
+      "rationale": "Adding IPatientCompartmentResourceService changes the patient-scoping contract even though this is a fix. A privacy owner is defensible for the patient-data access contract."
+    },
+    {
+      "item_id": "item_02", "source_id": "CVE-2026-24908", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-24908.diff",
+      "required": ["construction"], "optional": [],
+      "rationale": "New SearchConfigClauseBuilder builds ORDER BY from configured field names and pagination clauses."
+    },
+    {
+      "item_id": "item_03", "source_id": "CVE-2026-24487", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-24487.diff",
+      "required": ["auth_boundary", "sensitive_data"], "optional": [],
+      "rationale": "FHIR CareTeam changes patient search parameters and patient/provider resource serialization. Route the access contract even without detecting the missing compartment interface. Uses the repaired study diff."
+    },
+    {
+      "item_id": "item_04", "source_id": "SYNTHETIC-LOCAL", "kind": "synthetic_local",
+      "diff": "jev-study/fixtures/local-copy.diff",
+      "required": ["low_impact"], "optional": [],
+      "rationale": "Static help heading change with no dynamic construction or sensitive data behavior. This is a constructed control, not an observed CVE."
+    },
+    {
+      "item_id": "item_05", "source_id": "CVE-2026-25146", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-25146.diff",
+      "required": ["auth_boundary", "sensitive_data", "construction"], "optional": [],
+      "rationale": "The complete payment diff adds a request-selected getPortalAuditRec access path, changes patient-data queries and dynamic output, and emits gateway_api_key into JavaScript. The new record access path requires boundary-owner review independently of the target secret-exposure CVE."
+    },
+    {
+      "item_id": "item_06", "source_id": "BENIGN-09", "kind": "benign_routine",
+      "diff": "openemr-study/data/original/benign_controls/BENIGN-09.diff",
+      "required": ["low_impact"], "optional": [],
+      "rationale": "Removes a redundant result-presence wrapper and static empty-state wording. Does not change dynamic output expressions or query construction. Correctness questions are separate from security routing."
+    },
+    {
+      "item_id": "item_07", "source_id": "CVE-2026-24898", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-24898.diff",
+      "required": ["auth_boundary"], "optional": ["sensitive_data", "construction"],
+      "rationale": "Changes callback login gating and response handling. Login response contents are outside the diff, so sensitive-data review and output-construction review are defensible."
+    },
+    {
+      "item_id": "item_08", "source_id": "SYNTHETIC-TLS", "kind": "synthetic_security",
+      "diff": "jev-study/fixtures/security-config.diff",
+      "required": ["security_config"], "optional": [],
+      "rationale": "Disables TLS peer and hostname verification. Constructed policy-coverage fixture, not evidence from the CVE corpus."
+    },
+    {
+      "item_id": "item_09", "source_id": "CVE-2026-33913", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-33913.diff",
+      "required": ["construction"], "optional": ["security_config"],
+      "rationale": "Introduces XMLReader parsing with XInclude and PARSEHUGE flags. Treating these parser flags as security configuration is also defensible."
+    },
+    {
+      "item_id": "item_10", "source_id": "BENIGN-01", "kind": "benign_fix",
+      "diff": "openemr-study/data/original/benign_controls/BENIGN-01.diff",
+      "required": ["construction"], "optional": [],
+      "rationale": "A safe query-field whitelist still changes SQL construction and needs its designated PR reviewer."
+    },
+    {
+      "item_id": "item_11", "source_id": "CVE-2026-24849", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-24849.diff",
+      "required": ["auth_boundary", "sensitive_data", "construction"], "optional": [],
+      "rationale": "Complete fax-controller diff changes authenticate, document delivery/readfile, outbound email attachments, SQL and HTML generation. Uses the repaired study diff."
+    },
+    {
+      "item_id": "item_12", "source_id": "BENIGN-10", "kind": "benign_routine",
+      "diff": "openemr-study/data/original/benign_controls/BENIGN-10.diff",
+      "required": ["low_impact"], "optional": [],
+      "rationale": "Converts a DOM string flag to an integer for local amount arithmetic. The payment filename alone does not establish a changed data boundary."
+    },
+    {
+      "item_id": "item_13", "source_id": "CVE-2025-31121", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2025-31121.diff",
+      "required": ["sensitive_data"], "optional": ["auth_boundary", "construction", "security_config"],
+      "rationale": "Changes document byte retrieval and return behavior, including an early return before the encryption branch. Access-path, dynamic-output and cryptographic-flow review are defensible additions. The caller is absent, so this does not claim the cross-file XSS is visible."
+    },
+    {
+      "item_id": "item_14", "source_id": "CVE-2026-25476", "kind": "cve",
+      "diff": "openemr-study/data/original/diffs/CVE-2026-25476.diff",
+      "required": ["auth_boundary"], "optional": ["construction", "security_config"],
+      "rationale": "Changes auth.inc session-expiration enforcement and removes the timeout iframe. Session configuration and changed JavaScript/iframe construction are defensible secondary routes."
+    }
+  ]
+}

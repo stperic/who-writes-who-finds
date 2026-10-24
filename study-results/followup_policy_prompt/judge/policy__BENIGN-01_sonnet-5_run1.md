@@ -1,3 +1,0 @@
-FINDING | Prior ORDER BY concatenation was SQL injection, now whitelisted | severity=High | class=PLAUSIBLE | The removed line concatenated getField() directly into ORDER BY, and the diff's whitelist is exactly a fix for that.
-FINDING | Verify callers' whitelists hardcoded and no bypass paths | severity=High | class=SPECULATIVE | Asks to confirm call sites and other SearchQueryConfig paths not shown in the diff, without asserting a defect.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

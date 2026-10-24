@@ -1,3 +1,0 @@
-Finding #1 in the review names the exact flaw and its location: "Only `practice_settings` (admin/practice) and `prescription` (patients/rx) have ACL entries... `pharmacy`, `insurance_company`, `insurance_numbers`, `x12_partner`, `document_category`, and `hl7`... are also whitelisted as top-level controllers with no ACL. Any authenticated user can therefore call... `controller=x12_partner&action=edit&process=true`." It also flags that `patient_finder` (PHI) and `document` have no controller-level ACL, rates the issue High as Broken Access Control, and recommends deny-by-default. This matches the advisory's class, location, affected controllers, and severity.
-
-LABEL: Caught

@@ -1,3 +1,0 @@
-The review discusses the `$nameprefix = "$eraDir/$eraname";` line only as an "Inconsistent API Usage (Maintainability)" concern about mixing `OEGlobalsBag` with string concatenation, never noting that `$eraname` is unsanitized user input or that `../` enables path traversal. Its security findings (0755 permissions, a mkdir race) are unrelated to the actual vulnerability class. No passage identifies path traversal or the lack of basename()/validation on `$eraname`.
-
-LABEL: Missed

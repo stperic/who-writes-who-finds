@@ -1,3 +1,0 @@
-The review explicitly names the vulnerability class and exact location: "Pre-existing path traversal via `$eraname`... **Location:** `$nameprefix = "$eraDir/$eraname";`" and explains that "A value like `../../../../tmp/x` would let the script read from or write to paths outside `documents/era`," recommending `preg_match` or `basename()` validation. Although it rates it "Medium/High" and says "I have no blocking issues with the diff itself," it does recommend fixing it "in this PR or a follow-up," which is the correct technical detection of the advisory's issue at the right line.
-
-LABEL: Caught

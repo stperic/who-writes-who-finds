@@ -1,0 +1,146 @@
+{
+  "generic": {
+    "case_labels": {
+      "Caught": 11,
+      "Partial": 11,
+      "Missed": 2
+    },
+    "run_labels": {
+      "Caught": 32,
+      "Partial": 31,
+      "Missed": 9
+    },
+    "catch_frequencies": {
+      "0": 11,
+      "1": 2,
+      "2": 3,
+      "3": 8
+    },
+    "split_cases": 7,
+    "controls": {
+      "reviews_with_false": 8,
+      "reviews_with_false_medium_plus": 8,
+      "false_findings": 8,
+      "false_medium_plus_findings": 8,
+      "security_findings": 12,
+      "speculative": 4,
+      "plausible": 0,
+      "correctness": 34,
+      "maintainability": 27,
+      "false_severity_counts": {
+        "Critical": 0,
+        "High": 3,
+        "Medium": 5,
+        "Low": 0,
+        "None or informational": 0
+      }
+    },
+    "review_usage": {
+      "calls": 102,
+      "input_tokens": 541053,
+      "output_tokens": 84034,
+      "cost_usd": 0.9612,
+      "latency_median_seconds": 7.8,
+      "latency_mean_seconds": 9.2,
+      "latency_p95_seconds": 17.08,
+      "case_latency_median_seconds": 10.99,
+      "case_latency_p95_seconds": 18.35,
+      "control_latency_median_seconds": 5.11
+    },
+    "judge_usage": {
+      "calls": 102,
+      "input_tokens": 184681,
+      "output_tokens": 33705,
+      "cost_usd": 3.5321
+    }
+  },
+  "security_policy": {
+    "case_labels": {
+      "Caught": 19,
+      "Partial": 4,
+      "Missed": 1
+    },
+    "run_labels": {
+      "Caught": 58,
+      "Partial": 11,
+      "Missed": 3
+    },
+    "catch_frequencies": {
+      "0": 4,
+      "1": 1,
+      "2": 0,
+      "3": 19
+    },
+    "split_cases": 3,
+    "controls": {
+      "reviews_with_false": 24,
+      "reviews_with_false_medium_plus": 24,
+      "false_findings": 56,
+      "false_medium_plus_findings": 45,
+      "security_findings": 91,
+      "speculative": 26,
+      "plausible": 9,
+      "correctness": 1,
+      "maintainability": 2,
+      "false_severity_counts": {
+        "Critical": 3,
+        "High": 13,
+        "Medium": 29,
+        "Low": 10,
+        "None or informational": 1
+      }
+    },
+    "review_usage": {
+      "calls": 102,
+      "input_tokens": 551049,
+      "output_tokens": 121757,
+      "cost_usd": 1.1598,
+      "latency_median_seconds": 11.63,
+      "latency_mean_seconds": 12.72,
+      "latency_p95_seconds": 23.89,
+      "case_latency_median_seconds": 13.53,
+      "case_latency_p95_seconds": 24.41,
+      "control_latency_median_seconds": 8.27
+    },
+    "judge_usage": {
+      "calls": 102,
+      "input_tokens": 236778,
+      "output_tokens": 49299,
+      "cost_usd": 4.8327
+    }
+  },
+  "changes": {
+    "gained": [
+      "CVE-2022-2824",
+      "CVE-2026-24898",
+      "CVE-2026-25476",
+      "CVE-2026-29187",
+      "CVE-2026-33913",
+      "CVE-2026-33918",
+      "CVE-2018-15152",
+      "CVE-2021-40352"
+    ],
+    "retained": [
+      "CVE-2026-23627",
+      "CVE-2026-24847",
+      "CVE-2026-24890",
+      "CVE-2026-24908",
+      "CVE-2026-25746",
+      "CVE-2026-32238",
+      "CVE-2026-33346",
+      "CVE-2018-15145",
+      "CVE-2020-29140",
+      "CVE-2023-22973",
+      "CVE-2025-43860"
+    ],
+    "lost": [],
+    "not caught in either": [
+      "CVE-2026-24487",
+      "CVE-2026-24849",
+      "CVE-2026-25146",
+      "CVE-2026-33321",
+      "CVE-2025-31121"
+    ]
+  },
+  "generated_utc": "2026-10-23T21:09:42+00:00"
+}

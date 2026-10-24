@@ -1,3 +1,0 @@
-The review never says that `checkControllerAcl()` returns without any check for controllers missing from `CONTROLLER_ACL_MAP`. It also never says that sub-controllers such as `x12_partner` or `patient_finder` are reachable by any authenticated user. The closest passage is point 7: "The map and the ACL map must be kept in sync by hand, and the map can drift from the files on disk." That is framed as a maintainability and compatibility concern about unlisted controllers breaking, not as an authorization bypass. Point 5 ("any public `*_action` method is reachable") is about action-name sanitization, not about missing permission checks on whitelisted controllers.
-
-LABEL: Missed

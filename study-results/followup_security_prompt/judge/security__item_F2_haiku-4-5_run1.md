@@ -1,3 +1,0 @@
-The review's finding #2 directly identifies the vulnerability: "Line 753: `$nameprefix = "$eraDir/$eraname";`... The `$eraname` variable (derived from user input earlier in the file) is concatenated into a file path without proper validation... An attacker could use path traversal sequences (e.g., `../`, `..\\`) to write files outside the intended ERA directory." It names the correct class (path traversal), the exact line, the user-controlled source, rates it High, and recommends whitelist validation of `$eraname`, which matches the advisory. It emphasizes the write side and does not explicitly mention the arbitrary `.edi` read, but the core detection is complete and would block the merge for the right reason.
-
-LABEL: Caught

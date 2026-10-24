@@ -1,3 +1,0 @@
-The review touches the right area in item #5, "Removed `getOne()` override... If the base class's `getOne` does not handle the same pattern... `GET /CareTeam/{id}` will break." It frames this purely as a functional regression, though, never mentions patient scoping, `IPatientCompartmentResourceService`, or cross-patient data exposure, and explicitly concludes "No definite security issues." It points at the right change but names the wrong class of problem, so it would draw a comment without necessarily stopping the access-control bug.
-
-LABEL: Partial

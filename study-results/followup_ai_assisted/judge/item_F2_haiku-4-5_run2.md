@@ -1,3 +1,0 @@
-The review never mentions `$eraname`, `$_REQUEST`, path traversal, or the `$nameprefix = "$eraDir/$eraname"` concatenation; its comments on the relevant lines concern only a "TOCTOU (time-of-check-time-of-use) race condition" in the `mkdir` logic and the "Inconsistent Global Access Pattern" for `$eraDir`. Neither of these touches the unsanitized user-controlled filename or the resulting arbitrary file write/read, so the vulnerability is not detected.
-
-LABEL: Missed

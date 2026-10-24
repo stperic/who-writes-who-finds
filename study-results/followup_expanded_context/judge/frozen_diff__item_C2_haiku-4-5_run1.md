@@ -1,3 +1,0 @@
-The review does flag the exact vulnerable change: "The `getOne()` method was removed entirely". It also flags the `getAll()` parameter flip as "a significant behavior change that should be documented." However, it frames both purely as API-contract or compilation concerns ("this is a breaking change… may require this method"). It never mentions patient scoping, `IPatientCompartmentResourceService`, or cross-patient data exposure. So it points at the right area but names the wrong class and severity.
-
-LABEL: Partial

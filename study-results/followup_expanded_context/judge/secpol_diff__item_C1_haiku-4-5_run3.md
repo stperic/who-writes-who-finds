@@ -1,3 +1,0 @@
-The review points at the right spot: issue #2 says the `disable_exit` early returns "**bypasses HTTP security headers** (Content-Disposition, etc.) that prevent unintended file handling." It also notes a user "could potentially call this function with `disable_exit=true`." But it frames the harm as access control and leaking sensitive data into "logs, error messages, or call stacks," and never says the raw file bytes are echoed as text/html, enabling stored XSS.
-
-LABEL: Partial

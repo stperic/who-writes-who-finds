@@ -1,3 +1,0 @@
-FINDING | Removed isset guard may leak paths via PHP warnings | severity=medium | class=PLAUSIBLE | The diff shows $result is only set inside the search conditional and the guard is removed, so undefined-variable warnings (and possible path disclosure with display_errors on) are a credible consequence of the touched code.
-FINDING | Verify SQL binding, escaping, searchby whitelist elsewhere | severity=informational | class=SPECULATIVE | The review explicitly asks to confirm query construction and row-loop escaping not shown in the diff and states it is not raising a defect.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

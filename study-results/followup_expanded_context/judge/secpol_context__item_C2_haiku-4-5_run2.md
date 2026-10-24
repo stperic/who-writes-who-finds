@@ -1,3 +1,0 @@
-The review never mentions patient-context scoping, the removed `getOne()` override, or the missing `IPatientCompartmentResourceService` interface that `FhirServiceBase::getAll()` relies on for patient filtering. The closest passage is issue #5, which notes the boolean argument changed from `false` to `true` and speculates it "could... Bypass access controls if the parameter relates to authorization." That is a hedged guess about a different mechanism, not an identification of cross-patient data exposure. The other findings (injection via `explode()`, status validation, type checks) are unrelated to the known vulnerability.
-
-LABEL: Missed

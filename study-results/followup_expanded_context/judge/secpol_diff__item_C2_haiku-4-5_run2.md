@@ -1,3 +1,0 @@
-The review's issue #6 points at the right area and class, noting that the `getOne()` method "was removed without explanation" and that "if this method was providing access control via the `$puuidBind` parameter to restrict access to a patient's own care team, removing it could be a security regression." However, it is hedged ("Verify that the parent `FhirServiceBase` class... enforces patient context access control"), rated only Medium, and never identifies the missing `IPatientCompartmentResourceService` interface or the resulting cross-patient exposure through `getAll()`. Its final pre-merge recommendation also omits the issue, so a reader would probably not block the merge for this reason.
-
-LABEL: Partial

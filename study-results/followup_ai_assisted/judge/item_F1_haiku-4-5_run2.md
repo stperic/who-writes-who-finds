@@ -1,3 +1,0 @@
-The review's item 4 flags the exact location: "`VALID_CONTROLLERS` has 9 entries but `CONTROLLER_ACL_MAP` only has 2. The diff doesn't show why the other 7 controllers don't need ACL checks. This could indicate missing security controls or incomplete migration." This correctly identifies the gap between the whitelist and the ACL map, but labels it a Medium-severity "MAINTAINABILITY" issue and asks for documentation rather than stating that the unmapped sub-controllers are reachable by any authenticated user without authorization, so it does not assert the missing-authorization class or its high severity with the conviction needed to block the merge.
-
-LABEL: Partial

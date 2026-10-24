@@ -1,2 +1,0 @@
-FINDING | Client-computed payment amounts may be trusted server-side | severity=none | class=SPECULATIVE | The review explicitly requests verification of server-side revalidation outside the diff without asserting a vulnerability exists.
-SUMMARY: findings=1 false=0 speculative=1 plausible=0

@@ -1,3 +1,0 @@
-The review looks at exactly the right area. It notes "The `getOne()` override is removed, so the parent `FhirServiceBase::getOne()` now handles lookups," and asks the author to "Add a test that a patient-scoped token cannot read another patient's CareTeam." However, it wrongly concludes that the parent path "still passes the patient binding." It never notices the missing `IPatientCompartmentResourceService` interface that `getAll()` relies on for patient filtering, and it declares "No blocking security issues," so it raises a verification comment without identifying or blocking the cross-patient exposure.
-
-LABEL: Partial

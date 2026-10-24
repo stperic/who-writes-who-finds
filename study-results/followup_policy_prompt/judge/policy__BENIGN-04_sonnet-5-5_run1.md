@@ -1,6 +1,0 @@
-FINDING | Pre-existing unescaped JS string concatenation allowed stored XSS | severity=none | class=PLAUSIBLE | The removed line visibly concatenates raw DB values into a single-quoted JS string with no escaping, so quotes or `</script>` would break out.
-FINDING | Verify js_escape neutralizes `<`, `>`, `&`, `</script>` | severity=low to medium | class=SPECULATIVE | js_escape() is defined outside the diff and the review only asks to confirm its behavior without asserting a flaw.
-FINDING | Encrypted card data blob exposed to browser JS | severity=low to medium | class=PLAUSIBLE | The diff shows `$edata['checksum']` (the encrypted cardholder data decrypted via `decryptStandard`) being echoed into page script, a specific pre-existing exposure concern.
-FINDING | Decryption and json_decode results unchecked for failure | severity=low | class=PLAUSIBLE | The diff shows both `json_decode` calls without null checks, so failed decryption yields null and undefined downstream behavior.
-FINDING | Audit other sinks in file for same pattern | severity=low | class=SPECULATIVE | The rest of the file is not shown and the review only requests an audit rather than asserting a vulnerability.
-SUMMARY: findings=5 false=0 speculative=2 plausible=3

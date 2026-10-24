@@ -1,3 +1,0 @@
-The review's second issue states that "`Controller::act()` builds action arguments from the query string. Any user can therefore send `disable_exit=1`", and that the raw bytes are "echoed by the caller, probably as `text/html`… An uploaded HTML or SVG document could then be rendered inline, which is a stored XSS vector." This names the right class (stored XSS), the right location (`retrieve_action`'s new `disable_exit` parameter, bound through the legacy Controller) and the right mechanism (missing Content-Type, so the contents are served as `text/html`). It rates this Medium/High and recommends removing URL-bindability, which would block the merge for the right reason, even though it cites HTML/SVG uploads rather than script embedded in image EXIF data.
-
-LABEL: Caught

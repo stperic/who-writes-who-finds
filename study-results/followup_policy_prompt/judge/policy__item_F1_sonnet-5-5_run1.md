@@ -1,3 +1,0 @@
-The review's item 11 flags the right area: "Only `practice_settings` and `prescription` have ACL entries. Controllers such as `document`, `insurance_company`, `x12_partner`, and `hl7` have no central check, so protection depends on each controller." However, it rates this as Low and frames it as a coverage gap that individual controllers presumably handle, rather than identifying it as a missing-authorization vulnerability allowing low-privilege users to reach admin-only sub-controllers (it even states elsewhere "this is not an ACL bypass"), so it would prompt a comment but not block the merge for the right reason.
-
-LABEL: Partial

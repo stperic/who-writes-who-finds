@@ -1,3 +1,0 @@
-The review's only contact with the API key is issue #8, which quotes `authData.apiLoginID = apiKey;` and mentions `$GLOBALS['gateway_api_key']`. It frames this as low-severity "SSRF" in which tampered config could "redirect payment data to their own server," not as the private gateway secret being echoed into page source for any portal user to read. So it touches the right code but names the wrong vulnerability class and severity, and would not block the merge for the credential exposure.
-
-LABEL: Partial

@@ -1,3 +1,0 @@
-FINDING | XInclude removal fixes local file read and SSRF | severity=none | class=PLAUSIBLE | The diff removes LIBXML_XINCLUDE from parsing of externally supplied CDA files, and XInclude genuinely permits local file and remote URL inclusion.
-FINDING | LIBXML_PARSEHUGE disables parser limits, enabling DoS | severity=Medium/High | class=PLAUSIBLE | The diff shows LIBXML_PARSEHUGE retained on both parse paths for untrusted CDA input, and that flag lifts libxml's depth/size/expansion safeguards, making resource-exhaustion attacks credible.
-SUMMARY: findings=2 false=0 speculative=0 plausible=2

@@ -1,0 +1,828 @@
+{
+  "D01": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "7307c1089c0473b8ada993e85e47eb64b724f456",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D02": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "6c97865a0472068a2e116690e0967f0fbb7edc5a",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D03": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "3cbe16d02116fd971e0d28624c10f4b9a3741248",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D04": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D05": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D06": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D07": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "0718350fadb42293a4d4599f087e9cc52d81aca0",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D08": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D09": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "1024a1a838b25677d094d168517dfc6f9372c06e",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D10": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D11": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "4cafd7df7394ef4c935273a066de924cf96bc035",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D12": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D13": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "81d00d00b96e00146a0ddbb40ad85fd308ea38d8",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  },
+  "D14": {
+    "status": "simulation_fixture_not_real_ownership",
+    "revision": "fae906cb06f7d5fcd1b9a79a913eff17f1ac50a1",
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "context_complete": false,
+    "authorized_approvers": {
+      "approve:peer": [
+        "fixture-approve:peer"
+      ],
+      "approve:appsec": [
+        "fixture-approve:appsec"
+      ],
+      "approve:privacy": [
+        "fixture-approve:privacy"
+      ],
+      "approve:boundary": [
+        "fixture-approve:boundary"
+      ]
+    },
+    "check_producers": {
+      "check:tests": [
+        "fixture-ci"
+      ],
+      "check:sast": [
+        "fixture-ci"
+      ],
+      "check:secrets": [
+        "fixture-ci"
+      ],
+      "check:dependencies": [
+        "fixture-ci"
+      ],
+      "check:boundary": [
+        "fixture-ci"
+      ]
+    },
+    "approved_ai_configs": {
+      "ai:sql": "abed8b778c11aff62d7d28e89971bf9fe61a94fc9d11dc788e268b107643e3ad",
+      "ai:boundary": "926aa78b505295e32ed944d06ca10017b321fca0f1fb65a6a2e42ec26a41c4ff",
+      "ai:data": "262ddd540b8df7229cde188823e964027ef3d7e9683b637f9af6768172cb6443",
+      "ai:construction": "80f0751f44a9d8f54dbcbf0665f5efa44c1d78e0d97c2aec7d5a8c6d8b0f05f6",
+      "ai:configuration": "0c3e7d22d994459f9ae3a9abfc809023c06ec86827ed29250eb7bf7ad48b35d7"
+    },
+    "ai_producers": [
+      "fixture-ai-runner"
+    ],
+    "finding_producers": [
+      "fixture-security-reviewer"
+    ],
+    "finding_resolution_actors": [
+      "fixture-appsec"
+    ],
+    "triage_actors": [
+      "fixture-security-triage"
+    ]
+  }
+}

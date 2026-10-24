@@ -1,0 +1,15 @@
+{
+  "version": "jev-workflow-protocol-1.0",
+  "model": "typesafe/jev-1.14",
+  "runs": 3,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "max_calls": 42,
+  "spending_limit_usd": 3.0,
+  "per_request_reservation_usd": 0.05,
+  "budget_semantics": "Local reservations bound planned calls and stop on unknown costs or costs exceeding a reservation. This cannot cap the provider bill for an in-flight request; a provider-side restricted key is needed for a hard monetary cap.",
+  "new_configuration": "Eight focused Noul questions with same-revision touched-file context. Previous probabilities are not observations of this configuration.",
+  "holdout_precondition": "Independent human security-reviewer workflow adjudication and approval of thresholds before freeze.",
+  "execution_status": "dry_run_only_pending_human_adjudication",
+  "downstream_model_calls": 0
+}

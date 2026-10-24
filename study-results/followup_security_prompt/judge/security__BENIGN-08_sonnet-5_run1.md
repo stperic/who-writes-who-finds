@@ -1,3 +1,0 @@
-FINDING | Race condition in MAX(sequence_no)+1 sequence generation | severity=Medium | class=PLAUSIBLE | The non-locking SELECT-then-insert pattern is a real concurrency flaw in touched code, explicitly acknowledged by the in-code comment.
-FINDING | Verify caller logs RuntimeException for monitoring | severity=none | class=SPECULATIVE | The review asks to check caller logging behaviour outside the diff without asserting any vulnerability.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

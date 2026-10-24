@@ -1,4 +1,0 @@
-FINDING | Unguarded $result may emit PHP warnings leaking paths | severity=Low | class=PLAUSIBLE | The diff removes the isset guard so an unset $result from the skipped search block can plausibly trigger notices in the implied loop, a minor but credible info-exposure concern.
-FINDING | Output escaping in results loop cannot be verified | severity=Informational | class=SPECULATIVE | The reviewer only asks to confirm escaping in loop code not shown in the diff, asserting no vulnerability.
-FINDING | SQL construction of search query cannot be verified | severity=Informational | class=SPECULATIVE | The reviewer requests confirmation of parameterized queries in code outside the diff without claiming injection exists.
-SUMMARY: findings=3 false=0 speculative=2 plausible=1

@@ -1,3 +1,0 @@
-The review identifies the root cause in the right file and fields: "Stored XSS — many DB fields echoed without escaping," naming `$HPI1`, `$item['plan']`, the `$PLAN` items and all `$MOTILITY_*` values. However, it treats this only as browser-side XSS. It never connects the unescaped output to the html2pdf server-side rendering, so it misses that injected URLs (e.g. in `background:`/`url()`) get fetched by the server as SSRF. The finding is the right area and root cause but the wrong vulnerability class and impact.
-
-LABEL: Partial

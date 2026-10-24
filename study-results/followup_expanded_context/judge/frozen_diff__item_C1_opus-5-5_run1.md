@@ -1,3 +1,0 @@
-The review's item #7 finds the right mechanism: "If the Controller dispatcher maps query-string arguments positionally to action parameters (as OpenEMR's `Controller::act` does), a user can set `$disable_exit`." It then dismisses the impact as low because "content is returned rather than echoed." That is exactly wrong: the Controller echoes the return value as text/html, which is what enables stored XSS. The review flags the correct area and the user-reachability of the flag but never names XSS and understates the severity, so it would raise a comment without blocking for the right reason.
-
-LABEL: Partial

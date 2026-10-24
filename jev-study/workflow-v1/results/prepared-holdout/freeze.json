@@ -1,0 +1,31 @@
+{
+  "version": "jev-workflow-freeze-1.0",
+  "partition": "holdout",
+  "stage": "preparation_only",
+  "created_at": "2026-10-19T02:54:23.758034+00:00",
+  "planned_calls": 27,
+  "code": {
+    "quadrant-tool/jev.py": "76ad660ffaf6eb5dc87ad5a5cac3ac3380abecca70350400bfede6b1749c15bc",
+    "quadrant-tool/jev_followup.py": "dbf9b9965c6db7b49072a4ba3fb251bf2f39664b246a587ee87b2d796ad831fe",
+    "quadrant-tool/jev_policy_v2.py": "d12ac82bf898eda74e005ba46313bc835b9f11086093c11bbe7e4d22b7bf576d",
+    "quadrant-tool/jev_workflow_policy.py": "ba26cdc7087c4e4de7fad3964fa1da0778dc5f0d391f46b515a50d3d6d4aa781",
+    "quadrant-tool/jev_workflow.py": "b71c36ccb90daaf39ed169ec84866b6da7c1782a8cc7e1a730e742e288e37f10"
+  },
+  "files": {
+    "cases.json": "9058cdc9a388ce3112248034344da0eb7ef1d25833c6e819b0c753ba0d22a081",
+    "inputs/H01.json": "9f6e4a1df940bc9447d0b40cb0fab602e5b08fef51b87435e437cf42e0f46c26",
+    "inputs/H02.json": "a56889d261f9155650e207d9ecb075254a6149966822322449ea86c9c4fbf38f",
+    "inputs/H03.json": "dea47c9f060d29200fa137320f130e2f42d6e040e49601e0e7e13ed3e165e472",
+    "inputs/H04.json": "a01a44a9ca25863d5849a5ad3254340ca0fa43f68aa3ab9d5e5fdec0e986f54f",
+    "inputs/H05.json": "d315873712d0f23575aa6380b1766d2a4a1fde4962f26dec2d7e9f834e3247c0",
+    "inputs/H06.json": "847b06bf0169e15cc3c7d0ad2916c3b3a862b91dba942f33890c1a929564d350",
+    "inputs/H07.json": "6d4c22f178f381c07bef4c98a73cbd44baa02d480e721cab9cd96138da010cbb",
+    "inputs/H08.json": "d19c2d7554b50130f9b46717a7180fcd610ddc2b98e5991b1bb21af4cddc1abc",
+    "inputs/H09.json": "e0016d9a6bca2eb55fd0dc350d394cddb872fa8c6d4b06a52821d645e14127a5",
+    "labels.json": "d256d3996df0fb19367bd49070be02509f3446b27792fbae490f6ad388784115",
+    "metadata.json": "93faf59f24c6379cea47ea6fe893ed733aaf17a48e2afdfe35a65e5a1a35745a",
+    "policy.json": "9736bbdfbeeb9ccd56f7abf15a7c1fed2ebeeaebaf0a66af13c4fe72e1f3a2b2",
+    "protocol.json": "68f89b18744d1de68e2a78166843c651cd5180a92506bef1c0b36f54273f1e6c",
+    "questions.json": "763bb0d6feab96a1b7c8d84553e30bb5af9c57cc20c518b83fb794ad957c741b"
+  }
+}

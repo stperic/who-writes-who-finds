@@ -1,3 +1,0 @@
-The review flags the same root cause in report.php: "**Stored XSS from unescaped output.** The report echoes clinical free text without `text()`", listing `$HPI1`, `$MOTILITY_*`, `$PLAN` items and "`$providerNAME` in the PDF branch". It treats this only as browser-side XSS, though. It never notes that the HTML-to-PDF renderer fetches injected URLs server-side, and it never mentions the unescaped `background`/CSS `url()` context, so the SSRF class and impact are missed. This is the right location and flaw, but the wrong vulnerability class.
-
-LABEL: Partial

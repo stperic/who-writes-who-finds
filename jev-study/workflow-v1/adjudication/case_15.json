@@ -1,0 +1,15 @@
+{
+  "change": {
+    "diff": "diff --git a/templates/help.html b/templates/help.html\nindex 1111111..2222222 100644\n--- a/templates/help.html\n+++ b/templates/help.html\n@@ -1,3 +1,3 @@\n <section>\n-  <h2>Help</h2>\n+  <h2>Help and support</h2>\n </section>\n",
+    "historical_context": [],
+    "context_scope": "Synthetic diff only; no historical repository exists."
+  },
+  "trusted_requirements": {
+    "mandatory_actions": [
+      "approve:peer",
+      "check:tests"
+    ],
+    "owner_availability": "All roles available in the simulated policy. Real staffing not evaluated.",
+    "context_complete": "Determine from historical source; do not assume complete."
+  }
+}

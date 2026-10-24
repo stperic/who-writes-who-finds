@@ -1,3 +1,0 @@
-Finding 1 pinpoints the right location and mechanism: "If the controller dispatcher maps request parameters positionally… an attacker can send `disable_exit=1`… Any code path that then echoes or stores that value sends the file out without the normal headers." However, it classifies the issue as A01 Broken Access Control / Insecure Design. It never says that the echoed file bytes would be served as text/html, letting HTML or JavaScript embedded in an image execute as stored XSS. The area and trigger are correct, but the vulnerability class is wrong.
-
-LABEL: Partial

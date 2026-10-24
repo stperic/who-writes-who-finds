@@ -1,31 +1,42 @@
-# Worksheet 1: Four-Quadrant Security Review Baseline Assessment
+# Worksheet 1: Four-Quadrant Security Review Assessment
 **Companion to:** *Who Writes the Bug, Who Finds the Bug?* (Eric St-Pierre, Medoya Consulting LLC)
 
-Use this worksheet to fulfill **Learning Objective 1**: assess your review process against the 4-quadrant framework, separate measured facts from unmeasured blind spots, and establish your local baseline.
+Use the four questions from slide 6 to record evidence, identify gaps and plan a local evaluation. Revisit the assessment when the model, context, tools or workflow changes. This supports Learning Objective 1.
 
----
+## Part A: Worked OpenEMR Example
 
-## Part A: Worked Example (OpenEMR Case Study, October 2026)
+| Quadrant and question | Evidence available | Limits and next measurement |
+|---|---|---|
+| **People introduce:** What defects enter human-written code? | Historical tracing of 24 scored cases, with 21 fully traced histories and three partial traces. The fully traced cases have a median selected-commit-to-disclosure interval of 2,043 days (5.6 years). | AI assistance is unverified for five introductions. Keep unknown provenance separate. Disclosure dates do not establish discovery dates or prove what happened during merge-time review. |
+| **AI introduces:** What defects enter AI-assisted code? | External studies and catalogs provide evidence of AI-linked vulnerabilities. Appendix slide 31 summarizes those sources. OpenEMR's assistance tags illustrate how a team can record provenance. | This study does not measure an AI-authored defect rate in OpenEMR. A missing assistance tag does not prove human-only authorship. Count changes in each documented provenance group before comparing rates. |
+| **People find:** What does human review catch? | Public credits describe who reported the historical cases: recent cases include eight AI analyzer vendor credits and eight named reporters or research groups. Older cases include three named reporters or groups and five cases with no discoverer credited. | Credits do not prove who discovered a bug, which tools they used, or whether a human reviewed the introducing change. A matched human-review baseline remains unmeasured. |
+| **AI finds:** What does your AI reviewer catch? | Our diff-only evaluation measured Sonnet 5 and Haiku 4.5 on 24 vulnerabilities and 10 benign changes. Sonnet caught 20 of 24 cases, Haiku eight of 24. False security alerts: Sonnet zero of ten benign changes, Haiku one of ten. | These counts describe selected historical cases under the recorded configurations. They do not establish production reliability, human-versus-AI superiority, or performance with richer context. |
 
-| Quadrant | Question | Observed Evidence (OpenEMR) | What Remains Unknown / Next Step |
-|---|---|---|---|
-| **Q1: What Humans Introduce** | Which vulnerability classes appear in our historical commits, and how long do they survive before disclosure? | **24 validated CVEs** traced to introducing commits: **11 Injection (A03)**, **8 Broken Access Control (A01)**, **3 Auth/Session (A07)**, **1 Secrets (A05)**, **1 SSRF (A10)**. Commit-to-disclosure across the 21 single-commit traces among the 24 scored cases: **median 5.6 years (2,043 days)**, max **15.7 years**. | Public advisories record disclosure date, not internal discovery date or production exploitability window. |
-| **Q2: What AI Introduces** | Which defects arrive via AI-assisted commits, and can we audit which PRs used AI? | **External field data:** 312 AI-contributed CVEs in Georgia Tech's Vibe Security Radar (`vibesecradar.com`, Sept 2026); **61% are Injection (116) and Auth/Access Control (75)**.<br>**Local repo data:** in March 2026 OpenEMR added an AI-disclosure question to its PR template and asked for `Assisted-by:` trailers; **about 150 commits** carried the trailer by our August 2026 clone, and several hundred more carry other AI co-author markers. | Defect rate per 1,000 AI-assisted commits vs. human-only commits requires tracking `Assisted-by:` trailers over a fixed release cycle. |
-| **Q3: What Humans / External Audits Catch** | Who actually finds our vulnerabilities today, and at what stage (PR review vs. years later)? | All 24 studied CVEs escaped merge-time review. Post-merge reporters: **9 external security researchers**, **7 autonomous AI analyzer vendor (AISLE)**, **8 unspecified in advisory credits**. | Merge-time human catch rate on prevented bugs is not logged unless PR review comments blocking security flaws are tagged. |
-| **Q4: What AI Catches (and Misses)** | Reviewing the introducing diff blind at merge time, what does our pinned AI reviewer catch, and what does it miss? | **Sonnet 5 (diff-only):** Caught **13 / 16** post-cutoff 2026 CVEs (**3 Partial, 0 Missed**) and **20 / 24** overall. Caught **20 / 20** single-file flaws; scored **0 / 4 Caught (3 Partial, 1 Missed)** when the security contract lived in a second file outside the diff.<br>**Haiku 4.5 (diff-only):** Caught **5 / 16** post-cutoff (**8 / 24** overall).<br>**Benign controls (10 diffs):** **0 / 10** false security alerts (Sonnet 5), but **4 / 10** High "verify caller/context outside diff" warnings. | Diff-only review under-measures what an AI reviewer catches when given the full touched files and architecture notes. |
+The finding about missing context is a hypothesis to test: Sonnet caught 20 of 20 cases classified after scoring as having the needed evidence inside the diff and zero of four requiring outside context. A later targeted follow-up supplied one researcher-selected related file for each of the four gaps; three became Caught with stronger instructions, while PDF-rendering SSRF remained Partial. A separate, post hoc [PDF requirement probe](../openemr-study/data/pdf-requirement-followup/README.md) produced explicit SSRF findings in three of three reviews with a proposed security requirement, versus zero of three with a functional requirement. Neither follow-up is a full-set rerun. Separate false security alerts from other warnings: four benign diffs produced High correctness/context warnings for Sonnet, and one produced a Critical correctness error for Haiku.
 
----
+Sources: `openemr-study/data/original/numbers.md`, `openemr-study/data/original/METHODS.md`, `openemr-study/data/original/scores.csv`, `openemr-study/data/original/models.csv`, `cves.csv` and `references.md`. Sonnet's registry entry records access through a harness alias. The inspected records do not establish an immutable Sonnet snapshot across August and October.
 
-## Part B: Your Team's Blank Worksheet
+## Part B: Your Team's Assessment
 
-**Repository / Service Name:** `___________________________`
-**Assessment Date:** `____-__-__`
-**Assessment Owner:** `___________________________`
-**Pinned AI Reviewer Model & Version:** `___________________________` (Training cutoff: `____-__-__`)
+**Repository or service:** `___________________________`<br>
+**Assessment date:** `____-__-__`<br>
+**Owner:** `___________________________`<br>
+**Reviewer configuration:** requested model ID, resolved version if available, prompt, input scope and allowed tools: `___________________________`
 
-| Quadrant | Your Local Data Source (20-30 items) | Measured Counts (Use Counts, Not %) | Key Blind Spots / Unmeasured Gaps | Action Required |
+| Question | Evidence to collect | Counts or observations | Gaps | Next test or action |
 |---|---|---|---|---|
-| **Q1: Humans Introduce** | Internal bug tracker, pentest findings, or dependency CVEs | Top classes:<br>1. `________` (`__ / __`)<br>2. `________` (`__ / __`)<br>Median age at detection: `____ days` | Are introducing commits traceable? `__ / __` | |
-| **Q2: AI Introduces** | PR template checkbox or `Assisted-by:` git trailer | PRs with AI provenance tag: `__ / __`<br>Post-merge security defects in AI-tagged PRs: `__` | If you do not tag AI-assisted PRs, mark **UNMEASURED** and add the PR template control first. | |
-| **Q3: Humans Catch** | PR review logs vs. post-merge scanner/pentest/bounty reports | Caught at PR review: `__`<br>Caught post-merge (SAST/pentest/external): `__` | Do reviewers record what they checked on high-impact boundaries? | |
-| **Q4: AI Catches** | Blind shadow run on 20-30 historical introducing diffs + 10 benign diffs | **Valid Catches:** `__ / __`<br>**Partials:** `__ / __`<br>**Misses:** `__ / __`<br>**False security alerts on 10 benign diffs:** `__ / 10`<br>**Missing-context warnings on 10 benign diffs:** `__ / 10` | Compare single-file flaws (`__ / __`) vs. cross-file flaws (`__ / __`). | |
+| What defects enter human-written code? | Confirmed defects, change history and documented authorship | Defects: `__`; changes examined: `__`; unknown provenance: `__` | `________` | `________` |
+| What defects enter AI-assisted code? | Assistance tags or equivalent provenance, confirmed defects and change history | Defects: `__`; AI-assisted changes examined: `__` | `________` | `________` |
+| What does human review catch? | A declared review exercise or review logs that record findings and tools used | Caught: `__ / __`; false alerts: `__ / __`; reviewer minutes: `__` | `________` | `________` |
+| What does your AI reviewer catch? | Blind review of confirmed defects and benign changes, with saved inputs and outputs | Caught: `__ / __`; Partial: `__ / __`; Missed: `__ / __`; false alerts: `__ / __`; errors: `__` | `________` | `________` |
+
+Document how authorship is classified. AI-assisted work can involve human authors and reviewers. Preserve unknown provenance instead of assigning it to the human-only group. For discovery, record which people and tools contributed.
+
+For a comparative review exercise, use comparable cases and a declared rubric. Record input context, allowed tools and time budgets. Avoid exposing reviewers to the answer through earlier runs. Human verification of an AI score is a scoring check, not a human-review detection baseline.
+
+## Part C: Workflow Decision
+
+- Which finding changes the role of your AI reviewer? `________________`
+- Who owns approval for the affected boundary? `________________`
+- What evidence is still required before changing that authority? `________________`
+- Which change will trigger re-evaluation? `________________`

@@ -1,3 +1,0 @@
-The review's only ACL comment concerns the `practice_settings` map entry. It says the entry is dead code and that "`C_PracticeSettings` still performs its own ACL check in its constructor, so this is not a bypass, but the map entry suggests protection that does not exist." That puts it in the right area (`CONTROLLER_ACL_MAP` coverage in the new dispatcher), but it never notes that `checkControllerAcl()` returns without checking for unmapped controllers, or that sub-controllers like `x12_partner` and `patient_finder` are directly reachable without permission. It even explicitly denies a bypass, so this is a related weakness rather than the actual privilege-escalation finding.
-
-LABEL: Partial

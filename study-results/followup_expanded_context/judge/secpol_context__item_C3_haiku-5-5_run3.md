@@ -1,3 +1,0 @@
-Finding #3 names the exact location, `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;`, and states that "With Stripe selected, this leaks the **secret** key, which allows anyone to issue charges and refunds." It classifies the issue as A05 Security Misconfiguration (alongside A02), rates it Critical, and recommends emitting only the publishable key. That matches the known vulnerability in class, location and severity, and a reviewer reading it would block the merge for the right reason.
-
-LABEL: Caught

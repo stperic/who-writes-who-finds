@@ -1,0 +1,1109 @@
+{
+  "status": "simulated_repository_metadata_not_real_owners_or_check_runs",
+  "cases": {
+    "D01": {
+      "revision": "7307c1089c0473b8ada993e85e47eb64b724f456",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D02": {
+      "revision": "6c97865a0472068a2e116690e0967f0fbb7edc5a",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D03": {
+      "revision": "3cbe16d02116fd971e0d28624c10f4b9a3741248",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D04": {
+      "revision": "a1e17feb179d70c11f7cb744a7f340f407913f26e48b902286de211c2c219ca0",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D05": {
+      "revision": "2ab074e827b9011d054df34723696feb9776e8e4",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D06": {
+      "revision": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D07": {
+      "revision": "0718350fadb42293a4d4599f087e9cc52d81aca0",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D08": {
+      "revision": "2723bcde00bfbfb0be3bc02518394b1db718bc8a0c758ae9fe085cff3416345e",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D09": {
+      "revision": "1024a1a838b25677d094d168517dfc6f9372c06e",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D10": {
+      "revision": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D11": {
+      "revision": "4cafd7df7394ef4c935273a066de924cf96bc035",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D12": {
+      "revision": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D13": {
+      "revision": "81d00d00b96e00146a0ddbb40ad85fd308ea38d8",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "D14": {
+      "revision": "fae906cb06f7d5fcd1b9a79a913eff17f1ac50a1",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H01": {
+      "revision": "0cb7ccc25dcf1be0e9ffc1233914e0b519541641",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H02": {
+      "revision": "a29c0f7ac0975429a85cd09a3ff12ee0dcdb4478",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H03": {
+      "revision": "1ab6846ed00feafea105da8f1c0ca3db791a4913",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H04": {
+      "revision": "7bc7bd077a624e205daed17658de41af6070ef73",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H05": {
+      "revision": "f6d98d0102df0a8f131be560d9208fb65fba6188",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H06": {
+      "revision": "db7dab14a63ffaf42b03954cbaa76aad52b1bbbd",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H07": {
+      "revision": "d73abdaec0b024410e72681890a397f7256e0198",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H08": {
+      "revision": "be104434f7b152ddf164e7025ad4aaec56fcf8dd",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    },
+    "H09": {
+      "revision": "7f938df2c2d1328963e62e50120a3ac4777823ce",
+      "mandatory_roles": [
+        "peer_reviewer"
+      ],
+      "mandatory_checks": [
+        "unit_tests"
+      ],
+      "context_complete": false,
+      "context_note": "Touched files supplied; independent human context sufficiency review pending. This flag is a trusted workflow input, never a model answer.",
+      "triage_actors": [
+        "fixture-triage-owner"
+      ],
+      "available_reviewers": {
+        "boundary_owner": [
+          "fixture-boundary_owner"
+        ],
+        "data_privacy_owner": [
+          "fixture-data_privacy_owner"
+        ],
+        "pr_reviewer": [
+          "fixture-pr_reviewer"
+        ],
+        "platform_security_owner": [
+          "fixture-platform_security_owner"
+        ],
+        "peer_reviewer": [
+          "fixture-peer_reviewer"
+        ]
+      },
+      "trusted_check_producers": {
+        "unit_tests": [
+          "fixture-ci"
+        ],
+        "boundary_tests": [
+          "fixture-ci"
+        ],
+        "secret_scan": [
+          "fixture-ci"
+        ],
+        "sast": [
+          "fixture-ci"
+        ],
+        "dependency_scan": [
+          "fixture-ci"
+        ]
+      }
+    }
+  }
+}

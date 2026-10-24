@@ -1,3 +1,0 @@
-The review's Issue 5 flags the right area and class: "The `getOne()` method was removed... Any patient-scoping logic specific to this resource is delegated entirely to the base class," labeled A01 Broken Access Control. However, it only asks to "verify the base class implementation provides equivalent access control." It never identifies that the service fails to implement `IPatientCompartmentResourceService`, so `getAll()` skips patient filtering and patient-context tokens get care teams for every patient. It also rates the issue Medium, so it would prompt a comment but not necessarily block the merge for the actual cross-patient exposure.
-
-LABEL: Partial

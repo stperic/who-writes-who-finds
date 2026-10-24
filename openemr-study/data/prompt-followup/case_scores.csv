@@ -1,0 +1,25 @@
+item,cve_id,historical_haiku,generic_runs,generic_final,security_policy_runs,security_policy_final,change
+item_01,CVE-2022-2824,Partial,Partial/Partial/Partial,Partial,Caught/Caught/Caught,Caught,gained
+item_02,CVE-2026-23627,Caught,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_03,CVE-2026-24487,Missed,Partial/Partial/Partial,Partial,Partial/Caught/Partial,Partial,not caught in either
+item_04,CVE-2026-24847,Caught,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_05,CVE-2026-24849,Missed,Missed/Missed/Missed,Missed,Missed/Partial/Partial,Partial,not caught in either
+item_06,CVE-2026-24890,Caught,Caught/Caught/Partial,Caught,Caught/Caught/Caught,Caught,retained
+item_07,CVE-2026-24898,Partial,Partial/Partial/Partial,Partial,Caught/Caught/Caught,Caught,gained
+item_08,CVE-2026-24908,Caught,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_09,CVE-2026-25146,Missed,Missed/Missed/Missed,Missed,Missed/Missed/Partial,Missed,not caught in either
+item_10,CVE-2026-25476,Partial,Partial/Partial/Partial,Partial,Caught/Caught/Caught,Caught,gained
+item_11,CVE-2026-25746,Partial,Partial/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_12,CVE-2026-29187,Partial,Partial/Missed/Partial,Partial,Caught/Caught/Caught,Caught,gained
+item_13,CVE-2026-32238,Partial,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_14,CVE-2026-33321,Partial,Partial/Partial/Partial,Partial,Partial/Partial/Partial,Partial,not caught in either
+item_15,CVE-2026-33346,Caught,Caught/Caught/Partial,Caught,Caught/Caught/Caught,Caught,retained
+item_16,CVE-2026-33913,Missed,Partial/Partial/Missed,Partial,Caught/Caught/Caught,Caught,gained
+item_17,CVE-2026-33918,Missed,Partial/Missed/Caught,Partial,Caught/Caught/Caught,Caught,gained
+item_18,CVE-2018-15145,Caught,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_19,CVE-2018-15152,Missed,Partial/Partial/Partial,Partial,Caught/Caught/Caught,Caught,gained
+item_20,CVE-2020-29140,Caught,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_21,CVE-2021-40352,Missed,Partial/Partial/Caught,Partial,Caught/Caught/Caught,Caught,gained
+item_22,CVE-2023-22973,Caught,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained
+item_23,CVE-2025-31121,Missed,Partial/Partial/Partial,Partial,Partial/Partial/Partial,Partial,not caught in either
+item_24,CVE-2025-43860,Missed,Caught/Caught/Caught,Caught,Caught/Caught/Caught,Caught,retained

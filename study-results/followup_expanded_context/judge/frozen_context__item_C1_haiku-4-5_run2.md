@@ -1,3 +1,0 @@
-The review comes close to the mechanism in Issue 1: it notes that `return base64_decode($content); // Headers haven't been sent yet!` and that the returned data may be "echoed or lost." However, it frames this as an HTTP-standards and broken-download problem. It never connects the URL-controllable `disable_exit` parameter, the controller echoing raw file bytes as text/html, or script execution in the browser (XSS). It flags the right spot and a related weakness, the missing Content-Type, but under the wrong class and severity.
-
-LABEL: Partial

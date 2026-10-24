@@ -1,3 +1,0 @@
-The review's first finding matches the known vulnerability exactly. It says the class "only implements `IResourceUSCIGProfileService`. It does not implement `IPatientCompartmentResourceService`" and that "`FhirServiceBase` only restricts results to the bound patient when `$this instanceof IPatientCompartmentResourceService`." It also names the removed `getOne()` override and concludes that "a patient-scoped token ... can read any patient's CareTeam," classifying this as A01 Broken Access Control at High severity and recommending the merge be blocked.
-
-LABEL: Caught

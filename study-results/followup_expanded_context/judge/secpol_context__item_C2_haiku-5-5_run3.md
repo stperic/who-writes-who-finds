@@ -1,3 +1,0 @@
-The review explicitly identifies "Patient-context binding is not enforced for CareTeam reads (Broken Access Control, High)" in `FhirCareTeamService.php`. It explains that "The class implements `IResourceUSCIGProfileService` but not `IPatientCompartmentResourceService`," so the base class's `instanceof` check skips the patient filter, and it notes that the scoped `getOne()` override was removed. It concludes that "a patient-scoped client (for example, a SMART patient-context token) can read CareTeam records for any patient," which matches the known vulnerability's class, location, mechanism and severity, and it would block the merge.
-
-LABEL: Caught

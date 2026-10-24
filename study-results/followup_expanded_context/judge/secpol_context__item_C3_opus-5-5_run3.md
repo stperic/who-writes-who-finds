@@ -1,3 +1,0 @@
-Finding 1 of the review identifies the exact flaw. It quotes the line `var apiKey = <?php echo json_encode($GLOBALS['gateway_api_key']); ?>;` and explains that "Any logged-in portal patient can therefore read the clinic's Stripe secret key from page source." It rates this Critical under A05 Security Misconfiguration, notes the Authorize.Net login-ID nuance, and recommends blocking the merge and rotating the key, so it names the correct class, location and severity.
-
-LABEL: Caught

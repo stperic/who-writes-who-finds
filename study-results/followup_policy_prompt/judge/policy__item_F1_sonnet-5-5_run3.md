@@ -1,3 +1,0 @@
-The review's item 8 lands squarely on the right area: "Only `practice_settings` and `prescription` have central ACL checks. The other whitelisted controllers (`document`, `pharmacy`, `insurance_company`, `x12_partner`, `hl7`, `patient_finder`, …) rely entirely on their own checks, so a missing check in any of them is directly reachable. Consider a default-deny ACL map." However, it rates this Medium, labels it "pre-existing," and frames the exposure as hypothetical ("a missing check in any of them") rather than asserting that these sub-controllers are in fact reachable by any authenticated user without authorization, so it reads as a hardening suggestion rather than a merge-blocking authorization bypass.
-
-LABEL: Partial

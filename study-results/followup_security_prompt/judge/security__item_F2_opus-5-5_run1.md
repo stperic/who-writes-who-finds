@@ -1,3 +1,0 @@
-The review names the exact class and location: "`$eraname` used in a filesystem path ... `$nameprefix = "$eraDir/$eraname";` ... values like `../../../somefile` could read or write files outside `documents/era`," and rates it "Medium to High if unsanitized" with a whitelist recommendation. The technical detection matches the advisory precisely, though the reviewer hedges by calling it pre-existing, saying "I can't confirm whether it is sanitized," and ultimately issuing an "Approve" verdict rather than blocking. Since the vulnerability class and location are correctly identified unprompted and the right fix is proposed, the detection itself is complete even if the merge decision is soft.
-
-LABEL: Caught

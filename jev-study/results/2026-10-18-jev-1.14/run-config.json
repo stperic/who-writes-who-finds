@@ -1,0 +1,12 @@
+{
+  "provider": "openrouter",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "manifest_sha256": "f44c2c7a8355a62ae3a8055c4df9a2d3e959ff368a43e3cbbe6b532ae43f47a2",
+  "max_output_tokens": null,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "endpoint": "https://openrouter.ai/api/alpha/decisions",
+  "decision_threshold": 0.5,
+  "response_format": "noul_per_route"
+}

@@ -1,3 +1,0 @@
-The review's Finding 1 names the exact vulnerability class and location: "Path traversal via `$eraname`... `$nameprefix = \"$eraDir/$eraname\";`... a value such as `../../../../some/file` could make the script read, write, or overwrite files outside the ERA directory," and recommends `basename()` plus an allowlist regex. It correctly notes "The line was already vulnerable before this diff, but the diff rewrites it, so it should be fixed here," rates it High, and says "Do not merge until Finding 1 is resolved," though it hedges on whether `$eraname` is user-controlled since the diff does not show its origin. This matches the advisory's class, location, severity, and blocking recommendation.
-
-LABEL: Caught

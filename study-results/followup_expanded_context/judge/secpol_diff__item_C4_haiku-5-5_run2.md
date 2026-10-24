@@ -1,3 +1,0 @@
-The review's Finding 2 flags the root cause in the right place: "`echo $HPI1;`... `echo $item['plan']`... printed raw," though it frames this as browser-side stored XSS "including the PDF/fax paths." Finding 8 separately notes that "html2pdf... fetches `<img src>` values" (an "SSRF (local variant)"), but it ties that only to tampered `documents.url` paths and low severity. It never connects the unescaped free-text or `$background` CSS output to server-side URL fetching by the PDF renderer. The review lands on the right area and the missing escaping, but under the wrong vulnerability class and vector, so it does not identify the out-of-band SSRF.
-
-LABEL: Partial

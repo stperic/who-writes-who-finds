@@ -1,0 +1,49 @@
+{
+  "version": "jev-policy-v2.0",
+  "category_policy": {
+    "version": "jev-category-v2.0",
+    "scope": "Route by the behavior changed in the diff, including removed code. A filename, an unchanged nearby call, or a known vulnerability class alone is insufficient. A safe fix can still require a specialist. Choose all applicable routes; low_impact is exclusive. Request missing context instead of inventing it. These are reviewer roles, not named people.",
+    "routes": {
+      "auth_boundary": {
+        "description": "Changes authentication, sessions, authorization, patient or tenant scoping, resource access paths, or their enforcement contracts."
+      },
+      "sensitive_data": {
+        "description": "Changes collection, exposure, transmission, storage or access to patient data, secrets or payment credentials. Merely formatting an amount or changing arithmetic in a billing file is insufficient."
+      },
+      "construction": {
+        "description": "Changes query construction, parser behavior, shell commands, redirects, or dynamic HTML/JavaScript output. Static wording or layout changes alone are insufficient."
+      },
+      "security_config": {
+        "description": "Changes security configuration, cryptographic implementation/settings, or dependency declarations. Calling an existing encryption helper without changing its behavior alone is insufficient."
+      },
+      "low_impact": {
+        "description": "A local change with none of the above impacts, such as static wording, layout or local arithmetic. Do not infer this from absence of a detected vulnerability."
+      }
+    }
+  },
+  "route_checks": {
+    "auth_boundary": [
+      "boundary_tests"
+    ],
+    "sensitive_data": [
+      "secret_scan"
+    ],
+    "construction": [
+      "sast"
+    ],
+    "security_config": [
+      "dependency_scan",
+      "secret_scan"
+    ],
+    "low_impact": []
+  },
+  "decision_rule": "Inclusive threshold 0.5 per category. No positive category is abstention; low_impact plus any specialist is unresolved conflict. Preserve specialist obligations while triage is pending.",
+  "invariants": [
+    "Jev adds category signals only. No estimate is approval.",
+    "Mandatory repository roles and checks cannot be waived by model or triage.",
+    "Approvals and checks must be trusted records for the exact reviewed revision.",
+    "Unavailable owner blocks until trusted ownership metadata provides an authorized delegate.",
+    "Routing triage can resolve uncertain categories or an exception to model-added obligations with actor, revision and reason; it cannot satisfy a review approval."
+  ],
+  "workflow_status": "simulation_only_not_integrated_with_branch_protection"
+}

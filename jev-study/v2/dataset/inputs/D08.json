@@ -1,0 +1,5 @@
+{
+  "diff": "diff --git a/config/http.php b/config/http.php\nindex 1111111..2222222 100644\n--- a/config/http.php\n+++ b/config/http.php\n@@ -1,5 +1,5 @@\n <?php\n return [\n-    'verify_peer' => true,\n-    'verify_peer_name' => true,\n+    'verify_peer' => false,\n+    'verify_peer_name' => false,\n ];\n",
+  "historical_context": [],
+  "context_scope": "Synthetic diff only; no historical repository exists."
+}

@@ -1,3 +1,0 @@
-FINDING | Server must revalidate amounts, CSRF, authz on posting endpoint | severity=none | class=SPECULATIVE | Asks to confirm server-side handling outside the diff without asserting any vulnerability.
-FINDING | Prefer textContent over innerHTML for numeric output | severity=none | class=SPECULATIVE | Pure defense-in-depth suggestion; review itself correctly notes Math.round output makes the innerHTML sink non-exploitable, so no weakness is asserted.
-SUMMARY: findings=2 false=0 speculative=2 plausible=0

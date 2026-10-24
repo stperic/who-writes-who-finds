@@ -1,0 +1,19 @@
+diff --git a/interface/billing/get_claim_file.php b/interface/billing/get_claim_file.php
+index 7adf1f2be..a24af9af0 100644
+--- a/interface/billing/get_claim_file.php
++++ b/interface/billing/get_claim_file.php
+@@ -15,8 +15,14 @@
+ require_once(__DIR__ . "/../globals.php");
+ require_once $GLOBALS['OE_SITE_DIR'] . "/config.php";
+ 
++use OpenEMR\Common\Acl\AccessDeniedHelper;
++use OpenEMR\Common\Acl\AclMain;
+ use OpenEMR\Common\Csrf\CsrfUtils;
+ 
++if (!AclMain::aclCheckCore('acct', 'eob', '', 'write') && !AclMain::aclCheckCore('acct', 'bill', '', 'write')) {
++    AccessDeniedHelper::denyWithTemplate("ACL check failed for acct/eob or acct/bill: Billing Manager", xl("Billing Manager"));
++}
++
+ if (!CsrfUtils::verifyCsrfToken($_GET["csrf_token_form"])) {
+     CsrfUtils::csrfNotVerified();
+ }

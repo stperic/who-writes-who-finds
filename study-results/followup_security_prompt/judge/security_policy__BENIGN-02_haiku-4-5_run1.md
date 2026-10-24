@@ -1,3 +1,0 @@
-FINDING | XInclude removal fixes file-read/SSRF via xi:include | severity=HIGH | class=PLAUSIBLE | XInclude processing does allow local file inclusion and remote fetches from untrusted XML, and the diff removes that flag, so the security-fix characterization is credible (though the XXE/billion-laughs framing is imprecise).
-FINDING | Confirm LIBXML_NOENT and LIBXML_DTDLOAD also disabled | severity=none | class=SPECULATIVE | The shown flags omit NOENT/DTDLOAD, but whether other XMLReader parser properties (e.g., SUBST_ENTITIES) are set elsewhere cannot be judged from this diff and no vulnerability is asserted.
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

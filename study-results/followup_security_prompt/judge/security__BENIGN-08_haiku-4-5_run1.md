@@ -1,3 +1,0 @@
-FINDING | QueryUtils::querySingleRow binding implementation not shown, verify | severity=none | class=SPECULATIVE | Asks to confirm a helper defined outside the diff implements parameterized binding, without asserting a vulnerability.
-FINDING | Race condition in MAX+1 sequence remains unaddressed | severity=none | class=PLAUSIBLE | The code comment itself admits a race producing duplicate sequence numbers in payment records, a real integrity weakness even though the review downgrades it to "concurrency only."
-SUMMARY: findings=2 false=0 speculative=1 plausible=1

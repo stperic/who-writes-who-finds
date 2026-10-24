@@ -1,3 +1,0 @@
-The review identifies the root cause in item 6, "Missing Output Escaping... `echo $HPI1;` should be `echo text($HPI1);`" and "Line 1036: `echo $background;` - CSS unescaped". However, it treats this only as a MEDIUM-severity output-escaping/XSS issue. It never notes that the report is rendered server-side into a PDF, where injected URLs would be fetched by the server, so the SSRF class and its severity are missed. That is the right flaw and location but the wrong class and severity, so it would draw a comment without necessarily blocking the merge for the right reason.
-
-LABEL: Partial

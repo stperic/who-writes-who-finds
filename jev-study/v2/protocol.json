@@ -1,0 +1,24 @@
+{
+  "version": "jev-protocol-v2.0",
+  "requested_model": "typesafe/jev-1.14",
+  "runs": 3,
+  "threshold": 0.5,
+  "threshold_sensitivity": [
+    0.4,
+    0.5,
+    0.6
+  ],
+  "max_planned_calls": 42,
+  "holdout_planned_calls": 27,
+  "timeout_seconds": 90,
+  "retries": 0,
+  "primary_metric": "Allowed-set agreement divided by all planned calls; incorrect and unresolved reported separately.",
+  "case_unit": "Unique change; family clusters also reported. Repeats are correlated, not independent cases.",
+  "holdout_precondition": "Independent human adjudication, then freeze all labels, inputs, category questions, policy, thresholds, metadata, baseline rules and scoring code before first call.",
+  "no_tuning": "Sensitivity analyses are predeclared diagnostics; primary threshold stays 0.5. New choices require new protocol and fresh holdout.",
+  "paired_context": "Development only. Same original historical revision, diff, questions, model version, thresholds and repeats; only context varies. No causal context claim without this paired execution. Not executed in this revision.",
+  "model_choice": "Not evaluated. Stronger downstream reviewer/model selection requires a separately frozen protocol, ground-truth vulnerability scoring, paired comparison and explicit API budget before calls.",
+  "downstream_model_budget": 0,
+  "holdout_status": "pending_human_adjudication_no_model_calls",
+  "live_budget": "Routing calls only, at most 42 per development workspace or 27 per holdout workspace; no retries. Provider USD ceiling is not enforced by this client; record API-reported cost. No downstream model comparisons authorized by this protocol."
+}
