@@ -18,5 +18,9 @@ jobs:
           python-version: '3.12'
       - name: Verify OpenEMR archive and recorded runs
         run: python3 openemr-study/verify.py
+      - name: Verify Snyk Code scan archive and scores
+        run: python3 openemr-study/snyk-baseline/verify.py
+      - name: Verify published PowerPoint archive
+        run: python3 -m zipfile -t presentation/Who_Writes_the_Bug.pptx
       - name: Test Jev routing tools
         run: python3 -m unittest discover -s quadrant-tool -p 'test_jev*.py'

@@ -1,6 +1,6 @@
 # References, grouped by talk section
 
-This working bibliography includes sources collected during preparation and later checks. Verification dates and access limitations are recorded where available. It is broader than the final slide citations. The remaining-slide review on October 18, 2026 rechecked Vibe Security Radar, Veracode, OWASP, GitHub rulesets, HHS and the human-factors sources. Do not assume every optional source was revalidated in that review.
+This working bibliography includes sources collected during preparation and later checks. Verification dates and access limitations are recorded where available. It is broader than the final slide citations. Some slide numbers below refer to older deck drafts; use the [current slide evidence guide](presentation/README.md) for the published 42-slide deck. The remaining-slide review on October 18, 2026 rechecked Vibe Security Radar, Veracode, OWASP, GitHub rulesets, HHS and the human-factors sources. Do not assume every optional source was revalidated in that review.
 
 For the current context and tracing extension, use [Agent context and OpenTelemetry](#agent-context-and-opentelemetry). Earlier preparation sections retain dated status descriptions; the current local readiness record governs executed replay claims.
 
@@ -174,7 +174,7 @@ Official product documentation checked October 23, 2026. Used on slide 7 and in 
 - **Snyk Open Source:** https://docs.snyk.io/scan-with-snyk/snyk-open-source
   Software composition analysis for vulnerabilities and license issues in dependencies. Distinguish this from Snyk Code when selecting a comparator.
 
-**Study limit:** A separate Snyk Code baseline now reports **6/24 clear Caught, 1/24 borderline** on the selected OpenEMR cases; its provisional case matches await independent human verification. No Semgrep or CodeQL comparator was run. The current deck has not been updated with the Snyk result. The baseline is retrospective and uses whole-repository scans, while AI reviewers saw selected diffs, so it does not establish matched detection performance or additional catches in a live workflow. For a local pilot, record overlap, validated findings and triage effort under the deployed controls.
+**Study limit:** The [current deck](presentation/Who_Writes_the_Bug.pptx) reports a separate Snyk Code baseline of **6/24 clear Caught, 1/24 borderline** on the selected OpenEMR cases. Its provisional case matches await independent human verification. No Semgrep or CodeQL comparator was run. The baseline is retrospective and uses whole-repository scans, while AI reviewers saw selected diffs, so it does not establish matched detection performance or additional catches in a live workflow. For a local pilot, record overlap, validated findings and triage effort under the deployed controls. See the [slide evidence guide](presentation/README.md).
 
 ## Policy gates and the Jev review workflow
 
@@ -227,7 +227,7 @@ These sources support slides 15 and 20 and the selected references on slide 30. 
 - **TypeSafe, Introduction and Confidence:** https://docs.typesafe.ai/introduction and https://docs.typesafe.ai/confidence
   Jev supplies focused structured judgments. Noul probabilities concern whether a condition holds. They do not establish vulnerability severity or authorize merge, and operational thresholds require local evaluation.
 
-The earlier appendix remains in `Archive/ISC2-deck-v5-before-appendix-refresh-20261019.pptx`. The current appendix is slides 36–42: exact prompts, the recent-case subset, inherited flaws, prompt tradeoffs, context results, the focused-model pilot and the four quadrants. Detailed citations are retained in this bibliography. Snyk Code and GitHub rulesets document existing controls and required-check mechanisms.
+The [current 42-slide deck](presentation/Who_Writes_the_Bug.pptx) has appendix slides 32–42. The [slide evidence guide](presentation/README.md) maps its measured claims to the run artifacts. Detailed background citations remain in this bibliography. Snyk Code and GitHub rulesets document existing controls and required-check mechanisms.
 
 ## Functional correctness, human intent and checker evaluation
 
