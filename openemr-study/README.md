@@ -20,6 +20,7 @@ A later [benign-control follow-up](data/false-alarm-followup/README.md) measured
 
 ## Read the study
 
+- [Planned matched validation run](next-run/README.md): frozen design, five-case checkpoint, execution and verification script. It has not been run.
 - [24-CVE audience FAQ](CVE-FAQ.md): the bug, historical source snapshot, recorded upstream patch and evidence link for every scored case.
 - [Results](RESULTS.md): full 24-case and 10-control tables, variability, cost, latency and limitations.
 - [Methods](METHODS.md): case selection, exact prompts, execution setup, scoring and what can be reproduced.
