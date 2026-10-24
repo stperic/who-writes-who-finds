@@ -1,0 +1,23 @@
+{
+  "protocol_version": 1,
+  "api_version": "2023-06-01",
+  "review_max_tokens": 16000,
+  "judge_max_tokens": 4000,
+  "repetitions": 3,
+  "shuffle_seed": 20261024,
+  "models": {
+    "haiku": "claude-haiku-4-5-20251001",
+    "sonnet": "claude-sonnet-5"
+  },
+  "prompts": {
+    "generic": "prompts/generic.txt",
+    "security": "prompts/security_policy.txt"
+  },
+  "first_haiku_generic_items": [
+    "item_02",
+    "item_04",
+    "item_06",
+    "item_08",
+    "item_15"
+  ]
+}
