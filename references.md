@@ -165,7 +165,7 @@ Genuine scientific disagreement here. Present both sides: it strengthens the
 
 ## CI/CD security tools and the existing-controls baseline
 
-Official product documentation checked October 18, 2026. Used on slide 7 and in the pilot notes and Q&A. These sources document capabilities, not measured performance on the OpenEMR study cases.
+Official product documentation checked October 23, 2026. Used on slide 7 and in the pilot notes and Q&A. These sources document capabilities; the separate OpenEMR measurement is in the [Snyk Code follow-up](openemr-study/snyk-baseline/README.md).
 
 - **Snyk Code:** https://docs.snyk.io/scan-with-snyk/snyk-code
   AI-based static application security testing, data-flow analysis, interfile analysis for supported languages except Ruby, and PR/CLI/CI/CD operation.
@@ -174,7 +174,7 @@ Official product documentation checked October 18, 2026. Used on slide 7 and in 
 - **Snyk Open Source:** https://docs.snyk.io/scan-with-snyk/snyk-open-source
   Software composition analysis for vulnerabilities and license issues in dependencies. Distinguish this from Snyk Code when selecting a comparator.
 
-**Study limit:** No Snyk Code, Semgrep or CodeQL comparator was run. The deck does not rank these products or establish that the study's catches add detection beyond them. The local pilot should record the deployed baseline, validate findings and measure additional catches together with overlap and triage effort.
+**Study limit:** A separate Snyk Code baseline now reports **6/24 clear Caught, 1/24 borderline** on the selected OpenEMR cases; its provisional case matches await independent human verification. No Semgrep or CodeQL comparator was run. The current deck has not been updated with the Snyk result. The baseline is retrospective and uses whole-repository scans, while AI reviewers saw selected diffs, so it does not establish matched detection performance or additional catches in a live workflow. For a local pilot, record overlap, validated findings and triage effort under the deployed controls.
 
 ## Policy gates and the Jev review workflow
 

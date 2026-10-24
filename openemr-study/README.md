@@ -12,6 +12,8 @@ This is the clean reading and reproduction entry point for the OpenEMR portion o
 
 The new Haiku comparison gained eight Caught cases, retained eleven and lost none when the prompt changed. The stronger prompt also produced false security alarms in **24/30** benign reviews, compared with **8/30** using the generic prompt. These are three independent reviews of each of ten controls, with false security claims separated from speculative questions and correctness warnings. Haiku with the stronger prompt approaches Sonnet's **historical** 20/24 total. Sonnet was not rerun under the new conditions, so this is not a model-equivalence result.
 
+A separate [Snyk Code whole-repository baseline](snyk-baseline/README.md) clearly identified **6/24** of the same selected vulnerabilities, with **1/24** borderline and excluded from Caught. It used today's scanner at the original introducing commits, one scan per case, while the AI reviewers saw selected diffs. Its case matches await independent human verification, and it did not scan benign controls.
+
 A separate [PDF requirement follow-up](data/pdf-requirement-followup/README.md) revisited one original Partial case. With the same historical diff and review prompt, a functional PDF requirement produced **0/3** explicit SSRF findings; a proposed security requirement about resource loading produced **3/3**. That requirement was drafted with hindsight and attached manually. This is a feasibility probe for requirement-informed review, not a new 24-case score or a demonstrated ZZ-Trace route.
 
 ## Read the study
@@ -24,6 +26,7 @@ A separate [PDF requirement follow-up](data/pdf-requirement-followup/README.md) 
 - [Case matrix](data/case-matrix.csv) and [control run scores](data/prompt-followup/benign_scores.csv): machine-readable results.
 - [Complete evidence archive](evidence/study-results.zip) and [archive manifest](evidence/archive-manifest.csv): exact original and follow-up artifacts.
 - [PDF requirement follow-up](data/pdf-requirement-followup/README.md): exact cards, six prompts, raw responses, review text, results and reproduction script for the one-case probe.
+- [Snyk Code baseline](snyk-baseline/README.md): 24 pinned whole-repository scans, full case-by-case score, run metrics, reproducible scripts and verified raw evidence.
 
 ## Verification status
 
