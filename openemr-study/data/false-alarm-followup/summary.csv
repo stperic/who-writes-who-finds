@@ -1,0 +1,5 @@
+arm,controls,reviews,controls_with_false_alarm,false_alarm_reviews,false_findings,speculative_findings,plausible_findings,all_security_findings,correctness_warnings,maintainability_warnings,mean_review_words,median_review_seconds,review_input_tokens,review_output_tokens,judge_input_tokens,judge_output_tokens
+context_generic,10,30,1,1,1,15,6,22,53,40,389.2,27.97,256140,77687,299542,19264
+context_security,10,30,10,20,33,86,34,153,4,0,808.1,49.27,260130,134541,336648,59270
+pdf_functional,10,30,7,12,17,75,20,112,4,0,649.9,36.45,25674,93067,86236,40098
+pdf_security,10,30,7,13,15,80,19,114,4,0,655.1,39.61,27714,97690,88991,41624

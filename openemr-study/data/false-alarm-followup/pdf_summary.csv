@@ -1,0 +1,3 @@
+arm,controls,reviews,controls_with_false_alarm,false_alarm_reviews,false_findings,speculative_findings,plausible_findings,all_security_findings,correctness_warnings,maintainability_warnings,mean_review_words,median_review_seconds,review_input_tokens,review_output_tokens,judge_input_tokens,judge_output_tokens
+pdf_functional,5,15,2,4,5,51,3,59,2,1,668.0,36.71,16566,58974,47709,18532
+pdf_security,5,15,4,7,9,47,4,60,0,1,835.3,63.77,17586,84950,55294,20517

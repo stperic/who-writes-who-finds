@@ -1,0 +1,67 @@
+[
+  {
+    "item": "PDF-01",
+    "commit": "97405694c623e4e85572e0742334e89e6525fa22",
+    "date": "2026-04-22T11:44:23-04:00",
+    "subject": "refactor(globals): migrate interface/forms path reads to typed Kernel accessors (#11757)",
+    "file": "interface/forms/eye_mag/report.php",
+    "diff_sha256": "cbc52095162999f3fcf4c2d29e6d552de81726803f286c964808604958c09661",
+    "diff_bytes": 4298,
+    "after_fixes": [
+      "9ac869de30",
+      "9b072d69ef"
+    ]
+  },
+  {
+    "item": "PDF-02",
+    "commit": "7ec3eded8b2e49c15b8a735a004e2a1534015221",
+    "date": "2026-07-23T11:51:03-04:00",
+    "subject": "fix(eyeform): remove double escaping (#13152)",
+    "file": "interface/forms/eye_mag/report.php",
+    "diff_sha256": "6fbba2ee279f68642d4cdc982dce417321f39b4e7138fdbe26933ef7febddf65",
+    "diff_bytes": 1873,
+    "after_fixes": [
+      "9ac869de30",
+      "9b072d69ef"
+    ]
+  },
+  {
+    "item": "PDF-03",
+    "commit": "d301444f6c4d9c4fa732ce57f3989214081c6108",
+    "date": "2026-07-25T16:03:04-07:00",
+    "subject": "refactor: use attr() instead of text() in HTML attribute contexts (#13192)",
+    "file": "interface/forms/eye_mag/report.php",
+    "diff_sha256": "eb9aa94762c6c0038e66f8fc8f156f6734cb88e18389000b719ddb48504d67dd",
+    "diff_bytes": 1579,
+    "after_fixes": [
+      "9ac869de30",
+      "9b072d69ef"
+    ]
+  },
+  {
+    "item": "PDF-04",
+    "commit": "99062e5bee60ec3b3334dca73ad77c5d9e0cf60e",
+    "date": "2026-08-09T16:00:02-07:00",
+    "subject": "fix(forms): escape document note and rx content before rendering as HTML (#13404)",
+    "file": "interface/forms/eye_mag/report.php",
+    "diff_sha256": "47329c6893c161b4cd01f59a0a32b5611d134eedc910b5644f902828edff7752",
+    "diff_bytes": 619,
+    "after_fixes": [
+      "9ac869de30",
+      "9b072d69ef"
+    ]
+  },
+  {
+    "item": "PDF-05",
+    "commit": "0c0a13198c4be5d5507ff2d437d6960c9a4fadbc",
+    "date": "2026-10-06T08:50:21-04:00",
+    "subject": "fix(phpstan): resolve PHPStan 2.2.16 findings (unprinted translations, dead duplicate conditions) (#14398)",
+    "file": "interface/forms/eye_mag/report.php",
+    "diff_sha256": "dd187faea3a860b41ffefea46d40a534ee19c572bb03bc43f66584704bc74e7e",
+    "diff_bytes": 1167,
+    "after_fixes": [
+      "9ac869de30",
+      "9b072d69ef"
+    ]
+  }
+]

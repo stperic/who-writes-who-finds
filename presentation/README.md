@@ -19,6 +19,8 @@ The slides mix historical scores, later retests, scanner scans, a component repl
 
 The full 24-case Haiku prompt test is [published separately](../openemr-study/RESULTS.md): the new direct API generic arm caught **11/24**, and the stronger prompt caught **19/24**. Its benign-control false-alarm counts were **8/30** and **24/30** reviews. This test does not appear as a round in the main talk. It is relevant to the audience question about whether instructions can close the historical Haiku/Sonnet gap. The [exact prompts](../openemr-study/prompts/), [case pages](../openemr-study/cases/), [control pages](../openemr-study/controls/) and [raw archive](../openemr-study/evidence/study-results.zip) are available.
 
+A [later control experiment](../openemr-study/data/false-alarm-followup/README.md), also outside the deck's measured rounds, adds the missing false-alarm check for context and PDF requirements. Sonnet 5 with one related file made false security claims in **1/30** generic-prompt reviews and **20/30** security-prompt reviews of the ten original controls. On five later Eye Exam report changes, functional and proposed security PDF cards produced **4/15** and **7/15** false-alarm reviews. These model-judge scores are provisional; one High-severity PDF classification is borderline. The new controls do not change the historical slide numbers.
+
 For audience questions about a specific vulnerability, use the [24-CVE FAQ](../openemr-study/CVE-FAQ.md). It explains the historical bug and the recorded upstream patch for every scored case.
 
 ## Other slide sources
@@ -40,10 +42,11 @@ From a fresh checkout, run:
 
 ```sh
 python3 openemr-study/verify.py
+python3 openemr-study/data/false-alarm-followup/measure.py verify
 python3 openemr-study/snyk-baseline/verify.py
 python3 quadrant-tool/jev.py score jev-study/results/2026-10-18-jev-1.14
 ```
 
-The first verifier checks the original and prompt-follow-up archive, inputs and scores. The second checks all 24 Snyk SARIF scans and the published adjudication totals. The Jev command re-scores its saved 42 responses. These checks validate retained records and arithmetic; they do not independently verify every security judgment.
+The first verifier checks the original and prompt-follow-up archive, inputs and scores. The new control verifier checks 150 reviewer responses, 150 judge responses and input hashes. The Snyk verifier checks all 24 SARIF scans and the published adjudication totals. The Jev command re-scores its saved 42 responses. These checks validate retained records and arithmetic; they do not independently verify every security judgment.
 
-**Outstanding review:** The original 24-case scores had human adjudication. Later prompt and context scores, Snyk case matches, and the PDF requirement observation still need independent verification. Snyk ran after disclosure with full-repository context; the AI reviews used selected diffs and different execution dates and settings. The [published Snyk terms](https://snyk.io/policies/terms-of-service/) restrict benchmarking, and the applicable account agreement or exception was not available for verification.
+**Outstanding review:** The original 24-case scores had human adjudication. Later prompt and context scores, the new false-alarm classifications, Snyk case matches, and the PDF requirement observation still need independent verification. Snyk ran after disclosure with full-repository context; the AI reviews used selected diffs and different execution dates and settings. The [published Snyk terms](https://snyk.io/policies/terms-of-service/) restrict benchmarking, and the applicable account agreement or exception was not available for verification.
