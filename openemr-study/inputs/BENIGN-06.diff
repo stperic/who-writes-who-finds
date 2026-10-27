@@ -1,0 +1,25 @@
+diff --git a/src/Services/FHIR/FhirCareTeamService.php b/src/Services/FHIR/FhirCareTeamService.php
+index efff68a5a..58c6f6de6 100644
+--- a/src/Services/FHIR/FhirCareTeamService.php
++++ b/src/Services/FHIR/FhirCareTeamService.php
+@@ -32,6 +32,7 @@ use OpenEMR\Services\Search\ServiceField;
+ use OpenEMR\Validators\ProcessingResult;
+ 
+ class FhirCareTeamService extends FhirServiceBase implements IResourceUSCIGProfileService, IFhirExportableResourceService
++    , IPatientCompartmentResourceService
+ {
+     use FhirServiceBaseEmptyTrait;
+     use BulkExportSupportAllOperationsTrait;
+@@ -445,11 +446,7 @@ class FhirCareTeamService extends FhirServiceBase implements IResourceUSCIGProfi
+     {
+         // Set managing organization if primary facility is set
+         if (!empty($dataRecord['primary_facility_uuid'])) {
+-            $careTeamResource->addManagingOrganization(
+-                [
+-                UtilsService::createRelativeReference("Organization", $dataRecord['primary_facility_uuid'])
+-                ]
+-            );
++            $careTeamResource->addManagingOrganization(UtilsService::createRelativeReference("Organization", $dataRecord['primary_facility_uuid']));
+         }
+     }
+ 

@@ -1,0 +1,186 @@
+{
+  "cases": [
+    {
+      "cve_id": "CVE-2026-24908",
+      "intro_commit": "6c97865a0472",
+      "fix_commit": "943e23cad6e9"
+    },
+    {
+      "cve_id": "CVE-2026-24898",
+      "intro_commit": "0718350fadb4",
+      "fix_commit": "8e4de59ab582"
+    },
+    {
+      "cve_id": "CVE-2026-33346",
+      "intro_commit": "aca3dd6ec9bf",
+      "fix_commit": "6e9e1566d6e2"
+    },
+    {
+      "cve_id": "CVE-2026-24890",
+      "intro_commit": "0cb7ccc25dcf",
+      "fix_commit": "a29c0f7ac097"
+    },
+    {
+      "cve_id": "CVE-2026-23627",
+      "intro_commit": "6c78b1545764",
+      "fix_commit": "cbf4ea4345b1"
+    },
+    {
+      "cve_id": "CVE-2026-24487",
+      "intro_commit": "3cbe16d02116",
+      "fix_commit": "7307c1089c04"
+    },
+    {
+      "cve_id": "CVE-2026-25746",
+      "intro_commit": "7080e87bbabb",
+      "fix_commit": "e230d3ef4642"
+    },
+    {
+      "cve_id": "CVE-2026-24849",
+      "intro_commit": "4cafd7df73",
+      "fix_commit": "9010a0b528aa"
+    },
+    {
+      "cve_id": "CVE-2026-25146",
+      "intro_commit": "2ab074e827b9",
+      "fix_commit": "fe6341496dc8"
+    },
+    {
+      "cve_id": "CVE-2026-25476",
+      "intro_commit": "fae906cb06f7",
+      "fix_commit": "02a6a7793402"
+    },
+    {
+      "cve_id": "CVE-2026-32238",
+      "intro_commit": "1ab6846ed00f",
+      "fix_commit": "7bc7bd077a62"
+    },
+    {
+      "cve_id": "CVE-2026-29187",
+      "intro_commit": "a9aa64513e45",
+      "fix_commit": "c61887aa7c83"
+    },
+    {
+      "cve_id": "CVE-2026-33913",
+      "intro_commit": "1024a1a838b2",
+      "fix_commit": "67e1702c41cf"
+    },
+    {
+      "cve_id": "CVE-2026-33321",
+      "intro_commit": "00aa8a6f2cd1",
+      "fix_commit": "dccc962f06bd"
+    },
+    {
+      "cve_id": "CVE-2026-33918",
+      "intro_commit": "7080e87bbabb",
+      "fix_commit": "f6d98d0102df"
+    },
+    {
+      "cve_id": "CVE-2026-24847",
+      "intro_commit": "f4f46f287587",
+      "fix_commit": "b924459bb5b2"
+    },
+    {
+      "cve_id": "CVE-2023-22973",
+      "intro_commit": "a3f08b6c7763",
+      "fix_commit": "622eb502fbfe"
+    },
+    {
+      "cve_id": "CVE-2018-15152",
+      "intro_commit": "9829bf4e0b86",
+      "fix_commit": "469277fea5d0"
+    },
+    {
+      "cve_id": "CVE-2018-15145",
+      "intro_commit": "aca3dd6ec9bf",
+      "fix_commit": "29a48e6955b2"
+    },
+    {
+      "cve_id": "CVE-2020-29140",
+      "intro_commit": "305b22d59aeb",
+      "fix_commit": "0ed50c10f59f"
+    },
+    {
+      "cve_id": "CVE-2021-40352",
+      "intro_commit": "44e594b48a8f",
+      "fix_commit": ""
+    },
+    {
+      "cve_id": "CVE-2022-2824",
+      "intro_commit": "aca3dd6ec9bf",
+      "fix_commit": "c5d99452c173"
+    },
+    {
+      "cve_id": "CVE-2025-31121",
+      "intro_commit": "81d00d00b96e",
+      "fix_commit": "12975bf422d3"
+    },
+    {
+      "cve_id": "CVE-2025-43860",
+      "intro_commit": "8a80577cc848",
+      "fix_commit": "f11b4198abd4"
+    }
+  ],
+  "controls": [
+    {
+      "item": "BENIGN-01",
+      "commit": "943e23cad6e979f87cdf168807fce2a7b32dd194",
+      "file_path": "src/Services/Search/SearchConfigClauseBuilder.php",
+      "kind": "patched_fix"
+    },
+    {
+      "item": "BENIGN-02",
+      "commit": "67e1702c41cf486af0069bdafce19860e2cd9a11",
+      "file_path": "src/Services/Cda/XmlExtended.php",
+      "kind": "patched_fix"
+    },
+    {
+      "item": "BENIGN-03",
+      "commit": "f6d98d0102df0a8f131be560d9208fb65fba6188",
+      "file_path": "interface/billing/get_claim_file.php",
+      "kind": "patched_fix"
+    },
+    {
+      "item": "BENIGN-04",
+      "commit": "6e9e1566d6e271a6d839614674b887e3a73d7da1",
+      "file_path": "portal/portal_payment.php",
+      "kind": "patched_fix"
+    },
+    {
+      "item": "BENIGN-05",
+      "commit": "02a6a7793402b10356a94626d78e0e1069e92a77",
+      "file_path": "library/auth.inc.php",
+      "kind": "patched_fix"
+    },
+    {
+      "item": "BENIGN-06",
+      "commit": "7307c1089c0473b8ada993e85e47eb64b724f456",
+      "file_path": "src/Services/FHIR/FhirCareTeamService.php",
+      "kind": "patched_fix"
+    },
+    {
+      "item": "BENIGN-07",
+      "commit": "d4091cc07ceccc52010e2872d90991ca01908921",
+      "file_path": "interface/modules/custom_modules/oe-module-faxsms/src/Controller/RCFaxClient.php",
+      "kind": "routine_change"
+    },
+    {
+      "item": "BENIGN-08",
+      "commit": "f0cba6809da4a6b1c1e51cf47d7622c38c0c390b",
+      "file_path": "src/PaymentProcessing/Recorder.php",
+      "kind": "routine_change"
+    },
+    {
+      "item": "BENIGN-09",
+      "commit": "b39f728e34cba117dfa6d6ac376651715a8851b1",
+      "file_path": "interface/main/calendar/find_group_popup.php",
+      "kind": "routine_change"
+    },
+    {
+      "item": "BENIGN-10",
+      "commit": "7827d3cc9e0b77d7824af39d0813807e414113f6",
+      "file_path": "library/payment_jav.inc.php",
+      "kind": "routine_change"
+    }
+  ]
+}

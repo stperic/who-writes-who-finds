@@ -1,0 +1,22 @@
+name: Check study scripts and inputs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Compile scripts
+        run: python3 -m compileall -q quadrant-tool/quadrant.py openemr-study/next-run/study.py openemr-study/snyk-baseline/run.py openemr-study/snyk-baseline/analyze.py openemr-study/snyk-baseline/compare_runs.py openemr-study/automated-context/run.py openemr-study/automated-context/expand_diff_context.py
+      - name: Check fixed inputs and job plan
+        run: python3 openemr-study/next-run/study.py plan

@@ -1,0 +1,15 @@
+{
+  "protocol_version": 1,
+  "selector_version": "1",
+  "review_model": "claude-sonnet-5",
+  "judge_model": "claude-fable-5-1",
+  "api_version": "2023-06-01",
+  "review_max_tokens": 16000,
+  "judge_max_tokens": 4000,
+  "max_input_chars": 160000,
+  "repetitions": 3,
+  "shuffle_seed": 20261025,
+  "pilot_job": "C4__generic__context__run1",
+  "context_intro": "For context, this related file from the repository at the same commit is included below. It is not changed by this pull request.",
+  "reviewer_prompts": {"generic": "../prompts/generic.txt", "security": "../prompts/security_policy.txt"}
+}

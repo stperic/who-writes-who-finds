@@ -1,0 +1,17 @@
+[
+  {"item":"C1","kind":"case","head":"81d00d00b96e00146a0ddbb40ad85fd308ea38d8","diff":"../inputs/item_23.diff"},
+  {"item":"C2","kind":"case","head":"3cbe16d02116fd971e0d28624c10f4b9a3741248","diff":"../inputs/item_03.diff"},
+  {"item":"C3","kind":"case","head":"2ab074e827b9011d054df34723696feb9776e8e4","diff":"../inputs/item_09.diff"},
+  {"item":"C4","kind":"case","head":"00aa8a6f2cd12e668532c313fa028a56144bf62e","diff":"../inputs/item_14.diff"},
+  {"item":"F1","kind":"case","head":"0381a2dbc1a573547cce96f7a73264ae27f5dd90","diff":"inputs/item_F1.diff"},
+  {"item":"BENIGN-01","kind":"control","head":"943e23cad6e979f87cdf168807fce2a7b32dd194","diff":"../inputs/BENIGN-01.diff"},
+  {"item":"BENIGN-02","kind":"control","head":"67e1702c41cf486af0069bdafce19860e2cd9a11","diff":"../inputs/BENIGN-02.diff"},
+  {"item":"BENIGN-03","kind":"control","head":"f6d98d0102df0a8f131be560d9208fb65fba6188","diff":"../inputs/BENIGN-03.diff"},
+  {"item":"BENIGN-04","kind":"control","head":"6e9e1566d6e271a6d839614674b887e3a73d7da1","diff":"../inputs/BENIGN-04.diff"},
+  {"item":"BENIGN-05","kind":"control","head":"02a6a7793402b10356a94626d78e0e1069e92a77","diff":"../inputs/BENIGN-05.diff"},
+  {"item":"BENIGN-06","kind":"control","head":"7307c1089c0473b8ada993e85e47eb64b724f456","diff":"../inputs/BENIGN-06.diff"},
+  {"item":"BENIGN-07","kind":"control","head":"d4091cc07ceccc52010e2872d90991ca01908921","diff":"../inputs/BENIGN-07.diff"},
+  {"item":"BENIGN-08","kind":"control","head":"f0cba6809da4a6b1c1e51cf47d7622c38c0c390b","diff":"../inputs/BENIGN-08.diff"},
+  {"item":"BENIGN-09","kind":"control","head":"b39f728e34cba117dfa6d6ac376651715a8851b1","diff":"../inputs/BENIGN-09.diff"},
+  {"item":"BENIGN-10","kind":"control","head":"7827d3cc9e0b77d7824af39d0813807e414113f6","diff":"../inputs/BENIGN-10.diff"}
+]

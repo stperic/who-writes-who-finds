@@ -1,0 +1,17 @@
+diff --git a/interface/modules/custom_modules/oe-module-faxsms/src/Controller/RCFaxClient.php b/interface/modules/custom_modules/oe-module-faxsms/src/Controller/RCFaxClient.php
+index a6dffa5c5..c4c2812d4 100644
+--- a/interface/modules/custom_modules/oe-module-faxsms/src/Controller/RCFaxClient.php
++++ b/interface/modules/custom_modules/oe-module-faxsms/src/Controller/RCFaxClient.php
+@@ -698,7 +698,11 @@ class RCFaxClient extends AppDispatch implements FaxChannelInterface, SmsChannel
+             $response['url'] = $where;
+         }
+ 
+-        return json_encode($response);
++        try {
++            return json_encode($response, JSON_THROW_ON_ERROR);
++        } catch (\JsonException) {
++            return '{"success":false,"message":"Encoding error","url":""}';
++        }
+     }
+ 
+     /**
